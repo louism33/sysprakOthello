@@ -1,7 +1,7 @@
-# Alex the Friendly AI
-a university project - client to play reversi / othello
-geschrieben von : 
-    Zhenhan Gao
-    Yufan Lu
-    Marlene Eder
+# Alex the Friendly AI \n
+a university project - client to play reversi / othello \n
+geschrieben von : \n
+    Zhenhan Gao   \n
+    Yufan Lu      \n
+    Marlene Eder  \n
     Louis Mackenzie-Smith

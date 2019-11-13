@@ -1,6 +1,10 @@
 # Alex the Friendly AI
-a university project - client to play reversi / othello
-geschrieben von : 
+Course project for System Praktikum, Winter Semester 2019 / 2020 at the LMU <br>
+<br>
+Reversi client and AI. <br>
+<br>
+Written by : 
+
     Zhenhan Gao
     Yufan Lu
     Marlene Eder

@@ -32,7 +32,14 @@
 
 
 
-int connectToGameServer(bool testing) {
+int connectToGameServer(int mockGame) {
+
+    printf("attempting to connect to game server.\n");
+    if (mockGame) {
+        printf("MOCK GAME is TRUE\n");
+    }else {
+        printf("MOCK GAME is FALSE\n");
+    }
 
     // create
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -49,7 +56,7 @@ int connectToGameServer(bool testing) {
     struct sockaddr_in server;
     server.sin_family = PF_INET;
 
-    if (testing) {
+    if (mockGame) {
         server.sin_addr.s_addr = inet_addr("127.0.0.1");
     } else {
         server.sin_addr.s_addr = inet_addr(HOSTNAME);
@@ -75,31 +82,22 @@ int connectToGameServer(bool testing) {
 
 }
 
-
-int connectToRealGameServer() {
-    return connectToGameServer(false);
-}
-
-int connectToMockGameServer() {
-//    createMockGameServer();
-    return connectToGameServer(true);
-}
-
-
-
-
 void connectorMasterMethod(int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
     char *GAMEID;
     int GAMENUMBER = 0;
     int ret;
-    while ((ret = getopt(argc, argv, "g:p:")) != -1) {
+    int mockGame = 0;
+    while ((ret = getopt(argc, argv, "g:p:m:")) != -1) {
         switch (ret) {
             case 'g':
                 GAMEID = optarg;
                 break;
             case 'p':
                 GAMENUMBER = atoi(optarg);
+                break;
+            case 'm':
+                mockGame = 1;
                 break;
             default:
                 perror("keine gültige Game-ID oder Game-Number.\n");
@@ -118,7 +116,7 @@ void connectorMasterMethod(int argc, char *argv[]) {
     }
 
 
-    connectToMockGameServer();
+    connectToGameServer(mockGame);
 }
 
 

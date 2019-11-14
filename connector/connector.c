@@ -13,7 +13,7 @@
 
 void connectorMasterMethod(int argc,char*argv[]){
  printf("Hi I am good at connecting\n");
-     char *GAMEID;
+    char *GAMEID;
     int GAMENUMBER=0;
     int ret;
     while((ret=getopt(argc, argv, "g:p:")) != -1) {

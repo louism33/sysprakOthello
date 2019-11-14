@@ -82,6 +82,9 @@ int connectToGameServer(int mockGame) {
 
 }
 
+
+// to get a mock game (don't use MNM server) please write:
+// ./sysprak-client -m 1 -g 1234567890123 -p 1
 void connectorMasterMethod(int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
     char *GAMEID;

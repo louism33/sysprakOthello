@@ -9,7 +9,7 @@
 int main(int argc,char*argv[]) {
     printf("Hello World! I am Alex. This is the main method\n");
     thinkerMasterMethod();
-    connectorMasterMethod(argc,argv);
+//    connectorMasterMethod(argc,argv);
     
 
 

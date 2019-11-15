@@ -125,7 +125,7 @@ void haveConversationWithServer(int sockfd) {
         n = 0;
 
         // you can manually talk to the server here
-        while ((buff[n++] = getchar()) != '\n');
+        while ((buff[n++] = getchar()) != '\n'); // todo! replace this line with our own communication
 
         write(sockfd, buff, sizeof(buff));
         bzero(buff, sizeof(buff));

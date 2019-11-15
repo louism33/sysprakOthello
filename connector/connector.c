@@ -124,6 +124,7 @@ int connectToGameServer(int mockGame) {
 
     if (mockGame) {
         char *local = "127.0.0.1";
+//        char *local = "10.155.92.35";
         server.sin_addr.s_addr = inet_addr(local);
         printf("Attempting to connect to host %s on port %d\n", local, PORTNUMBER);
 

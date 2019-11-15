@@ -4,6 +4,8 @@
 #include "connector.h"
 #include "performConnection.c"
 
+
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -48,7 +50,7 @@ char * lookup_host (const char *host) {
     char* finalAddrstr;
     void *ptr;
 
-    finalAddrstr = malloc(sizeof(char) * 200);
+    finalAddrstr = malloc(sizeof(char) * 200); // todo clean this memory in calling function
 
     memset (&hints, 0, sizeof (hints));
     hints.ai_family = PF_UNSPEC;
@@ -143,7 +145,7 @@ int connectToGameServer(int mockGame) {
 
     // connect the client socket to the server socket
     if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
-        printf("connection with the server failed...\n");
+        printf("connection with the server failed...errno is %s\n", strerror(errno));
         return 0;
     } else {
         printf("success!!!! connected to the server..\n");

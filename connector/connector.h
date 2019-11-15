@@ -5,7 +5,7 @@
 #ifndef ALEXTHEFRIENDLYAI_CONNECTOR_H
 #define ALEXTHEFRIENDLYAI_CONNECTOR_H
 
-void connectorMasterMethod();
+int connectorMasterMethod();
 
 
 #endif //ALEXTHEFRIENDLYAI_CONNECTOR_H

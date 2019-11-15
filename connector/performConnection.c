@@ -50,8 +50,11 @@ void readStuff(int sockfd)
         bzero(buff, sizeof(buff));
         printf("Enter the string : ");
         n = 0;
-        while ((buff[n++] = getchar()) != '\n')
-            ;
+
+        // you can manually talk to the server here
+        while ((buff[n++] = getchar()) != '\n');
+
+
         write(sockfd, buff, sizeof(buff));
         bzero(buff, sizeof(buff));
         read(sockfd, buff, sizeof(buff));

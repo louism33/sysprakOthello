@@ -123,8 +123,8 @@ int connectToGameServer(int mockGame) {
     server.sin_family = PF_INET;
 
     if (mockGame) {
-        char *local = "127.0.0.1";
-//        char *local = "10.155.92.35";
+//        char *local = "127.0.0.1";
+        char *local = "10.155.92.35"; // todo, hack
         server.sin_addr.s_addr = inet_addr(local);
         printf("Attempting to connect to host %s on port %d\n", local, PORTNUMBER);
 

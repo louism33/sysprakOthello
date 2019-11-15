@@ -46,21 +46,23 @@ void readStuff(int sockfd)
 {
     char buff[MAX];
     int n;
-    bzero(buff, sizeof(buff));
-    for (;;) {
-        // read from server
-        read(sockfd, buff, sizeof(buff));
-        printf("%s", buff);
-        bzero(buff, sizeof(buff));
 
-        // write to server
+    bzero(buff, sizeof(buff));
+    read(sockfd, buff, sizeof(buff));
+    printf("%s", buff);
+
+    for (;;) {
+        bzero(buff, sizeof(buff));
         printf("Enter the string : ");
         n = 0;
+
         // you can manually talk to the server here
         while ((buff[n++] = getchar()) != '\n');
+
         write(sockfd, buff, sizeof(buff));
         bzero(buff, sizeof(buff));
-
+        read(sockfd, buff, sizeof(buff));
+        printf("%s", buff);
 
         if ((strncmp(buff, "exit", 4)) == 0) {
             printf("Client Exit...\n");

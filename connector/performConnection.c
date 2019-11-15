@@ -50,6 +50,7 @@ void readStuff(int sockfd)
     for (;;) {
         // read from server
         read(sockfd, buff, sizeof(buff));
+        printf("%s", buff);
         bzero(buff, sizeof(buff));
 
         // write to server
@@ -60,7 +61,7 @@ void readStuff(int sockfd)
         write(sockfd, buff, sizeof(buff));
         bzero(buff, sizeof(buff));
 
-        printf("%s", buff);
+
         if ((strncmp(buff, "exit", 4)) == 0) {
             printf("Client Exit...\n");
             break;

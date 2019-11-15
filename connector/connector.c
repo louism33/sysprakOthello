@@ -22,7 +22,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
 #include <stdbool.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -43,7 +42,8 @@
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 
-char * lookup_host (const char *host) {
+char * lookup_host (const char *host) { // todo move sock creation to here?
+
     struct addrinfo hints, *res;
     int errcode;
     char addrstr[100];
@@ -108,6 +108,7 @@ int connectToGameServer(int mockGame) {
 
     // create
     int sock = socket(AF_INET, SOCK_STREAM, 0);
+//    int sock = socket(AF_INET6, SOCK_STREAM, 0);
 
     // error handling for socket
     if (sock == -1) {
@@ -127,9 +128,7 @@ int connectToGameServer(int mockGame) {
         printf("Attempting to connect to host %s on port %d\n", local, PORTNUMBER);
 
     } else {
-
-        char *localh = "www.cnn.com";
-
+//        char *localh = "www.cnn.com";
 
         char *host = lookup_host(HOSTNAME);
 
@@ -138,14 +137,11 @@ int connectToGameServer(int mockGame) {
         server.sin_addr.s_addr = inet_addr(HOSTNAME);
     }
 
-
-
-
     server.sin_port = htons(PORTNUMBER);
 
     // connect the client socket to the server socket
     if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
-        printf("connection with the server failed...errno is %s\n", strerror(errno));
+        printf("connection with the server failed... error is %s\n", strerror(errno));
         return 0;
     } else {
         printf("success!!!! connected to the server..\n");

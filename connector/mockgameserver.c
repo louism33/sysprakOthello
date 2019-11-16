@@ -17,7 +17,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define MAX 240
+#define MAX 300
 #define PORTNUMBER 1357
 #define SA struct sockaddr
 
@@ -33,7 +33,7 @@ int dummyInteraction(int sockfd) {
 
     // version
     bzero(buff, MAX);
-    strncpy(buff, "+ MNM Gameserver v2.1 accepting connections", 50);
+    strncpy(buff, "+ MNM Gameserver v2.666 accepting connections", 50);
     write(sockfd, buff, sizeof(buff));
 
     read(sockfd, buff, sizeof(buff));

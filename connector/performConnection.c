@@ -45,7 +45,7 @@
 #include <arpa/inet.h>
 
 
-#define MAX 200
+#define MAX 300
 
 
 #define PLAYER
@@ -119,7 +119,7 @@ void haveConversationWithServer(int sockfd) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("%s\n", buff);
 
-            // sometimes the server send more than one command. If so, we wait.
+            // sometimes the server sends more than one command. If so, we wait.
             if (strncmp("+ PLAYING ", buff, 10) == 0) {
 //                printf("received, \'%s', waiting\n", buff);
                 bzero(buff, sizeof(buff));

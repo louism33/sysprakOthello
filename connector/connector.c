@@ -146,7 +146,11 @@ int connectToGameServer(int mockGame) {
     }
 
 
+<<<<<<< HEAD
     performConnection(sock);
+=======
+    performConnectionLouis(sock);
+>>>>>>> a2ecbaa98809719e408a06010653f4b941c53d11
 
     close(sock);
 
@@ -158,7 +162,7 @@ int connectToGameServer(int mockGame) {
 
 // to get a mock game (don't use MNM server) please write:
 // ./sysprak-client -m 1 -g 1234567890123 -p 1
-void connectorMasterMethod(int argc, char *argv[]) {
+int connectorMasterMethod(int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
     char *GAMEID;
     int GAMENUMBER = 0;
@@ -193,4 +197,6 @@ void connectorMasterMethod(int argc, char *argv[]) {
 
 
     connectToGameServer(mockGame);
+
+    return 0;
 }

@@ -8,4 +8,6 @@
 
 int performConnection(int sock,char* version,char*id,char* player);
 
+int performConnectionLouis(int sock);
+
 #endif //SYSPRAKOTHELLO_PERFORMCONNECTION_H

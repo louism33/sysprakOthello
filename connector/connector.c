@@ -146,11 +146,7 @@ int connectToGameServer(int mockGame) {
     }
 
 
-<<<<<<< HEAD
-    performConnection(sock);
-=======
     performConnectionLouis(sock);
->>>>>>> a2ecbaa98809719e408a06010653f4b941c53d11
 
     close(sock);
 

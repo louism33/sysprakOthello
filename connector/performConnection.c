@@ -45,7 +45,7 @@
 #include <arpa/inet.h>
 
 
-#define MAX 300
+#define MAX 240
 
 
 #define PLAYER

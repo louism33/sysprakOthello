@@ -56,7 +56,7 @@ char* mystrcat(char* str1, char* str2){
 #include <arpa/inet.h>
 
 
-#define MAX 80
+#define MAX 300
 
 
 #define PLAYER
@@ -152,14 +152,30 @@ int performConnection(int sock, char *version, char *id) {
 
 void haveConversationWithServer(int sockfd) {
     char buff[MAX];
-    int n;
-
-    bzero(buff, sizeof(buff));
-    read(sockfd, buff, sizeof(buff));
-    printf("%s", buff);
+    int n, readResponse = 0;
 
     for (;;) {
+        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+            printf("%s\n", buff);
+
+            // sometimes the server sends more than one command. If so, we wait.
+            if (strncmp("+ PLAYING ", buff, 10) == 0) {
+//                printf("received, \'%s', waiting\n", buff);
+                bzero(buff, sizeof(buff));
+                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
+//                printf("received, \'%s', proceeding RR %d\n", buff, readResponse);
+                printf("%s\n", buff);
+            }
+            if (strncmp("+ YOU", buff, 6) == 0) {
+//                printf("received, \'%s', waiting\n", buff);
+                bzero(buff, sizeof(buff));
+                readResponse = read(sockfd, buff, sizeof(buff));
+//                printf("received, \'%s', proceeding\n", buff);
+                printf("%s\n", buff);
+            }
+        }
         bzero(buff, sizeof(buff));
+
         printf("Enter the string : ");
         n = 0;
 
@@ -167,9 +183,17 @@ void haveConversationWithServer(int sockfd) {
         while ((buff[n++] = getchar()) != '\n'); // todo! replace this line with our own communication
 
         write(sockfd, buff, sizeof(buff));
+
         bzero(buff, sizeof(buff));
-        read(sockfd, buff, sizeof(buff));
-        printf("%s", buff);
+
+        readResponse = read(sockfd, buff, sizeof(buff));
+
+        printf("%s\n", buff);
+
+        if (readResponse == -1) {
+            printf("Could not read from server");
+            exit(0);
+        }
 
         if ((strncmp(buff, "exit", 4)) == 0) {
             printf("Client Exit...\n");
@@ -183,9 +207,7 @@ int performConnectionLouis(int sock) {
 
     haveConversationWithServer(sock);
 
-
     printf("performConnection %d\n", sock);
-
 
     return 0;
 }

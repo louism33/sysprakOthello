@@ -21,8 +21,6 @@
 #define PORTNUMBER 1357
 #define SA struct sockaddr
 
-//fprintf( stderr, "my %s has %d chars\n", "string format", 30);
-
 // Function designed for chat between client and server.
 int dummyInteraction(int sockfd) {
     char buff[MAX];

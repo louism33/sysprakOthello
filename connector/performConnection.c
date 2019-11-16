@@ -116,8 +116,6 @@ void haveConversationWithServer(int sockfd) {
     int n, readResponse = 0;
 
     for (;;) {
-//        usleep(500000); // todo, this is only here to make testing a tiny bit easier. Delete later
-        printf("------\n");
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("%s\n", buff);
 
@@ -125,7 +123,7 @@ void haveConversationWithServer(int sockfd) {
             if (strncmp("+ PLAYING ", buff, 10) == 0) {
 //                printf("received, \'%s', waiting\n", buff);
                 bzero(buff, sizeof(buff));
-                while((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
+                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
 //                printf("received, \'%s', proceeding RR %d\n", buff, readResponse);
                 printf("%s\n", buff);
             }
@@ -153,7 +151,7 @@ void haveConversationWithServer(int sockfd) {
 
         printf("%s\n", buff);
 
-        if (readResponse == -1){
+        if (readResponse == -1) {
             printf("Could not read from server");
             exit(0);
         }

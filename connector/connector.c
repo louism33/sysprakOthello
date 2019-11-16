@@ -92,7 +92,6 @@ char * lookup_host (const char *host) { // todo move sock creation to here?
 
     return finalAddrstr;
 
-//    return "";
 }
 
 

@@ -53,11 +53,11 @@ int dummyInteraction(int sockfd) {
     // version
     bzero(buff, MAX);
     strncpy(buff, "+ MNM Gameserver v2.666 accepting connections", 50);
-    write(sockfd, buff, sizeof(buff));
+    write(sockfd, buff, sizeof(buff));//将内容写给客户端
 
-    read(sockfd, buff, sizeof(buff));
+    read(sockfd, buff, sizeof(buff));//从客户端读取内容
 
-    if (strncmp("VERSION 2.", buff, 10) != 0) {
+    if (strncmp("VERSION 2.", buff, 10) != 0) {//检验客户端的内容
         fprintf(stderr, "MOCKGAMESERVER: INCORRECT VERSION RESPONSE\n");
         fprintf(stderr, "You sent %s\n", buff);
         fprintf(stderr, "Server will exit...\n");
@@ -69,7 +69,7 @@ int dummyInteraction(int sockfd) {
     // game ID
     bzero(buff, MAX);
     strncpy(buff, "+ Client version accepted - please send Game-ID to join", 120);
-    write(sockfd, buff, sizeof(buff));
+    write(sockfd, buff, sizeof(buff));//写给客户端
     bzero(buff, MAX);
 
     read(sockfd, buff, sizeof(buff));

@@ -1,11 +1,14 @@
 #include "connector.h"
 #include "performConnection.c"
+#include "mockgameserver.h"
 
+#include <sys/types.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <getopt.h>
 #include <string.h>
 #include <stdio.h>
@@ -21,7 +24,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <arpa/inet.h>
-#include <unistd.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -90,7 +92,6 @@ char * lookup_host (const char *host) { // todo move sock creation to here?
 
     return finalAddrstr;
 
-//    return "";
 }
 
 
@@ -120,19 +121,18 @@ int connectToGameServer(int mockGame) {
     server.sin_family = PF_INET;
 
     if (mockGame) {
-//        char *local = "127.0.0.1";
-        char *local = "10.155.92.35"; // todo, hack
+        char *local = "127.0.0.1";
         server.sin_addr.s_addr = inet_addr(local);
         printf("Attempting to connect to host %s on port %d\n", local, PORTNUMBER);
-
     } else {
-//        char *localh = "www.cnn.com";
-
         char *host = lookup_host(HOSTNAME);
+
+        char *MNMip = "10.155.92.35"; // todo, hack
 
         printf("Attempting to connect to host %s on port %d\n", host, PORTNUMBER);
 
-        server.sin_addr.s_addr = inet_addr(HOSTNAME);
+        server.sin_addr.s_addr = inet_addr(host);
+//        server.sin_addr.s_addr = inet_addr(MNMip);
     }
 
     server.sin_port = htons(PORTNUMBER);
@@ -191,6 +191,18 @@ int connectorMasterMethod(int argc, char *argv[]) {
         exit(0);
     }
 
+    if (mockGame) {
+        pid_t pid;
+        pid = fork();
+        if (pid == 0) { /* child process */
+            createMockGameServer();
+            return 0;
+        }
+
+        int sleepMicroSeconds = 2000000;
+        printf("sleeping for %d microseconds to give the mock server time to get ready\n", sleepMicroSeconds);
+        usleep(sleepMicroSeconds);
+    }
 
     connectToGameServer(mockGame);
 

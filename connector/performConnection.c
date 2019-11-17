@@ -44,8 +44,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-#include "connector.h"
-
 #define MAX 240
 
 
@@ -103,7 +101,7 @@ return 0;}
 
 
 void haveConversationWithServer(int sockfd) {
-char* buff=malloc(256*sizeof(char));
+char buff[MAX];
     int n,readResponse = 0;
     char serverbuff[MAX];
     char version[] = "VERSION 2.3";
@@ -111,17 +109,17 @@ char* buff=malloc(256*sizeof(char));
     char player[] = "PLAYER";
 
     bzero(buff, sizeof(buff));
-    read(sockfd, buff, sizeof(buff));
-    printf("%s", buff);
+    read(sockfd, buff, sizeof(buff));//读取来自服务器的内容
+    printf("%s", buff);//打印出服务器的输出的内容
 
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-            printf("%s\n", buff);
+            printf("%s\n", buff);//把从客户端那边接收来的内容打在本地的cmd里
 
             // sometimes the server sends more than one command. If so, we wait.
-            if (strncmp("+ PLAYING ", buff, 10) == 0) {
+            if (strncmp("+ PLAYING ", buff, 10) == 0) {//如果传来的内容是playing，那么应该
 //                printf("received, \'%s', waiting\n", buff);
-                bzero(buff, sizeof(buff));
+                bzero(buff, sizeof(buff));//首先先清空buff
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
 //                printf("received, \'%s', proceeding RR %d\n", buff, readResponse);
                 printf("%s\n", buff);
@@ -135,22 +133,37 @@ char* buff=malloc(256*sizeof(char));
             }
         }
         bzero(buff, sizeof(buff));
-        n = 0;
     // you can manually talk to the server here
+    int count=0;
     if(readResponse=read(sockfd,serverbuff,sizeof(serverbuff))){
         if(strncmp("+ MNM Gameserver",serverbuff,16) == 0){
-                buff=version;
+                count = 1;
             }else if(strncmp("+ Client version accepted",serverbuff,25) == 0){
-                buff=gameid;
+                count = 2;
             }else if(strncmp("+ REVERSI",serverbuff,10) == 0){
-                buff=player;}
-
+                count = 3;}
+    }
+     switch(count){
+         case 1:
+         strcpy(buff,version);
+         break;
+         case 2:
+         strcpy(buff,"ID 1234567890123");
+         break;
+         case 3:
+         strcpy(buff,"PLAYER");
+         break;
+         default:
+         bzero(buff,sizeof(buff));
+         break;
+         }
     write(sockfd, buff, sizeof(buff));
+    printf("%s\n",buff);
     bzero(buff, sizeof(buff));
     bzero(serverbuff,sizeof(serverbuff));
     readResponse = read(sockfd, buff, sizeof(buff));
     printf("%s\n", buff);
-    }
+
 
 
     if (readResponse == -1) {
@@ -163,9 +176,7 @@ char* buff=malloc(256*sizeof(char));
         break;
     }
     }
-free(buff);
 }
-
 int performConnectionLouis(int sock) {
 
     haveConversationWithServer(sock);

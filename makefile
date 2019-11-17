@@ -1,4 +1,4 @@
-CC=clang
+CC=gcc
 CFLAGS=-I -Wall -Werror -Wextra
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o

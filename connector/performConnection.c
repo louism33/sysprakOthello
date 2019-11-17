@@ -115,7 +115,7 @@ return 0;}
 
 void haveConversationWithServer(int sockfd) {
 char buff[MAX];
-    int n;
+    int n,readResponse = 0;
 
     bzero(buff, sizeof(buff));
     read(sockfd, buff, sizeof(buff));

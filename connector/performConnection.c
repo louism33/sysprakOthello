@@ -126,8 +126,6 @@ for (;;) {
 //                printf("received, \'%s', proceeding\n", buff);
     printf("%s\n", buff);
     }
-    bzero(buff, sizeof(buff));
-
      // you can manually talk to the server here
      if ((strncmp("+ MNM Gameserver",buff,16)) == 0){
          bzero(buff,sizeof(buff));
@@ -148,10 +146,6 @@ for (;;) {
          printf("%s",buff);
         
      }
-    
-
-
-
     if (readResponse == -1) {
         printf("Could not read from server");
         exit(0);
@@ -164,7 +158,8 @@ for (;;) {
 
     bzero(buff,sizeof(buff));
 }
-    }
+}
+}
 
 int performConnectionLouis(int sock) {
 

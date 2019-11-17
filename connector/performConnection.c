@@ -45,7 +45,7 @@
 #include <arpa/inet.h>
 
 
-#define MAX 300
+#define MAX 240
 
 
 #define PLAYER
@@ -133,10 +133,10 @@ char buff[MAX];
 //                printf("received, \'%s', proceeding RR %d\n", buff, readResponse);
                 printf("%s\n", buff);
             }
-            if (strncmp("+ YOU", buff, 6) == 0) {
+            if (strncmp("+ YOU", buff, 5) == 0) {
 //                printf("received, \'%s', waiting\n", buff);
                 bzero(buff, sizeof(buff));
-                readResponse = read(sockfd, buff, sizeof(buff));
+                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
 //                printf("received, \'%s', proceeding\n", buff);
                 printf("%s\n", buff);
             }

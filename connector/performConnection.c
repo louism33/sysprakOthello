@@ -44,6 +44,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+#include "connector.h"
 
 #define MAX 240
 
@@ -88,8 +89,6 @@ char *createinfo(int idikator, char *daten) {
 
     return NULL;
 }
-
-
 /*int performConnection(int sockfd) {
     char version[MAX];
     char id[MAX];
@@ -98,24 +97,18 @@ char *createinfo(int idikator, char *daten) {
     char *id_msg = createinfo(2, id);//ID XXX
     char *player_msg = createinfo(3, NULL);//PLAYER
 
-    while(version[n++] = getchar() != '\n');
-    write(sockfd,version_msg,sizeof(version_msg));
-    read(sockfd,version_msg,sizeof(version_msg));
-    printf("%s",version_msg);
-    while(id[n++] = getchar() != '\n');
-    write(sockfd,id_msg,sizeof(id_msg));
-    read(sockfd,id_msg,sizeof(id_msg));
-    printf("%s",id_msg);
-
-    printf("%s",player_msg);
 
 return 0;}
 */
 
 
 void haveConversationWithServer(int sockfd) {
-char buff[MAX];
+char* buff=malloc(256*sizeof(char));
     int n,readResponse = 0;
+    char serverbuff[MAX];
+    char version[] = "VERSION 2.3";
+    char gameid[] = "ID 1234567890123";
+    char player[] = "PLAYER";
 
     bzero(buff, sizeof(buff));
     read(sockfd, buff, sizeof(buff));
@@ -144,26 +137,33 @@ char buff[MAX];
         bzero(buff, sizeof(buff));
         n = 0;
     // you can manually talk to the server here
-        while ((buff[n++] = getchar()) != '\n'); // todo! replace this line with our own communication
+    if(readResponse=read(sockfd,serverbuff,sizeof(serverbuff))){
+        if(strncmp("+ MNM Gameserver",serverbuff,16) == 0){
+                buff=version;
+            }else if(strncmp("+ Client version accepted",serverbuff,25) == 0){
+                buff=gameid;
+            }else if(strncmp("+ REVERSI",serverbuff,10) == 0){
+                buff=player;}
 
-        write(sockfd, buff, sizeof(buff));
-
-        bzero(buff, sizeof(buff));
-
-        readResponse = read(sockfd, buff, sizeof(buff));
-
-        printf("%s\n", buff);
-
-        if (readResponse == -1) {
-            printf("Could not read from server");
-            exit(0);
-        }
-
-        if ((strncmp(buff, "exit", 4)) == 0) {
-            printf("Client Exit...\n");
-            break;
-        }
+    write(sockfd, buff, sizeof(buff));
+    bzero(buff, sizeof(buff));
+    bzero(serverbuff,sizeof(serverbuff));
+    readResponse = read(sockfd, buff, sizeof(buff));
+    printf("%s\n", buff);
     }
+
+
+    if (readResponse == -1) {
+        printf("Could not read from server");
+        exit(0);
+    }
+
+    if ((strncmp(buff, "exit", 4)) == 0) {
+        printf("Client Exit...\n");
+        break;
+    }
+    }
+free(buff);
 }
 
 int performConnectionLouis(int sock) {

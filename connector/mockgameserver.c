@@ -21,7 +21,26 @@
 #define PORTNUMBER 1357
 #define SA struct sockaddr
 
-//fprintf( stderr, "my %s has %d chars\n", "string format", 30);
+
+int waitLoop(int sockfd){
+    char buff[MAX];
+    for (int i = 0; i < 10; i++) {
+        bzero(buff, MAX);
+        strncpy(buff, "+ WAIT", 10);
+        write(sockfd, buff, sizeof(buff));
+
+        read(sockfd, buff, sizeof(buff));
+
+        if (strncmp("OKWAIT", buff, 6) != 0) {
+            fprintf(stderr, "MOCKGAMESERVER: INCORRECT WAIT RESPONSE\n");
+            fprintf(stderr, "You sent %s\n", buff);
+            fprintf(stderr, "Server will exit...\n");
+            bzero(buff, MAX);
+            return -1;
+        }
+    }
+}
+
 
 // Function designed for chat between client and server.
 int dummyInteraction(int sockfd) {
@@ -108,14 +127,22 @@ int dummyInteraction(int sockfd) {
     write(sockfd, buff, sizeof(buff));
     bzero(buff, MAX);
 
+    usleep(100000);
+
     strncpy(buff, "+ TOTAL 2", 120);
     write(sockfd, buff, sizeof(buff));
     bzero(buff, MAX);
+
+
+//    waitLoop(sockfd);
+
 
     fprintf(stderr, "\nYou got to the end of the mock server, congrats\n");
 
     return 0;
 }
+
+
 
 
 int createMockGameServer() {

@@ -106,56 +106,49 @@ void haveConversationWithServer(int sockfd) {
     char version[] = "VERSION 2.3";
     char gameid[] = "ID 1234567890123";
     char player[] = "PLAYER";
+for (;;) {
+    if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+    printf("%s\n", buff);//把从客户端那边接收来的内容打在本地的cmd里
 
-    bzero(buff, sizeof(buff));
-    read(sockfd, buff, sizeof(buff));//读取来自服务器的内容
-    printf("%s", buff);//打印出服务器的输出的内容
-
-    for (;;) {
-        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-            printf("%s\n", buff);//把从客户端那边接收来的内容打在本地的cmd里
-
-            // sometimes the server sends more than one command. If so, we wait.
-            if (strncmp("+ PLAYING ", buff, 10) == 0) {
+// sometimes the server sends more than one command. If so, we wait.
+    if (strncmp("+ PLAYING ", buff, 10) == 0) {
 //                printf("received, \'%s', waiting\n", buff);
-                bzero(buff, sizeof(buff));//首先先清空buff
-                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
+    bzero(buff, sizeof(buff));//首先先清空buff
+    while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);//等待读取server下一次
 //                printf("received, \'%s', proceeding RR %d\n", buff, readResponse);
-                printf("%s\n", buff);
-            }
-            if (strncmp("+ YOU", buff, 5) == 0) {
+    printf("%s\n", buff);
+    }
+
+    if (strncmp("+ YOU", buff, 5) == 0) {
 //                printf("received, \'%s', waiting\n", buff);
-                bzero(buff, sizeof(buff));
-                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);//保证sockfd中没有内容再进入buff里没有内容了
-//                printf("received, \'%s', proceeding\n", buff);
-                printf("%s\n", buff);
-            }
-        }
         bzero(buff, sizeof(buff));
-    // you can manually talk to the server here
- if((readResponse=read(sockfd,buff,sizeof(buff)))){
-     printf("%s",buff);
-     if((strncmp("+ MNM Gameserver",buff,16))==0){
+    while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);//保证sockfd中没有内容再进入buff里没有内容了
+//                printf("received, \'%s', proceeding\n", buff);
+    printf("%s\n", buff);
+    }
+    bzero(buff, sizeof(buff));
+
+     // you can manually talk to the server here
+     if ((strncmp("+ MNM Gameserver",buff,16)) == 0){
          bzero(buff,sizeof(buff));
          strcpy(buff,version);
          write(sockfd, buff, sizeof(buff));
          printf("%s",buff);
      }
-     if((strncmp("+ Client version accepted",buff,25)) == 0){
+     if ((strncmp("+ Client version accepted",buff,25)) == 0){
          bzero(buff,sizeof(buff));
          strcpy(buff,gameid);
          write(sockfd,buff,sizeof(buff));
          printf("%s",buff);
      }
-     if((strncmp("+ REVERSI",buff,10)) == 0){
+     if ((strncmp("+ REVERSI",buff,10)) == 0){
          bzero(buff,sizeof(buff));
          strcpy(buff,player);
          write(sockfd,buff,sizeof(buff));
          printf("%s",buff);
+        
      }
-     bzero(buff,sizeof(buff));
-
- }
+    
 
 
 
@@ -168,8 +161,11 @@ void haveConversationWithServer(int sockfd) {
         printf("Client Exit...\n");
         break;
     }
-    }
+
+    bzero(buff,sizeof(buff));
 }
+    }
+
 int performConnectionLouis(int sock) {
 
     haveConversationWithServer(sock);

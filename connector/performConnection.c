@@ -101,9 +101,8 @@ return 0;}
 
 
 void haveConversationWithServer(int sockfd) {
-char buff[MAX];
+    char buff[MAX];
     int n,readResponse = 0;
-    char serverbuff[MAX];
     char version[] = "VERSION 2.3";
     char gameid[] = "ID 1234567890123";
     char player[] = "PLAYER";
@@ -134,9 +133,9 @@ char buff[MAX];
         }
         bzero(buff, sizeof(buff));
     // you can manually talk to the server here
- if(readResponse=read(sockfd,buff,sizeof(buff))==0){
+ if((readResponse=read(sockfd,buff,sizeof(buff)))==0){
      printf("read Server successed.\n");
-     if(strncmp("+ MNM Gameserver",buff,16)==0){
+     if((strncmp("+ MNM Gameserver",buff,16))==0){
          bzero(buff,sizeof(buff));
          strcpy(buff,version);
          write(sockfd, buff, sizeof(buff));
@@ -144,7 +143,7 @@ char buff[MAX];
      }else{
          printf("write version no successed.\n ");
      }
-     if(strncmp(strncmp("+ Client version accepted",serverbuff,25) == 0)){
+     if((strncmp("+ Client version accepted",buff,25)) == 0){
          bzero(buff,sizeof(buff));
          strcpy(buff,gameid);
          write(sockfd,buff,sizeof(buff));
@@ -152,11 +151,13 @@ char buff[MAX];
      }else{
          printf("write gameid no successed.\n");
      }
-     if(strncmp("+ REVERSI",serverbuff,10) == 0){
+     if((strncmp("+ REVERSI",buff,10)) == 0){
          bzero(buff,sizeof(buff));
          strcpy(buff,player);
          write(sockfd,buff,sizeof(buff));
          printf("write player successd.\n");
+     }else{
+         printf("write player no successed\n");
      }
      bzero(buff,sizeof(buff));
 

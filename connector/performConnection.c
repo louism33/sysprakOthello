@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 #include <stdio.h>
->>>>>>> a2ecbaa98809719e408a06010653f4b941c53d11
 #include<sys/types.h>
 #include<sys/socket.h>
 #include<netinet/in.h>
@@ -12,14 +9,6 @@
 #include<string.h>
 
 
-<<<<<<< HEAD
-//Die Prolog-Phase der Kommunikation 
-char* mystrcat(char* str1, char* str2){
-   int len1 = strlen(str1);
-   int len2 = strlen(str2);
-   char* newstr = malloc(128*sizeof(char));
-   for(int i = 0; i < len1; i++){
-=======
 #include <stdio.h>
 
 
@@ -55,6 +44,7 @@ char* mystrcat(char* str1, char* str2){
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+#include "connector.h"
 
 #define MAX 240
 
@@ -67,7 +57,6 @@ char *mystrcat(char *str1, char *str2) {
     int len2 = strlen(str2);
     char *newstr = malloc(128 * sizeof(char));
     for (int i = 0; i < len1; i++) {
->>>>>>> a2ecbaa98809719e408a06010653f4b941c53d11
         *(newstr + i) = *(str1 + i);
     }
     for (int j = 1; j <= len2; j++) {
@@ -76,83 +65,54 @@ char *mystrcat(char *str1, char *str2) {
     return newstr;
 }
 
-<<<<<<< HEAD
-char* createinfo(int idikator, char* daten){
-  char temp1[] = "VERSION <<";
-  char temp2[] = "Game-ID <<";
-  char temp3[] = "PLAYER [[";
-  char temp4[] = ">>";
-  char temp5[] = "]]";
-  char* version = &temp1[0];
-  char* id = &temp2[0];
-  char* player = &temp3[0];
-  char* notation1 = &temp4[0];
-  char* notation2 = &temp5[0];
-  if(idikator == 1){
-  char* msg = mystrcat(version, daten);
-  char* version_msg = mystrcat(msg, notation1);
-  return version_msg;}
-
-  if(idikator == 2){
-  char* msg = mystrcat(id, daten);
-  char* id_msg = mystrcat(msg, notation1);
-  return id_msg;}
-
-  if(idikator == 3){
-  char* player_msg = mystrcat(player, notation2);
-  return player_msg;}
-}
-=======
 char *createinfo(int idikator, char *daten) {
-    char temp1[] = "VERSION <<";
-    char temp2[] = "Game-ID <<";
-    char temp3[] = "PLAYER [[";
-    char temp4[] = ">>";
-    char temp5[] = "]]";
+    char temp1[] = "VERSION ";
+    char temp2[] = "ID ";
+    char temp3[] = "PLAYER ";
     char *version = &temp1[0];
     char *id = &temp2[0];
     char *player = &temp3[0];
-    char *notation1 = &temp4[0];
-    char *notation2 = &temp5[0];
     if (idikator == 1) {
-        char *msg = mystrcat(version, daten);
-        char *version_msg = mystrcat(msg, notation1);
+        char *version_msg = mystrcat(version,daten);
         return version_msg;
     }
 
     if (idikator == 2) {
-        char *msg = mystrcat(id, daten);
-        char *id_msg = mystrcat(msg, notation1);
+        char *id_msg = mystrcat(id,daten);
         return id_msg;
     }
 
     if (idikator == 3) {
-        char *player_msg = mystrcat(player, notation2);
+        char *player_msg = player;
         return player_msg;
     }
 
     return NULL;
 }
+/*int performConnection(int sockfd) {
+    char version[MAX];
+    char id[MAX];
+    int n = 0;
+    char *version_msg = createinfo(1, version);//VERSION XXX
+    char *id_msg = createinfo(2, id);//ID XXX
+    char *player_msg = createinfo(3, NULL);//PLAYER
 
 
-int performConnection(int sock, char *version, char *id) {
-    char *version_msg = createinfo(1, version);
-    char *id_msg = createinfo(2, id);
-    char *player_msg = createinfo(3, NULL);
-
-    send(sock, version_msg, sizeof(version_msg) / sizeof(version_msg[0]), 0);
-    send(sock, id_msg, sizeof(id_msg) / sizeof(id_msg[0]), 0);
-    send(sock, player_msg, sizeof(player_msg) / sizeof(player_msg[0]), 0);
-
-    printf("performConnection %d\n", sock);
-
-    return 0;
-}
+return 0;}
+*/
 
 
 void haveConversationWithServer(int sockfd) {
-    char buff[MAX];
-    int n, readResponse = 0;
+char* buff=malloc(256*sizeof(char));
+    int n,readResponse = 0;
+    char serverbuff[MAX];
+    char version[] = "VERSION 2.3";
+    char gameid[] = "ID 1234567890123";
+    char player[] = "PLAYER";
+
+    bzero(buff, sizeof(buff));
+    read(sockfd, buff, sizeof(buff));
+    printf("%s", buff);
 
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
@@ -175,35 +135,38 @@ void haveConversationWithServer(int sockfd) {
             }
         }
         bzero(buff, sizeof(buff));
-
-        printf("Enter the string : ");
         n = 0;
+    // you can manually talk to the server here
+    if(readResponse=read(sockfd,serverbuff,sizeof(serverbuff))){
+        if(strncmp("+ MNM Gameserver",serverbuff,16) == 0){
+                buff=version;
+            }else if(strncmp("+ Client version accepted",serverbuff,25) == 0){
+                buff=gameid;
+            }else if(strncmp("+ REVERSI",serverbuff,10) == 0){
+                buff=player;}
 
-        // you can manually talk to the server here
-        while ((buff[n++] = getchar()) != '\n'); // todo! replace this line with our own communication
-
-        write(sockfd, buff, sizeof(buff));
-
-        bzero(buff, sizeof(buff));
-
-        readResponse = read(sockfd, buff, sizeof(buff));
-
-        printf("%s\n", buff);
-
-        if (readResponse == -1) {
-            printf("Could not read from server");
-            exit(0);
-        }
-
-        if ((strncmp(buff, "exit", 4)) == 0) {
-            printf("Client Exit...\n");
-            break;
-        }
+    write(sockfd, buff, sizeof(buff));
+    bzero(buff, sizeof(buff));
+    bzero(serverbuff,sizeof(serverbuff));
+    readResponse = read(sockfd, buff, sizeof(buff));
+    printf("%s\n", buff);
     }
+
+
+    if (readResponse == -1) {
+        printf("Could not read from server");
+        exit(0);
+    }
+
+    if ((strncmp(buff, "exit", 4)) == 0) {
+        printf("Client Exit...\n");
+        break;
+    }
+    }
+free(buff);
 }
 
 int performConnectionLouis(int sock) {
->>>>>>> a2ecbaa98809719e408a06010653f4b941c53d11
 
     haveConversationWithServer(sock);
 

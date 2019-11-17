@@ -152,6 +152,8 @@ int connectToGameServer(int mockGame, char *gameID, char* player) {
 
 }
 
+
+
 int connectorMasterMethod(int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
 

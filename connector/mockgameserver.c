@@ -96,7 +96,7 @@ int dummyInteraction(int sockfd) {
 
     usleep(100000);
 
-    strncpy(buff, "+ GAME-NAME", 120);
+    strncpy(buff, "+ REVERSI", 120);
 //    fprintf(stderr, "        %s\n", buff);
     write(sockfd, buff, sizeof(buff));
 //    fprintf(stderr, "        wrote\n");

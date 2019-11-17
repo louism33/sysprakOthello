@@ -48,8 +48,6 @@
 #define MAX 240
 
 
-#define PLAYER
-
 //Die Prolog-Phase der Kommunikation
 char *mystrcat(char *str1, char *str2) {
     int len1 = strlen(str1);
@@ -111,7 +109,7 @@ int performConnection(int sock, char *version, char *id) {
 }
 
 
-void haveConversationWithServer(int sockfd) {
+void haveConversationWithServer(int sockfd, char *gameID, char* player) {
     char buff[MAX];
     int n, readResponse = 0;
 
@@ -163,9 +161,9 @@ void haveConversationWithServer(int sockfd) {
     }
 }
 
-int performConnectionLouis(int sock) {
+int performConnectionLouis(int sock, char *gameID, char* player) {
 
-    haveConversationWithServer(sock);
+    haveConversationWithServer(sock, gameID, player);
 
     printf("performConnection %d\n", sock);
 

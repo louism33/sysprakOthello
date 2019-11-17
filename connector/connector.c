@@ -41,37 +41,34 @@
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 
-char * lookup_host (const char *host) { // todo move sock creation to here?
+char *lookup_host(const char *host) { // todo move sock creation to here?
 
     struct addrinfo hints, *res;
     int errcode;
     char addrstr[100];
-    char* finalAddrstr;
+    char *finalAddrstr;
     void *ptr;
 
     finalAddrstr = malloc(sizeof(char) * 200); // todo clean this memory in calling function
 
-    memset (&hints, 0, sizeof (hints));
+    memset(&hints, 0, sizeof(hints));
     hints.ai_family = PF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags |= AI_CANONNAME;
 
-    errcode = getaddrinfo (host, NULL, &hints, &res);
-    if (errcode != 0)
-    {
-        perror ("getaddrinfo");
+    errcode = getaddrinfo(host, NULL, &hints, &res);
+    if (errcode != 0) {
+        perror("getaddrinfo");
         return "x";
     }
 
-    printf ("Host: %s\n", host);
-    while (res)
-    {
-        inet_ntop (res->ai_family, res->ai_addr->sa_data, addrstr, 100);
+    printf("Host: %s\n", host);
+    while (res) {
+        inet_ntop(res->ai_family, res->ai_addr->sa_data, addrstr, 100);
 
 //        printf("addrstr:    %s \n", addrstr);
 
-        switch (res->ai_family)
-        {
+        switch (res->ai_family) {
             case AF_INET:
                 ptr = &((struct sockaddr_in *) res->ai_addr)->sin_addr;
                 break;
@@ -79,9 +76,9 @@ char * lookup_host (const char *host) { // todo move sock creation to here?
                 ptr = &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr;
                 break;
         }
-        inet_ntop (res->ai_family, ptr, addrstr, 100);
-        printf ("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
-                addrstr, res->ai_canonname);
+        inet_ntop(res->ai_family, ptr, addrstr, 100);
+        printf("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
+               addrstr, res->ai_canonname);
 
         if (res->ai_family != PF_INET6) {
             strcpy(finalAddrstr, addrstr);
@@ -95,13 +92,13 @@ char * lookup_host (const char *host) { // todo move sock creation to here?
 }
 
 
-int connectToGameServer(int mockGame) {
-
+int connectToGameServer(int mockGame, char *gameID, char* player) {
     printf("attempting to connect to game server.\n");
+
     if (mockGame) {
-        printf("MOCK GAME is TRUE\n");
-    }else {
-        printf("MOCK GAME is FALSE\n");
+        printf("MOCK GAME IS TRUE\n");
+    } else {
+        printf("MOCK GAME IS FALSE\n");
     }
 
     // create
@@ -146,7 +143,7 @@ int connectToGameServer(int mockGame) {
     }
 
 
-    performConnectionLouis(sock);
+    performConnectionLouis(sock, gameID, player);
 
     close(sock);
 
@@ -155,22 +152,21 @@ int connectToGameServer(int mockGame) {
 
 }
 
-
-// to get a mock game (don't use MNM server) please write:
-// ./sysprak-client -m 1 -g 1234567890123 -p 1
 int connectorMasterMethod(int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
-    char *GAMEID;
-    int GAMENUMBER = 0;
+
+    char *gameID;
+    char* player = 0;
     int ret;
     int mockGame = 0;
+
     while ((ret = getopt(argc, argv, "g:p:m:")) != -1) {
         switch (ret) {
             case 'g':
-                GAMEID = optarg;
+                gameID = optarg;
                 break;
             case 'p':
-                GAMENUMBER = atoi(optarg);
+                player = optarg;
                 break;
             case 'm':
                 mockGame = 1;
@@ -180,14 +176,15 @@ int connectorMasterMethod(int argc, char *argv[]) {
                 break;
         }
     }
+
     //Fehlerbehandelung
-    if (strlen(GAMEID) > 13) {
+    if (strlen(gameID) > 13) {
         perror("Das Game-ID ist grosser als 13-stellige.\n");
-        GAMEID = NULL;
+        gameID = NULL;
         exit(0);
-    } else if (strlen(GAMEID) < 13) {
+    } else if (strlen(gameID) < 13) {
         perror("Das Game-ID ist kleiner als 13-stellige.\n");
-        GAMEID = NULL;
+        gameID = NULL;
         exit(0);
     }
 
@@ -204,7 +201,7 @@ int connectorMasterMethod(int argc, char *argv[]) {
         usleep(sleepMicroSeconds);
     }
 
-    connectToGameServer(mockGame);
+    connectToGameServer(mockGame, gameID, player);
 
     return 0;
 }

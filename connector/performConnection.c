@@ -116,7 +116,7 @@ void haveConversationWithServer(int sockfd) {
             printf("%s\n", buff);//把从客户端那边接收来的内容打在本地的cmd里
 
             // sometimes the server sends more than one command. If so, we wait.
-            if (strncmp("+ PLAYING ", buff, 10) == 0) {//如果传来的内容是playing，那么应该
+            if (strncmp("+ PLAYING ", buff, 10) == 0) {
 //                printf("received, \'%s', waiting\n", buff);
                 bzero(buff, sizeof(buff));//首先先清空buff
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
@@ -126,38 +126,32 @@ void haveConversationWithServer(int sockfd) {
             if (strncmp("+ YOU", buff, 5) == 0) {
 //                printf("received, \'%s', waiting\n", buff);
                 bzero(buff, sizeof(buff));
-                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
+                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);//保证sockfd中没有内容再进入buff里没有内容了
 //                printf("received, \'%s', proceeding\n", buff);
                 printf("%s\n", buff);
             }
         }
         bzero(buff, sizeof(buff));
     // you can manually talk to the server here
- if((readResponse=read(sockfd,buff,sizeof(buff)))==0){
-     printf("read Server successed.\n");
+ if((readResponse=read(sockfd,buff,sizeof(buff)))){
+     printf("%s",buff);
      if((strncmp("+ MNM Gameserver",buff,16))==0){
          bzero(buff,sizeof(buff));
          strcpy(buff,version);
          write(sockfd, buff, sizeof(buff));
-         printf("write version successed.\n");
-     }else{
-         printf("write version no successed.\n ");
+         printf("%s",buff);
      }
      if((strncmp("+ Client version accepted",buff,25)) == 0){
          bzero(buff,sizeof(buff));
          strcpy(buff,gameid);
          write(sockfd,buff,sizeof(buff));
-         printf("write gameid successed.\n");
-     }else{
-         printf("write gameid no successed.\n");
+         printf("%s",buff);
      }
      if((strncmp("+ REVERSI",buff,10)) == 0){
          bzero(buff,sizeof(buff));
          strcpy(buff,player);
          write(sockfd,buff,sizeof(buff));
-         printf("write player successd.\n");
-     }else{
-         printf("write player no successed\n");
+         printf("%s",buff);
      }
      bzero(buff,sizeof(buff));
 

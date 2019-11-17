@@ -4,6 +4,7 @@
 #include "connector.h"
 #include "performConnection.c"
 #include "mockgameserver.h"
+#include "config.h"
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -92,7 +93,7 @@ char *lookup_host(const char *host) { // todo move sock creation to here?
 }
 
 
-int connectToGameServer(int mockGame, char *gameID, char* player) {
+int connectToGameServer(int mockGame, char *gameID, char *player, int usingConfigFile, char *filePath) {
     printf("attempting to connect to game server.\n");
 
     if (mockGame) {
@@ -101,6 +102,7 @@ int connectToGameServer(int mockGame, char *gameID, char* player) {
         printf("MOCK GAME IS FALSE\n");
     }
 
+    // todo consider moving to dns resolution
     // create
     int sock = socket(AF_INET, SOCK_STREAM, 0);
 //    int sock = socket(AF_INET6, SOCK_STREAM, 0);
@@ -122,21 +124,34 @@ int connectToGameServer(int mockGame, char *gameID, char* player) {
         server.sin_addr.s_addr = inet_addr(local);
         printf("Attempting to connect to host %s on port %d\n", local, PORTNUMBER);
     } else {
-        char *host = lookup_host(HOSTNAME);
+        char host[150];
 
-        char *MNMip = "10.155.92.35"; // todo, hack
+        if (usingConfigFile) {
+//            printf("fcgvhbjnk\n");
+            configurationStruct *configurationStruct = readConfigurationFile(filePath);
+            strcpy(host, lookup_host(configurationStruct->hostname));
+        } else {
+            strcpy(host, lookup_host(HOSTNAME));
+        }
+//        printf("%s", host);
+
+        if (strlen(host) == 0) {
+            printf("ERROR, no host found\n");
+            exit(1);
+        }
 
         printf("Attempting to connect to host %s on port %d\n", host, PORTNUMBER);
-
         server.sin_addr.s_addr = inet_addr(host);
-//        server.sin_addr.s_addr = inet_addr(MNMip);
     }
+
 
     server.sin_port = htons(PORTNUMBER);
 
     // connect the client socket to the server socket
     if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
-        printf("connection with the server failed... error is %s\n", strerror(errno));
+        printf("connection with the server failed... error is %s\n",
+               strerror(errno)
+        );
         return 0;
     } else {
         printf("success!!!! connected to the server..\n");
@@ -149,20 +164,21 @@ int connectToGameServer(int mockGame, char *gameID, char* player) {
 
     printf("i guess we are done\n");
     return 0;
-
 }
-
 
 
 int connectorMasterMethod(int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
 
     char *gameID;
-    char* player = 0;
+    char *player = 0;
     int ret;
     int mockGame = 0;
+    int usingConfigFile = 0;
+    char *configPath;
 
-    while ((ret = getopt(argc, argv, "g:p:m:")) != -1) {
+
+    while ((ret = getopt(argc, argv, "g:p:m:c:")) != -1) {
         switch (ret) {
             case 'g':
                 gameID = optarg;
@@ -172,6 +188,10 @@ int connectorMasterMethod(int argc, char *argv[]) {
                 break;
             case 'm':
                 mockGame = 1;
+                break;
+            case 'c':
+                configPath = optarg;
+                usingConfigFile = 1;
                 break;
             default:
                 perror("keine gültige Game-ID oder Game-Number.\n");
@@ -203,7 +223,7 @@ int connectorMasterMethod(int argc, char *argv[]) {
         usleep(sleepMicroSeconds);
     }
 
-    connectToGameServer(mockGame, gameID, player);
+    connectToGameServer(mockGame, gameID, player, usingConfigFile, configPath);
 
     return 0;
 }

@@ -103,18 +103,21 @@ configurationStruct* readConfigurationFile(char *pathName){
         value[valEndIndex] = '\0';
 
         // todo, make scalable as per instructions
-        printf("try to match %s\n", attribute);
+//        printf("try to match %s\n", attribute);
         if (strcmp(attribute, "hostname") == 0) {
-            printf("aaaaaaa\n");
+//            printf("aaaaaaa\n");
             strcpy(configurationStruct->hostname, value);
         } else if (strcmp(attribute, "portnumber") == 0) {
-            printf("bbbbbbbbbbbbb\n");
+//            printf("bbbbbbbbbbbbb\n");
             configurationStruct->portnumber = atoi(value);
         } else if (strcmp(attribute, "gamekindname") == 0) {
-            printf("ccccccccc\n");
+//            printf("ccccccccc\n");
             strcpy(configurationStruct->gamekindname, value);
         }
-        printf("z\n");
+
+
+
+//        printf("z\n");
 
         bzero(str, sizeof(str));
         printf("--z\n");

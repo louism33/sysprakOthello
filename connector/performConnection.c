@@ -108,6 +108,7 @@ int performConnection(int sock, char *version, char *id) {
     return 0;
 }
 
+// todo, be careful of people trolling you by calling game "game over"
 
 void haveConversationWithServer(int sockfd, char *gameID, char* player) {
     char buff[MAX];
@@ -141,13 +142,17 @@ void haveConversationWithServer(int sockfd, char *gameID, char* player) {
         // you can manually talk to the server here
         while ((buff[n++] = getchar()) != '\n'); // todo! replace this line with our own communication
 
-        write(sockfd, buff, sizeof(buff));
+//        strcpy(buff, "VERSION 2.5");
+
+//        write(sockfd, buff, sizeof(buff));
+        write(sockfd, buff, strlen(buff)); // todo louis research openfd
 
         bzero(buff, sizeof(buff));
 
-        readResponse = read(sockfd, buff, sizeof(buff));
 
-        printf("%s\n", buff);
+//        readResponse = read(sockfd, buff, sizeof(buff));
+
+//        printf("%s\n", buff);
 
         if (readResponse == -1) {
             printf("Could not read from server");
@@ -158,6 +163,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char* player) {
             printf("Client Exit...\n");
             break;
         }
+
     }
 }
 

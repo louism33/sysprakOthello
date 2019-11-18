@@ -2,6 +2,7 @@ CC=gcc
 CFLAGS=-I -Wall -Werror -Wextra
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o connector/config.o
+# todo, replace above with discoveries (find c files and replace extensions)
 
 # these are the "legitimate" targets
 %.o: %.c $(DEPS)

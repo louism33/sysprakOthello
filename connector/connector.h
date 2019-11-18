@@ -7,5 +7,6 @@
 
 void connectorMasterMethod();
 
+void performConnection();
 
 #endif //ALEXTHEFRIENDLYAI_CONNECTOR_H

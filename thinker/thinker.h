@@ -5,7 +5,8 @@
 #ifndef ALEXTHEFRIENDLYAI_THINKER_H
 #define ALEXTHEFRIENDLYAI_THINKER_H
 
-void thinkerMasterMethod();
+extern void thinkerMasterMethod();
+void think();
 
 
 #endif //ALEXTHEFRIENDLYAI_THINKER_H

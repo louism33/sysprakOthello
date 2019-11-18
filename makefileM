@@ -1,0 +1,2 @@
+Erg: main.c thinker/thinker.c connector/connector.c thinker/thinker.h connector/connector.h shm/shm.c shm/shm.h
+	gcc -o Erg main.c thinker/thinker.c connector/connector.c thinker/thinker.h connector/connector.h shm/shm.c shm/shm.h -I.

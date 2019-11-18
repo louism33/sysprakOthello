@@ -5,7 +5,13 @@
 #include "connector.h"
 #include <stdio.h>
 
-void connectorMasterMethod(){
+void connectorMasterMethod()
+{
     printf("Hi I am good at connecting\n");
 
+}
+
+void performConnection()
+{
+	
 }

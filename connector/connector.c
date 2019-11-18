@@ -1,6 +1,3 @@
-//
-// Created by louis on 11/13/19.
-//
 #include "connector.h"
 #include "performConnection.c"
 #include "mockgameserver.h"
@@ -14,6 +11,9 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <string.h>
+#include <stdio.h>
+
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -208,9 +208,3 @@ int connectorMasterMethod(int argc, char *argv[]) {
 
     return 0;
 }
-
-
-
-
-
-

@@ -2,6 +2,9 @@
 .idea/
 sysprak-client
 clion-log.txt
+.cproject
+language.settings.xml
+
 
 # Prerequisites
 *.d

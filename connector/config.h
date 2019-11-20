@@ -6,12 +6,12 @@
 #define SYSPRAKOTHELLO_CONFIG_H
 
 typedef struct configurationStruct {
-    char hostname[100];
+    char *hostname;
     int portnumber;
-    char gamekindname[100];
+    char *gamekindname;
 } configurationStruct;
 
 
-configurationStruct* readConfigurationFile(char *pathName);
+configurationStruct *readConfigurationFile(char *pathName);
 
 #endif //SYSPRAKOTHELLO_CONFIG_H

@@ -14,126 +14,114 @@
 #include <stdlib.h>
 #include <string.h>
 
-configurationStruct* readConfigurationFile(char *pathName){
+configurationStruct* readConfigurationFile(char *pathName) {
 
-    printf("%s\n", pathName);
+	printf("Attempting to read configuration data from %s\n", pathName);
 
-    struct configurationStruct *configurationStruct = malloc(sizeof(configurationStruct));
+	struct configurationStruct *configurationStruct = malloc(
+			sizeof(configurationStruct));
 
-    FILE *file = fopen(pathName, "r");
-    char str[100];
-    int limit = 150;
+	configurationStruct->hostname = (char*) malloc(200);
+	configurationStruct->gamekindname = (char*) malloc(200);
 
-    while (fgets(str, 300, file) && strlen(str) != 0) {
-        printf("--a\n");
-        char attribute[limit];
-        char value[limit];
+	FILE *file = fopen(pathName, "r");
+	char str[100];
+	int limit = 150;
 
-        int index = 0, i = -1, endIndex = 0, endIndexAtt = 0;
+	while (fgets(str, 300, file) && strlen(str) != 0) {
+		char attribute[limit];
+		char value[limit];
 
-        int stringLengthIncludingSpaces = 0;
+		int index = 0, i = -1, endIndex = 0, endIndexAtt = 0;
 
-        int foundAtt = 0, foundEq = 0, foundVal = 0;
+		int stringLengthIncludingSpaces = 0;
 
-        int attStartIndex = 0, attEndIndex = 0;
-        int valStartIndex = 0, valEndIndex = 0;
-        int eqIndex;
+		int foundAtt = 0, foundEq = 0, foundVal = 0;
 
-        for (;;) {
-            i++;
-            char c = str[i];
-            if (foundVal && c == 0) {
-                valEndIndex = i;
-                break;
-            }
+		int attStartIndex = 0, attEndIndex = 0;
+		int valStartIndex = 0, valEndIndex = 0;
+		int eqIndex;
 
-            // ignore leading whitespace
-            if (!foundAtt) {
-                if (c != ' ') {
-                    foundAtt = 1;
-                    attStartIndex = i;
-                }
-                continue;
-            }
+		for (;;) {
+			i++;
+			char c = str[i];
+			if (foundVal && c == 0) {
+				valEndIndex = i;
+				break;
+			}
 
-            // get attribute and '=' info, ignore whitespace before '='
-            if (!foundEq) {
-                if (c == '=') {
-                    foundEq = 1;
-                    attEndIndex = i - 1;
-                    eqIndex = i;
-                }
-                continue;
-            }
+			// ignore leading whitespace
+			if (!foundAtt) {
+				if (c != ' ') {
+					foundAtt = 1;
+					attStartIndex = i;
+				}
+				continue;
+			}
 
-            // ignore whitespace after '=' and get value info
-            if (!foundVal) {
-                if (c != ' ') {
-                    foundVal = 1;
-                    valStartIndex = i;
-                }
-                continue;
-            } else {
-                if (c == ' ') {
-                    valEndIndex = i;
-                    stringLengthIncludingSpaces = i + 1;
-                    break;
-                }
-            }
+			// get attribute and '=' info, ignore whitespace before '='
+			if (!foundEq) {
+				if (c == '=') {
+					foundEq = 1;
+					attEndIndex = i - 1;
+					eqIndex = i;
+				}
+				continue;
+			}
 
-            if (i > limit) {
-                printf("problem reading config file, entry too long\n");
-                printf("%d %d %d\n", foundAtt, foundEq, foundVal);
-                exit(1);
-            }
-        }
+			// ignore whitespace after '=' and get value info
+			if (!foundVal) {
+				if (c != ' ') {
+					foundVal = 1;
+					valStartIndex = i;
+				}
+				continue;
+			} else {
+				if (c == ' ') {
+					valEndIndex = i;
+					stringLengthIncludingSpaces = i + 1;
+					break;
+				}
+			}
 
-        if (i == -1) {
-            printf("problem reading config file\n");
-            exit(1);
-        }
+			if (i > limit) {
+				printf("problem reading config file, entry too long\n");
+				printf("%d %d %d\n", foundAtt, foundEq, foundVal);
+				exit(1);
+			}
+		}
 
-        bzero(attribute, attEndIndex + 1);
-        strncpy(attribute, str + attStartIndex, attEndIndex - attStartIndex + 1);
-        attribute[attEndIndex + 1] = '\0';
+		if (i == -1) {
+			printf("problem reading config file\n");
+			exit(1);
+		}
 
-        int l = valEndIndex - valStartIndex - 1;
-        bzero(value, l);
-        strncpy(value, str + valStartIndex, l);
-        value[valEndIndex] = '\0';
+		bzero(attribute, attEndIndex + 1);
+		strncpy(attribute, str + attStartIndex,
+				attEndIndex - attStartIndex + 1);
+		attribute[attEndIndex + 1] = '\0';
 
-        // todo, make scalable as per instructions
-//        printf("try to match %s\n", attribute);
-        if (strcmp(attribute, "hostname") == 0) {
-//            printf("aaaaaaa\n");
-            strcpy(configurationStruct->hostname, value);
-        } else if (strcmp(attribute, "portnumber") == 0) {
-//            printf("bbbbbbbbbbbbb\n");
-            configurationStruct->portnumber = atoi(value);
-        } else if (strcmp(attribute, "gamekindname") == 0) {
-//            printf("ccccccccc\n");
-            strcpy(configurationStruct->gamekindname, value);
-        }
+		int l = valEndIndex - valStartIndex - 1;
+		bzero(value, l);
+		strncpy(value, str + valStartIndex, l);
+		value[valEndIndex] = '\0';
 
+		if (strcmp(attribute, "hostname") == 0) {
+			strcpy(configurationStruct->hostname, value);
+		} else if (strcmp(attribute, "portnumber") == 0) {
+			configurationStruct->portnumber = atoi(value);
+		} else if (strcmp(attribute, "gamekindname") == 0) {
+			strcpy(configurationStruct->gamekindname, value);
+		}
 
+		bzero(str, sizeof(str));
+	}
+	fclose(file);
 
-//        printf("z\n");
+	printf("hostname: %s\n", configurationStruct->hostname);
+	printf("portnumber: %d\n", configurationStruct->portnumber);
+	printf("gamekindname: %s\n", configurationStruct->gamekindname);
 
-        bzero(str, sizeof(str));
-        printf("--z\n");
-    }
-    printf("zz\n");
-    fclose(file);
-
-
-    printf("x\n");
-    printf("%s\n", configurationStruct->hostname);
-    printf("y\n");
-    printf("%d\n", configurationStruct->portnumber);
-    printf("z\n");
-    printf("%s\n", configurationStruct->gamekindname);
-    printf("zzzzz\n");
-
-    printf("------%s\n", pathName);
-    return configurationStruct;
+	printf("Successfully read data from %s\n", pathName);
+	return configurationStruct;
 }

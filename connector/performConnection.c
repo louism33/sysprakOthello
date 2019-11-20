@@ -96,7 +96,7 @@ int writeToServer(int sockfd, char message[]) {
 void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName) {
     char buff[MAX];
     int n, readResponse = 0;
-    char version[] = "VERSION 2.3\n";
+    char version[] = "VERSION 2.42\n";
     char okWait[] = "OKWAIT\n";
 
     char gameIdToSend[20];

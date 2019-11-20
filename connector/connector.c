@@ -132,7 +132,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
 
 		if (usingCustomConfigFile) {
 			printf("Using custom configuration file: %s\n", filePath);
-sd		} else {
+		} else {
 			printf("Using default configuration file: %s\n", DEFAULT_FILE_PATH);
 		}
 

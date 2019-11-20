@@ -88,97 +88,77 @@ char *createinfo(int idikator, char *daten) {
 // todo, reconnect logic
 // todo, be careful of people trolling you by calling game "game over"
 
-void haveConversationWithServer(int sockfd, char *gameID, char *playerXXX, char *gameKindName) {
+int writeToServer(int sockfd, char message[]) {
+    write(sockfd, message, strlen(message));
+    printf("Sending to server-> %s\n", message);
+}
+
+void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName) {
     char buff[MAX];
     int n, readResponse = 0;
     char version[] = "VERSION 2.3\n";
     char okWait[] = "OKWAIT\n";
-    char gameid[] = "ID 36uni1vt419yw\n";
-    char player[] = "PLAYER\n";
-    char thinking[] = "THINKING\n";
-    char playf5[] = "PLAY C5\n";
 
+    char gameIdToSend[20];
+    strcpy(gameIdToSend, "ID ");
+    strcat(gameIdToSend, gameID);
+    strcat(gameIdToSend, "\n");
+
+    char playerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
+    char thinking[] = "THINKING\n";
+    char playf5[] = "PLAY C3\n";
 
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("%s\n", buff);
 
-            if (strlen(buff) > 75) {
-//                printf(" !!!!!!!!!!!!!!!!!!!!!!! read endfield from server \n");
-                bzero(buff, sizeof(buff));
-                strcpy(buff, thinking);
-                write(sockfd, buff, strlen(buff));
-                printf("%s", buff);
-
-                bzero(buff, sizeof(buff));
-                strcpy(buff, playf5);
-                write(sockfd, buff, strlen(buff));
-                printf("%s", buff);
+            // step one, send VERSION 2.xxx
+            if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
+                writeToServer(sockfd, version);
             }
 
+            // step two, send game ID
+            if ((strncmp("+ Client version accepted", buff, 25)) == 0) {
+                writeToServer(sockfd, gameIdToSend);
+            }
+
+            // step three, read PLAYING, wait for another read, then send PLAYER info
             if (strncmp("+ PLAYING ", buff, 10) == 0) {
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
-                bzero(buff, sizeof(buff));
-                strcpy(buff, player);
-                write(sockfd, buff, strlen(buff));
-//                printf("%s\n", buff);
+                writeToServer(sockfd, playerToSend);
+            }
+
+            // step four, read YOU
+            // todo, save information from Server here
+            if (strncmp("+ YOU", buff, 5) == 0) {
+            }
+
+            // step five, read board information and time to move from server.
+            // todo, extract timeToMove info
+            // todo, extract board info
+            if (strlen(buff) > 75) {
+                writeToServer(sockfd, thinking);
+                writeToServer(sockfd, playf5);
             }
 
             if ((strncmp("+ WAIT", buff, 6)) == 0) {
-                bzero(buff, sizeof(buff));
-                strcpy(buff, okWait);
-                write(sockfd, buff, strlen(buff));
-//                printf("%s", buff);
-            }
-
-//        }
-            if (strncmp("+ YOU", buff, 5) == 0) {
-
-                bzero(buff, sizeof(buff));
-//                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
-//            printf("%s\n", buff);
-            }
-//            usleep(20);
-            // you can manually talk to the server here
-            if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
-                bzero(buff, sizeof(buff));
-                strcpy(buff, version);
-                write(sockfd, buff, strlen(buff));
-//                printf("%s", buff);
-            }
-            if ((strncmp("+ Client version accepted", buff, 25)) == 0) {
-                bzero(buff, sizeof(buff));
-                strcpy(buff, gameid);
-                write(sockfd, buff, strlen(buff));
-//                printf("%s", buff);
+                writeToServer(sockfd, okWait);
             }
 
             // todo, add error handling if server playing wrong kind of game
             if ((strncmp("+ Reversi", buff, 10)) == 0) {
-                bzero(buff, sizeof(buff));
-                strcpy(buff, player);
-                write(sockfd, buff, strlen(buff));
-//                printf("%s", buff);
+                writeToServer(sockfd, playerToSend);
             }
 
             if ((strncmp("+ ENDFIELD", buff, 10)) == 0) {
-//                printf(" read endfield from server \n");
-                bzero(buff, sizeof(buff));
-                strcpy(buff, thinking);
-                write(sockfd, buff, strlen(buff));
-//                printf("%s", buff);
+                writeToServer(sockfd, thinking);
             }
+
             if (readResponse == -1) {
                 printf("Could not read from server");
                 exit(0);
             }
-
-            if ((strncmp(buff, "exit", 4)) == 0) {
-                printf("Client Exit...\n");
-                break;
-            }
-
             bzero(buff, sizeof(buff));
         }
     }

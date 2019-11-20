@@ -108,6 +108,10 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     char thinking[] = "THINKING\n";
     char playf5[] = "PLAY C3\n";
 
+    // todo, + ENDPLAYERS
+    // todo, + GAMEOVER
+    // todo, read move time
+
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("%s\n", buff);
@@ -123,6 +127,8 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
             }
 
             // step three, read PLAYING, wait for another read, then send PLAYER info
+            // todo, check that gamekind is reversi
+            // todo, get Game-Name from server
             if (strncmp("+ PLAYING ", buff, 10) == 0) {
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);

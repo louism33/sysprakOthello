@@ -1,6 +1,7 @@
 #include "connector.h"
 #include "performConnection.c"
 #include "mockgameserver.h"
+#include "config.h"
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -36,175 +37,211 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-
 #define GAMEKINDNAME "Reversi"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
+#define DEFAULT_FILE_PATH "client.conf"
 
-char * lookup_host (const char *host) { // todo move sock creation to here?
+char* lookup_host(const char *host) { // todo move sock creation to here?
 
-    struct addrinfo hints, *res;
-    int errcode;
-    char addrstr[100];
-    char* finalAddrstr;
-    void *ptr;
+	struct addrinfo hints, *res;
+	int errcode;
+	char addrstr[100];
+	char *finalAddrstr;
+	void *ptr;
 
-    finalAddrstr = malloc(sizeof(char) * 200); // todo clean this memory in calling function
+	finalAddrstr = malloc(sizeof(char) * 200); // todo clean this memory in calling function
 
-    memset (&hints, 0, sizeof (hints));
-    hints.ai_family = PF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags |= AI_CANONNAME;
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = PF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags |= AI_CANONNAME;
 
-    errcode = getaddrinfo (host, NULL, &hints, &res);
-    if (errcode != 0)
-    {
-        perror ("getaddrinfo");
-        return "x";
-    }
+	errcode = getaddrinfo(host, NULL, &hints, &res);
+	if (errcode != 0) {
+		perror("getaddrinfo");
+		return "x";
+	}
 
-    printf ("Host: %s\n", host);
-    while (res)
-    {
-        inet_ntop (res->ai_family, res->ai_addr->sa_data, addrstr, 100);
+	printf("Host: %s\n", host);
+	while (res) {
+		inet_ntop(res->ai_family, res->ai_addr->sa_data, addrstr, 100);
 
 //        printf("addrstr:    %s \n", addrstr);
 
-        switch (res->ai_family)
-        {
-            case AF_INET:
-                ptr = &((struct sockaddr_in *) res->ai_addr)->sin_addr;
-                break;
-            case AF_INET6:
-                ptr = &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr;
-                break;
-        }
-        inet_ntop (res->ai_family, ptr, addrstr, 100);
-        printf ("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
-                addrstr, res->ai_canonname);
+		switch (res->ai_family) {
+		case AF_INET:
+			ptr = &((struct sockaddr_in*) res->ai_addr)->sin_addr;
+			break;
+		case AF_INET6:
+			ptr = &((struct sockaddr_in6*) res->ai_addr)->sin6_addr;
+			break;
+		}
+		inet_ntop(res->ai_family, ptr, addrstr, 100);
+		printf("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
+				addrstr, res->ai_canonname);
 
-        if (res->ai_family != PF_INET6) {
-            strcpy(finalAddrstr, addrstr);
-            return finalAddrstr;
-        }
-        res = res->ai_next;
-    }
+		if (res->ai_family != PF_INET6) {
+			strcpy(finalAddrstr, addrstr);
+			return finalAddrstr;
+		}
+		res = res->ai_next;
+	}
 
-    return finalAddrstr;
-
-}
-
-
-int connectToGameServer(int mockGame) {
-
-    printf("attempting to connect to game server.\n");
-    if (mockGame) {
-        printf("MOCK GAME is TRUE\n");
-    }else {
-        printf("MOCK GAME is FALSE\n");
-    }
-
-    // create
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
-//    int sock = socket(AF_INET6, SOCK_STREAM, 0);
-
-    // error handling for socket
-    if (sock == -1) {
-        printf("Could not create Socket\n");
-        return 0;
-    } else {
-        printf("created Socket\n");
-    }
-
-    // set up server information as sockaddr_in
-    struct sockaddr_in server;
-    server.sin_family = PF_INET;
-
-    if (mockGame) {
-        char *local = "127.0.0.1";
-        server.sin_addr.s_addr = inet_addr(local);
-        printf("Attempting to connect to host %s on port %d\n", local, PORTNUMBER);
-    } else {
-        char *host = lookup_host(HOSTNAME);
-
-        char *MNMip = "10.155.92.35"; // todo, hack
-
-        printf("Attempting to connect to host %s on port %d\n", host, PORTNUMBER);
-
-        server.sin_addr.s_addr = inet_addr(host);
-//        server.sin_addr.s_addr = inet_addr(MNMip);
-    }
-
-    server.sin_port = htons(PORTNUMBER);
-
-    // connect the client socket to the server socket
-    if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
-        printf("connection with the server failed... error is %s\n", strerror(errno));
-        return 0;
-    } else {
-        printf("success!!!! connected to the server..\n");
-    }
-
-
-    performConnectionLouis(sock);
-
-    close(sock);
-
-    printf("i guess we are done\n");
-    return 0;
+	return finalAddrstr;
 
 }
 
+int connectToGameServer(int mockGame, char *gameID, char *player,
+		int usingCustomConfigFile, char *filePath) {
 
-// to get a mock game (don't use MNM server) please write:
-// ./sysprak-client -m 1 -g 1234567890123 -p 1
+	printf("Attempting to connect to game server.\n");
+
+	configurationStruct *configurationStruct;
+
+	if (mockGame) {
+		printf("MOCK GAME IS TRUE\n");
+	} else {
+		printf("MOCK GAME IS FALSE\n");
+	}
+
+	// todo consider moving to dns resolution
+	// create
+	int sock = socket(AF_INET, SOCK_STREAM, 0);
+	// int sock = socket(AF_INET6, SOCK_STREAM, 0);
+
+	// error handling for socket
+	if (sock == -1) {
+		printf("Could not create Socket\n");
+		return 0;
+	} else {
+		printf("created Socket\n");
+	}
+
+	// set up server information as sockaddr_in
+	struct sockaddr_in server;
+	server.sin_family = PF_INET;
+
+	if (mockGame) {
+		char *local = "127.0.0.1";
+		server.sin_addr.s_addr = inet_addr(local);
+		printf("Attempting to connect to host %s on port %d\n", local,
+		PORTNUMBER);
+	} else {
+		char host[150];
+
+		if (usingCustomConfigFile) {
+			printf("Using custom configuration file: %s\n", filePath);
+
+		} else {
+			printf("Using default configuration file: %s\n", DEFAULT_FILE_PATH);
+		}
+
+		configurationStruct =
+				usingCustomConfigFile ?
+						readConfigurationFile(filePath) :
+						readConfigurationFile(DEFAULT_FILE_PATH);
+
+		strcpy(host, lookup_host(configurationStruct->hostname));
+
+		if (strlen(host) == 0) {
+			printf("ERROR, no host found\n");
+			exit(1);
+		}
+
+		printf("Attempting to connect to host %s on port %d\n", host,
+				configurationStruct->portnumber);
+		server.sin_addr.s_addr = inet_addr(host);
+	}
+
+	server.sin_port = htons(PORTNUMBER);
+
+	// connect the client socket to the server socket
+	if (connect(sock, (struct sockaddr*) &server, sizeof(server)) != 0) {
+		printf("connection with the server failed... error is %s\n",
+				strerror(errno));
+		return 0;
+	} else {
+		printf("success!!!! connected to the server..\n");
+	}
+
+	performConnectionLouis(sock, gameID, player,
+			configurationStruct->gamekindname);
+
+	close(sock);
+
+	printf("i guess we are done\n");
+	return 0;
+}
+
 int connectorMasterMethod(int argc, char *argv[]) {
-    printf("Hi I am good at connecting\n");
-    char *GAMEID;
-    int GAMENUMBER = 0;
-    int ret;
-    int mockGame = 0;
-    while ((ret = getopt(argc, argv, "g:p:m:")) != -1) {
-        switch (ret) {
-            case 'g':
-                GAMEID = optarg;
-                break;
-            case 'p':
-                GAMENUMBER = atoi(optarg);
-                break;
-            case 'm':
-                mockGame = 1;
-                break;
-            default:
-                perror("keine gültige Game-ID oder Game-Number.\n");
-                break;
-        }
-    }
-    //Fehlerbehandelung
-    if (strlen(GAMEID) > 13) {
-        perror("Das Game-ID ist grosser als 13-stellige.\n");
-        GAMEID = NULL;
-        exit(0);
-    } else if (strlen(GAMEID) < 13) {
-        perror("Das Game-ID ist kleiner als 13-stellige.\n");
-        GAMEID = NULL;
-        exit(0);
-    }
+	printf("Hi I am good at connecting\n");
+//	char *configFromEnvironment = getenv("CONFIG_FILE");
+//	printf("     config file is %s \n", configFromEnvironment);
 
-    if (mockGame) {
-        pid_t pid;
-        pid = fork();
-        if (pid == 0) { /* child process */
-            createMockGameServer();
-            return 0;
-        }
+	char *gameID;
+	char *player = 0;
+	int ret;
+	int mockGame = 0;
+	int usingCustomConfigFile = 0;
+	char *configPath;
 
-        int sleepMicroSeconds = 2000000;
-        printf("sleeping for %d microseconds to give the mock server time to get ready\n", sleepMicroSeconds);
-        usleep(sleepMicroSeconds);
-    }
+	while ((ret = getopt(argc, argv, "g:p:m:C:")) != -1) {
+		switch (ret) {
+		case 'g':
+			gameID = optarg;
+			break;
+		case 'p':
+			player = optarg;
+			break;
+		case 'm':
+			mockGame = 1;
+			break;
+		case 'C':
+//			if (!configFromEnvironment) {
+//				printf(
+//						"Could not read config file from option, defaulting to client.conf\n");
+//				break;
+//			}
+			configPath = optarg;
+			usingCustomConfigFile = 1;
+			break;
+		default:
+			printf("Could not read provided option %c\n", ret);
+			perror("Could not read provided option.\n");
+			return 1;
+		}
+	}
 
-    connectToGameServer(mockGame);
+	//Fehlerbehandelung
+	if (strlen(gameID) > 13) {
+		perror("Das Game-ID ist grosser als 13-stellige.\n");
+		gameID = NULL;
+		exit(0);
+	} else if (strlen(gameID) < 13) {
+		perror("Das Game-ID ist kleiner als 13-stellige.\n");
+		gameID = NULL;
+		exit(0);
+	}
+	// todo, what is player is blank?
 
-    return 0;
+	if (mockGame) {
+		pid_t pid;
+		pid = fork();
+		if (pid == 0) { /* child process */
+			createMockGameServer();
+			return 0;
+		}
+
+		int sleepMicroSeconds = 2000000;
+		printf(
+				"sleeping for %d microseconds to give the mock server time to get ready\n",
+				sleepMicroSeconds);
+		usleep(sleepMicroSeconds);
+	}
+
+	connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
+			configPath);
+
+	return 0;
 }

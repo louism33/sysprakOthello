@@ -57,6 +57,10 @@ int writeToServer(int sockfd, char message[]) {
     printf("Sending to server-> %s\n", message);
 }
 
+int sendToThinker(){
+//    memcpy(thinkerBoard,connectorBoard,sizeof(int)*8*8);
+}
+
 void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD connectorBoard) {
     char buff[MAX];
     char gameName[20];

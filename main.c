@@ -22,10 +22,13 @@
 int main(int argc, char *argv[]) {
     printf("Hello World! I am Alex. This is the main method\n");
 
+    // todo, this is just an idea, it depends on how we do shm (shared memory)
+    // we will use two separate boards. One for connector that we will update with info from server
+    // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
     BOARD connectorBoard = malloc(64 * sizeof(int));
     BOARD thinkerBoard = malloc(64 * sizeof(int));
 
-//    exampleUseCaseOfMessageParsing();
+    exampleUseCaseOfMessageParsing();
 
 //    thinkerMasterMethod();
     connectorMasterMethod(connectorBoard, argc,argv);

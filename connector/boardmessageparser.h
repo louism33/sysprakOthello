@@ -18,4 +18,6 @@ void parseBoardMessage(int* board, moveTimeAndBoard *moveTimeAndBoard, char *mes
 
 void exampleUseCaseOfMessageParsing();
 
+void printBoardLouis(BOARD board);
+
 #endif //SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H

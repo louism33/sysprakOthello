@@ -41,6 +41,7 @@
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
+#define BOARD int*
 
 char* lookup_host(const char *host) { // todo move sock creation to here?
 
@@ -93,7 +94,7 @@ char* lookup_host(const char *host) { // todo move sock creation to here?
 }
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
-		int usingCustomConfigFile, char *filePath) {
+		int usingCustomConfigFile, char *filePath, BOARD connectorBoard) {
 
 	printf("Attempting to connect to game server.\n");
 
@@ -127,6 +128,10 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
 		server.sin_addr.s_addr = inet_addr(local);
 		printf("Attempting to connect to host %s on port %d\n", local,
 		PORTNUMBER);
+        configurationStruct = malloc(        sizeof(configurationStruct));
+        configurationStruct->gamekindname = "REVERSI";
+
+
 	} else {
 		char host[150];
 
@@ -165,7 +170,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
 	}
 
 	performConnectionLouis(sock, gameID, player,
-			configurationStruct->gamekindname);
+			configurationStruct->gamekindname, connectorBoard);
 
 	close(sock);
 
@@ -173,7 +178,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
 	return 0;
 }
 
-int connectorMasterMethod(int argc, char *argv[]) {
+int connectorMasterMethod(BOARD connectorBoard, int argc, char *argv[]) {
 	printf("Hi I am good at connecting\n");
 //	char *configFromEnvironment = getenv("CONFIG_FILE");
 //	printf("     config file is %s \n", configFromEnvironment);
@@ -222,7 +227,7 @@ int connectorMasterMethod(int argc, char *argv[]) {
 		gameID = NULL;
 		exit(1);
 	}
-	// todo, what is player is blank?
+	// todo, what if player is blank?
 
 	if (mockGame) {
 		pid_t pid;
@@ -233,14 +238,13 @@ int connectorMasterMethod(int argc, char *argv[]) {
 		}
 
 		int sleepMicroSeconds = 2000000;
-		printf(
-				"sleeping for %d microseconds to give the mock server time to get ready\n",
+		printf("sleeping for %d microseconds to give the mock server time to get ready\n",
 				sleepMicroSeconds);
 		usleep(sleepMicroSeconds);
 	}
 
 	connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-			configPath);
+			configPath, connectorBoard);
 
 	return 0;
 }

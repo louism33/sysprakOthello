@@ -42,22 +42,22 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-#define MAX 240
+#include "boardmessageparser.h"
 
+#define MAX 240
 #define PLAYER
+#define BOARD int*
 
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
 // todo, be careful of people trolling you by calling game "game over"
 
-int writeToServer(int sockfd, char message[])
-{
+int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));
     printf("Sending to server-> %s\n", message);
 }
 
-void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName)
-{
+void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD connectorBoard) {
     char buff[MAX];
     char gameName[20];
     char playerNumber[5];
@@ -76,65 +76,61 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     char playerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
     char thinking[] = "THINKING\n";
     char playf5[] = "PLAY D3\n";
-    char getGameKindName[8];
+    char gameKindNameFromServer[16];
+
+    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
 
     // todo, + ENDPLAYERS
     // todo, + GAMEOVER
     // todo, read move time
-   printf("########## %s\n",gameKindName);
-    for (;;)
-    {
-        if ((readResponse = read(sockfd, buff, sizeof(buff))))
-        {
+
+    if (!gameKindName) {
+        printf("game kind name not provided, exiting");
+        exit(1);
+    }
+
+    printf("########## %s\n", gameKindName);
+    for (;;) {
+        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("%s\n", buff);
 
             // step one, send VERSION 2.xxx
-            //finished
-            if ((strncmp("+ MNM Gameserver", buff, 16)) == 0)
-            {
+            if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
                 writeToServer(sockfd, version);
             }
 
             // step two, send game ID
-            //finished
-            if ((strncmp("+ Client version accepted", buff, 25)) == 0)
-            {
+            if ((strncmp("+ Client version accepted", buff, 25)) == 0) {
                 writeToServer(sockfd, gameIdToSend);
             }
 
             // step three, read PLAYING, wait for another read, then send PLAYER info
-            //finished
-            if (strncmp("+ PLAYING ", buff, 10) == 0)
-            {
-                // todo, check that gamekind is reversi
-                strncpy(getGameKindName,buff+10,strlen(buff)-strlen("+ PLAYING "));
-                printf(" ------getGameName : %s \n",getGameKindName);
-                if(strncmp(gameKindName,getGameKindName,7) == 0){
-                    printf(" ##### We play reversi now.#####\n\n");
-                }else{
+            if (strncmp("+ PLAYING ", buff, 10) == 0) {
+                strncpy(gameKindNameFromServer, buff + 10, strlen(buff) - strlen("+ PLAYING "));
+                if (strncmp(gameKindName, gameKindNameFromServer, 7) == 0) {
+                    printf("##### We play reversi now.#####\n\n");
+                } else {
                     printf("##### We don't play reversi now.#####\n\n");
                     exit(1);
                 }
+
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1);
                 printf("%s", buff);
 
-                // todo, get Game-Name from server
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 printf("-----------save gameName: %s\n", gameName);
-                if(player==NULL){
+                if (player == NULL) {
                     writeToServer(sockfd, playerToSend);
-                }else{
-                    strcpy(playerToSend,"PLAYER ");
-                    strcat(playerToSend,player);
+                } else {
+                    strcpy(playerToSend, "PLAYER ");
+                    strcat(playerToSend, player);
                     writeToServer(sockfd, playerToSend);
                 }
-                
             }
 
             // step four, read YOU
-            if (strncmp("+ YOU", buff, 5) == 0)
-            {
+            if (strncmp("+ YOU", buff, 5) == 0) {
                 // todo, save information from Server here
                 //finished
                 strncpy(playerNumber, buff + 6, 1);
@@ -142,30 +138,35 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 printf("--------save my playerName: %s\n", myPlayerName);
             }
-            
+
             // step five, read board information and time to move from server.
             // todo, extract timeToMove info
             // todo, extract board info
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
-            if (strlen(buff) > 75)
-            {
+            if (strlen(buff) > 75) {
+                printf("starting parse board\n");
+                parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
+                printf("finished parse board, here is the board I was able to parse:\n");
+
+                printBoardLouis(connectorBoard);
+
+
+                // todo , copy connectorBoard in to Thinkerboard
+                printf("finished parse board\n");
                 writeToServer(sockfd, thinking);
                 writeToServer(sockfd, playf5);
             }
 
-            if ((strncmp("+ WAIT", buff, 6)) == 0)
-            {
+            if ((strncmp("+ WAIT", buff, 6)) == 0) {
                 writeToServer(sockfd, okWait);
             }
-            
-            if ((strncmp("+ ENDFIELD", buff, 10)) == 0)
-            {
+
+            if ((strncmp("+ ENDFIELD", buff, 10)) == 0) {
                 writeToServer(sockfd, thinking);
             }
 
-            if (readResponse == -1)
-            {
+            if (readResponse == -1) {
                 printf("Could not read from server");
                 exit(0);
             }
@@ -174,10 +175,9 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     }
 }
 
-int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName)
-{
+int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD connectorBoard) {
 
-    haveConversationWithServer(sock, gameID, player, gameKindName);
+    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard);
 
     printf("performConnection %d\n", sock);
 

@@ -22,10 +22,13 @@
 int main(int argc, char *argv[]) {
     printf("Hello World! I am Alex. This is the main method\n");
 
+    BOARD connectorBoard = malloc(64 * sizeof(int));
+    BOARD thinkerBoard = malloc(64 * sizeof(int));
+
 //    exampleUseCaseOfMessageParsing();
 
 //    thinkerMasterMethod();
-    connectorMasterMethod(argc,argv);
+    connectorMasterMethod(connectorBoard, argc,argv);
 
     return 0;
 }

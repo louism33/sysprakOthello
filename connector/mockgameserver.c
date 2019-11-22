@@ -20,6 +20,7 @@
 #define MAX 300
 #define PORTNUMBER 1357
 #define SA struct sockaddr
+#define BOARD int*
 
 int waitLoop(int sockfd) {
 	char buff[MAX];
@@ -51,13 +52,14 @@ int dummyInteraction(int sockfd) {
 	// version
 	bzero(buff, MAX);
 	strncpy(buff, "+ MNM Gameserver v2.666 accepting connections", 50);
-	write(sockfd, buff, sizeof(buff)); //将内容写给客户端
+    write(sockfd, buff, sizeof(buff)); //将内容写给客户端
+    bzero(buff, MAX);
 
 	read(sockfd, buff, sizeof(buff)); //从客户端读取内容
 
 	if (strncmp("VERSION 2.", buff, 10) != 0) { //检验客户端的内容
 		fprintf(stderr, "MOCKGAMESERVER: INCORRECT VERSION RESPONSE\n");
-		fprintf(stderr, "You sent %s\n", buff);
+		fprintf(stderr, "You sent \n->%s<-\n", buff);
 		fprintf(stderr, "Server will exit...\n");
 		bzero(buff, MAX);
 		return -1;

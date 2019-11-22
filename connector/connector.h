@@ -5,7 +5,9 @@
 #ifndef ALEXTHEFRIENDLYAI_CONNECTOR_H
 #define ALEXTHEFRIENDLYAI_CONNECTOR_H
 
-int connectorMasterMethod();
+#define BOARD int*
+
+int connectorMasterMethod(BOARD connectorBoard, int argc, char *argv[]);
 
 
 #endif //ALEXTHEFRIENDLYAI_CONNECTOR_H

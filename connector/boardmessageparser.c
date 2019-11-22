@@ -83,8 +83,11 @@ regex_t regexCompiled;
 
 void setupMessageParser() { // we do this to avoid wasting memory and compute on regex patterns
     if (messageParserReady){
+        printf("message parser already set up\n");
         return;
     }
+
+    printf("Setting up message parser for first time\n");
 
     couldNotParseRegex = regcomp(&regexCompiled, regexString, REG_EXTENDED);
 
@@ -140,12 +143,15 @@ void exampleUseCaseOfMessageParsing() {
 
 
 void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
+//    printf("parseBoardMessage\n");
+
     setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
 
+//    printf("parseBoardMessage2\n");
 
     regmatch_t groupArray[maxGroups];
 
-    printf("Message received:\n%s\n", message);
+//    printf("Message received:\n%s\n", message);
 
     if (couldNotParseRegex) {
         printf("Could not compile regular expression.\n");
@@ -156,13 +162,11 @@ void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *me
         sourceCopy[groupArray[1].rm_eo] = 0;
 
         char *found = sourceCopy + groupArray[1].rm_so;
-//        printf("Group: %s\n", found);
-        printf("Group: %d\n", atoi(found));
-//        moveTimeAndBoard.movetime = atoi(found);
-
+//        printf("Group: %d\n", atoi(found));
+        moveTimeAndBoard->movetime = atoi(found);
     }
 
-
+//    printf("parseBoardMessage3\n");
 
     char c;
     int boardIndex = 0;
@@ -178,6 +182,7 @@ void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *me
                 boardIndex++;
                 continue;
             case '*':
+                board[boardIndex] = 0;
                 boardIndex++;
                 continue;
             case 'E': // + ENDFIELD is the end of the message
@@ -186,8 +191,10 @@ void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *me
 
     }
 
-    printf("\n");
+//    printf("\n");
 
-//    moveTimeAndBoard.board = board;
+//    printf("parseBoardMessage4\n");
+
+    moveTimeAndBoard->board = board;
 
 }

@@ -220,7 +220,7 @@ int connectorMasterMethod(int argc, char *argv[]) {
 	} else if (strlen(gameID) < 13) {
 		perror("Das Game-ID ist kleiner als 13-stellige.\n");
 		gameID = NULL;
-		exit(0);
+		exit(1);
 	}
 	// todo, what is player is blank?
 

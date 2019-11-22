@@ -52,6 +52,7 @@
 
 #include "boardmessageparser.h"
 
+#define BOARD int*
 
 /*
 + TOTAL 2
@@ -70,62 +71,103 @@
 + ENDFIELD
  */
 
+// todo this class is bad at memory
 
-moveTimeAndBoard *parseBoardMessage(int *board, char *message) {
+int messageParserReady = 0;
+int couldNotParseRegex = 1;
 
-    printf("%s\n\n\n", message);
-    printf("%d\n", (int) strlen(message));
-    printf("---\n");
+char sourceCopy[64]; // larger than needed
+char *regexString = "\\+ MOVE ([0-9]+)";
+size_t maxGroups = 2;
+regex_t regexCompiled;
 
-//    char * source = "___ abc123def ___ ghi456 ___";
-//    char * regexString = "[a-z]*([0-9]+)([a-z]*)";
-    char * regexString = "\\+ MOVE ([0-9]+)";
-    size_t maxGroups = 3;
-
-    regex_t regexCompiled;
-    regmatch_t groupArray[maxGroups];
-
-    if (regcomp(&regexCompiled, regexString, REG_EXTENDED))
-    {
-        printf("Could not compile regular expression.\n");
-        return NULL;
-    };
-
-    if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul)
-    {
-        unsigned int g = 0;
-        for (g = 0; g < maxGroups; g++)
-        {
-            if (groupArray[g].rm_so == (int)(size_t)-1)
-                break;  // No more groups
-
-            char sourceCopy[strlen(message) + 1];
-            strcpy(sourceCopy, message);
-            sourceCopy[groupArray[g].rm_eo] = 0;
-            printf("Group %u: [%2u-%2u]: %s\n",
-                   g, groupArray[g].rm_so, groupArray[g].rm_eo,
-                   sourceCopy + groupArray[g].rm_so);
-        }
+void setupMessageParser() { // we do this to avoid wasting memory and compute on regex patterns
+    if (messageParserReady){
+        return;
     }
 
+    couldNotParseRegex = regcomp(&regexCompiled, regexString, REG_EXTENDED);
+
+    messageParserReady = 1;
+}
+
+void tearDownMessageParser() {
     regfree(&regexCompiled);
+}
 
 
+void printBoardLouis(BOARD board) {
+    for (int i = 0; i < 64; i++) {
+        if (i % 8 == 0) {
+            printf("\n");
+        }
+        printf("%d ", board[i]);
+    }
+    printf("\n-----------\n");
+}
+
+void exampleUseCaseOfMessageParsing() {
+//    setupMessageParser();
+
+    char *exampleBoardMessage = "+ TOTAL 2\n"
+                                "+ 0 IAMLOUIS 0\n"
+                                "+ ENDPLAYERS\n"
+                                "+ MOVE 3000\n"
+                                "+ FIELD 8,8\n"
+                                "+ 8 * * * * * * * *\n"
+                                "+ 7 * * * * * B B B\n"
+                                "+ 6 * * * * * W * *\n"
+                                "+ 5 * * W W W B * *\n"
+                                "+ 4 * B B B B * * *\n"
+                                "+ 3 * * W * * * * *\n"
+                                "+ 2 * * * * * * * *\n"
+                                "+ 1 * * * * * * * *\n"
+                                "+ ENDFIELD";
+
+
+    BOARD board = malloc(64 * sizeof(int)); // blank board
+
+    printBoardLouis(board);
+
+    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
+
+    parseBoardMessage(board, moveTimeAndBoard, exampleBoardMessage);
+
+    printBoardLouis(board);
+
+//    tearDownMessageParser();
+}
+
+
+void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
+    setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
+
+
+    regmatch_t groupArray[maxGroups];
+
+    printf("Message received:\n%s\n", message);
+
+    if (couldNotParseRegex) {
+        printf("Could not compile regular expression.\n");
+        moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
+    } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
+        strcpy(sourceCopy, message);
+
+        sourceCopy[groupArray[1].rm_eo] = 0;
+
+        char *found = sourceCopy + groupArray[1].rm_so;
+//        printf("Group: %s\n", found);
+        printf("Group: %d\n", atoi(found));
+//        moveTimeAndBoard.movetime = atoi(found);
+
+    }
 
 
 
     char c;
     int boardIndex = 0;
-
     for (int i = (int) strlen(message) - 170; i < (int) strlen(message); i++) {
         c = message[i];
-//        if ((int) c == 10) {
-//            printf("->%c %d<>%d<-  ", c, (int)c, ('\n' == c));
-//        }
-//        printf("%c %d  ", c, (int)c);
-//        printf("%c", c);
-
-
         switch (c) {
             case 'B':
                 board[boardIndex] = 2;
@@ -144,33 +186,8 @@ moveTimeAndBoard *parseBoardMessage(int *board, char *message) {
 
     }
 
-
     printf("\n");
 
-//    char buff[1000];
-//    char *s;
-//
-//    s = strstr(message, "ENDFIELD");      // search for string "hassasin" in buff
-//    if (s != NULL)                     // if successful then s now points at "hassasin"
-//    {
-//        printf("Found string at index = %d\n", (int)(s - message));
-//    }                                  // index of "hassasin" in buff can be found by pointer subtraction
-//    else
-//    {
-//        printf("String not found\n");  // `strstr` returns NULL if search string not found
-//    }
+//    moveTimeAndBoard.board = board;
 
-
-
-//    char *string = "qwertye";
-//    char *e;
-//    int index;
-//    e = strchr(string, 'e');
-//    index = (int)(e - string);
-//    printf("\n%d\n", index);
-
-    printf("\n");
-
-
-    return NULL;
 }

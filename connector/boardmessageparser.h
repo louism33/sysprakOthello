@@ -5,12 +5,17 @@
 #ifndef SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H
 #define SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H
 
+#define BOARD int*
+
+// todo, add a global moveTimeAndBoard here?
+
 typedef struct moveTimeAndBoard {
     int movetime;
     int *board;
 } moveTimeAndBoard;
 
-moveTimeAndBoard *parseBoardMessage(int* board, char *message);
+void parseBoardMessage(int* board, moveTimeAndBoard *moveTimeAndBoard, char *message);
 
+void exampleUseCaseOfMessageParsing();
 
 #endif //SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H

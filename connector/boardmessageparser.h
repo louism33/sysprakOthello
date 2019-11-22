@@ -10,7 +10,7 @@ typedef struct moveTimeAndBoard {
     int *board;
 } moveTimeAndBoard;
 
-moveTimeAndBoard *parseBoardMessage(char *message);
+moveTimeAndBoard *parseBoardMessage(int* board, char *message);
 
 
 #endif //SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H

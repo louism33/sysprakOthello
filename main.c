@@ -14,6 +14,19 @@
 
 #include "connector/boardmessageparser.h"
 
+#define BOARD int*
+
+
+void printBoard(BOARD board){
+    for (int i = 0; i < 64; i++) {
+        if (i % 8 == 0) {
+            printf("\n");
+        }
+        printf("%d ", board[i]);
+    }
+    printf("\n-----------\n");
+}
+
 // if thinker is parent, retry logic may be easier to implement
 // including learning
 int main(int argc, char *argv[]) {
@@ -53,7 +66,18 @@ int main(int argc, char *argv[]) {
                                 "+ ENDFIELD";
 
 
-    moveTimeAndBoard* moveTimeAndBoard = parseBoardMessage(exampleBoardMessage);
+
+
+    BOARD board = malloc(64* sizeof(int));
+
+//    board[28] = board[35] = 1;
+//    board[27] = board[36] = 2;
+
+//    printBoard(board);
+
+    moveTimeAndBoard* moveTimeAndBoard = parseBoardMessage(board, exampleBoardMessage);
+
+//    printBoard(board);
 
 //    thinkerMasterMethod();
 //    connectorMasterMethod(argc,argv);

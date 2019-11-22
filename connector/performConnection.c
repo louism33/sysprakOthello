@@ -50,7 +50,7 @@
 
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
-// todo, be careful of people trolling you by calling game "game over"
+// todo, be careful of people trolling you by calling game "game over", implement PHASE itn/enum
 
 int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));

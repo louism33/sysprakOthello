@@ -63,10 +63,10 @@ int sendToThinker(){
 
 void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD connectorBoard) {
     char buff[MAX];
-    char gameName[20];
-    char playerNumber[5];
-    char myPlayerName[9];
-    char opponent[10];
+    char gameName[64]; // example: Game from 2019-11-18 17:42
+    char playerNumber[32];
+    char myPlayerName[32];
+    char opponent[32];
     int n, readResponse = 0;
 
     char version[] = "VERSION 2.42\n";
@@ -80,7 +80,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     char playerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
     char thinking[] = "THINKING\n";
     char playf5[] = "PLAY D3\n";
-    char gameKindNameFromServer[16];
+    char gameKindNameFromServer[32];
 
     moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
 

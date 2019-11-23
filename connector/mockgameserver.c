@@ -58,12 +58,8 @@ int dummyInteraction(int sockfd) {
 	// version
 	bzero(buff, MAX);
 	strncpy(buff, "+ MNM Gameserver v2.666 accepting connections", 50);
-<<<<<<< HEAD
-	write(sockfd, buff, sizeof(buff));
-=======
     write(sockfd, buff, sizeof(buff)); //将内容写给客户端
     bzero(buff, MAX);
->>>>>>> aca166fb1b869757da3ac5a9761249012730eca4
 
 	read(sockfd, buff, sizeof(buff));
 

@@ -1,7 +1,4 @@
-
-# biancalu
 a university project - client to play reversi / othello
-neue
 =======
 # Alex the Friendly AI
 Course project for System Praktikum, Winter Semester 2019 / 2020 at the LMU <br>

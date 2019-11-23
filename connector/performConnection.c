@@ -181,6 +181,9 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
             if (strncmp("+ YOU", buff, 5) == 0) {
                 // todo, save information from Server here
                 //finished
+
+                printf("  Received YOU info from server, buff is:%s", buff);
+
                 strncpy(playerNumber, buff + 6, 1);
                 printf("--------save  playerNumber: %s\n", playerNumber);
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));

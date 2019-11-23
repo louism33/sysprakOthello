@@ -52,7 +52,9 @@
 
 #include "boardmessageparser.h"
 
+#define MOVE int
 #define BOARD int*
+
 
 /*
 + TOTAL 2
@@ -143,30 +145,18 @@ void exampleUseCaseOfMessageParsing() {
 
 
 void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
-//    printf("parseBoardMessage\n");
-
     setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
-
-//    printf("parseBoardMessage2\n");
-
     regmatch_t groupArray[maxGroups];
-
-//    printf("Message received:\n%s\n", message);
 
     if (couldNotParseRegex) {
         printf("Could not compile regular expression.\n");
         moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
     } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
         strcpy(sourceCopy, message);
-
         sourceCopy[groupArray[1].rm_eo] = 0;
-
         char *found = sourceCopy + groupArray[1].rm_so;
-//        printf("Group: %d\n", atoi(found));
         moveTimeAndBoard->movetime = atoi(found);
     }
-
-//    printf("parseBoardMessage3\n");
 
     char c;
     int boardIndex = 0;
@@ -191,10 +181,5 @@ void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *me
 
     }
 
-//    printf("\n");
-
-//    printf("parseBoardMessage4\n");
-
-    moveTimeAndBoard->board = board;
-
+    moveTimeAndBoard->board = board; // todo, decide if board should be from argument or from here
 }

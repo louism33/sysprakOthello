@@ -14,7 +14,9 @@
 
 #include "connector/boardmessageparser.h"
 
+#define MOVE int
 #define BOARD int*
+
 
 // if thinker is parent, retry logic may be easier to implement
 // including learning
@@ -31,7 +33,7 @@ int main(int argc, char *argv[]) {
 //    exampleUseCaseOfMessageParsing();
 
 //    thinkerMasterMethod();
-    connectorMasterMethod(connectorBoard, argc,argv);
+    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
 
     return 0;
 }

@@ -5,7 +5,9 @@
 #ifndef SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H
 #define SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H
 
+#define MOVE int
 #define BOARD int*
+
 
 // todo, add a global moveTimeAndBoard here?
 

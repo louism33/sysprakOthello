@@ -18,13 +18,16 @@
 #include <unistd.h>
 
 #define MAX 300
-#define PORTNUMBER 1357
+#define PORTNUMBER 1353
 #define SA struct sockaddr
+#define MOVE int
 #define BOARD int*
+
 
 int waitLoop(int sockfd) {
 	char buff[MAX];
 	for (int i = 0; i < 10; i++) {
+        usleep(1000000); // the server seems to wait a second or so between WAITs
 		bzero(buff, MAX);
 		strncpy(buff, "+ WAIT", 10);
 		write(sockfd, buff, sizeof(buff));
@@ -43,6 +46,9 @@ int waitLoop(int sockfd) {
 
 // Function designed for chat between client and server.
 int dummyInteraction(int sockfd) {
+    fprintf(stderr, "MOCKGAMESERVER: sleeping for one second to let everyone get into position\n");
+    usleep(1000000);
+
 	char buff[MAX];
 
 	int playingAgainstAnAI = 0;
@@ -66,7 +72,7 @@ int dummyInteraction(int sockfd) {
 	}
 //    fprintf(stderr, "You correctly sent version information!\n");
 
-// game ID
+    // game ID
 	bzero(buff, MAX);
 	strncpy(buff, "+ Client version accepted - please send Game-ID to join",
 			120);
@@ -74,8 +80,6 @@ int dummyInteraction(int sockfd) {
 	bzero(buff, MAX);
 
 	read(sockfd, buff, sizeof(buff));
-
-//    fprintf(stderr, "MOCKGAMESERVER: From client, I read: %s\n: ", buff);
 
 	if (strncmp("ID ", buff, 3) != 0 || strlen(buff) != 17) {
 		fprintf(stderr, "MOCKGAMESERVER: INCORRECT ID RESPONSE\n");
@@ -85,9 +89,7 @@ int dummyInteraction(int sockfd) {
 		return -1;
 	}
 
-//    fprintf(stderr, "You correctly sent an ID of correct length!\n");
-
-// gamekind name
+    // gamekind name
 	bzero(buff, MAX);
 	strncpy(buff, "+ PLAYING REVERSI", 120);
 	write(sockfd, buff, sizeof(buff));
@@ -95,15 +97,14 @@ int dummyInteraction(int sockfd) {
 
 	usleep(100000);
 
-	strncpy(buff, "+ REVERSI", 120);
-//    fprintf(stderr, "        %s\n", buff);
+	// game name
+	strncpy(buff, "+ Game from 2019-11-18 17:42", 120);
 	write(sockfd, buff, sizeof(buff));
-//    fprintf(stderr, "        wrote\n");
 	bzero(buff, MAX);
 
 	read(sockfd, buff, sizeof(buff));
 
-	fprintf(stderr, "MOCKGAMESERVER: From client, I read: %s\n: ", buff);
+//	fprintf(stderr, "MOCKGAMESERVER: From client, I read: %s\n: ", buff);
 
 	if (strncmp("PLAYER ", buff, 7) == 0) {
 		fprintf(stderr,
@@ -126,7 +127,7 @@ int dummyInteraction(int sockfd) {
 	write(sockfd, buff, sizeof(buff));
 	bzero(buff, MAX);
 
-//	usleep(100000);
+    //	usleep(100000);
 
 	char *boardResponseFromServer = "TOTAL 2\n"
 			"+ 0 IAMLOUIS 0\n"
@@ -162,7 +163,6 @@ int dummyInteraction(int sockfd) {
 	strncpy(buff, "+ OKTHINK", 100);
 	write(sockfd, buff, sizeof(buff));
 	bzero(buff, MAX);
-
 
 	read(sockfd, buff, sizeof(buff));
 

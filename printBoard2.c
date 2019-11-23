@@ -26,8 +26,8 @@ void InitBoard()
         board[28] = BLACK;
         board[35] = BLACK;
         board[36] = WHITE;
-        board[29] = BLACK;
-        board[44] = BLACK;
+        //board[29] = BLACK;
+        //board[44] = BLACK;
     }
 }
 
@@ -96,7 +96,6 @@ void makeMove(int black)
 
   int getTotalNumberOfLegalMoves()
 {   
-    //int length = sizeof(speicher) / sizeof(int);
     printf("Total number of legal moves: %d\n",zahl);
     return 0;
 } 
@@ -160,7 +159,6 @@ int *getLegalMoves(int *board, int position, int TARGET_PLAYER)
     // for-Schleifer um nach unten zu prüfen
     for (int i = position + 8; UNTENRAND; i = i + 8)
     {
-        //TODO: nicht machen in Spalte 0
         if (board[i] == TARGET_PLAYER)
         {
             continue;
@@ -183,7 +181,6 @@ int *getLegalMoves(int *board, int position, int TARGET_PLAYER)
     // for-Schleifer um nach oben zu prüfen
     for (int i = position - 8; OBENRAND; i = i - 8)
     {
-        //TODO: nicht machen in Spalte 0
         if (board[i] == TARGET_PLAYER)
         {
             continue;
@@ -206,7 +203,6 @@ int *getLegalMoves(int *board, int position, int TARGET_PLAYER)
     // for-Schleifer um nach rechts oben zu prüfen
     for (int i = position - 7; RECHTSRAND && OBENRAND; i = i - 7)
     {
-        //TODO: nicht machen in Spalte 0
         if (board[i] == TARGET_PLAYER)
         {
             continue;
@@ -229,7 +225,6 @@ int *getLegalMoves(int *board, int position, int TARGET_PLAYER)
     // for-Schleifer um nach links oben zu prüfen
     for (int i = position - 9; LINKSRAND && OBENRAND; i = i - 9)
     {
-        //TODO: nicht machen in Spalte 0
         if (board[i] == TARGET_PLAYER)
         {
             continue;
@@ -252,7 +247,6 @@ int *getLegalMoves(int *board, int position, int TARGET_PLAYER)
     // for-Schleifer um nach rechts unten zu prüfen
     for (int i = position + 9; RECHTSRAND && UNTENRAND; i = i + 9)
     {
-        //TODO: nicht machen in Spalte 0
         if (board[i] == TARGET_PLAYER)
         {
             continue;
@@ -275,7 +269,6 @@ int *getLegalMoves(int *board, int position, int TARGET_PLAYER)
     // for-Schleifer um nach links unten zu prüfen
     for (int i = position + 7; LINKSRAND && UNTENRAND; i = i + 7)
     {
-        //TODO: nicht machen in Spalte 0
         if (board[i] == TARGET_PLAYER)
         {
             continue;

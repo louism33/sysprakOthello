@@ -8,40 +8,33 @@
 #define EMPTY 0
 #define WHITE 1
 #define BLACK 2
-#define RECHTSRAND i % 8 <= 7
-#define LINKSRAND i % 8 >= 0
-#define OBENRAND i >= position % 8
-#define UNTENRAND i <= 56 + position % 8
 #define LAST_MOVE (-1)
+#define SIDE_TO_MOVE int
 
-int board[63];
-int i, j;
+#define MOVE int
+#define SIDE_TO_MOVE int
+#define BOARD int*
+#define MOVES int*
 
-void InitBoard() {
-    for (int i = 0; i < 63; i++) {
+#define STARTING_WHITE_POSITION_1 27
+#define STARTING_WHITE_POSITION_2 36
+#define STARTING_BLACK_POSITION_1 28
+#define STARTING_BLACK_POSITION_2 35
+
+#define STARTING_PLAYER BLACK
+#define SWITCH_PLAYER_CONSTANT 3
+
+void resetBoardToStarter(BOARD board) {
+    for (int i = 0; i < 64; i++) {
         board[i] = 0;
-        //board[27] = WHITE;
-        //board[28] = BLACK;
-        //board[35] = BLACK;
-        //board[36] = WHITE;
-
-        board[14] = WHITE;
-
-        board[10] = WHITE;
-
-        board[46] = WHITE;
-
-
-        board[17] = BLACK;
-
-        board[21] = BLACK;
-
-        board[53] = BLACK;
-
     }
+    board[27] = WHITE;
+    board[28] = BLACK;
+    board[35] = BLACK;
+    board[36] = WHITE;
 }
 
-void printBoard() {
+void printBoard(BOARD board) {
     printf("    A B C D E F G H \n");
     printf("  +-----------------+ \n");
 
@@ -63,32 +56,24 @@ void printBoard() {
     printf("    A B C D E F G H \n");
 }
 
-void makeMove(int black) {
+void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
     char c;
-    int i; // Zeile
-    printf("\n");
-    while (1) {
-        printBoard();
-        scanf("%d", &i);
-
-        if (i < 0 || i > 63) {
-            printf("Die Koordinaten liegen außerhalb des gültigen Bereichs. Bitte geben Sie sie erneut ein.\n");
-            continue;
-        } else if (board[i] != 0) {
-            printf("Die Koordinaten sind bereits belegt!\n");
-            continue;
+    if (move < 0 || move > 63) {
+        printf("Die Koordinaten liegen außerhalb des gültigen Bereichs. Bitte geben Sie sie erneut ein.\n");
+        exit(1);
+    } else if (board[move] != 0) {
+        printf("Die Koordinaten sind bereits belegt!\n");
+        exit(1);
+    } else {
+        if (sideToMove == BLACK) {
+            board[move] = BLACK;
         } else {
-            if (black) {
-                board[i] = BLACK;
-            } else {
-                board[i] = WHITE;
-            }
-            black = 1 - black;
+            board[move] = WHITE;
         }
     }
 }
 
-int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGET_PLAYER) {
+int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER) {
     int index = 0;
     int MY_PLAYER = 3 - TARGET_PLAYER;
 
@@ -97,7 +82,8 @@ int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGE
         exit(1);
     }
 
-    printf("position is %d\n", position);
+//    printf("position is %d\n", position);
+
 //    for-Schleifer um nach rechts zu prüfen
     for (int i = position + 1; i % 8 != 7; i++) {
         //TODO: nicht machen in Spalte 7
@@ -165,7 +151,6 @@ int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGE
     }
 
 
-    // index = index + 1;
     // for-Schleifer um nach rechts oben zu prüfen
     for (int i = position - 7; i > -1 && i % 8 != 7; i = i - 7) {
         if (board[i] == TARGET_PLAYER) {
@@ -182,7 +167,6 @@ int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGE
         }
     }
 
-    //index = index + 1;
     // for-Schleifer um nach links oben zu prüfen
     for (int i = position - 9; i > -1 && i % 8 != 0; i = i - 9) {
         if (board[i] == TARGET_PLAYER) {
@@ -199,7 +183,6 @@ int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGE
         }
     }
 
-    //index = index + 1;
     // for-Schleifer um nach rechts unten zu prüfen
     for (int i = position + 9; i < 64 && i % 8 != 7; i = i + 9) {
         if (board[i] == TARGET_PLAYER) {
@@ -215,7 +198,6 @@ int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGE
             break;
         }
     }
-    // index = index + 1;
     // for-Schleifer um nach links unten zu prüfen
     for (int i = position + 7; i < 64 && i % 8 != 0; i = i + 7) {
         if (board[i] == TARGET_PLAYER) {
@@ -235,14 +217,14 @@ int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGE
     return speicher;
 }
 
-int *getLegalMovesAllPositions(int *board, int TARGET_PLAYER) {
-    int *allMoves = malloc(64 * sizeof(int)); // todo, clean up memory
-    int *speicher = malloc(64 * sizeof(int));
-    int me = 3 - TARGET_PLAYER;
+int *getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
+    MOVES allMoves = malloc(64 * sizeof(int)); // todo, clean up memory
+    MOVES speicher = malloc(64 * sizeof(int));
+    SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < 64; pos++) {
         if (board[pos] == me) {
-            int *legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
+            MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
             int j = 0;
             while (1) {
                 if (legalMovesFromHere[j] == LAST_MOVE) {
@@ -260,8 +242,8 @@ int *getLegalMovesAllPositions(int *board, int TARGET_PLAYER) {
 }
 
 
-int getTotalNumberOfLegalMoves(int *board, int TARGET_PLAYER) {
-    int *legalMoves = getLegalMovesAllPositions(board, TARGET_PLAYER);
+int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
+    MOVES legalMoves = getLegalMovesAllPositions(board, TARGET_PLAYER);
     int total = 0;
 
     for (int i = 0; i < 64; i++) {

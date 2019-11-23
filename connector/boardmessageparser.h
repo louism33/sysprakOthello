@@ -7,7 +7,7 @@
 
 #define MOVE int
 #define BOARD int*
-
+#define SIDE_TO_MOVE int
 
 // todo, add a global moveTimeAndBoard here?
 
@@ -21,5 +21,7 @@ void parseBoardMessage(int* board, moveTimeAndBoard *moveTimeAndBoard, char *mes
 void exampleUseCaseOfMessageParsing();
 
 void printBoardLouis(BOARD board);
+
+void printBoardLouisSide(BOARD board, SIDE_TO_MOVE sideToMove);
 
 #endif //SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H

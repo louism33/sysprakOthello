@@ -4,15 +4,14 @@ sysprak-client
 clion-log.txt
 .cproject
 language.settings.xml
-
+.settings/
 
 # Prerequisites
 *.d
 
 # Object files
 *.o
-*.ko
-*.obj
+*.ko*.obj
 *.elf
 
 # Linker output

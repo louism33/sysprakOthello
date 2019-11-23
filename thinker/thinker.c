@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #include "thinkertests/boardtests.h"
-#include "Board.h"
+#include "board.h"
 
 #define MOVE int
 #define SIDE_TO_MOVE int

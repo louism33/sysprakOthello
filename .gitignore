@@ -6,6 +6,8 @@ clion-log.txt
 language.settings.xml
 .settings/
 makefileM
+.DS_store
+.project
 
 # Prerequisites
 *.d

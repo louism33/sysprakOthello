@@ -7,8 +7,8 @@
 #include "../../connector/boardmessageparser.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "../Board.c"
-#include "../Board.h"
+#include "../board.c"
+#include "../board.h"
 
 #define MOVE int
 #define SIDE_TO_MOVE int

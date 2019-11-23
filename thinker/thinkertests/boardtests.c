@@ -7,6 +7,7 @@
 #include "../../connector/boardmessageparser.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "../../printBoard2.c"
 #include "../../printBoard2.h"
 
 #define MOVE int
@@ -37,14 +38,9 @@ int testStartingBoard1() {
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
 
     SIDE_TO_MOVE player = STARTING_PLAYER;
-    printBoardLouisSide(board, player);
-    
-    printf("debug\n");
+//    printBoardLouisSide(board, player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
-    
-       printf("debug2\n");
-
     int correctNumberOfMoves = 4;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -54,6 +50,7 @@ int testStartingBoard1() {
         exit(1);
     }
 
+    printf("test successful\n\n");
     return 0; // success
 }
 
@@ -65,7 +62,7 @@ int testStartingBoard2() {
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
 
     SIDE_TO_MOVE player = switchPlayer(STARTING_PLAYER);
-    printBoardLouisSide(board, player);
+//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
     int correctNumberOfMoves = 4;
 
@@ -75,7 +72,7 @@ int testStartingBoard2() {
                 correctNumberOfMoves, myNumberOfMoves);
         exit(1);
     }
-
+    printf("test successful\n\n");
     return 0; // success
 }
 
@@ -89,7 +86,7 @@ int testBoardAfterOneMove() {
     board[26] = BLACK;
 
     SIDE_TO_MOVE player = WHITE;
-    printBoardLouisSide(board, player);
+//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
     int correctNumberOfMoves = 3;
 
@@ -99,7 +96,7 @@ int testBoardAfterOneMove() {
                 correctNumberOfMoves, myNumberOfMoves);
         exit(1);
     }
-
+    printf("test successful\n\n");
     return 0; // success
 }
 
@@ -113,7 +110,7 @@ int testWeirdImpossibleBoard() {
 
 
     SIDE_TO_MOVE player = WHITE;
-    printBoardLouisSide(board, player);
+//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
     int correctNumberOfMoves = 2;
 
@@ -123,7 +120,7 @@ int testWeirdImpossibleBoard() {
                 correctNumberOfMoves, myNumberOfMoves);
         exit(1);
     }
-
+    printf("test successful\n\n");
     return 0; // success
 }
 
@@ -136,7 +133,7 @@ int testWeirdImpossibleBoard2() {
 
 
     SIDE_TO_MOVE player = WHITE;
-    printBoardLouisSide(board, player);
+//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
     int correctNumberOfMoves = 3;
 
@@ -146,7 +143,7 @@ int testWeirdImpossibleBoard2() {
                 correctNumberOfMoves, myNumberOfMoves);
         exit(1);
     }
-
+    printf("test successful\n\n");
     return 0; // success
 }
 
@@ -159,7 +156,7 @@ int testAvoidTheDuplicateMove() {
 
 
     SIDE_TO_MOVE player = WHITE;
-    printBoardLouisSide(board, player);
+//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
     int correctNumberOfMoves = 1;
 
@@ -169,7 +166,7 @@ int testAvoidTheDuplicateMove() {
                 correctNumberOfMoves, myNumberOfMoves);
         exit(1);
     }
-
+    printf("test successful\n\n");
     return 0; // success
 }
 
@@ -182,7 +179,7 @@ int testAvoidTheDuplicateMove2() {
 
 
     SIDE_TO_MOVE player = BLACK;
-    printBoardLouisSide(board, player);
+//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
     int correctNumberOfMoves = 2;
 
@@ -192,7 +189,7 @@ int testAvoidTheDuplicateMove2() {
                 correctNumberOfMoves, myNumberOfMoves);
         exit(1);
     }
-
+    printf("test successful\n\n");
     return 0; // success
 }
 
@@ -205,7 +202,7 @@ int testAvoidMovingOffTheSideOfTheBoard() {
 
 
     SIDE_TO_MOVE player = WHITE;
-    printBoardLouisSide(board, player);
+//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
     int correctNumberOfMoves = 2;
 
@@ -215,22 +212,22 @@ int testAvoidMovingOffTheSideOfTheBoard() {
                 correctNumberOfMoves, myNumberOfMoves);
         exit(1);
     }
-
+    printf("test successful\n\n");
     return 0; // success
 }
 
 int basicTests() {
-//     testStartingBoard1();
-    //testStartingBoard2();
-    //testBoardAfterOneMove();
+    testStartingBoard1();
+    testStartingBoard2();
+    testBoardAfterOneMove();
+//
+    testWeirdImpossibleBoard();
+//    testWeirdImpossibleBoard2();
+//
+//    testAvoidTheDuplicateMove();
+//    testAvoidTheDuplicateMove2();
 
-    //testWeirdImpossibleBoard();
-    //testWeirdImpossibleBoard2();
-
-    //testAvoidTheDuplicateMove();
-    //testAvoidTheDuplicateMove2();
-
-    testAvoidMovingOffTheSideOfTheBoard();
+//    testAvoidMovingOffTheSideOfTheBoard();
 
     return 0; // success
 }

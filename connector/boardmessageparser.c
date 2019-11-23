@@ -55,6 +55,8 @@
 #define MOVE int
 #define BOARD int*
 
+#define BLACK 2
+#define WHITE 1
 
 /*
 + TOTAL 2
@@ -106,15 +108,29 @@ void printBoardLouis(BOARD board) {
 }
 
 void printBoardLouisSide(BOARD board, SIDE_TO_MOVE sideToMove) {
+
     for (int i = 0; i < 64; i++) {
         if (i % 8 == 0) {
             printf("\n");
         }
-        printf("%d ", board[i]);
+//        printf("%d ", board[i]);
+        if (board[i] == WHITE) {
+            printf("W ");
+        }
+        else if (board[i] == BLACK) {
+            printf("B ");
+        } else {
+            printf(". ", board[i]);
+        }
     }
     printf("\n");
     if (sideToMove){
         printf("%d to move\n", sideToMove);
+        if (sideToMove == BLACK) {
+            printf("Black to move\n");
+        }else {
+            printf("White to move\n");
+        }
     }else {
         printf("I don't know whose turn it is\n");
     }

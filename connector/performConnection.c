@@ -119,7 +119,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
 
     char playerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
     char thinking[] = "THINKING\n";
-    char playf5[] = "PLAY D3\n";
+    char playf5[] = "PLAY D6\n";
     int lengthOfPlayCommandToSendToKeep = 5;
     char moveReceivedFromThinker[3];
     char *moveReceivedFromThinkerTEMP;

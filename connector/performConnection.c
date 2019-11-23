@@ -59,9 +59,11 @@ enum Phase {PROLOG = 0, SPIELVERLAUF = 1, SPIELZUG = 2};
 int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));
     printf("Sending to server-> %s\n", message);
+    return 0;
 }
 
 char *convertMove(int move) {
+    printf("%d\n",move);
     return "D3"; // todo, implement conversion between 0-63 and [A-H][1-8]
 }
 
@@ -82,6 +84,8 @@ wird an alle Mitspieler geschickt. Zudem wird angegeben, welche Mitspieler gewon
 eine Partie in einem Unentschieden endet. In dem Fall ist allen Mitspielern der Gewinnstatus der Partie auf Yes gesetzt.
 Nach QUIT beendet der Server die Verbindung
      */
+
+    printf("%s\n",buff);
     return 0; // todo, implement
 }
 

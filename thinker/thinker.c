@@ -1,19 +1,21 @@
 //
 // Created by louis on 11/13/19.
 //
-#include "shm/shm.h"
+#include "../shm/shm.h"
 #include "thinker.h"
 #include <stdio.h>
 
 #include "thinkertests/boardtests.h"
+#include "../printBoard2.h"
 
 #define MOVE int
 #define BOARD int*
 #define SIDE_TO_MOVE int
 
-int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE player){
-    return 0;
-}
+//int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE player){
+	//  printf("debug3\n");
+    // return getTotalNumberOfLegalMovesHM(board, player);
+// }
 
 
 MOVES getLegalMoves(BOARD board, SIDE_TO_MOVE player){
@@ -32,9 +34,12 @@ MOVE doThink(BOARD board , int moveTime){
 
 void thinkerMasterMethod(){
     printf("Hi I am very good at thinking\n");
+
     basicTests();
 
-    createProcesses();
+    //createProcesses();
+
+
     /*
 	was wir brauchen für die thinkerMasterMethod
 	- eine printBoard() Funktion 

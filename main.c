@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
 
 //    exampleUseCaseOfMessageParsing();
 
-//    thinkerMasterMethod();
-//    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
+    thinkerMasterMethod();
+    //connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
 
     return 0;
 }

@@ -7,6 +7,7 @@
 #include "../../connector/boardmessageparser.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "../../printBoard2.h"
 
 #define MOVE int
 #define SIDE_TO_MOVE int
@@ -37,7 +38,13 @@ int testStartingBoard1() {
 
     SIDE_TO_MOVE player = STARTING_PLAYER;
     printBoardLouisSide(board, player);
+    
+    printf("debug\n");
+
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    
+       printf("debug2\n");
+
     int correctNumberOfMoves = 4;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -213,15 +220,15 @@ int testAvoidMovingOffTheSideOfTheBoard() {
 }
 
 int basicTests() {
-    testStartingBoard1();
-    testStartingBoard2();
-    testBoardAfterOneMove();
+//     testStartingBoard1();
+    //testStartingBoard2();
+    //testBoardAfterOneMove();
 
-    testWeirdImpossibleBoard();
-    testWeirdImpossibleBoard2();
+    //testWeirdImpossibleBoard();
+    //testWeirdImpossibleBoard2();
 
-    testAvoidTheDuplicateMove();
-    testAvoidTheDuplicateMove2();
+    //testAvoidTheDuplicateMove();
+    //testAvoidTheDuplicateMove2();
 
     testAvoidMovingOffTheSideOfTheBoard();
 

@@ -18,7 +18,7 @@ void thinkerMasterMethod();
 
 MOVE doThink(BOARD board, int moveTime);
 
-int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE player);
+//int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE player);
 
 MOVES getLegalMoves(BOARD board, SIDE_TO_MOVE player);
 

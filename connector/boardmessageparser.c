@@ -102,13 +102,23 @@ void tearDownMessageParser() {
 
 
 void printBoardLouis(BOARD board) {
+    printBoardLouisSide(board, 0);
+}
+
+void printBoardLouisSide(BOARD board, SIDE_TO_MOVE sideToMove) {
     for (int i = 0; i < 64; i++) {
         if (i % 8 == 0) {
             printf("\n");
         }
         printf("%d ", board[i]);
     }
-    printf("\n-----------\n");
+    printf("\n");
+    if (sideToMove){
+        printf("%d to move\n", sideToMove);
+    }else {
+        printf("I don't know whose turn it is\n");
+    }
+    printf("-----------\n");
 }
 
 void exampleUseCaseOfMessageParsing() {

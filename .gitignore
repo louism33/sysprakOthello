@@ -4,7 +4,7 @@ sysprak-client
 clion-log.txt
 .cproject
 language.settings.xml
-
+.settings/
 
 # Prerequisites
 *.d

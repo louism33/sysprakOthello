@@ -18,7 +18,7 @@
 #include <unistd.h>
 
 #define MAX 300
-#define PORTNUMBER 1353
+#define PORTNUMBER 1357
 #define SA struct sockaddr
 #define MOVE int
 #define BOARD int*

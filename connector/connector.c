@@ -38,7 +38,7 @@
 #include <arpa/inet.h>
 
 #define GAMEKINDNAME "Reversi"
-#define PORTNUMBER 1353
+#define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
 #define MOVE int

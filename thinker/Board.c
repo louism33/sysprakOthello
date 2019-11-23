@@ -57,7 +57,6 @@ void printBoard(BOARD board) {
 }
 
 void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
-    char c;
     if (move < 0 || move > 63) {
         printf("Die Koordinaten liegen außerhalb des gültigen Bereichs. Bitte geben Sie sie erneut ein.\n");
         exit(1);

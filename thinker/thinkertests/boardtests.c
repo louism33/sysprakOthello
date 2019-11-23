@@ -7,8 +7,8 @@
 #include "../../connector/boardmessageparser.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "../../printBoard2.c"
-#include "../../printBoard2.h"
+#include "../Board.c"
+#include "../Board.h"
 
 #define MOVE int
 #define SIDE_TO_MOVE int
@@ -38,9 +38,10 @@ int testStartingBoard1() {
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
 
     SIDE_TO_MOVE player = STARTING_PLAYER;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
 
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -62,8 +63,9 @@ int testStartingBoard2() {
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
 
     SIDE_TO_MOVE player = switchPlayer(STARTING_PLAYER);
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -77,7 +79,6 @@ int testStartingBoard2() {
 }
 
 int testBoardAfterOneMove() {
-    // starting board with other player first
     BOARD board = malloc(64 * sizeof(int));
 
     board[STARTING_WHITE_POSITION_2] = WHITE;
@@ -86,8 +87,9 @@ int testBoardAfterOneMove() {
     board[26] = BLACK;
 
     SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -102,16 +104,15 @@ int testBoardAfterOneMove() {
 
 
 int testWeirdImpossibleBoard() {
-    // starting board with other player first
     BOARD board = malloc(64 * sizeof(int));
 
     board[0] = WHITE;
     board[1] = board[8] = BLACK;
 
-
     SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -125,7 +126,6 @@ int testWeirdImpossibleBoard() {
 }
 
 int testWeirdImpossibleBoard2() {
-    // starting board with other player first
     BOARD board = malloc(64 * sizeof(int));
 
     board[0] = WHITE;
@@ -133,8 +133,9 @@ int testWeirdImpossibleBoard2() {
 
 
     SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -148,7 +149,6 @@ int testWeirdImpossibleBoard2() {
 }
 
 int testAvoidTheDuplicateMove() {
-    // starting board with other player first
     BOARD board = malloc(64 * sizeof(int));
 
     board[0] = board[4] = WHITE;
@@ -156,8 +156,9 @@ int testAvoidTheDuplicateMove() {
 
 
     SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 1;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -171,7 +172,6 @@ int testAvoidTheDuplicateMove() {
 }
 
 int testAvoidTheDuplicateMove2() {
-    // starting board with other player first
     BOARD board = malloc(64 * sizeof(int));
 
     board[0] = board[4] = board[10] = BLACK;
@@ -179,8 +179,9 @@ int testAvoidTheDuplicateMove2() {
 
 
     SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -194,16 +195,16 @@ int testAvoidTheDuplicateMove2() {
 }
 
 int testAvoidMovingOffTheSideOfTheBoard() {
-    // starting board with other player first
     BOARD board = malloc(64 * sizeof(int));
 
-    board[0] = board[4] = board[10] = BLACK;
-    board[1] = board[3] = board[18] = WHITE;
+    board[0] = board[4] = board[18] = BLACK;
+    board[1] = board[3] = board[10] = WHITE;
 
 
     SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(board, player);
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -220,14 +221,15 @@ int basicTests() {
     testStartingBoard1();
     testStartingBoard2();
     testBoardAfterOneMove();
-//
-    testWeirdImpossibleBoard();
-//    testWeirdImpossibleBoard2();
-//
-//    testAvoidTheDuplicateMove();
-//    testAvoidTheDuplicateMove2();
 
-//    testAvoidMovingOffTheSideOfTheBoard();
+    testWeirdImpossibleBoard();
+    testWeirdImpossibleBoard2();
+
+
+    testAvoidTheDuplicateMove();
+    testAvoidTheDuplicateMove2();
+
+    testAvoidMovingOffTheSideOfTheBoard();
 
     return 0; // success
 }

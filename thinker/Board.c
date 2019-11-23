@@ -88,15 +88,7 @@ void makeMove(int black) {
     }
 }
 
-
-
-// move ist ein int zwischen 0 und 63
-// 0 -> A1 ..... 63 -> H8
-
-
-int *getLegalMovesOnePosition(int *board, int position, int TARGET_PLAYER) {
-    int *speicher;
-    speicher = (int *) malloc(64 * sizeof(int));
+int *getLegalMovesOnePosition(int *board, int *speicher, int position, int TARGET_PLAYER) {
     int index = 0;
     int MY_PLAYER = 3 - TARGET_PLAYER;
 
@@ -105,7 +97,7 @@ int *getLegalMovesOnePosition(int *board, int position, int TARGET_PLAYER) {
         exit(1);
     }
 
-//    printf("position is %d\n", position);
+    printf("position is %d\n", position);
 //    for-Schleifer um nach rechts zu prüfen
     for (int i = position + 1; i % 8 != 7; i++) {
         //TODO: nicht machen in Spalte 7
@@ -244,12 +236,13 @@ int *getLegalMovesOnePosition(int *board, int position, int TARGET_PLAYER) {
 }
 
 int *getLegalMovesAllPositions(int *board, int TARGET_PLAYER) {
-    int *allMoves = malloc(64 * sizeof(int));
+    int *allMoves = malloc(64 * sizeof(int)); // todo, clean up memory
+    int *speicher = malloc(64 * sizeof(int));
     int me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < 64; pos++) {
         if (board[pos] == me) {
-            int *legalMovesFromHere = getLegalMovesOnePosition(board, pos, TARGET_PLAYER);
+            int *legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
             int j = 0;
             while (1) {
                 if (legalMovesFromHere[j] == LAST_MOVE) {
@@ -259,6 +252,8 @@ int *getLegalMovesAllPositions(int *board, int TARGET_PLAYER) {
             }
         }
     }
+
+    free(speicher);
 
     allMoves[index] = LAST_MOVE;
     return allMoves;
@@ -277,20 +272,5 @@ int getTotalNumberOfLegalMoves(int *board, int TARGET_PLAYER) {
     }
     printf("did not find a LAST_MOVE... are you sure you did not nake a mistake\n");
     exit(1);
-    // return total;
 }
 
-
-// int main()
-// {
-//     InitBoard();
-//     //makeMove(1); // ilegale Züge werden ausgeschlossen.
-//     //getLegalMoves(board, 36, BLACK);
-
-//     printBoard();
-
-//     int total = getTotalNumberOfLegalMoves(board, WHITE);
-//     printf("TOTAL ISSSS..... %d\n", total);
-
-//     return 0;
-// }

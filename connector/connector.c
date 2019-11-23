@@ -251,7 +251,6 @@ int connectorMasterMethod(BOARD connectorBoard, BOARD thinkerBoard, int argc, ch
     return 0;
 }
 
-void performConnection()
-{
-	
+void performConnection() {
+
 }

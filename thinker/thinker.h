@@ -10,15 +10,9 @@
 #define BOARD int*
 #define SIDE_TO_MOVE int
 
-extern void thinkerMasterMethod();
-void think();
-
-void thinkerMasterMethod();
-
+void thinkerMasterMethod(BOARD thinkerBoard);
 
 MOVE doThink(BOARD board, int moveTime);
-
-//int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE player);
 
 MOVES getLegalMoves(BOARD board, SIDE_TO_MOVE player);
 

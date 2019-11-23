@@ -30,10 +30,8 @@ int main(int argc, char *argv[]) {
     BOARD connectorBoard = malloc(64 * sizeof(int));
     BOARD thinkerBoard = malloc(64 * sizeof(int));
 
-//    exampleUseCaseOfMessageParsing();
-
-    thinkerMasterMethod();
-    //connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
+    thinkerMasterMethod(thinkerBoard);
+//    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
 
     return 0;
 }

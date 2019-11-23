@@ -6,22 +6,11 @@
 #include <stdio.h>
 
 #include "thinkertests/boardtests.h"
-#include "../printBoard2.h"
+#include "Board.h"
 
 #define MOVE int
 #define BOARD int*
 #define SIDE_TO_MOVE int
-
-//int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE player){
-	//  printf("debug3\n");
-    // return getTotalNumberOfLegalMovesHM(board, player);
-// }
-
-
-MOVES getLegalMoves(BOARD board, SIDE_TO_MOVE player){
-    return NULL;
-}
-
 
 MOVE doThink(BOARD board , int moveTime){
     printf("received doThink command from connector, time to move %d\n", moveTime);
@@ -30,9 +19,7 @@ MOVE doThink(BOARD board , int moveTime){
 }
 
 
-
-
-void thinkerMasterMethod(){
+void thinkerMasterMethod(BOARD thinkerBoard){
     printf("Hi I am very good at thinking\n");
 
     basicTests();

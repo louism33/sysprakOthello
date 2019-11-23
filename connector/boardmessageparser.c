@@ -52,9 +52,22 @@
 
 #include "boardmessageparser.h"
 
-#define MOVE int
-#define BOARD int*
 
+#define MOVE int
+#define SIDE_TO_MOVE int
+#define BOARD int*
+#define MOVES int*
+
+#define BLACK 2
+#define WHITE 1
+
+#define STARTING_WHITE_POSITION_1 27
+#define STARTING_WHITE_POSITION_2 36
+#define STARTING_BLACK_POSITION_1 28
+#define STARTING_BLACK_POSITION_2 35
+
+#define STARTING_PLAYER BLACK
+#define SWITCH_PLAYER_CONSTANT 3
 
 /*
 + TOTAL 2
@@ -84,7 +97,7 @@ size_t maxGroups = 2;
 regex_t regexCompiled;
 
 void setupMessageParser() { // we do this to avoid wasting memory and compute on regex patterns
-    if (messageParserReady){
+    if (messageParserReady) {
         printf("message parser already set up\n");
         return;
     }
@@ -106,16 +119,29 @@ void printBoardLouis(BOARD board) {
 }
 
 void printBoardLouisSide(BOARD board, SIDE_TO_MOVE sideToMove) {
+
     for (int i = 0; i < 64; i++) {
         if (i % 8 == 0) {
             printf("\n");
         }
-        printf("%d ", board[i]);
+//        printf("%d ", board[i]);
+        if (board[i] == WHITE) {
+            printf("W ");
+        } else if (board[i] == BLACK) {
+            printf("B ");
+        } else {
+            printf(". ", board[i]);
+        }
     }
     printf("\n");
-    if (sideToMove){
+    if (sideToMove) {
         printf("%d to move\n", sideToMove);
-    }else {
+        if (sideToMove == BLACK) {
+            printf("Black to move\n");
+        } else {
+            printf("White to move\n");
+        }
+    } else {
         printf("I don't know whose turn it is\n");
     }
     printf("-----------\n");

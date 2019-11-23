@@ -16,7 +16,7 @@ typedef struct moveTimeAndBoard {
     int *board;
 } moveTimeAndBoard;
 
-void parseBoardMessage(int* board, moveTimeAndBoard *moveTimeAndBoard, char *message);
+void parseBoardMessage(int *board, moveTimeAndBoard *moveTimeAndBoard, char *message);
 
 void exampleUseCaseOfMessageParsing();
 

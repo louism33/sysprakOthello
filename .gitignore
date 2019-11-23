@@ -5,6 +5,9 @@ clion-log.txt
 .cproject
 language.settings.xml
 .settings/
+makefileM
+.DS_store
+.project
 
 # Prerequisites
 *.d

@@ -6,8 +6,15 @@
 #define SYSPRAKOTHELLO_PERFORMCONNECTION_H
 
 
-int performConnection(int sock,char* version,char*id,char* player);
+int performConnection(int sock, char *version, char *id, char *player);
 
-int performConnectionLouisint sock, char *gameID, char *player, char *gameKindName, BOARD connectorBoard, BOARD connectorBoard);
+int performConnectionLouisint
+sock,
+char *gameID,
+char *player,
+char *gameKindName, BOARD
+connectorBoard,
+BOARD connectorBoard
+);
 
 #endif //SYSPRAKOTHELLO_PERFORMCONNECTION_H

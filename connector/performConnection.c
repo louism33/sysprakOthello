@@ -50,7 +50,9 @@
 #define MOVE int
 #define BOARD int*
 
-enum Phase {PROLOG = 0, SPIELVERLAUF = 1, SPIELZUG = 2};
+enum Phase {
+    PROLOG = 0, SPIELVERLAUF = 1, SPIELZUG = 2
+};
 
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
@@ -59,13 +61,15 @@ enum Phase {PROLOG = 0, SPIELVERLAUF = 1, SPIELZUG = 2};
 int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));
     printf("Sending to server-> %s\n", message);
+    return 0;
 }
 
 char *convertMove(int move) {
+    printf("%d\n", move);
     return "D3"; // todo, implement conversion between 0-63 and [A-H][1-8]
 }
 
-int dealWithGameOverCommand(char* buff) {
+int dealWithGameOverCommand(char *buff) {
     /*
 S: + GAMEOVER
 S: + FIELD hh Anzahl Spalten ii,hh Anzahl Zeilen ii
@@ -82,6 +86,8 @@ wird an alle Mitspieler geschickt. Zudem wird angegeben, welche Mitspieler gewon
 eine Partie in einem Unentschieden endet. In dem Fall ist allen Mitspielern der Gewinnstatus der Partie auf Yes gesetzt.
 Nach QUIT beendet der Server die Verbindung
      */
+
+    printf("%s\n", buff);
     return 0; // todo, implement
 }
 
@@ -163,7 +169,8 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 }
 
                 bzero(buff, sizeof(buff));
-                while ((readResponse = read(sockfd, buff, sizeof(buff))) && strlen(buff) < 1); // todo, possibly stick to only one central read?
+                while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
+                       strlen(buff) < 1); // todo, possibly stick to only one central read?
                 printf("%s\n", buff);
 
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
@@ -207,7 +214,8 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
 
-                moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard, moveTimeAndBoard->movetime);
+                moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
+                                                                 moveTimeAndBoard->movetime);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);
                 if (strlen(moveReceivedFromThinkerTEMP) != 2) {
                     fprintf(stderr, "move of incorrect length received from thinker: %s\n",

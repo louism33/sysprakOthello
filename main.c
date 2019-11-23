@@ -14,8 +14,22 @@
 
 #include "connector/boardmessageparser.h"
 
+
 #define MOVE int
+#define SIDE_TO_MOVE int
 #define BOARD int*
+#define MOVES int*
+
+#define BLACK 2
+#define WHITE 1
+
+#define STARTING_WHITE_POSITION_1 27
+#define STARTING_WHITE_POSITION_2 36
+#define STARTING_BLACK_POSITION_1 28
+#define STARTING_BLACK_POSITION_2 35
+
+#define STARTING_PLAYER BLACK
+#define SWITCH_PLAYER_CONSTANT 3
 
 
 // if thinker is parent, retry logic may be easier to implement
@@ -30,10 +44,15 @@ int main(int argc, char *argv[]) {
     BOARD connectorBoard = malloc(64 * sizeof(int));
     BOARD thinkerBoard = malloc(64 * sizeof(int));
 
+<<<<<<< HEAD
 //    exampleUseCaseOfMessageParsing();
 
 //    thinkerMasterMethod();
   connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
+=======
+    thinkerMasterMethod(thinkerBoard);
+//    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
+>>>>>>> fb135fa10bbc53891748a00b1aef23a2e5aa5310
 
     return 0;
 }

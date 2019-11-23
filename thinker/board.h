@@ -1,9 +1,5 @@
-//
-// Created by louis on 11/23/19.
-//
 
-#ifndef SYSPRAKOTHELLO_BOARDTESTS_H
-#define SYSPRAKOTHELLO_BOARDTESTS_H
+
 
 #define MOVE int
 #define SIDE_TO_MOVE int
@@ -20,6 +16,9 @@
 
 #define STARTING_PLAYER BLACK
 #define SWITCH_PLAYER_CONSTANT 3
-int basicTests();
 
-#endif //SYSPRAKOTHELLO_BOARDTESTS_H
+
+int getTotalNumberOfLegalMoves(int *board, int TARGET_PLAYER);
+
+
+void printBoard(BOARD board);

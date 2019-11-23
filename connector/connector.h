@@ -11,5 +11,6 @@
 
 int connectorMasterMethod(BOARD connectorBoard, BOARD thinkerBoard, int argc, char *argv[]);
 
+void performConnection();
 
 #endif //ALEXTHEFRIENDLYAI_CONNECTOR_H

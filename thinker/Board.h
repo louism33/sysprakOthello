@@ -1,4 +1,4 @@
 
 
 
- int getTotalNumberOfLegalMoves(int *board, int TARGET_PLAYER);
+int getTotalNumberOfLegalMoves(int *board, int TARGET_PLAYER);

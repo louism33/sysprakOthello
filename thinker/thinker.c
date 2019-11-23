@@ -12,14 +12,14 @@
 #define BOARD int*
 #define SIDE_TO_MOVE int
 
-MOVE doThink(BOARD board , int moveTime){
+MOVE doThink(BOARD board, int moveTime) {
     printf("received doThink command from connector, time to move %d\n", moveTime);
 
     return 0; // todo, implement to return any move (later we make it good) that can legally be played on the board
 }
 
 
-void thinkerMasterMethod(BOARD thinkerBoard){
+void thinkerMasterMethod(BOARD thinkerBoard) {
     printf("Hi I am very good at thinking\n");
 
     basicTests();
@@ -45,12 +45,11 @@ void thinkerMasterMethod(BOARD thinkerBoard){
 
 /*think() Methode: wartet auf Signal SIGURS1 und ließt anschließend alle benötigten Infos
  aus dem SM und berechnet Spielzug*/
-void think()
-{
-	/* readShm()
-	makeMove1()
-	makeMove2()
-	printBoard()
-	writePipe()*/
+void think() {
+    /* readShm()
+    makeMove1()
+    makeMove2()
+    printBoard()
+    writePipe()*/
 
 }

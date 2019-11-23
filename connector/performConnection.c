@@ -140,7 +140,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     printf("########## %s\n", gameKindName);
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-            printf("FROM SERVER:::%s\n", buff);
+            printf("%s\n", buff);
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {

@@ -1,10 +1,10 @@
 CC=gcc
 CFLAGS=-I -Wall -Wextra
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
-	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/Board.h
+	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/board.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o \
 	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o \
-	thinker/Board.h
+	thinker/board.h
 # todo, replace above with discoveries (find c files and replace extensions)
 
 # these are the "legitimate" targets

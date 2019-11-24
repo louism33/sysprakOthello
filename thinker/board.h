@@ -36,7 +36,7 @@ typedef struct STACK_OBJECT {
 typedef struct STACK {
     // we allow 64 moves to be stored on the stack. Technically still risky, as more than 64 moves can occur due to passing,
     // but unrealistic given compute constraints
-    STACK_OBJECT stackArray[64];
+    STACK_OBJECT *stackArray;
 } STACK;
 
 typedef int *BOARD;
@@ -45,7 +45,7 @@ typedef struct BOARD_STRUCT  {
     // BOARD has our board array, a side to move to determine the current player, and a stack to enable unmakeMove()
     BOARD board;
     SIDE_TO_MOVE sideToMove;
-    STACK stack; // used to unmake a move
+    STACK *stack; // used to unmake a move
 } BOARD_STRUCT;
 
 // can't have more than 64 moves (and can't have exactly 64 either)

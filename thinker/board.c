@@ -42,6 +42,14 @@ void resetBoardToZero(BOARD board) {
     }
 }
 
+
+void freeBoardStruct(BOARD_STRUCT* boardStruct){
+    free(boardStruct->stack->stackArray);
+//    free(boardStruct->stack);
+    free(boardStruct->board);
+}
+
+
 void initialiseBoardStructToStarter(BOARD_STRUCT* boardStruct){
     boardStruct->board = malloc(64 * sizeof(int));
     resetBoardToStarter(boardStruct->board);

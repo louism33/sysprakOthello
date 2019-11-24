@@ -21,6 +21,7 @@ configurationStruct *readConfigurationFile(char *pathName) {
     struct configurationStruct *configurationStruct = malloc(
             sizeof(configurationStruct));
 
+    // todo, careful of malloc here
     configurationStruct->hostname = (char *) malloc(200);
     configurationStruct->gamekindname = (char *) malloc(200);
 

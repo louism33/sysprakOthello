@@ -275,6 +275,8 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
             bzero(buff, sizeof(buff));
         }
     }
+
+    free(moveTimeAndBoard);
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT  *connectorBoard,

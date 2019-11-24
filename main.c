@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,12 +46,27 @@ int main(int argc, char *argv[]) {
     // todo, this is just an idea, it depends on how we do shm (shared memory)
     // we will use two separate boards. One for connector that we will update with info from server
     // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
-    BOARD_STRUCT  connectorBoard;// = malloc(64 * sizeof(int));
-    BOARD_STRUCT  thinkerBoard;// = malloc(64 * sizeof(int));
 
+//    BOARD_STRUCT* connectorBoard = malloc(sizeof(BOARD_STRUCT));
+//    initialiseBoardStructToStarter(connectorBoard);
 
+    BOARD_STRUCT *thinkerBoard  = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToStarter(thinkerBoard);
 
-//    thinkerMasterMethod(thinkerBoard);
+//    printf("->%d\n", thinkerBoard->board);
+
+//    BOARD* b = thinkerBoard->board;
+//    printf("----------\n");
+//    printf("%d\n", b);
+//    printf("%d\n", b[0]);
+//    printf("%d\n", b[1]);
+//    printf("%d\n", b[2]);
+//    printf("--->\n");
+//    printf("--->%d\n", thinkerBoard->board);
+//    printf("--->%d\n", thinkerBoard->sideToMove);
+//    printf("--->XXXXXXXXXXXXXXXx\n");
+
+    thinkerMasterMethod(thinkerBoard);
 //    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
 
     return 0;

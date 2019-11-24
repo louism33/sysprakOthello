@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include "board.h"
 
 #define ZEILE 8
 #define SPALTE 8
-
 
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
@@ -24,8 +24,6 @@
 #define STARTING_BLACK_POSITION_1 28
 #define STARTING_BLACK_POSITION_2 35
 
-
-
 #define LAST_MOVE (-1)
 
 void resetBoardToStarter(BOARD board) {
@@ -36,6 +34,24 @@ void resetBoardToStarter(BOARD board) {
     board[28] = BLACK;
     board[35] = BLACK;
     board[36] = WHITE;
+}
+
+void resetBoardToZero(BOARD board) {
+    for (int i = 0; i < 64; i++) {
+        board[i] = 0;
+    }
+}
+
+void initialiseBoardStructToStarter(BOARD_STRUCT* boardStruct){
+    boardStruct->board = malloc(64 * sizeof(int));
+    resetBoardToStarter(boardStruct->board);
+    boardStruct->sideToMove = STARTING_PLAYER;
+}
+
+void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct){
+    boardStruct->board = malloc(64 * sizeof(int));
+    resetBoardToZero(boardStruct->board);
+    boardStruct->sideToMove = STARTING_PLAYER;
 }
 
 void printBoard(BOARD board) {

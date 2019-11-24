@@ -28,12 +28,12 @@ typedef struct moveTimeAndBoard {
     int *board;
 } moveTimeAndBoard;
 
-void parseBoardMessage(BOARD_STRUCT board, moveTimeAndBoard *moveTimeAndBoard, char *message);
+void parseBoardMessage(BOARD_STRUCT* board, moveTimeAndBoard *moveTimeAndBoard, char *message);
 
 void exampleUseCaseOfMessageParsing();
 
-void printBoardLouis(BOARD_STRUCT board);
+void printBoardLouis(BOARD_STRUCT* board);
 
-void printBoardLouisSide(BOARD_STRUCT board, SIDE_TO_MOVE sideToMove);
+void printBoardLouisSide(BOARD_STRUCT* b, SIDE_TO_MOVE sideToMove);
 
 #endif //SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H

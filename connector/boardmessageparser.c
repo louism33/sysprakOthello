@@ -114,12 +114,12 @@ void tearDownMessageParser() {
 }
 
 
-void printBoardLouis(BOARD_STRUCT  board) {
+void printBoardLouis(BOARD_STRUCT  *board) {
     printBoardLouisSide(board, 0);
 }
 
-void printBoardLouisSide(BOARD_STRUCT  b, SIDE_TO_MOVE sideToMove) {
-    int *board = b.board;
+void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
+    int *board = b->board;
 
     for (int i = 0; i < 64; i++) {
         if (i % 8 == 0) {
@@ -148,41 +148,41 @@ void printBoardLouisSide(BOARD_STRUCT  b, SIDE_TO_MOVE sideToMove) {
     printf("-----------\n");
 }
 
-void exampleUseCaseOfMessageParsing() {
-//    setupMessageParser();
+//void exampleUseCaseOfMessageParsing() {
+////    setupMessageParser();
+//
+//    char *exampleBoardMessage = "+ TOTAL 2\n"
+//                                "+ 0 IAMLOUIS 0\n"
+//                                "+ ENDPLAYERS\n"
+//                                "+ MOVE 3000\n"
+//                                "+ FIELD 8,8\n"
+//                                "+ 8 * * * * * * * *\n"
+//                                "+ 7 * * * * * B B B\n"
+//                                "+ 6 * * * * * W * *\n"
+//                                "+ 5 * * W W W B * *\n"
+//                                "+ 4 * B B B B * * *\n"
+//                                "+ 3 * * W * * * * *\n"
+//                                "+ 2 * * * * * * * *\n"
+//                                "+ 1 * * * * * * * *\n"
+//                                "+ ENDFIELD";
+//
+//
+//    BOARD_STRUCT  board;// = malloc(64 * sizeof(int)); // blank board
+//
+//    printBoardLouis(board);
+//
+//    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
+//
+//    parseBoardMessage(board, moveTimeAndBoard, exampleBoardMessage);
+//
+//    printBoardLouis(board);
+//
+////    tearDownMessageParser();
+//}
 
-    char *exampleBoardMessage = "+ TOTAL 2\n"
-                                "+ 0 IAMLOUIS 0\n"
-                                "+ ENDPLAYERS\n"
-                                "+ MOVE 3000\n"
-                                "+ FIELD 8,8\n"
-                                "+ 8 * * * * * * * *\n"
-                                "+ 7 * * * * * B B B\n"
-                                "+ 6 * * * * * W * *\n"
-                                "+ 5 * * W W W B * *\n"
-                                "+ 4 * B B B B * * *\n"
-                                "+ 3 * * W * * * * *\n"
-                                "+ 2 * * * * * * * *\n"
-                                "+ 1 * * * * * * * *\n"
-                                "+ ENDFIELD";
 
-
-    BOARD_STRUCT  board;// = malloc(64 * sizeof(int)); // blank board
-
-    printBoardLouis(board);
-
-    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
-
-    parseBoardMessage(board, moveTimeAndBoard, exampleBoardMessage);
-
-    printBoardLouis(board);
-
-//    tearDownMessageParser();
-}
-
-
-void parseBoardMessage(BOARD_STRUCT  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
-    int *boardBoard = board.board;
+void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
+    int *boardBoard = board->board;
     setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
     regmatch_t groupArray[maxGroups];
 

@@ -25,17 +25,18 @@
 #define STARTING_BLACK_POSITION_2 35
 
 
-MOVE doThink(BOARD_STRUCT  board, int moveTime) {
+MOVE doThink(BOARD_STRUCT *board, int moveTime) {
     printf("received doThink command from connector, time to move %d\n", moveTime);
 
     return 0; // todo, implement to return any move (later we make it good) that can legally be played on the board
 }
 
 
-void thinkerMasterMethod(BOARD_STRUCT  thinkerBoard) {
+void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard) {
     printf("Hi I am very good at thinking\n");
+    printf("Hi I am very good at thinking   %d\n", thinkerBoard);
 
-    printBoard(thinkerBoard.board);
+//    printBoard(thinkerBoard->board);
 
     basicTests();
 

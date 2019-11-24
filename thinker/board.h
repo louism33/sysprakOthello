@@ -39,7 +39,7 @@ typedef struct STACK {
     STACK_OBJECT stackArray[64];
 } STACK;
 
-typedef int* BOARD;
+typedef int *BOARD;
 
 typedef struct BOARD_STRUCT  {
     // BOARD has our board array, a side to move to determine the current player, and a stack to enable unmakeMove()
@@ -54,6 +54,9 @@ typedef int* MOVES;
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER);
 
 void printBoard(BOARD board);
+
+void initialiseBoardStructToStarter(BOARD_STRUCT* boardStruct);
+void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct);
 
 #endif //SYSPRAKOTHELLO_BOARD_H
 

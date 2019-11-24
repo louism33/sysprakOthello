@@ -107,10 +107,10 @@ Nach QUIT beendet der Server die Verbindung
     return 0; // todo, implement
 }
 
-char *getMoveFromThinker(BOARD_STRUCT  connectorBoard, BOARD_STRUCT  thinkerBoard, int moveTime) {
-    memcpy(thinkerBoard.board, connectorBoard.board, sizeof(int) * 8 * 8);
+char *getMoveFromThinker(BOARD_STRUCT  *connectorBoard, BOARD_STRUCT * thinkerBoard, int moveTime) {
+    memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
 
-    thinkerBoard.sideToMove = connectorBoard.sideToMove;
+    thinkerBoard->sideToMove = connectorBoard->sideToMove;
 
     int move = doThink(thinkerBoard, moveTime);
 
@@ -124,8 +124,8 @@ char *getMoveFromThinker(BOARD_STRUCT  connectorBoard, BOARD_STRUCT  thinkerBoar
 }
 
 // todo, handle end state, what do we do once game is over?
-void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT  connectorBoard,
-                                BOARD_STRUCT  thinkerBoard) {
+void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT * connectorBoard,
+                                BOARD_STRUCT * thinkerBoard) {
     char buff[MAX]; // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64]; // example: Game from 2019-11-18 17:42
     char playerNumber[32];
@@ -277,8 +277,8 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     }
 }
 
-int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT  connectorBoard,
-                           BOARD_STRUCT  thinkerBoard) {
+int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT  *connectorBoard,
+                           BOARD_STRUCT * thinkerBoard) {
 
     haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard);
 

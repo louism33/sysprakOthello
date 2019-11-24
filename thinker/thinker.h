@@ -25,8 +25,8 @@
 #define STARTING_BLACK_POSITION_2 35
 
 
-void thinkerMasterMethod(BOARD_STRUCT  thinkerBoard);
+void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard);
 
-MOVE doThink(BOARD_STRUCT  board, int moveTime);
+MOVE doThink(BOARD_STRUCT* board, int moveTime);
 
 #endif //ALEXTHEFRIENDLYAI_THINKER_H

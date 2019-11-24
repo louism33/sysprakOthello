@@ -114,7 +114,7 @@ char *lookup_host(const char *host) { // todo move sock creation to here?
 }
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
-                        int usingCustomConfigFile, char *filePath, BOARD_STRUCT  connectorBoard, BOARD_STRUCT  thinkerBoard) {
+                        int usingCustomConfigFile, char *filePath, BOARD_STRUCT  *connectorBoard, BOARD_STRUCT * thinkerBoard) {
 
     printf("Attempting to connect to game server.\n");
 
@@ -198,7 +198,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     return 0;
 }
 
-int connectorMasterMethod(BOARD_STRUCT  connectorBoard, BOARD_STRUCT  thinkerBoard, int argc, char *argv[]) {
+int connectorMasterMethod(BOARD_STRUCT * connectorBoard, BOARD_STRUCT * thinkerBoard, int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
 //	char *configFromEnvironment = getenv("CONFIG_FILE");
 //	printf("     config file is %s \n", configFromEnvironment);

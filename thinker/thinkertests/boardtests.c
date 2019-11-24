@@ -34,8 +34,10 @@ int switchPlayer(SIDE_TO_MOVE sideToMove) {
 
 int testStartingBoard1() {
     // starting board normal
-    BOARD_STRUCT  b;
-    int *board = b.board;;
+    BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    printf("xxx\n");
+    int *board = b->board;
 
     board[STARTING_WHITE_POSITION_1] = board[STARTING_WHITE_POSITION_2] = WHITE;
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
@@ -60,8 +62,9 @@ int testStartingBoard1() {
 
 int testStartingBoard2() {
     // starting board with other player first
-    BOARD_STRUCT  b;
-    int *board = b.board;;
+     BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
     board[STARTING_WHITE_POSITION_1] = board[STARTING_WHITE_POSITION_2] = WHITE;
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
@@ -83,8 +86,9 @@ int testStartingBoard2() {
 }
 
 int testBoardAfterOneMove() {
-    BOARD_STRUCT  b;
-    int *board = b.board;;
+     BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
     board[STARTING_WHITE_POSITION_2] = WHITE;
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
@@ -109,8 +113,9 @@ int testBoardAfterOneMove() {
 
 
 int testWeirdImpossibleBoard() {
-    BOARD_STRUCT  b;
-    int *board = b.board;;
+     BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
     board[0] = WHITE;
     board[1] = board[8] = BLACK;
@@ -132,8 +137,9 @@ int testWeirdImpossibleBoard() {
 }
 
 int testWeirdImpossibleBoard2() {
-    BOARD_STRUCT  b;
-    int *board = b.board;;
+     BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
     board[0] = WHITE;
     board[1] = board[8] = board[9] = BLACK;
@@ -156,8 +162,9 @@ int testWeirdImpossibleBoard2() {
 }
 
 int testAvoidTheDuplicateMove() {
-    BOARD_STRUCT  b;
-    int *board = b.board;;
+     BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
     board[0] = board[4] = WHITE;
     board[1] = board[3] = BLACK;
@@ -180,8 +187,9 @@ int testAvoidTheDuplicateMove() {
 }
 
 int testAvoidTheDuplicateMove2() {
-    BOARD_STRUCT  b;
-    int *board = b.board;;
+     BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
     board[0] = board[4] = board[10] = BLACK;
     board[1] = board[3] = board[18] = WHITE;
@@ -204,8 +212,8 @@ int testAvoidTheDuplicateMove2() {
 }
 
 int testAvoidMovingOffTheSideOfTheBoard() {
-    BOARD_STRUCT b;
-    int *board = b.board;;
+     BOARD_STRUCT* b = malloc(sizeof(BOARD_STRUCT));;
+    int *board = b->board;
 
     board[0] = board[4] = board[18] = BLACK;
     board[1] = board[3] = board[10] = WHITE;

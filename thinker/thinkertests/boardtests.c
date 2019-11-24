@@ -275,3 +275,9 @@ int basicTests() {
 
     return 0; // success
 }
+
+
+int fullTestSuite(){
+    return basicTests();
+
+}

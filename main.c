@@ -14,10 +14,10 @@
 #include <string.h>
 #include "connector/connector.h"
 #include "thinker/thinker.h"
-//
 #include "connector/config.h"
-//
 #include "connector/boardmessageparser.h"
+#include "thinker/thinkertests/boardtests.h"
+
 
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
@@ -43,6 +43,16 @@
 int main(int argc, char *argv[]) {
     printf("Hello World! I am Alex. This is the main method\n");
 
+    if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
+        printf("Running full test Suite\n");
+        int fail = fullTestSuite();
+        if (fail){
+            printf("Some tests failed, please fix them as soon as possible.\n");
+        }
+        return fail;
+    }
+
+
     // todo, this is just an idea, it depends on how we do shm (shared memory)
     // we will use two separate boards. One for connector that we will update with info from server
     // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
@@ -53,8 +63,13 @@ int main(int argc, char *argv[]) {
     BOARD_STRUCT *thinkerBoard  = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
 
+
+
     thinkerMasterMethod(thinkerBoard);
 //    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
+
+
+
 
     freeBoardStruct(connectorBoard);
     freeBoardStruct(thinkerBoard);

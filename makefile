@@ -21,6 +21,11 @@ else
 	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE)
 endif
 
+# test target
+test: $(OBJ) sysprak-client
+	make -B && ./sysprak-client TEST
+
+
 
 # these targets will connect to our mock server
 x-helper-mock: $(OBJ) sysprak-client

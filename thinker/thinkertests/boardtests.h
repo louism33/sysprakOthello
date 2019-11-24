@@ -24,5 +24,6 @@
 
 
 int basicTests();
+int fullTestSuite();
 
 #endif //SYSPRAKOTHELLO_BOARDTESTS_H

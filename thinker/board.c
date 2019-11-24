@@ -44,7 +44,7 @@ void resetBoardToZero(BOARD board) {
 
 
 void freeBoardStruct(BOARD_STRUCT* boardStruct){
-    free(boardStruct->stack->stackArray);
+//    free(boardStruct->stack->stackArray);
 //    free(boardStruct->stack);
     free(boardStruct->board);
 }

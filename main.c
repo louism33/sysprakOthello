@@ -17,6 +17,7 @@
 #include "connector/config.h"
 #include "connector/boardmessageparser.h"
 #include "thinker/thinkertests/boardtests.h"
+#include "connector/connectorTests/connectortests.h"
 
 
 // pieces and SIDE_TO_MOVE constants
@@ -49,8 +50,10 @@ int main(int argc, char *argv[]) {
         if (fail){
             printf("Some tests failed, please fix them as soon as possible.\n");
         }
+        int test=testConvertMove();
         return fail;
     }
+    
 
 
     // todo, this is just an idea, it depends on how we do shm (shared memory)

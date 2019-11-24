@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
         // }
         printf("debug2\n");
         int test=testConvertMove();
-       // printf("debug");
+        printf("debug\n");
         return 0;
     }
     

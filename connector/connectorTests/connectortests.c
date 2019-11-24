@@ -6,10 +6,13 @@
 
 int testConvertMove()
 {   
-    //char *test=malloc(sizeof(char)*10);
-    
-    char *test=convertMove(0);
-    printf("Test of converMove(0): %s\n",test);
+    char *test=malloc(sizeof(char)*10);
+    char *move=convertMove(0);
+    strcpy(test,move);
+
+    //char *convertedMove = convertMove(0);
+
+    printf("converted move is: %s\n", test);
     
     
     // if (strcmp(test,"A8") != 0)

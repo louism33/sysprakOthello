@@ -25,6 +25,9 @@ endif
 test: $(OBJ) sysprak-client
 	make -B && ./sysprak-client TEST
 
+tests: $(OBJ) sysprak-client
+	make -B && ./sysprak-client TEST
+
 
 
 # these targets will connect to our mock server

@@ -34,9 +34,6 @@ MOVE doThink(BOARD_STRUCT *board, int moveTime) {
 
 void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard) {
     printf("Hi I am very good at thinking\n");
-    printf("Hi I am very good at thinking   %d\n", thinkerBoard);
-
-//    printBoard(thinkerBoard->board);
 
     basicTests();
 

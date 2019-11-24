@@ -1,11 +1,9 @@
 //
-// Created by louis on 11/13/19.
+// Created by louis on 11/23/19.
 //
 
-#ifndef ALEXTHEFRIENDLYAI_THINKER_H
-#define ALEXTHEFRIENDLYAI_THINKER_H
-
-#include "board.h"
+#ifndef SYSPRAKOTHELLO_BOARDTESTS_H
+#define SYSPRAKOTHELLO_BOARDTESTS_H
 
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
@@ -25,8 +23,7 @@
 #define STARTING_BLACK_POSITION_2 35
 
 
-void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard);
+int basicTests();
+int fullTestSuite();
 
-MOVE doThink(BOARD_STRUCT* board, int moveTime);
-
-#endif //ALEXTHEFRIENDLYAI_THINKER_H
+#endif //SYSPRAKOTHELLO_BOARDTESTS_H

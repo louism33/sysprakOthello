@@ -1,3 +1,4 @@
+#include "../thinker/board.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -47,8 +48,23 @@
 
 #define MAX 240
 #define PLAYER
-#define MOVE int
-#define BOARD int*
+// pieces and SIDE_TO_MOVE constants
+#define BLACK 2
+#define WHITE 1
+#define EMPTY 0
+
+// black makes first move
+#define STARTING_PLAYER BLACK
+
+// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
+#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
+
+// 4 square occupied in starting board
+#define STARTING_WHITE_POSITION_1 27
+#define STARTING_WHITE_POSITION_2 36
+#define STARTING_BLACK_POSITION_1 28
+#define STARTING_BLACK_POSITION_2 35
+
 
 enum Phase {
     PROLOG = 0, SPIELVERLAUF = 1, SPIELZUG = 2
@@ -138,8 +154,10 @@ Nach QUIT beendet der Server die Verbindung
     return 0; // todo, implement
 }
 
-char *getMoveFromThinker(BOARD connectorBoard, BOARD thinkerBoard, int moveTime) {
-    memcpy(thinkerBoard, connectorBoard, sizeof(int) * 8 * 8);
+char *getMoveFromThinker(BOARD_STRUCT  *connectorBoard, BOARD_STRUCT * thinkerBoard, int moveTime) {
+    memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
+
+    thinkerBoard->sideToMove = connectorBoard->sideToMove;
 
     int move = doThink(thinkerBoard, moveTime);
 
@@ -153,8 +171,8 @@ char *getMoveFromThinker(BOARD connectorBoard, BOARD thinkerBoard, int moveTime)
 }
 
 // todo, handle end state, what do we do once game is over?
-void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD connectorBoard,
-                                BOARD thinkerBoard) {
+void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT * connectorBoard,
+                                BOARD_STRUCT * thinkerBoard) {
     char buff[MAX]; // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64]; // example: Game from 2019-11-18 17:42
     char playerNumber[32];
@@ -302,10 +320,12 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
             bzero(buff, sizeof(buff));
         }
     }
+
+    free(moveTimeAndBoard);
 }
 
-int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD connectorBoard,
-                           BOARD thinkerBoard) {
+int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT  *connectorBoard,
+                           BOARD_STRUCT * thinkerBoard) {
 
     haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard);
 

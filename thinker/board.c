@@ -2,27 +2,29 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include "board.h"
 
 #define ZEILE 8
 #define SPALTE 8
-#define EMPTY 0
-#define WHITE 1
+
+// pieces and SIDE_TO_MOVE constants
 #define BLACK 2
-#define LAST_MOVE (-1)
-#define SIDE_TO_MOVE int
+#define WHITE 1
+#define EMPTY 0
 
-#define MOVE int
-#define SIDE_TO_MOVE int
-#define BOARD int*
-#define MOVES int*
+// black makes first move
+#define STARTING_PLAYER BLACK
 
+// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
+#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
+
+// 4 square occupied in starting board
 #define STARTING_WHITE_POSITION_1 27
 #define STARTING_WHITE_POSITION_2 36
 #define STARTING_BLACK_POSITION_1 28
 #define STARTING_BLACK_POSITION_2 35
 
-#define STARTING_PLAYER BLACK
-#define SWITCH_PLAYER_CONSTANT 3
+#define LAST_MOVE (-1)
 
 void resetBoardToStarter(BOARD board) {
     for (int i = 0; i < 64; i++) {
@@ -32,6 +34,32 @@ void resetBoardToStarter(BOARD board) {
     board[28] = BLACK;
     board[35] = BLACK;
     board[36] = WHITE;
+}
+
+void resetBoardToZero(BOARD board) {
+    for (int i = 0; i < 64; i++) {
+        board[i] = 0;
+    }
+}
+
+
+void freeBoardStruct(BOARD_STRUCT* boardStruct){
+//    free(boardStruct->stack->stackArray);
+//    free(boardStruct->stack);
+    free(boardStruct->board);
+}
+
+
+void initialiseBoardStructToStarter(BOARD_STRUCT* boardStruct){
+    boardStruct->board = malloc(64 * sizeof(int));
+    resetBoardToStarter(boardStruct->board);
+    boardStruct->sideToMove = STARTING_PLAYER;
+}
+
+void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct){
+    boardStruct->board = malloc(64 * sizeof(int));
+    resetBoardToZero(boardStruct->board);
+    boardStruct->sideToMove = STARTING_PLAYER;
 }
 
 void printBoard(BOARD board) {
@@ -216,9 +244,9 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     return speicher;
 }
 
-int *getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES allMoves = malloc(64 * sizeof(int)); // todo, clean up memory
-    MOVES speicher = malloc(64 * sizeof(int));
+MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
+    MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
+    MOVES speicher= malloc(64 * sizeof(int));
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < 64; pos++) {
@@ -251,7 +279,7 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
         }
         total++;
     }
-    printf("did not find a LAST_MOVE... are you sure you did not nake a mistake\n");
+    printf("did not find a LAST_MOVE... are you sure you did not make a mistake\n");
     exit(1);
 }
 

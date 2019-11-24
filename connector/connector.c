@@ -1,3 +1,4 @@
+#include "../thinker/board.h"
 #include "connector.h"
 #include "performConnection.c"
 #include "mockgameserver.h"
@@ -41,19 +42,29 @@
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
-#define MOVE int
-#define BOARD int*
 
+// pieces and SIDE_TO_MOVE constants
+#define BLACK 2
+#define WHITE 1
+#define EMPTY 0
 
-char *lookup_host(const char *host) { // todo move sock creation to here?
+// black makes first move
+#define STARTING_PLAYER BLACK
 
+// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
+#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
+
+// 4 square occupied in starting board
+#define STARTING_WHITE_POSITION_1 27
+#define STARTING_WHITE_POSITION_2 36
+#define STARTING_BLACK_POSITION_1 28
+#define STARTING_BLACK_POSITION_2 35
+
+char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock creation to here?
     struct addrinfo hints, *res;
     int errcode;
     char addrstr[100];
-    char *finalAddrstr;
     void *ptr;
-
-    finalAddrstr = malloc(sizeof(char) * 200); // todo clean this memory in calling function
 
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = PF_UNSPEC;
@@ -63,14 +74,12 @@ char *lookup_host(const char *host) { // todo move sock creation to here?
     errcode = getaddrinfo(host, NULL, &hints, &res);
     if (errcode != 0) {
         perror("getaddrinfo");
-        return "x";
+        return 0;
     }
 
     printf("Host: %s\n", host);
     while (res) {
         inet_ntop(res->ai_family, res->ai_addr->sa_data, addrstr, 100);
-
-//        printf("addrstr:    %s \n", addrstr);
 
         switch (res->ai_family) {
             case AF_INET:
@@ -96,7 +105,8 @@ char *lookup_host(const char *host) { // todo move sock creation to here?
 }
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
-                        int usingCustomConfigFile, char *filePath, BOARD connectorBoard, BOARD thinkerBoard) {
+                        int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
+                        BOARD_STRUCT *thinkerBoard) {
 
     printf("Attempting to connect to game server.\n");
 
@@ -133,7 +143,6 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         configurationStruct = malloc(sizeof(configurationStruct));
         configurationStruct->gamekindname = "REVERSI";
 
-
     } else {
         char host[150];
 
@@ -148,7 +157,16 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
                 readConfigurationFile(filePath) :
                 readConfigurationFile(DEFAULT_FILE_PATH);
 
-        strcpy(host, lookup_host(configurationStruct->hostname));
+        char *finalAddrstr = malloc(sizeof(char) * 200);
+        finalAddrstr = lookup_host(configurationStruct->hostname, finalAddrstr);
+
+        if (finalAddrstr) {
+            strcpy(host, lookup_host(configurationStruct->hostname, finalAddrstr));
+        } else {
+            strcpy(host, "10.155.92.35");
+        }
+
+        free(finalAddrstr);
 
         if (strlen(host) == 0) {
             printf("ERROR, no host found\n");
@@ -174,13 +192,16 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     performConnectionLouis(sock, gameID, player,
                            configurationStruct->gamekindname, connectorBoard, thinkerBoard);
 
+    free(configurationStruct->gamekindname);
+    free(configurationStruct->hostname);
+    free(configurationStruct);
     close(sock);
 
     printf("i guess we are done\n");
     return 0;
 }
 
-int connectorMasterMethod(BOARD connectorBoard, BOARD thinkerBoard, int argc, char *argv[]) {
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
 //	char *configFromEnvironment = getenv("CONFIG_FILE");
 //	printf("     config file is %s \n", configFromEnvironment);

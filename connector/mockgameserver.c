@@ -61,35 +61,6 @@ int dummyInteraction(int sockfd) {
     write(sockfd, buff, sizeof(buff)); //将内容写给客户端
     bzero(buff, MAX);
 
-<<<<<<< HEAD
-	read(sockfd, buff, sizeof(buff));
-
-	if (strncmp("VERSION 2.", buff, 10) != 0) {
-		fprintf(stderr, "MOCKGAMESERVER: INCORRECT VERSION RESPONSE\n");
-		fprintf(stderr, "You sent \n->%s<-\n", buff);
-		fprintf(stderr, "Server will exit...\n");
-		bzero(buff, MAX);
-		return -1;
-	}
-//    fprintf(stderr, "You correctly sent version information!\n");
-
-    // game ID
-	bzero(buff, MAX);
-	strncpy(buff, "+ Client version accepted - please send Game-ID to join",
-			120);
-	write(sockfd, buff, sizeof(buff));
-	bzero(buff, MAX);
-
-	read(sockfd, buff, sizeof(buff));
-
-	if (strncmp("ID ", buff, 3) != 0 || strlen(buff) != 17) {
-		fprintf(stderr, "MOCKGAMESERVER: INCORRECT ID RESPONSE\n");
-		fprintf(stderr, "You sent %s\n", buff);
-		fprintf(stderr, "Server will exit...\n");
-		bzero(buff, MAX);
-		return -1;
-	}
-=======
     read(sockfd, buff, sizeof(buff)); //从客户端读取内容
 
     if (strncmp("VERSION 2.", buff, 10) != 0) { //检验客户端的内容
@@ -117,7 +88,6 @@ int dummyInteraction(int sockfd) {
         bzero(buff, MAX);
         return -1;
     }
->>>>>>> fb135fa10bbc53891748a00b1aef23a2e5aa5310
 
     // gamekind name
     bzero(buff, MAX);

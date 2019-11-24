@@ -64,11 +64,58 @@ int writeToServer(int sockfd, char message[]) {
     return 0;
 }
 
-char *convertMove(int move) {
-    printf("%d\n", move);
-    return "D3"; // todo, implement conversion between 0-63 and [A-H][1-8]
-}
 
+// todo, implement conversion between 0-63 and [A-H][1-8]
+char *convertMove(int move) {
+    //todo spalte
+    char spalte[5];
+    switch(move%8){
+        case 0:
+        strcpy(spalte,"A");
+        break;
+
+        case 1:
+        strcpy(spalte,"B");
+        break;
+
+        case 2:
+        strcpy(spalte,"C");
+        break;
+
+        case 3:
+        strcpy(spalte,"D");
+        break;
+
+        case 4:
+       strcpy(spalte,"E");
+        break;
+
+        case 5:
+       strcpy(spalte,"F");
+        break;
+
+        case 6:
+        strcpy(spalte,"G");
+        break;
+
+        case 7:
+        strcpy(spalte,"H");
+        break;
+
+        default:
+        printf("----invalid move.\n");
+        exit(1);
+        break;
+    }
+    //todo zeile
+    char zeile[5];
+    int a=(int)(8-move/8);
+    sprintf(zeile,"%d",a);
+    //printf("zeile: %s\n",zeile);
+    //printf("spalte: %s\n",spalte);
+    //printf("zusammen: %s\n",strcat(spalte,zeile));
+    return strcat(spalte,zeile); 
+}
 int dealWithGameOverCommand(char *buff) {
     /*
 S: + GAMEOVER
@@ -113,7 +160,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     char playerNumber[32];
     char myPlayerName[32];
     char opponent[32];
-    int n, readResponse = 0;
+    int n=0,readResponse = 0;
 
     char version[] = "VERSION 2.42\n";
     char okWait[] = "OKWAIT\n";
@@ -172,7 +219,6 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                        strlen(buff) < 1); // todo, possibly stick to only one central read?
                 printf("%s\n", buff);
-
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 printf("-----------save gameName: %s\n", gameName);
                 if (player == NULL) {
@@ -183,16 +229,15 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                     writeToServer(sockfd, playerToSend);
                 }
             }
-
             // step four, read YOU
             if (strncmp("+ YOU", buff, 5) == 0) {
                 // todo, save information from Server here
                 //finished
 
-                printf("  Received YOU info from server, buff is:%s", buff);
-
+                printf("  Received YOU info from server, buff is:%s", buff);     
                 strncpy(playerNumber, buff + 6, 1);
                 printf("--------save  playerNumber: %s\n", playerNumber);
+
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 printf("--------save my playerName: %s\n", myPlayerName);
             }

@@ -130,7 +130,7 @@ void printBoardLouisSide(BOARD board, SIDE_TO_MOVE sideToMove) {
         } else if (board[i] == BLACK) {
             printf("B ");
         } else {
-            printf(". ", board[i]);
+            printf(". ");
         }
     }
     printf("\n");

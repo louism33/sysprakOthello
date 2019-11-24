@@ -7,34 +7,35 @@
 
 #include "thinkertests/boardtests.h"
 #include "board.h"
-
-#define MOVE int
-#define SIDE_TO_MOVE int
-#define BOARD int*
-#define MOVES int*
-
+// pieces and SIDE_TO_MOVE constants
 #define BLACK 2
 #define WHITE 1
+#define EMPTY 0
 
+// black makes first move
+#define STARTING_PLAYER BLACK
+
+// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
+#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
+
+// 4 square occupied in starting board
 #define STARTING_WHITE_POSITION_1 27
 #define STARTING_WHITE_POSITION_2 36
 #define STARTING_BLACK_POSITION_1 28
 #define STARTING_BLACK_POSITION_2 35
 
-#define STARTING_PLAYER BLACK
-#define SWITCH_PLAYER_CONSTANT 3
 
-MOVE doThink(BOARD board, int moveTime) {
+MOVE doThink(BOARD_STRUCT  board, int moveTime) {
     printf("received doThink command from connector, time to move %d\n", moveTime);
 
     return 0; // todo, implement to return any move (later we make it good) that can legally be played on the board
 }
 
 
-void thinkerMasterMethod(BOARD thinkerBoard) {
+void thinkerMasterMethod(BOARD_STRUCT  thinkerBoard) {
     printf("Hi I am very good at thinking\n");
 
-    printBoard(thinkerBoard);
+    printBoard(thinkerBoard.board);
 
     basicTests();
 

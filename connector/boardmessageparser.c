@@ -1,7 +1,7 @@
 //
 // Created by louis on 11/20/19.
 //
-
+#include "../thinker/board.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -52,22 +52,22 @@
 
 #include "boardmessageparser.h"
 
-
-#define MOVE int
-#define SIDE_TO_MOVE int
-#define BOARD int*
-#define MOVES int*
-
+// pieces and SIDE_TO_MOVE constants
 #define BLACK 2
 #define WHITE 1
+#define EMPTY 0
 
+// black makes first move
+#define STARTING_PLAYER BLACK
+
+// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
+#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
+
+// 4 square occupied in starting board
 #define STARTING_WHITE_POSITION_1 27
 #define STARTING_WHITE_POSITION_2 36
 #define STARTING_BLACK_POSITION_1 28
 #define STARTING_BLACK_POSITION_2 35
-
-#define STARTING_PLAYER BLACK
-#define SWITCH_PLAYER_CONSTANT 3
 
 /*
 + TOTAL 2
@@ -114,11 +114,12 @@ void tearDownMessageParser() {
 }
 
 
-void printBoardLouis(BOARD board) {
+void printBoardLouis(BOARD_STRUCT  board) {
     printBoardLouisSide(board, 0);
 }
 
-void printBoardLouisSide(BOARD board, SIDE_TO_MOVE sideToMove) {
+void printBoardLouisSide(BOARD_STRUCT  b, SIDE_TO_MOVE sideToMove) {
+    int *board = b.board;
 
     for (int i = 0; i < 64; i++) {
         if (i % 8 == 0) {
@@ -166,7 +167,7 @@ void exampleUseCaseOfMessageParsing() {
                                 "+ ENDFIELD";
 
 
-    BOARD board = malloc(64 * sizeof(int)); // blank board
+    BOARD_STRUCT  board;// = malloc(64 * sizeof(int)); // blank board
 
     printBoardLouis(board);
 
@@ -180,7 +181,8 @@ void exampleUseCaseOfMessageParsing() {
 }
 
 
-void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
+void parseBoardMessage(BOARD_STRUCT  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
+    int *boardBoard = board.board;
     setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
     regmatch_t groupArray[maxGroups];
 
@@ -200,15 +202,15 @@ void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *me
         c = message[i];
         switch (c) {
             case 'B':
-                board[boardIndex] = 2;
+                boardBoard[boardIndex] = 2;
                 boardIndex++;
                 continue;
             case 'W':
-                board[boardIndex] = 1;
+                boardBoard[boardIndex] = 1;
                 boardIndex++;
                 continue;
             case '*':
-                board[boardIndex] = 0;
+                boardBoard[boardIndex] = 0;
                 boardIndex++;
                 continue;
             case 'E': // + ENDFIELD is the end of the message
@@ -217,5 +219,5 @@ void parseBoardMessage(BOARD board, moveTimeAndBoard *moveTimeAndBoard, char *me
 
     }
 
-    moveTimeAndBoard->board = board; // todo, decide if board should be from argument or from here
+    moveTimeAndBoard->board = boardBoard; // todo, decide if board should be from argument or from here
 }

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "../thinker/board.h"
 /*variablen zur Speicherung der Pid's*/
 pid_t thinker;
 pid_t connector;

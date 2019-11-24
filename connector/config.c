@@ -1,7 +1,7 @@
 //
 // Created by louis on 11/17/19.
 //
-
+#include "../thinker/board.h"
 #include "config.h"
 
 #include <stdio.h>

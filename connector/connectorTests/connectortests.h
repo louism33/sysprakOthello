@@ -1,0 +1,10 @@
+//
+// Created by Bianca on 24/11/19.
+//
+
+#ifndef SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H
+#define SYSPRAKOTHELLO_BOARDMESSAGEPARSER_H
+
+int testConvertMove();
+
+#endif //SYSPRAKOTHELLO_BOARDTESTS_H

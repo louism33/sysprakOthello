@@ -306,14 +306,14 @@ int testAvoidMovingOffTheSideOfTheBoard() {
 
 int basicTests() {
     testStartingBoard1();
-    testStartingBoard2();
-    testBoardAfterOneMove();
+    // testStartingBoard2();
+    // testBoardAfterOneMove();
 
-    testWeirdImpossibleBoard();
-    testWeirdImpossibleBoard2();
+    // testWeirdImpossibleBoard();
+    // testWeirdImpossibleBoard2();
 
-    testSides();
-    testSides2();
+    // testSides();
+    // testSides2();
 
 //    testAvoidTheDuplicateMove();
 //    testAvoidTheDuplicateMove2();

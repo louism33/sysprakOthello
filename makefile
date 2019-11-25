@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I -Wall -WextraL;
+CFLAGS=-I -Wall -Wextra;
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
 	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/board.h \
 	connector/connectorTests/connectortests.h

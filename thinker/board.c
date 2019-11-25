@@ -123,7 +123,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position + 1] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move R:%d\n", speicher[index - 1]);
+//            printf("found move R:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -140,7 +140,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position - 1] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move L:%d\n", speicher[index - 1]);
+//            printf("found move L:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -156,7 +156,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position + 8] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move U:%d\n", speicher[index - 1]);
+//            printf("found move U:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -172,7 +172,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position - 8] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move O:%d\n", speicher[index - 1]);
+//            printf("found move O:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -189,7 +189,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position - 7] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move RO:%d\n", speicher[index - 1]);
+//            printf("found move RO:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -205,7 +205,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position - 9] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move OL:%d\n", speicher[index - 1]);
+//            printf("found move OL:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -221,7 +221,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position + 9] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move UR:%d\n", speicher[index - 1]);
+//            printf("found move UR:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -236,7 +236,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[i] == EMPTY && board[position + 7] == TARGET_PLAYER) {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move LU:%d\n", speicher[index - 1]);
+//            printf("found move LU:%d\n", speicher[index - 1]);
             break;
         }
     }

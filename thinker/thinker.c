@@ -7,6 +7,7 @@
 
 #include "thinkertests/boardtests.h"
 #include "board.h"
+
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
 #define WHITE 1

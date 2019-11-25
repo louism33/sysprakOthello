@@ -148,39 +148,6 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
     printf("-----------\n");
 }
 
-//void exampleUseCaseOfMessageParsing() {
-////    setupMessageParser();
-//
-//    char *exampleBoardMessage = "+ TOTAL 2\n"
-//                                "+ 0 IAMLOUIS 0\n"
-//                                "+ ENDPLAYERS\n"
-//                                "+ MOVE 3000\n"
-//                                "+ FIELD 8,8\n"
-//                                "+ 8 * * * * * * * *\n"
-//                                "+ 7 * * * * * B B B\n"
-//                                "+ 6 * * * * * W * *\n"
-//                                "+ 5 * * W W W B * *\n"
-//                                "+ 4 * B B B B * * *\n"
-//                                "+ 3 * * W * * * * *\n"
-//                                "+ 2 * * * * * * * *\n"
-//                                "+ 1 * * * * * * * *\n"
-//                                "+ ENDFIELD";
-//
-//
-//    BOARD_STRUCT  board;// = malloc(64 * sizeof(int)); // blank board
-//
-//    printBoardLouis(board);
-//
-//    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
-//
-//    parseBoardMessage(board, moveTimeAndBoard, exampleBoardMessage);
-//
-//    printBoardLouis(board);
-//
-////    tearDownMessageParser();
-//}
-
-
 void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
     int *boardBoard = board->board;
     // setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
@@ -216,7 +183,6 @@ void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard,
             case 'E': // + ENDFIELD is the end of the message
                 break;
         }
-
     }
 
     moveTimeAndBoard->board = boardBoard; // todo, decide if board should be from argument or from here

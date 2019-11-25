@@ -170,7 +170,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     printf("########## %s\n", gameKindName);
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-            printf("%s\n", buff);
+            printf("--->%s\n", buff);
 
             // todo for louis, error handling
 
@@ -246,7 +246,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("--------save my playerName: %s\n", myPlayerName);
             }
 
-            // step five, read board information and time to move from server.
+            // step five, read TOTAL
+            if (strncmp("+ TOTAL", buff, 7) == 0) {
+                printf("  Received TOTAL info from server, buff is:%s", buff);
+                phase = SPIELVERLAUF;
+            }
+
+            // step six, read board information and time to move from server.
             // todo, extract timeToMove info
             // todo, extract board info
             // todo, read name of opponent
@@ -256,7 +262,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 writeToServer(sockfd, thinking);
                 printf("sent thinking command\n");
 
-                printf("starting parse board\n");
+                printf("starting parse board, setting phase to spielzug\n");
+                phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
@@ -288,6 +295,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("playCommandToSend: %s\n", playCommandToSend);
 
                 writeToServer(sockfd, playCommandToSend);
+                phase = SPIELVERLAUF;
                 playCommandToSend[0] = '\0';
             }
 

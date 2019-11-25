@@ -131,7 +131,7 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
         } else if (board[i] == BLACK) {
             printf("B ");
         } else {
-            printf(". ", board[i]);
+            printf(". ");
         }
     }
     printf("\n");
@@ -183,18 +183,18 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
 
 void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
     int *boardBoard = board->board;
-    setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
-    regmatch_t groupArray[maxGroups];
+    // setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
+    // regmatch_t groupArray[maxGroups];
 
-    if (couldNotParseRegex) {
-        printf("Could not compile regular expression.\n");
-        moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
-    } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
-        strcpy(sourceCopy, message);
-        sourceCopy[groupArray[1].rm_eo] = 0;
-        char *found = sourceCopy + groupArray[1].rm_so;
-        moveTimeAndBoard->movetime = atoi(found);
-    }
+    // if (couldNotParseRegex) {
+    //     printf("Could not compile regular expression.\n");
+    //     moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
+    // } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
+    //     strcpy(sourceCopy, message);
+    //     sourceCopy[groupArray[1].rm_eo] = 0;
+    //     char *found = sourceCopy + groupArray[1].rm_so;
+    //     moveTimeAndBoard->movetime = atoi(found);
+    // }
 
     char c;
     int boardIndex = 0;

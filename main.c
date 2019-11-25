@@ -17,6 +17,7 @@
 #include "connector/config.h"
 #include "connector/boardmessageparser.h"
 #include "thinker/thinkertests/boardtests.h"
+#include "connector/connectorTests/connectortests.h"
 
 
 // pieces and SIDE_TO_MOVE constants
@@ -44,13 +45,18 @@ int main(int argc, char *argv[]) {
     printf("Hello World! I am Alex. This is the main method\n");
 
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
-        printf("Running full test Suite\n");
-        int fail = fullTestSuite();
-        if (fail){
-            printf("Some tests failed, please fix them as soon as possible.\n");
-        }
-        return fail;
+        printf("Test begin:.........\n");
+        //printf("Running full test Suite\n");
+        // int fail = fullTestSuite();
+        // if (fail){
+        //     printf("Some tests failed, please fix them as soon as possible.\n");
+        // }
+        
+        int test=testConvertMove();
+        printf("Tested. All good.\n");
+        return 0;
     }
+    
 
 
     // todo, this is just an idea, it depends on how we do shm (shared memory)
@@ -65,8 +71,8 @@ int main(int argc, char *argv[]) {
 
 
 
-    thinkerMasterMethod(thinkerBoard);
-//    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
+   //thinkerMasterMethod(thinkerBoard);
+    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
 
 
 

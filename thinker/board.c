@@ -244,8 +244,8 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     return speicher;
 }
 
-MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
+MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER,MOVES allMoves) {
+    //MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
     MOVES speicher= malloc(64 * sizeof(int));
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
@@ -270,11 +270,12 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
 
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES legalMoves = getLegalMovesAllPositions(board, TARGET_PLAYER);
+    MOVES allMoves= malloc(64 * sizeof(int));
+    getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 
     for (int i = 0; i < 64; i++) {
-        if (legalMoves[i] == LAST_MOVE) {
+        if (allMoves[i] == LAST_MOVE) {
             return total;
         }
         total++;

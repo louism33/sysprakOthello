@@ -25,15 +25,29 @@
 #define STARTING_BLACK_POSITION_2 35
 
 #define LAST_MOVE (-1)
+#define LAST_POS (-2)
+
+int flipPlayer(SIDE_TO_MOVE TARGET_PLAYER) {
+    int otherSide = 3 - TARGET_PLAYER;
+    return otherSide;
+}
 
 void resetBoardToStarter(BOARD board) {
     for (int i = 0; i < 64; i++) {
         board[i] = 0;
     }
-    board[27] = WHITE;
+    /*board[27] = WHITE;
     board[28] = BLACK;
     board[35] = BLACK;
-    board[36] = WHITE;
+    board[36] = WHITE;*/
+    board[26] = BLACK;
+    board[27] = BLACK;
+    board[28] = BLACK;
+    board[29] = BLACK;
+    board[36] = BLACK;
+    board[19] = WHITE;
+    board[35] = WHITE;
+
 }
 
 void resetBoardToZero(BOARD board) {
@@ -281,5 +295,189 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
     }
     printf("did not find a LAST_MOVE... are you sure you did not make a mistake\n");
     exit(1);
+
 }
 
+
+BOARD makeMove(BOARD board, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER) {
+    int *merkePos = malloc(64*sizeof(int)); //man kann max 64 Pos merken
+    int index = 0;
+    int me = 3-TARGET_PLAYER;
+    if(board[legalPosition] != EMPTY) {
+        printf("Diese Feld ist schon belegt. Da kannst du nicht hinspringen\n");
+        return board;
+    }
+
+    //for-Schleifer um nach rechts zu moven und flip player
+    for (int r = legalPosition - 1; r != me; r--) {
+
+        if(board[r] == EMPTY) {
+            break;
+        }
+    
+        if (board[r] == TARGET_PLAYER) {
+            board[r] = me;
+            continue;
+        }
+
+        if (board[r] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    
+    }
+
+    //for-Schleifer um nach links zu moven und zu flipen
+    for (int l = legalPosition + 1; l != me; l++) {
+
+        if(board[l] == EMPTY) {
+            break;
+        }
+    
+        if (board[l] == TARGET_PLAYER) {
+            board[l] = me;
+            continue;
+        }
+
+        if (board[l] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    
+    }
+
+    //for-Schleifer um nach unten zu moven und zu flipen
+    for (int u = legalPosition - 8; u != me; u-=8) {
+
+        if(board[u] == EMPTY) {
+            break;
+        }
+
+        if (board[u] == TARGET_PLAYER) {
+            board[u] = me;
+            continue;
+        }
+
+        if (board[u] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    
+    }
+
+    //for-Schleife um nach oben zu moven und zu flipen
+    for (int o = legalPosition + 8; o != me; o+=8) {
+
+        if(board[o] == EMPTY) {
+            break;
+        }
+
+        if (board[o] == TARGET_PLAYER) {
+            board[o] = me;
+            continue;
+        }
+
+        if (board[o] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    
+    }
+
+    //for-Schleife um nach rechts oben zu moven und zu flipen
+    for (int ro = legalPosition + 7; ro != me; ro+=7) {
+
+        if(board[ro] == EMPTY) {
+            break;
+        }
+
+        if (board[ro] == TARGET_PLAYER) {
+            board[ro] = me;
+            continue;
+        }
+
+        if (board[ro] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    }
+
+    //for-Schleifer um nach rechts unten zu moven und zu flipen
+    for (int ru = legalPosition - 9; ru != me; ru-=9) {
+
+        if(board[ru] == EMPTY) {
+            break;
+        }
+
+        if (board[ru] == TARGET_PLAYER) {
+            board[ru] = me; 
+            continue; 
+        }
+
+        if (board[ru] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    
+    }
+
+    //for-Schleifer um nach links unten zu moven und zu flipen
+    for (int lu = legalPosition - 7; lu != me; lu-=7) {
+
+        if(board[lu] == EMPTY) {
+            break;
+        }
+
+       if (board[lu] == TARGET_PLAYER) {
+            board[lu] = me;
+            continue;
+        }
+
+        if (board[lu] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    
+    }
+
+    //for-Schleife um nach links oben zu moven und zu flipen
+    for (int lo = legalPosition + 9; lo != me; lo+=9) {
+
+        if(board[lo] == EMPTY) {
+            break;
+        }
+
+        if (board[lo] == TARGET_PLAYER) {
+           board[lo] = me;
+           continue;
+        }
+
+        if (board[lo] == me) {
+            board[legalPosition] = me;
+            break;
+        }
+    
+    }
+} 
+
+int main() {
+    BOARD myBoard = malloc(64*sizeof (int));
+    resetBoardToStarter(myBoard);
+    printBoard(myBoard);
+    makeMove(myBoard,44,WHITE);
+    printBoard(myBoard);
+    makeMove(myBoard,43,BLACK);
+    printBoard(myBoard);
+    /*makeMove(myBoard,34,WHITE);
+    printBoard(myBoard);
+    makeMove(myBoard,25,BLACK);
+    printBoard(myBoard);
+    makeMove(myBoard,51,WHITE);
+    printBoard(myBoard);
+    makeMove(myBoard,59,BLACK);
+    printBoard(myBoard);
+    makeMove(myBoard,42,WHITE);
+    printBoard(myBoard);
+    makeMove(myBoard,33,BLACK);
+    printBoard(myBoard);*/
+}

@@ -1,5 +1,6 @@
 CC=gcc
 CFLAGS=-I -Wall -Wextra
+CFLAGS=-std=c99
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
 	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/board.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o \

@@ -87,6 +87,7 @@ char *convertMove(int move, char *antwort)
 {
     antwort[0] = 'A' + (move % 8);     //spalte
     antwort[1] = '0' + (8 - move / 8); //zeile
+    antwort[2] ='\0';
     return antwort;
 }
 int dealWithGameOverCommand(char *buff)
@@ -112,21 +113,25 @@ Nach QUIT beendet der Server die Verbindung
     return 0; // todo, implement
 }
 
-char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime)
+char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet)
 {
     memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
 
     thinkerBoard->sideToMove = connectorBoard->sideToMove;
 
+ printf("aaaaaaaaaas\n");
     int move = doThink(thinkerBoard, moveTime);
+ printf("bbbbbbbbbbb\n");
+
+
+
 
     printf("move is: %d\n", move);
-    char *antwort;
-    convertMove(move, antwort);
+    convertMove(move, moveRet);
 
-    printf("converted move is: %s\n", antwort);
+    printf("converted move is: %s\n", moveRet);
 
-    return antwort;
+    return moveRet;
 }
 
 // todo, handle end state, what do we do once game is over?
@@ -228,9 +233,11 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
 
                 printf("  Received YOU info from server, buff is:%s", buff);
                 strncpy(playerNumber, buff + 6, 1);
+                playerNumber[2] = '\0';
                 printf("--------save  playerNumber: %s\n", playerNumber);
-
+                int l = strlen(buff) - strlen("+ YOU 0 ");
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
+                myPlayerName[l] = '\0';
                 printf("--------save my playerName: %s\n", myPlayerName);
             }
 
@@ -251,19 +258,23 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
-
+                char *moveRet=malloc(3*sizeof(char));
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
-                                                                 moveTimeAndBoard->movetime);
+                                                                 moveTimeAndBoard->movetime,moveRet);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);
-                if (strlen(moveReceivedFromThinkerTEMP) != 2)
+               
+                printf("%s   %d\n",moveRet,strlen(moveRet));
+                if (strlen(moveRet) != 2)
                 {
                     fprintf(stderr, "move of incorrect length received from thinker: %s\n",
-                            moveReceivedFromThinkerTEMP);
+                            moveRet);
                     exit(1); // todo in future we want to implement retry logic etc to avoid crashing on a single error
                 }
-                moveReceivedFromThinker[0] = moveReceivedFromThinkerTEMP[0];
-                moveReceivedFromThinker[1] = moveReceivedFromThinkerTEMP[1];
+                moveReceivedFromThinker[0] = moveRet[0];
+                moveReceivedFromThinker[1] = moveRet[1];
                 moveReceivedFromThinker[2] = '\0';
+
+ free(moveRet);
 
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);

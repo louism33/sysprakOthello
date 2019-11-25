@@ -35,8 +35,8 @@ MOVE doThink(BOARD_STRUCT *board, int moveTime)
 							  allMoves);
 
 	printf("ddddd\n");
-
-	printf("eee %d\n", allMoves[0]);
+    
+	printf("dothinker move: %d\n", allMoves[0]);
 	return allMoves[0]; // todo, implement to return any move (later we make it good) that can legally be played on the board
 }
 

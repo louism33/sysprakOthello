@@ -259,6 +259,8 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
                 char *moveRet=malloc(3*sizeof(char));
+
+                connectorBoard->sideToMove = BLACK;
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
                                                                  moveTimeAndBoard->movetime,moveRet);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);

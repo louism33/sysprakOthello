@@ -112,7 +112,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 //    printf("position is %d\n", position);
 
 //    for-Schleifer um nach rechts zu prüfen
-    for (int i = position + 1; i % 8 != 7; i++) {
+    for (int i = position + 1; i % 8 != 8; i++) {
         //TODO: nicht machen in Spalte 7
         if (board[i] == TARGET_PLAYER) {
             continue;
@@ -129,7 +129,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach links zu prüfen
-    for (int i = position - 1; i % 8 != 0; i--) {
+    for (int i = position - 1; i % 8 <=0; i--) {
         //TODO: nicht machen in Spalte 0
         if (board[i] == TARGET_PLAYER) {
             continue;

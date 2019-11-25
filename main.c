@@ -46,35 +46,35 @@ int main(int argc, char *argv[]) {
 
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");
-        //printf("Running full test Suite\n");
-        // int fail = fullTestSuite();
-        // if (fail){
-        //     printf("Some tests failed, please fix them as soon as possible.\n");
-        // }
-        
-        int test=testConvertMove();
+        printf("Running board test Suite\n");
+        int fail = fullTestSuite();
+
+        fail += testConvertMove();
+
+        if (fail) {
+            printf("Some tests failed, please fix them as soon as possible.\n");
+            exit(1);
+        }
         printf("Tested. All good.\n");
         return 0;
     }
-    
+
 
 
     // todo, this is just an idea, it depends on how we do shm (shared memory)
     // we will use two separate boards. One for connector that we will update with info from server
     // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
 
-    BOARD_STRUCT* connectorBoard = malloc(sizeof(BOARD_STRUCT));
+    BOARD_STRUCT *connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
-    BOARD_STRUCT *thinkerBoard  = malloc(sizeof(BOARD_STRUCT));
+    BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
 
 
 
-   //thinkerMasterMethod(thinkerBoard);
-    connectorMasterMethod(connectorBoard, thinkerBoard, argc,argv);
-
-
+    //thinkerMasterMethod(thinkerBoard);
+    connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
 
 
     freeBoardStruct(connectorBoard);

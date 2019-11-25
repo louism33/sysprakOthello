@@ -36,7 +36,6 @@ int testStartingBoard1() {
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
-    printf("xxx\n");
     int *board = b->board;
 
     board[STARTING_WHITE_POSITION_1] = board[STARTING_WHITE_POSITION_2] = WHITE;
@@ -44,7 +43,6 @@ int testStartingBoard1() {
 
     SIDE_TO_MOVE player = STARTING_PLAYER;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;
@@ -74,7 +72,6 @@ int testStartingBoard2() {
 
     SIDE_TO_MOVE player = switchPlayer(STARTING_PLAYER);
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;
 
@@ -103,7 +100,6 @@ int testBoardAfterOneMove() {
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
 
@@ -131,7 +127,6 @@ int testWeirdImpossibleBoard() {
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
 
@@ -159,9 +154,62 @@ int testWeirdImpossibleBoard2() {
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
+
+    if (myNumberOfMoves != correctNumberOfMoves) {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+
+int testSides() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[1] = board[9] = board[17] = WHITE;
+    board[2] = board[10] = board[18] = BLACK;
+
+    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+//    printBoardLouisSide(b, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 4;
+
+    if (myNumberOfMoves != correctNumberOfMoves) {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+
+int testSides2() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[5] = board[13] = board[21] = WHITE;
+    board[6] = board[14] = board[22] = BLACK;
+
+    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+//    printBoardLouisSide(b, player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 4;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
         printBoardLouisSide(b, player);
@@ -187,9 +235,8 @@ int testAvoidTheDuplicateMove() {
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
-    int correctNumberOfMoves = 1;
+    int correctNumberOfMoves = 4;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
         printBoardLouisSide(b, player);
@@ -215,7 +262,6 @@ int testAvoidTheDuplicateMove2() {
 
     SIDE_TO_MOVE player = BLACK;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
 
@@ -242,7 +288,6 @@ int testAvoidMovingOffTheSideOfTheBoard() {
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-//    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
 
@@ -267,11 +312,13 @@ int basicTests() {
     testWeirdImpossibleBoard();
     testWeirdImpossibleBoard2();
 
+    testSides();
+    testSides2();
 
-    testAvoidTheDuplicateMove();
-    testAvoidTheDuplicateMove2();
-
-    testAvoidMovingOffTheSideOfTheBoard();
+//    testAvoidTheDuplicateMove();
+//    testAvoidTheDuplicateMove2();
+//
+//    testAvoidMovingOffTheSideOfTheBoard();
 
     return 0; // success
 }

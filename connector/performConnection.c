@@ -117,7 +117,6 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 
     int move = doThink(thinkerBoard, moveTime);
 
-
     printf("move is: %d\n", move);
     convertMove(move, moveRet);
 
@@ -145,7 +144,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     strcat(gameIdToSend, gameID);
     strcat(gameIdToSend, "\n");
 
-    char playerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
+    char blankPlayerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
+    char playerToSend[] = "PLAYER 1\n"; // todo get from argument. need extra whitespace if there is a player provided
     char thinking[] = "THINKING\n";
     char playf5[] = "PLAY D6\n";
     int lengthOfPlayCommandToSendToKeep = 5;
@@ -216,11 +216,11 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("%s\n", buff);
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 printf("-----------save gameName: %s\n", gameName);
-                if (player == NULL) {
-                    writeToServer(sockfd, playerToSend);
+                if (player == NULL || strlen(player) != 1) {
+                    writeToServer(sockfd, blankPlayerToSend);
                 } else {
                     strcpy(playerToSend, "PLAYER ");
-                    strcat(playerToSend, player);
+                    playerToSend[7] = player[0];
                     writeToServer(sockfd, playerToSend);
                 }
             }

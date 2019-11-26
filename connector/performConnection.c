@@ -262,16 +262,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
-<<<<<<< HEAD
                 char *moveRet=malloc(3*sizeof(char));
 
                 connectorBoard->sideToMove = BLACK;
-=======
-                char *moveRet = malloc(3 * sizeof(char));
-
-                connectorBoard->sideToMove = sideToMove;
-
->>>>>>> 2ad6852ee5ff774cfb9f49c94968280b9a05a1df
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
                                                                  moveTimeAndBoard->movetime, moveRet);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);

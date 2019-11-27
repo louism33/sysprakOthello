@@ -15,17 +15,12 @@
 #define WHITE 1
 #define EMPTY 0
 
-// black makes first move
-#define STARTING_PLAYER BLACK
+
 
 // to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
 //#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
 
-// 4 square occupied in starting board
-#define STARTING_WHITE_POSITION_1 27
-#define STARTING_WHITE_POSITION_2 36
-#define STARTING_BLACK_POSITION_1 28
-#define STARTING_BLACK_POSITION_2 35
+
 
 int testStar() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -65,7 +60,7 @@ int testNoLegalMoves() {
     board[0] = WHITE;
     board[20] = BLACK;
 
-    SIDE_TO_MOVE player = STARTING_PLAYER;
+    SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
 
@@ -94,7 +89,7 @@ int testNoLegalMoves2() {
     board[0] = WHITE;
     board[63] = BLACK;
 
-    SIDE_TO_MOVE player = STARTING_PLAYER;
+    SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
 
@@ -127,7 +122,7 @@ int testNoLegalMovesBecauseGameOver() {
         board[i] = BLACK;
     }
 
-    SIDE_TO_MOVE player = STARTING_PLAYER;
+    SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
 
@@ -158,7 +153,7 @@ int testStartingBoard1() {
     board[STARTING_WHITE_POSITION_1] = board[STARTING_WHITE_POSITION_2] = WHITE;
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
 
-    SIDE_TO_MOVE player = STARTING_PLAYER;
+    SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
 
@@ -187,7 +182,7 @@ int testStartingBoard2() {
     board[STARTING_WHITE_POSITION_1] = board[STARTING_WHITE_POSITION_2] = WHITE;
     board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
 
-    SIDE_TO_MOVE player = switchPlayer(STARTING_PLAYER);
+    SIDE_TO_MOVE player = switchPlayer(getStartingPlayer());
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);

@@ -14,20 +14,10 @@
 #define WHITE 1
 #define EMPTY 0
 
-// black makes first move
-#define STARTING_PLAYER BLACK
+
 
 // to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
 //#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
-
-// 4 square occupied in starting board
-#define STARTING_WHITE_POSITION_1 27
-#define STARTING_WHITE_POSITION_2 36
-#define STARTING_BLACK_POSITION_1 28
-#define STARTING_BLACK_POSITION_2 35
-
-#define LAST_MOVE (-1)
-
 
 int testRemoveDuplicatesNoDuplicates() {
     MOVES moves = malloc(64 * sizeof(int));
@@ -37,16 +27,16 @@ int testRemoveDuplicatesNoDuplicates() {
     moves[index++] = 1;
     moves[index++] = 2;
     moves[index++] = 3;
-    moves[index++] = LAST_MOVE;
+    moves[index++] = getLastMove();
 
     removeDuplicates(moves, index);
 
     for (int i = 0;; i++) {
-        if (moves[i] == LAST_MOVE) {
+        if (moves[i] == getLastMove()) {
             break;
         }
         for (int j = i + 1;; j++) {
-            if (moves[j] == LAST_MOVE) {
+            if (moves[j] == getLastMove()) {
                 break;
             }
             if (moves[i] == moves[j]) {
@@ -71,16 +61,16 @@ int testRemoveDuplicatesAllDuplicates() {
     moves[index++] = 0;
     moves[index++] = 0;
     moves[index++] = 0;
-    moves[index++] = LAST_MOVE;
+    moves[index++] = getLastMove();
 
     removeDuplicates(moves, index);
 
     for (int i = 0;; i++) {
-        if (moves[i] == LAST_MOVE) {
+        if (moves[i] == getLastMove()) {
             break;
         }
         for (int j = i + 1;; j++) {
-            if (moves[j] == LAST_MOVE) {
+            if (moves[j] == getLastMove()) {
                 break;
             }
             if (moves[i] == moves[j]) {
@@ -109,16 +99,16 @@ int testRemoveDuplicatesManyDuplicates() {
     moves[index++] = 3;
     moves[index++] = 0;
     moves[index++] = 1;
-    moves[index++] = LAST_MOVE;
+    moves[index++] = getLastMove();
 
     removeDuplicates(moves, index);
 
     for (int i = 0;; i++) {
-        if (moves[i] == LAST_MOVE) {
+        if (moves[i] == getLastMove()) {
             break;
         }
         for (int j = i + 1;; j++) {
-            if (moves[j] == LAST_MOVE) {
+            if (moves[j] == getLastMove()) {
                 break;
             }
             if (moves[i] == moves[j]) {
@@ -155,16 +145,16 @@ int testRemoveDuplicatesManyDuplicates2() {
     moves[index++] = 1;
     moves[index++] = 4;
     moves[index++] = 4;
-    moves[index++] = LAST_MOVE;
+    moves[index++] = getLastMove();
 
     removeDuplicates(moves, index);
 
     for (int i = 0;; i++) {
-        if (moves[i] == LAST_MOVE) {
+        if (moves[i] == getLastMove()) {
             break;
         }
         for (int j = i + 1;; j++) {
-            if (moves[j] == LAST_MOVE) {
+            if (moves[j] == getLastMove()) {
                 break;
             }
             if (moves[i] == moves[j]) {
@@ -188,22 +178,22 @@ int testRemoveDuplicatesLostMove() {
     int index = 0;
 
     movesTest[0] = 0;
-    movesTest[1] = LAST_MOVE;
+    movesTest[1] = getLastMove();
 
     moves[index++] = 0;
     moves[index++] = 0;
-    moves[index++] = LAST_MOVE;
+    moves[index++] = getLastMove();
 
     removeDuplicates(moves, index);
 
     for (int i = 0;; i++) {
-        if (movesTest[i] == LAST_MOVE) {
+        if (movesTest[i] == getLastMove()) {
             break;
         }
 
         int fail = 1;
         for (int j = 0;; j++) {
-            if (moves[j] == LAST_MOVE) {
+            if (moves[j] == getLastMove()) {
                 break;
             }
             // we have found our move, no need to fail
@@ -234,7 +224,7 @@ int testRemoveDuplicatesLostMove2() {
 
     movesTest[0] = 0;
     movesTest[1] = 1;
-    movesTest[2] = LAST_MOVE;
+    movesTest[2] = getLastMove();
 
     moves[index++] = 0;
     moves[index++] = 0;
@@ -242,18 +232,18 @@ int testRemoveDuplicatesLostMove2() {
     moves[index++] = 1;
     moves[index++] = 0;
     moves[index++] = 0;
-    moves[index++] = LAST_MOVE;
+    moves[index++] = getLastMove();
 
     removeDuplicates(moves, index);
 
     for (int i = 0;; i++) {
-        if (movesTest[i] == LAST_MOVE) {
+        if (movesTest[i] == getLastMove()) {
             break;
         }
 
         int fail = 1;
         for (int j = 0;; j++) {
-            if (moves[j] == LAST_MOVE) {
+            if (moves[j] == getLastMove()) {
                 break;
             }
             // we have found our move, no need to fail
@@ -286,7 +276,7 @@ int testRemoveDuplicatesLostMove3() {
     movesTest[2] = 4;
     movesTest[3] = 2;
     movesTest[4] = 3;
-    movesTest[5] = LAST_MOVE;
+    movesTest[5] = getLastMove();
 
     moves[index++] = 0;
     moves[index++] = 0;
@@ -301,18 +291,18 @@ int testRemoveDuplicatesLostMove3() {
     moves[index++] = 3;
     moves[index++] = 3;
     moves[index++] = 4;
-    moves[index++] = LAST_MOVE;
+    moves[index++] = getLastMove();
 
     removeDuplicates(moves, index);
 
     for (int i = 0;; i++) {
-        if (movesTest[i] == LAST_MOVE) {
+        if (movesTest[i] == getLastMove()) {
             break;
         }
 
         int fail = 1;
         for (int j = 0;; j++) {
-            if (moves[j] == LAST_MOVE) {
+            if (moves[j] == getLastMove()) {
                 break;
             }
             // we have found our move, no need to fail

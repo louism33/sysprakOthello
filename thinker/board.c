@@ -26,6 +26,14 @@
 
 #define LAST_MOVE (-1)
 
+MOVE getLastMove(){
+    return LAST_MOVE;
+}
+
+SIDE_TO_MOVE getStartingPlayer(){
+    return STARTING_PLAYER;
+}
+
 SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove) {
     return SWITCH_PLAYER_CONSTANT - sideToMove;
 }
@@ -36,10 +44,11 @@ void resetBoardToStarter(BOARD board)
     {
         board[i] = 0;
     }
-    board[27] = WHITE;
-    board[28] = BLACK;
-    board[35] = BLACK;
-    board[36] = WHITE;
+    // todo, if the coordinates are not 8x8, this would be wrong, so make sure not to call this in gameloop
+    board[STARTING_WHITE_POSITION_1] = WHITE;
+    board[STARTING_WHITE_POSITION_2] = WHITE;
+    board[STARTING_BLACK_POSITION_1] = BLACK;
+    board[STARTING_BLACK_POSITION_2] = BLACK;
 }
 
 void resetBoardToZero(BOARD board)

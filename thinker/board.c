@@ -285,14 +285,46 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
     exit(1);
 }
 
-bool isNext(BOARD board,int legalPos) {
+/*bool isNext(BOARD board,int legalPos) {
     // prüfe, ob ein Nachbar vorhanden ist
     if(board[legalPos] == EMPTY) {
-        return FALSE
+        return false;
     }
-    return TRUE;
+    return true;
+}*/
+
+void testEasy() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    int i = 20;
+    board[18] = getWhite();
+    board[19] =
+
+    SIDE_TO_MOVE player = getWhite();
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    //    printBoardLouisSide(board, player);
+
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 8;
+
+    if (myNumberOfMoves != correctNumberOfMoves) {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+
+    // printf("test successful\n\n");
+    free(b);
+    return 0; // success
 }
 
+int main(){
 
+    return 0;
+}
 
 

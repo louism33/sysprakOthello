@@ -34,6 +34,21 @@ SIDE_TO_MOVE getStartingPlayer(){
     return STARTING_PLAYER;
 }
 
+SIDE_TO_MOVE getBlack(){
+    return BLACK;
+}
+
+
+SIDE_TO_MOVE getWhite(){
+    return WHITE;
+}
+
+
+SIDE_TO_MOVE getEmpty(){
+    return EMPTY;
+}
+
+
 SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove) {
     return SWITCH_PLAYER_CONSTANT - sideToMove;
 }

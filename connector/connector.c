@@ -43,18 +43,6 @@
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
 
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-//#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
-
-
-
 char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock creation to here?
     struct addrinfo hints, *res;
     int errcode;

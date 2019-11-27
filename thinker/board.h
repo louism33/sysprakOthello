@@ -7,18 +7,6 @@
 
 #include <stdint.h>
 
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-//#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
-
-
-
 typedef int MOVE;
 typedef int SIDE_TO_MOVE;
 
@@ -64,6 +52,12 @@ SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove);
 SIDE_TO_MOVE getStartingPlayer();
 
 MOVE getLastMove();
+
+SIDE_TO_MOVE getBlack();
+
+SIDE_TO_MOVE getWhite();
+
+SIDE_TO_MOVE getEmpty();
 
 #endif //SYSPRAKOTHELLO_BOARD_H
 

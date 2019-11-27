@@ -9,13 +9,6 @@
 #include "thinkertests/boardtests.h"
 #include "board.h"
 
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-
-
 MOVE doThink(BOARD_STRUCT *board, int moveTime)
 {
 	printf("received doThink command from connector, time to move %d\n", moveTime);

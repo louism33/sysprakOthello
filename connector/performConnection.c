@@ -48,17 +48,6 @@
 
 #define MAX 240
 #define PLAYER
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-//#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
-
-
 
 enum Phase {
     PROLOG = 0,
@@ -230,9 +219,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("--------save  playerNumber: %s\n", playerNumber);
 
                 if (playerNumber[0] == '0') {
-                    sideToMove = BLACK;
+                    sideToMove = getBlack();
                 } else {
-                    sideToMove = WHITE;
+                    sideToMove = getWhite();
                 }
 
                 int l = strlen(buff) - strlen("+ YOU 0 ");
@@ -267,7 +256,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("sending relevant info to thinker\n");
                 char *moveRet=malloc(3*sizeof(char));
 
-                connectorBoard->sideToMove = BLACK;
+                connectorBoard->sideToMove = getBlack();
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
                                                                  moveTimeAndBoard->movetime, moveRet);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);

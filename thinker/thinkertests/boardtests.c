@@ -10,28 +10,17 @@
 #include "../board.c"
 #include "../board.h"
 
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-//#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
-
-
-
 int testStar() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
     int i = 20;
-    board[i] = WHITE;
-    board[i - 9] = board[i-8] = board[i-7] = board[i-1] = board[i+1] = board[i+7] = board[i+8] = board[i+9] = BLACK;
+    board[i] = getWhite();
+    board[i - 9] = board[i - 8] = board[i - 7] = board[i - 1] = board[i + 1] = board[i + 7] = board[i + 8] = board[i +
+                                                                                                                   9] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
 
@@ -57,8 +46,8 @@ int testNoLegalMoves() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = WHITE;
-    board[20] = BLACK;
+    board[0] = getWhite();
+    board[20] = getBlack();
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
@@ -86,8 +75,8 @@ int testNoLegalMoves2() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = WHITE;
-    board[63] = BLACK;
+    board[0] = getWhite();
+    board[63] = getBlack();
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
@@ -116,10 +105,10 @@ int testNoLegalMovesBecauseGameOver() {
     int *board = b->board;
 
     for (int i = 0; i < 20; i++) {
-        board[i] = WHITE;
+        board[i] = getWhite();
     }
     for (int i = 20; i < 63; i++) {
-        board[i] = BLACK;
+        board[i] = getBlack();
     }
 
     SIDE_TO_MOVE player = getStartingPlayer();
@@ -143,15 +132,13 @@ int testNoLegalMovesBecauseGameOver() {
 }
 
 
-
 int testStartingBoard1() {
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[STARTING_WHITE_POSITION_1] = board[STARTING_WHITE_POSITION_2] = WHITE;
-    board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
+    resetBoardToStarter(board);
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
@@ -179,8 +166,7 @@ int testStartingBoard2() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[STARTING_WHITE_POSITION_1] = board[STARTING_WHITE_POSITION_2] = WHITE;
-    board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
+    resetBoardToStarter(board);
 
     SIDE_TO_MOVE player = switchPlayer(getStartingPlayer());
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
@@ -205,14 +191,14 @@ int testBoardAfterOneMove() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[STARTING_WHITE_POSITION_2] = WHITE;
-    board[STARTING_BLACK_POSITION_1] = board[STARTING_BLACK_POSITION_2] = BLACK;
-    board[27] = BLACK;
-    board[26] = BLACK;
+    resetBoardToStarter(board);
+    board[27] = getBlack();
+    board[26] = getBlack();
+//    printBoardLouisSide(b, getWhite());
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
+
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
 
@@ -238,15 +224,15 @@ int testOnePositionleft() //nach links bewegen
     int mypos = 20;    //mein
     int enemypos = 19; //Gegener
 
-    board[mypos] = WHITE;
-    board[enemypos] = BLACK;
+    board[mypos] = getWhite();
+    board[enemypos] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(b, player);
 
     int *moves = malloc(64 * sizeof(int));
-    int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, BLACK); //target player(enemy)=BLACK
+    int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, getBlack());
 
     int correctMove = 18;
 
@@ -277,16 +263,16 @@ int testOnePositionright() //nach rechts bewegen
     int mypos = 18;
     int enemypos = 19;
 
-    board[mypos] = WHITE;
-    board[enemypos] = BLACK;
+    board[mypos] = getWhite();
+    board[enemypos] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 //    printBoardLouisSide(b, player);
 
     int *moves = malloc(64 * sizeof(int));
     // int *finalMove=malloc(64 * sizeof(int));
-    int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, BLACK);
+    int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, getBlack());
 
     int correctMove = 20;
 
@@ -312,10 +298,10 @@ int testWeirdImpossibleBoard() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = WHITE;
-    board[1] = board[8] = BLACK;
+    board[0] = getWhite();
+    board[1] = board[8] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
@@ -338,10 +324,10 @@ int testWeirdImpossibleBoard2() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = WHITE;
-    board[1] = board[8] = board[9] = BLACK;
+    board[0] = getWhite();
+    board[1] = board[8] = board[9] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
@@ -365,10 +351,10 @@ int testWeirdImpossibleBoardOben() // rand test
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[19] = board[20] = board[21] = WHITE;
-    board[11] = board[12] = board[13] = BLACK;
+    board[19] = board[20] = board[21] = getWhite();
+    board[11] = board[12] = board[13] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 5;
@@ -393,10 +379,10 @@ int testWeirdImpossibleBoardUnten() // rand test
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[44] = board[45] = board[46] = WHITE;
-    board[52] = board[53] = board[54] = BLACK;
+    board[44] = board[45] = board[46] = getWhite();
+    board[52] = board[53] = board[54] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 5;
@@ -420,10 +406,10 @@ int testAvoidTheDuplicateMove() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = board[4] = WHITE;
-    board[1] = board[3] = BLACK;
+    board[0] = board[4] = getWhite();
+    board[1] = board[3] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
@@ -446,10 +432,10 @@ int testAvoidTheDuplicateMove3() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = board[4] = WHITE;
-    board[1] = board[3] = BLACK;
+    board[0] = board[4] = getWhite();
+    board[1] = board[3] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
@@ -472,10 +458,10 @@ int testAvoidTheDuplicateMove2() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = board[4] = board[10] = BLACK;
-    board[1] = board[3] = board[18] = WHITE;
+    board[0] = board[4] = board[10] = getBlack();
+    board[1] = board[3] = board[18] = getWhite();
 
-    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE player = getBlack();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //  printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
@@ -498,10 +484,10 @@ int testAvoidMovingOffTheSideOfTheBoard() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = board[4] = board[18] = BLACK;
-    board[1] = board[3] = board[10] = WHITE;
+    board[0] = board[4] = board[18] = getBlack();
+    board[1] = board[3] = board[10] = getWhite();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
@@ -524,10 +510,10 @@ int testAvoidMovingOffTheSideOfTheBoard2() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[56] = board[42] = board[60] = BLACK;
-    board[57] = board[50] = board[59] = WHITE;
+    board[56] = board[42] = board[60] = getBlack();
+    board[57] = board[50] = board[59] = getWhite();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
@@ -550,10 +536,10 @@ int testAvoidMovingOffTheSideOfTheBoard8() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[34] = board[42] = board[43] = board[44] = WHITE;
-    board[49] = board[35] = board[56] = BLACK;
+    board[34] = board[42] = board[43] = board[44] = getWhite();
+    board[49] = board[35] = board[56] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;
@@ -577,10 +563,10 @@ int testAvoidMovingOffTheSideOfTheBoard3() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[27] = board[35] = board[34] = board[29] = BLACK;
-    board[20] = board[28] = board[36] = board[44] = WHITE;
+    board[27] = board[35] = board[34] = board[29] = getBlack();
+    board[20] = board[28] = board[36] = board[44] = getWhite();
 
-    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE player = getBlack();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 7;
@@ -604,10 +590,10 @@ int testAvoidMovingOffTheSideOfTheBoard4() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[40] = board[48] = board[56] = board[49] = board[50] = WHITE;
-    board[41] = board[57] = BLACK;
+    board[40] = board[48] = board[56] = board[49] = board[50] = getWhite();
+    board[41] = board[57] = getBlack();
 
-    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE player = getBlack();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
@@ -631,10 +617,10 @@ int testAvoidMovingOffTheSideOfTheBoard5() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[44] = board[45] = board[37] = WHITE;
-    board[54] = board[63] = board[36] = BLACK;
+    board[44] = board[45] = board[37] = getWhite();
+    board[54] = board[63] = board[36] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
@@ -658,10 +644,10 @@ int testAvoidMovingOffTheSideOfTheBoard6() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[20] = board[21] = board[29] = WHITE;
-    board[28] = board[14] = board[7] = BLACK;
+    board[20] = board[21] = board[29] = getWhite();
+    board[28] = board[14] = board[7] = getBlack();
 
-    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
@@ -685,10 +671,10 @@ int testAvoidMovingOffTheSideOfTheBoard7() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[53] = board[54] = board[55] = board[63] = WHITE;
-    board[46] = board[47] = BLACK;
+    board[53] = board[54] = board[55] = board[63] = getWhite();
+    board[46] = board[47] = getBlack();
 
-    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE player = getBlack();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
@@ -712,10 +698,10 @@ int testAvoidMovingOffTheSideOfTheBoard9() {
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[26] = board[27] = board[28] = board[29] = board[30] = board[31] = board[27] = board[35] = board[43] = board[51] = board[52] = board[53] = board[50] = WHITE;
-    board[18] = board[19] = board[20] = board[44] = board[58] = BLACK;
+    board[26] = board[27] = board[28] = board[29] = board[30] = board[31] = board[27] = board[35] = board[43] = board[51] = board[52] = board[53] = board[50] = getWhite();
+    board[18] = board[19] = board[20] = board[44] = board[58] = getBlack();
 
-    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE player = getBlack();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 10;
@@ -769,6 +755,7 @@ int basicTests() {
     testAvoidMovingOffTheSideOfTheBoard7();
     testAvoidMovingOffTheSideOfTheBoard8();
     testAvoidMovingOffTheSideOfTheBoard9();
+
     return 0; // success
 }
 

@@ -52,18 +52,6 @@
 
 #include "boardmessageparser.h"
 
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-//#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
-
-
-
 /*
 + TOTAL 2
 + 0 IAMLOUIS 0
@@ -121,9 +109,9 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
             printf("\n");
         }
 //        printf("%d ", board[i]);
-        if (board[i] == WHITE) {
+        if (board[i] == getWhite()) {
             printf("W ");
-        } else if (board[i] == BLACK) {
+        } else if (board[i] == getBlack()) {
             printf("B ");
         } else {
             printf(". ");
@@ -132,7 +120,7 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
     printf("\n");
     if (sideToMove) {
         printf("%d to move\n", sideToMove);
-        if (sideToMove == BLACK) {
+        if (sideToMove == getBlack()) {
             printf("Black to move\n");
         } else {
             printf("White to move\n");

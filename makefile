@@ -1,10 +1,10 @@
 CC=gcc
-CFLAGS=-I -Wall -Wextra -c 
+CFLAGS=-I -Wall -Wextra -g -Werror
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
-	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/board.h\
+	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/thinkertests/boardtests2.h thinker/board.h \
 	connector/connectorTests/connectortests.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o \
-	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o\
+	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o thinker/thinkertests/boardtests2.o \
 	thinker/board.h connector/connectorTests/connectortests.o
 # todo, replace above with discoveries (find c files and replace extensions)
 

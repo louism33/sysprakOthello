@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// todo, probably pass configStruct as argument?
 configurationStruct *readConfigurationFile(char *pathName) {
 
     printf("Attempting to read configuration data from %s\n", pathName);

@@ -78,7 +78,7 @@ char sourceCopy[64]; // larger than needed
 char *regexString = "\\+ MOVE ([0-9]+)";
 size_t maxGroups = 2;
 regex_t regexCompiled;
-
+// todo remove this stupid regex crap
 void setupMessageParser() { // we do this to avoid wasting memory and compute on regex patterns
     if (messageParserReady) {
         printf("message parser already set up\n");

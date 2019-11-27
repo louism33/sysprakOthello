@@ -256,7 +256,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("sending relevant info to thinker\n");
                 char *moveRet=malloc(3*sizeof(char));
 
-                connectorBoard->sideToMove = getBlack();
+                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
+
+
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
                                                                  moveTimeAndBoard->movetime, moveRet);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);

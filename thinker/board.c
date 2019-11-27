@@ -361,19 +361,19 @@ int *removeDuplicates(int *speicher, int index)
     }
     for (int i = 0; i < index - 1; i++)
     {
-        for (int j = i + 1; j < index;) //注意：此时第三个表达式空出，因为当找到重复的数据，后面的数往前覆盖之后，应该再进行一次对比
+        for (int j = i + 1; j < index;) 
         {
-            if (speicher[i] == speicher[j]) //判断如果出现相同数据，则将后面的数据往前移一位
+            if (speicher[i] == speicher[j]) 
             {
                 for (int k = j; k < index - 1; k++)
                 {
                     speicher[k] = speicher[k + 1];
                 }
-                index--; //记录数组长度的变量相应减1
+                index--; 
             }
             else
             {
-                j++; //当没有重复的时候才++
+                j++; 
             }
         }
     }

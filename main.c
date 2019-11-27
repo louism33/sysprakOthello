@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 
 
 
-    //thinkerMasterMethod(thinkerBoard);
+    thinkerMasterMethod(thinkerBoard);
     connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
 
 

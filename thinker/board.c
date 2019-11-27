@@ -355,10 +355,11 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 int *removeDuplicates(int *speicher, int index)
 {
     //printf("benutzen wir removeDuplicates\n");
-    for (int i = 0; i < index; i++)
-    {
-        //printf("vor-speicher[%d]: %d\n",i,speicher[i]);
-    }
+    // for (int i = 0; i < index; i++)
+    // {
+    //     printf("vor-speicher[%d]: %d\n",i,speicher[i]);
+    // }
+
     for (int i = 0; i < index - 1; i++)
     {
         for (int j = i + 1; j < index;) 
@@ -382,10 +383,10 @@ int *removeDuplicates(int *speicher, int index)
     //         {
     //             printf("speicher[%d]: %d\n",i,speicher[i]);
     //         }
-    for (int i = 0; i < index; i++)
-    {
-        printf("nachduplicatespeicher[%d]: %d\n", i, speicher[i]);
-    }
+    // for (int i = 0; i < index; i++)
+    // {
+    //     printf("nachduplicatespeicher[%d]: %d\n", i, speicher[i]);
+    // }
     // printf("finalspeicher [%d] =%d\n",index-1,speicher[index-1]);
     //printf("into finalspeicher.\n");
     speicher[index] = LAST_MOVE;
@@ -436,8 +437,6 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER)
         if (finalspeicher[i] == LAST_MOVE)
         {
             // printf("total fertig\n");
-            free(finalspeicher);
-            free(allMoves);
             return total;
         }
         total++;

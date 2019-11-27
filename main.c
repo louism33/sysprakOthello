@@ -17,25 +17,8 @@
 #include "connector/config.h"
 #include "connector/boardmessageparser.h"
 #include "thinker/thinkertests/boardtests.h"
+#include "thinker/thinkertests/boardtests2.h"
 #include "connector/connectorTests/connectortests.h"
-
-
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-// black makes first move
-#define STARTING_PLAYER BLACK
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
-
-// 4 square occupied in starting board
-#define STARTING_WHITE_POSITION_1 27
-#define STARTING_WHITE_POSITION_2 36
-#define STARTING_BLACK_POSITION_1 28
-#define STARTING_BLACK_POSITION_2 35
 
 
 // if thinker is parent, retry logic may be easier to implement
@@ -47,8 +30,11 @@ int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");
         printf("Running board test Suite\n");
-        int fail = fullTestSuite();
+        int fail = fullTestSuite(); //board test
 
+        fail += fullTestSuiteBoard2();
+
+        printf("Running convert move test Suite\n");
         fail += testConvertMove();
 
         if (fail) {
@@ -73,7 +59,7 @@ int main(int argc, char *argv[]) {
 
 
 
-    //thinkerMasterMethod(thinkerBoard);
+    thinkerMasterMethod(thinkerBoard);
     connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
 
 

@@ -46,24 +46,8 @@
 #include "boardmessageparser.h"
 #include "../thinker/thinker.h"
 
-#define MAX 240
-#define PLAYER
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-// black makes first move
-#define STARTING_PLAYER BLACK
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
-
-// 4 square occupied in starting board
-#define STARTING_WHITE_POSITION_1 27
-#define STARTING_WHITE_POSITION_2 36
-#define STARTING_BLACK_POSITION_1 28
-#define STARTING_BLACK_POSITION_2 35
+#define MAX 240 // todo make better
+#define PLAYER // todo, still necessary?
 
 enum Phase {
     PROLOG = 0,
@@ -117,7 +101,6 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 
     int move = doThink(thinkerBoard, moveTime);
 
-
     printf("move is: %d\n", move);
     convertMove(move, moveRet);
 
@@ -145,7 +128,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     strcat(gameIdToSend, gameID);
     strcat(gameIdToSend, "\n");
 
-    char playerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
+    char blankPlayerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
+    char playerToSend[] = "PLAYER 1\n"; // todo get from argument. need extra whitespace if there is a player provided
     char thinking[] = "THINKING\n";
     char playf5[] = "PLAY D6\n";
     int lengthOfPlayCommandToSendToKeep = 5;
@@ -170,7 +154,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     printf("########## %s\n", gameKindName);
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-            printf("%s\n", buff);
+            printf("--->%s\n", buff);
 
             // todo for louis, error handling
 
@@ -216,11 +200,11 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("%s\n", buff);
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 printf("-----------save gameName: %s\n", gameName);
-                if (player == NULL) {
-                    writeToServer(sockfd, playerToSend);
+                if (player == NULL || strlen(player) != 1) {
+                    writeToServer(sockfd, blankPlayerToSend);
                 } else {
                     strcpy(playerToSend, "PLAYER ");
-                    strcat(playerToSend, player);
+                    playerToSend[7] = player[0];
                     writeToServer(sockfd, playerToSend);
                 }
             }
@@ -235,9 +219,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("--------save  playerNumber: %s\n", playerNumber);
 
                 if (playerNumber[0] == '0') {
-                    sideToMove = BLACK;
+                    sideToMove = getBlack();
                 } else {
-                    sideToMove = WHITE;
+                    sideToMove = getWhite();
                 }
 
                 int l = strlen(buff) - strlen("+ YOU 0 ");
@@ -246,9 +230,16 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("--------save my playerName: %s\n", myPlayerName);
             }
 
-            // step five, read board information and time to move from server.
+            // step five, read TOTAL
+            if (strncmp("+ TOTAL", buff, 7) == 0) {
+                printf("  Received TOTAL info from server, buff is:%s", buff);
+                phase = SPIELVERLAUF;
+            }
+
+            // step six, read board information and time to move from server.
             // todo, extract timeToMove info
-            // todo, extract board info
+            // todo, extract board size
+            // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
             if (strlen(buff) > 75) { // todo make better (add check for first chars for example)
@@ -256,21 +247,21 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 writeToServer(sockfd, thinking);
                 printf("sent thinking command\n");
 
-                printf("starting parse board\n");
+                printf("starting parse board, setting phase to spielzug\n");
+                phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
-                char *moveRet = malloc(3 * sizeof(char));
+                char *moveRet=malloc(3*sizeof(char));
 
-                connectorBoard->sideToMove = sideToMove;
-
+                connectorBoard->sideToMove = getBlack();
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
                                                                  moveTimeAndBoard->movetime, moveRet);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);
 
-                printf("%s   %d\n", moveRet, strlen(moveRet));
+                printf("%s   %d\n", moveRet, (int) strlen(moveRet));
                 if (strlen(moveRet) != 2) {
                     fprintf(stderr, "move of incorrect length received from thinker: %s\n",
                             moveRet);
@@ -288,6 +279,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("playCommandToSend: %s\n", playCommandToSend);
 
                 writeToServer(sockfd, playCommandToSend);
+                phase = SPIELVERLAUF;
                 playCommandToSend[0] = '\0';
             }
 
@@ -303,6 +295,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             if ((strncmp("+ ENDFIELD", buff, 10)) == 0) { // todo, is this necessary? I don't think this is ever called
                 printf("endfield received, possibly something is wrong!!!\n");
+
                 writeToServer(sockfd, thinking);
             }
 

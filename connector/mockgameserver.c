@@ -3,6 +3,7 @@
 //
 #include "../thinker/board.h"
 #include "mockgameserver.h"
+#include "connector.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -17,27 +18,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define MAX 300
-#define PORTNUMBER 1357
+#define MAX 300 // todo, cleanup?
 #define SA struct sockaddr
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-// black makes first move
-#define STARTING_PLAYER BLACK
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
-
-// 4 square occupied in starting board
-#define STARTING_WHITE_POSITION_1 27
-#define STARTING_WHITE_POSITION_2 36
-#define STARTING_BLACK_POSITION_1 28
-#define STARTING_BLACK_POSITION_2 35
-
-
 
 int waitLoop(int sockfd) {
     char buff[MAX];
@@ -222,7 +204,7 @@ int createMockGameServer() {
     // assign IP, PORT
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(PORTNUMBER);
+    servaddr.sin_port = htons(getDefaultPort());
 
     // Binding newly created socket to given IP and verification
     if ((bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))) != 0) {

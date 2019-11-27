@@ -293,13 +293,6 @@ bool isNext(BOARD board,int legalPos) {
     return TRUE;
 }
 
-int* getNext(BOARD board,int legalPos, SIDE_TO_MOVE TARGET_PLAYER) {
-    // Funktion, die eine Richtung überprüft. Bennene mit Norden usw.
-} 
 
-int* makeMove(BOARD board, int legalPos, SIDE_TO_MOVE TARGET_PLAYER) {
-    // rufe hier die Funktionen aller Richtungen auf. Isgesamt 8 
-   
-}
 
 

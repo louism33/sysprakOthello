@@ -60,6 +60,8 @@ void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct);
 
 void freeBoardStruct(BOARD_STRUCT* boardStruct);
 
+int *removeDuplicates(MOVES speicher, int index);
+
 #endif //SYSPRAKOTHELLO_BOARD_H
 
 

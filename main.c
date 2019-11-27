@@ -17,6 +17,7 @@
 #include "connector/config.h"
 #include "connector/boardmessageparser.h"
 #include "thinker/thinkertests/boardtests.h"
+#include "thinker/thinkertests/boardtests2.h"
 #include "connector/connectorTests/connectortests.h"
 
 
@@ -47,8 +48,11 @@ int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");
         printf("Running board test Suite\n");
-        int fail = fullTestSuite();
+        int fail = fullTestSuite(); //board test
 
+        fail += fullTestSuiteBoard2();
+
+        printf("Running convert move test Suite\n");
         fail += testConvertMove();
 
         if (fail) {

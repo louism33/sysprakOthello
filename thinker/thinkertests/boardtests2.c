@@ -246,12 +246,7 @@ int testRemoveDuplicatesLostMove2() {
 
     removeDuplicates(moves, index);
 
-//    printf("---\n");
-//    printf("->%d\n", movesTest);
-//    printf("->%d\n", movesTest[0]);
-
     for (int i = 0;; i++) {
-//        printf("->%d\n", movesTest[i]);
         if (movesTest[i] == LAST_MOVE) {
             break;
         }
@@ -310,12 +305,7 @@ int testRemoveDuplicatesLostMove3() {
 
     removeDuplicates(moves, index);
 
-//    printf("---\n");
-//    printf("->%d\n", movesTest);
-//    printf("->%d\n", movesTest[0]);
-
     for (int i = 0;; i++) {
-//        printf("->%d\n", movesTest[i]);
         if (movesTest[i] == LAST_MOVE) {
             break;
         }
@@ -352,6 +342,7 @@ int basicTests2() {
 
     testRemoveDuplicatesLostMove();
     testRemoveDuplicatesLostMove2();
+    testRemoveDuplicatesLostMove3();
 
     return 0; // success
 }

@@ -24,6 +24,8 @@
 #define STARTING_BLACK_POSITION_1 28
 #define STARTING_BLACK_POSITION_2 35
 
+getWinner(BOARD board);
+
 MOVE doThink(BOARD_STRUCT *board, int moveTime)
 {
 	printf("received doThink command from connector, time to move %d\n", moveTime);

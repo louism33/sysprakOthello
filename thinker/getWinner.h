@@ -1,11 +1,6 @@
-//
-// Created by louis on 11/13/19.
-//
+//#ifndef SYSPRAKOTHELLO_BOARD_H
+//#define SYSPRAKOTHELLO_BOARD_H
 
-#ifndef ALEXTHEFRIENDLYAI_THINKER_H
-#define ALEXTHEFRIENDLYAI_THINKER_H
-
-#include "board.h"
 
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
@@ -24,9 +19,8 @@
 #define STARTING_BLACK_POSITION_1 28
 #define STARTING_BLACK_POSITION_2 35
 
+typedef int *BOARD;
 
-void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard);
+int getWinner(int* board);
 
-MOVE doThink(BOARD_STRUCT* board, int moveTime);
-
-#endif //ALEXTHEFRIENDLYAI_THINKER_H
+//#endif

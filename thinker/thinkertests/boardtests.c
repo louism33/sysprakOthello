@@ -32,32 +32,26 @@ int switchPlayer(SIDE_TO_MOVE sideToMove)
     return SWITCH_PLAYER_CONSTANT - sideToMove;
 }
 
-int testOnePosition()
+int testOnePositionleft() //nach links bewegen
 {
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    int mypos = 20;
-    int enemypos = 19;
+    int mypos = 20;    //mein
+    int enemypos = 19; //Gegener
 
     board[mypos] = WHITE;
     board[enemypos] = BLACK;
-
-    
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     printBoardLouisSide(b, player);
 
     int *moves = malloc(64 * sizeof(int));
-    int * legalMoves = getLegalMovesOnePosition(board, moves, mypos, BLACK);
+    int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, BLACK); //target player(enemy)=BLACK
 
-
-
-
-    
     int correctMove = 18;
 
     if (correctMove != legalMoves[0])
@@ -75,7 +69,7 @@ int testOnePosition()
     return 0; // success
 }
 
-int testOnePositionright()
+int testOnePositionright() //nach rechts bewegen
 {
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -88,19 +82,14 @@ int testOnePositionright()
     board[mypos] = WHITE;
     board[enemypos] = BLACK;
 
-    
-
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     printBoardLouisSide(b, player);
 
     int *moves = malloc(64 * sizeof(int));
-    int * legalMoves = getLegalMovesOnePosition(board, moves, mypos, BLACK);
+    // int *finalMove=malloc(64 * sizeof(int));
+    int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, BLACK);
 
-
-
-
-    
     int correctMove = 20;
 
     if (correctMove != legalMoves[0])
@@ -118,7 +107,7 @@ int testOnePositionright()
     return 0; // success
 }
 
-int testStartingBoard1()
+int testStartingBoard1() //1 und 2 sind gleich
 {
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -133,38 +122,6 @@ int testStartingBoard1()
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;
-
-    if (myNumberOfMoves != correctNumberOfMoves)
-    {
-        printBoardLouisSide(b, player);
-        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
-                correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        exit(1);
-    }
-
-    printf("test successful\n\n");
-    free(b);
-    return 0; // success
-}
-
-int testNothing()
-{
-    // starting board normal
-    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToZero(b);
-    int *board = b->board;
-
-    board[20] = WHITE;
-    board[19] = board[18] = board[17] = board[16] = board[15] = board[14] = board[13] = board[12] = board[11] = board[10] = BLACK;
-
-    SIDE_TO_MOVE player = WHITE;
-    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-
-    printBoardLouisSide(b, player);
-
-    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
-    int correctNumberOfMoves = 3;
 
     if (myNumberOfMoves != correctNumberOfMoves)
     {
@@ -209,7 +166,7 @@ int testStartingBoard2()
     return 0; // success
 }
 
-int testBoardAfterOneMove()
+int testBoardAfterOneMove() //36=white 26=27=28=35=black
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
@@ -239,20 +196,47 @@ int testBoardAfterOneMove()
     return 0; // success
 }
 
-int testWeirdImpossibleBoard()
+int testWeirdImpossibleBoardLeft() // rand test
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = WHITE;
-    board[1] = board[8] = BLACK;
+    board[2] = board[10] = board[18] = WHITE;
+    board[1] = board[9] = board[17] = BLACK;
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
-    int correctNumberOfMoves = 2;
+    int correctNumberOfMoves = 4;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+int testWeirdImpossibleBoardOben() // rand test
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[19] = board[20] = board[21] = WHITE;
+    board[11] = board[12] = board[13] = BLACK;
+
+    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 5;
 
     if (myNumberOfMoves != correctNumberOfMoves)
     {
@@ -267,7 +251,35 @@ int testWeirdImpossibleBoard()
     return 0; // success
 }
 
-int testWeirdImpossibleBoardright()
+int testWeirdImpossibleBoardUnten() // rand test
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[44] = board[45] = board[46] = WHITE;
+    board[52] = board[53] = board[54] = BLACK;
+
+    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 5;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+
+int testWeirdImpossibleBoardRight() //rand test
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
@@ -294,20 +306,20 @@ int testWeirdImpossibleBoardright()
     free(b);
     return 0; // success
 }
-int testWeirdImpossibleBoard2()
+int testWeirdImpossibleBoardspezial() // rand test
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
     initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = WHITE;
-    board[1] = board[8] = board[9] = BLACK;
+    board[0] = board[8] = board[16] = BLACK;
+    board[1] = board[9] = board[17] = WHITE;
 
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
-    int correctNumberOfMoves = 3;
+    int correctNumberOfMoves = 0;
 
     if (myNumberOfMoves != correctNumberOfMoves)
     {
@@ -321,8 +333,35 @@ int testWeirdImpossibleBoard2()
     free(b);
     return 0; // success
 }
+int testWeirdImpossibleBoardLeft2() //rand test
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
-int testSides()
+    board[2] = WHITE;
+    board[1] = BLACK;
+
+    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 1;
+    printBoardLouisSide(b, player);
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+
+int testSidesLeft() //rand test
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
@@ -351,7 +390,7 @@ int testSides()
     return 0; // success
 }
 
-int testSides2()
+int testSidesRight() //rand test
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
@@ -380,7 +419,7 @@ int testSides2()
     return 0; // success
 }
 
-int testAvoidTheDuplicateMove()
+int testAvoidTheDuplicateMove() // 4 mal Duplicate Moeglichkeiten
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
@@ -393,7 +432,7 @@ int testAvoidTheDuplicateMove()
     SIDE_TO_MOVE player = WHITE;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
-    int correctNumberOfMoves = 4;
+    int correctNumberOfMoves = 1;
 
     if (myNumberOfMoves != correctNumberOfMoves)
     {
@@ -436,16 +475,99 @@ int testAvoidTheDuplicateMove2()
     return 0; // success
 }
 
-int testAvoidMovingOffTheSideOfTheBoard()
+int testAvoidMovingOffTheSideOfTheBoard() // Problem!!!!!!!!!!!! Frage!!!!!
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     ;
+    initialiseBoardStructToZero(b);
     int *board = b->board;
 
-    board[0] = board[4] = board[18] = BLACK;
-    board[1] = board[3] = board[10] = WHITE;
+    board[0] = board[4] = board[18] = WHITE;
+    board[1] = board[3] = board[10] = BLACK;
 
     SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 1;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+
+int testAvoidMovingOffTheSideOfTheBoard2() 
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[34] = board[42] = board[43] =board[44]= WHITE;
+    board[49] = board[35] = board[56] = BLACK;
+
+    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 4;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+int testAvoidMovingOffTheSideOfTheBoard3() 
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[27] = board[35] = board[34] =board[29]=BLACK;
+    board[20] = board[28] = board[36] =board[44]= WHITE;
+
+    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 7;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+int testAvoidMovingOffTheSideOfTheBoard4() 
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[40] = board[48] = board[56] =board[49]=board[50]=WHITE;
+    board[41] = board[57] = BLACK;
+
+    SIDE_TO_MOVE player = BLACK;
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
@@ -462,28 +584,122 @@ int testAvoidMovingOffTheSideOfTheBoard()
     free(b);
     return 0; // success
 }
-
-int basicTests()
+int testAvoidMovingOffTheSideOfTheBoard5() 
 {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
 
-    testOnePosition();
+    board[44] = board[45] = board[37]=WHITE;
+    board[54] = board[63] = board[36]=BLACK;
+
+    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 3;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+int testAvoidMovingOffTheSideOfTheBoard6() 
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[20] = board[21] = board[29]=WHITE;
+    board[28] = board[14] = board[7]=BLACK;
+
+    SIDE_TO_MOVE player = WHITE;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 3;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+int testAvoidMovingOffTheSideOfTheBoard7() 
+{
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    ;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[53] = board[54] = board[55]=board[63]=WHITE;
+    board[46] = board[47] =BLACK;
+
+    SIDE_TO_MOVE player = BLACK;
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 3;
+
+    if (myNumberOfMoves != correctNumberOfMoves)
+    {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        exit(1);
+    }
+    printf("test successful\n\n");
+    free(b);
+    return 0; // success
+}
+int basicTests()
+
+{ //one position move
+    testOnePositionleft();
     testOnePositionright();
 
-    testNothing();
+//random one position move
+   testBoardAfterOneMove();
+  testAvoidMovingOffTheSideOfTheBoard2();  
+  testAvoidMovingOffTheSideOfTheBoard3();
+  testAvoidMovingOffTheSideOfTheBoard4();
+ testAvoidMovingOffTheSideOfTheBoard5();
+ testAvoidMovingOffTheSideOfTheBoard6();
+ testAvoidMovingOffTheSideOfTheBoard7();
+    
+//Anfangtest
     testStartingBoard1();
     testStartingBoard2();
-    testBoardAfterOneMove();
-    testWeirdImpossibleBoardright();
-    testWeirdImpossibleBoard();
-    testWeirdImpossibleBoard2();
 
-    testSides();
-    // testSides2();
 
-    //    testAvoidTheDuplicateMove();
-    //    testAvoidTheDuplicateMove2();
-    //
-    //    testAvoidMovingOffTheSideOfTheBoard();
+
+//in der naehe von Rand test
+    testWeirdImpossibleBoardRight();
+    testWeirdImpossibleBoardLeft();
+    testWeirdImpossibleBoardLeft2();
+   testWeirdImpossibleBoardOben();
+    testWeirdImpossibleBoardUnten();
+    testSidesLeft(); //ein kleinen Abstand von Rand test
+    testSidesRight();
+
+// Duplicate test
+    testAvoidTheDuplicateMove();
+    testAvoidTheDuplicateMove2();
+    testAvoidMovingOffTheSideOfTheBoard();
+    testWeirdImpossibleBoardspezial();
 
     return 0; // success
 }

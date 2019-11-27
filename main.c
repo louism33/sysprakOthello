@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");
         printf("Running board test Suite\n");
-        int fail = fullTestSuite();
+        int fail = fullTestSuite(); //board test
 
         fail += testConvertMove();
 

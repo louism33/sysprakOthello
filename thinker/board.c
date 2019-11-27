@@ -124,6 +124,8 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 {
     int index = 0;
     int MY_PLAYER = 3 - TARGET_PLAYER;
+    int zeile = (8 - position / 8);
+    int spalte = position % 8;
 
     if (board[position] != MY_PLAYER)
     {
@@ -133,44 +135,19 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 
     //    printf("position is %d\n", position);
 
-    //    for-Schleifer um nach rechts zu prüfen
-    for (int i = position + 1; i % 8 != 7; i++)
+    //for-Schleifer um nach rechts zu prüfen
+    if (spalte != 6 && spalte != 7)
     {
-        //TODO: nicht machen in Spalte 7
-        if (board[i] == TARGET_PLAYER)
+        //  printf("-----in link for Schleife.\n");
+        if (board[position + 1] == TARGET_PLAYER)
         {
-            continue;
-        }
-        if (board[i] == MY_PLAYER)
-        {
-            break;
-        }
-        if (board[i] == EMPTY && board[position + 1] == TARGET_PLAYER)
-        {
-            // legal move!!!
-            speicher[index++] = i;
-            //            printf("found move R:%d\n", speicher[index - 1]);
-            break;
-        }
-    }
-
-    // for-Schleifer um nach links zu prüfen
-    //finished
-    int zeile = (8 - position / 8);
-    if (zeile != 0 && (8 - position / 8) != 1)
-    {
-
-        if (board[position - 1] == TARGET_PLAYER)
-        {
-            int i=position-2;
+            int i = position + 2;
             while (1)
             {
-                if (i%8==0)
-                {
-                    break;
-                }
+
                 if (board[i] == TARGET_PLAYER)
-                {   i--;
+                {
+                    i++;
                     continue;
                 }
                 if (board[i] == EMPTY)
@@ -183,7 +160,46 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                 {
                     break;
                 }
-                
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    // for-Schleifer um nach links zu prüfen
+    //finished
+    //    int zeile = (8 - position / 8);
+    //    if (zeile != 0 && zeile != 1){
+
+    if (spalte != 0 && spalte != 1)
+    {
+        //  printf("-----in link for Schleife.\n");
+        if (board[position - 1] == TARGET_PLAYER)
+        {
+            int i = position - 2;
+            while (1)
+            {
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+                if (board[i] == TARGET_PLAYER)
+                {
+                    i--;
+                    continue;
+                }
+                if (board[i] == EMPTY)
+                {
+                    speicher[index++] = i;
+                    printf("found move L:%d\n", speicher[index - 1]);
+                    break;
+                }
+                if (board[i] == MY_PLAYER)
+                {
+                    break;
+                }
             }
         }
     }
@@ -203,7 +219,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         {
             // legal move!!!
             speicher[index++] = i;
-            //            printf("found move U:%d\n", speicher[index - 1]);
+            printf("found move U:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -223,7 +239,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         {
             // legal move!!!
             speicher[index++] = i;
-            //            printf("found move O:%d\n", speicher[index - 1]);
+            printf("found move O:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -243,7 +259,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         {
             // legal move!!!
             speicher[index++] = i;
-            //            printf("found move RO:%d\n", speicher[index - 1]);
+            printf("found move RO:%d\n", speicher[index - 1]);
             break;
         }
     }
@@ -263,50 +279,118 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         {
             // legal move!!!
             speicher[index++] = i;
-            //            printf("found move OL:%d\n", speicher[index - 1]);
+            printf("found move OL:%d\n", speicher[index - 1]);
             break;
         }
     }
 
     // for-Schleifer um nach rechts unten zu prüfen
-    for (int i = position + 9; i < 64 && i % 8 != 7; i = i + 9)
+    if (spalte != 6 && spalte != 7 && zeile != 1 && zeile != 2)
     {
-        if (board[i] == TARGET_PLAYER)
+        //  printf("-----in link unten for Schleife.\n");
+        if (board[position + 9] == TARGET_PLAYER)
         {
-            continue;
-        }
-        if (board[i] == MY_PLAYER)
-        {
-            break;
-        }
-        if (board[i] == EMPTY && board[position + 9] == TARGET_PLAYER)
-        {
-            // legal move!!!
-            speicher[index++] = i;
-            //            printf("found move UR:%d\n", speicher[index - 1]);
-            break;
+            int i = position + 18;
+            while (1)
+            {
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+                if (board[i] == TARGET_PLAYER)
+                {
+                    i += 9;
+                    continue;
+                }
+                if (board[i] == EMPTY)
+                {
+                    speicher[index++] = i;
+                    printf("found move L:%d\n", speicher[index - 1]);
+                    break;
+                }
+                if (board[i] == MY_PLAYER)
+                {
+                    break;
+                }
+            }
         }
     }
-    // for-Schleifer um nach links unten zu prüfen
-    for (int i = position + 7; i < 64 && i % 8 != 0; i = i + 7)
+
+    //  for-Schleifer um nach links unten zu prüfen
+    if (spalte != 0 && spalte != 1 && zeile != 1 && zeile != 2)
     {
-        if (board[i] == TARGET_PLAYER)
+        // printf("-----in link unten for Schleife.\n");
+        if (board[position + 7] == TARGET_PLAYER)
         {
-            continue;
-        }
-        if (board[i] == MY_PLAYER)
-        {
-            break;
-        }
-        if (board[i] == EMPTY && board[position + 7] == TARGET_PLAYER)
-        {
-            // legal move!!!
-            speicher[index++] = i;
-            //            printf("found move LU:%d\n", speicher[index - 1]);
-            break;
+            int i = position + 14;
+            while (1)
+            {
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+                if (board[i] == TARGET_PLAYER)
+                {
+                    i += 7;
+                    continue;
+                }
+                if (board[i] == EMPTY)
+                {
+                    speicher[index++] = i;
+                    printf("found move L:%d\n", speicher[index - 1]);
+                    break;
+                }
+                if (board[i] == MY_PLAYER)
+                {
+                    break;
+                }
+            }
         }
     }
+
     speicher[index] = LAST_MOVE;
+    // printf("ende oneposition\n");
+    return speicher;
+}
+int *removeDuplicates(int *speicher, int index)
+{
+    //printf("benutzen wir removeDuplicates\n");
+    for (int i = 0; i < index; i++)
+    {
+        //printf("vor-speicher[%d]: %d\n",i,speicher[i]);
+    }
+    for (int i = 0; i < index - 1; i++)
+    {
+        for (int j = i + 1; j < index;) //注意：此时第三个表达式空出，因为当找到重复的数据，后面的数往前覆盖之后，应该再进行一次对比
+        {
+            if (speicher[i] == speicher[j]) //判断如果出现相同数据，则将后面的数据往前移一位
+            {
+                for (int k = j; k < index - 1; k++)
+                {
+                    speicher[k] = speicher[k + 1];
+                }
+                index--; //记录数组长度的变量相应减1
+            }
+            else
+            {
+                j++; //当没有重复的时候才++
+            }
+        }
+    }
+    //         printf("loeschen fertig\n");
+    //          for (int i = 0; i < index; i++)
+    //         {
+    //             printf("speicher[%d]: %d\n",i,speicher[i]);
+    //         }
+    for (int i = 0; i < index; i++)
+    {
+        printf("nachduplicatespeicher[%d]: %d\n", i, speicher[i]);
+    }
+    // printf("finalspeicher [%d] =%d\n",index-1,speicher[index-1]);
+    //printf("into finalspeicher.\n");
+    speicher[index] = LAST_MOVE;
+    // printf("finalspeicher [%d] =%d\n",index,speicher[index]);
+    // printf("ende duplicate\n");
     return speicher;
 }
 
@@ -332,23 +416,28 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES a
             }
         }
     }
-
+    // printf("index von allMove(): %d\n",index);
+    removeDuplicates(allMoves, index);
+    //printf("finalspeicher 4: %d\n",finalspeicher[4]);
     free(speicher);
-
-    allMoves[index] = LAST_MOVE;
+    //free(allMoves);
+    // printf("ende allmove()\n");
     return allMoves;
 }
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER)
 {
     MOVES allMoves = malloc(64 * sizeof(int));
-    getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
+    MOVES finalspeicher = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 
     for (int i = 0; i < 64; i++)
     {
-        if (allMoves[i] == LAST_MOVE)
+        if (finalspeicher[i] == LAST_MOVE)
         {
+            // printf("total fertig\n");
+            free(finalspeicher);
+            free(allMoves);
             return total;
         }
         total++;

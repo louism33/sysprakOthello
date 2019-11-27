@@ -26,7 +26,7 @@
 
 #define LAST_MOVE (-1)
 
-int switchPlayer(SIDE_TO_MOVE sideToMove) {
+SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove) {
     return SWITCH_PLAYER_CONSTANT - sideToMove;
 }
 

@@ -4,6 +4,7 @@
 #include "../shm/shm.h"
 #include "thinker.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "thinkertests/boardtests.h"
 #include "board.h"
@@ -17,7 +18,7 @@
 #define STARTING_PLAYER BLACK
 
 // to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
+//#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
 
 // 4 square occupied in starting board
 #define STARTING_WHITE_POSITION_1 27
@@ -32,7 +33,7 @@ MOVE doThink(BOARD_STRUCT *board, int moveTime)
 	printf("ccccc\n");
 
 	MOVES allMoves = malloc(64 * sizeof(int));
-	getLegalMovesAllPositions(board->board, SWITCH_PLAYER_CONSTANT - board->sideToMove,
+	getLegalMovesAllPositions(board->board, switchPlayer(board->sideToMove),
 							  allMoves);
 
 	printf("ddddd\n");

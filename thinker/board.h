@@ -16,7 +16,7 @@
 #define STARTING_PLAYER BLACK
 
 // to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
+//#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
 
 // 4 square occupied in starting board
 #define STARTING_WHITE_POSITION_1 27
@@ -61,6 +61,10 @@ void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct);
 void freeBoardStruct(BOARD_STRUCT* boardStruct);
 
 int *removeDuplicates(MOVES speicher, int index);
+
+MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves);
+
+SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove);
 
 #endif //SYSPRAKOTHELLO_BOARD_H
 

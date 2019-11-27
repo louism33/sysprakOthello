@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stddef.h>
 #include "board.h"
+#include <stdbool.h>
 
 #define ZEILE 8
 #define SPALTE 8
@@ -283,4 +284,22 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
     printf("did not find a LAST_MOVE... are you sure you did not make a mistake\n");
     exit(1);
 }
+
+bool isNext(BOARD board,int legalPos) {
+    // prüfe, ob ein Nachbar vorhanden ist
+    if(board[legalPos] == EMPTY) {
+        return FALSE
+    }
+    return TRUE;
+}
+
+int* getNext(BOARD board,int legalPos, SIDE_TO_MOVE TARGET_PLAYER) {
+    // Funktion, die eine Richtung überprüft. Bennene mit Norden usw.
+} 
+
+int* makeMove(BOARD board, int legalPos, SIDE_TO_MOVE TARGET_PLAYER) {
+    // rufe hier die Funktionen aller Richtungen auf. Isgesamt 8 
+   
+}
+
 

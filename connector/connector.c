@@ -43,6 +43,10 @@
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
 
+int getDefaultPort(){
+    return PORTNUMBER;
+}
+
 char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock creation to here?
     struct addrinfo hints, *res;
     int errcode;

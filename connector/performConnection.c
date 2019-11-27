@@ -46,8 +46,8 @@
 #include "boardmessageparser.h"
 #include "../thinker/thinker.h"
 
-#define MAX 240
-#define PLAYER
+#define MAX 240 // todo make better
+#define PLAYER // todo, still necessary?
 
 enum Phase {
     PROLOG = 0,

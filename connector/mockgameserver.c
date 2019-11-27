@@ -3,6 +3,7 @@
 //
 #include "../thinker/board.h"
 #include "mockgameserver.h"
+#include "connector.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -17,8 +18,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define MAX 300
-#define PORTNUMBER 1357
+#define MAX 300 // todo, cleanup?
 #define SA struct sockaddr
 
 int waitLoop(int sockfd) {
@@ -204,7 +204,7 @@ int createMockGameServer() {
     // assign IP, PORT
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(PORTNUMBER);
+    servaddr.sin_port = htons(getDefaultPort());
 
     // Binding newly created socket to given IP and verification
     if ((bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))) != 0) {

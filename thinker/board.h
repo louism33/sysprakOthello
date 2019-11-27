@@ -58,6 +58,8 @@ void printBoard(BOARD board);
 void initialiseBoardStructToStarter(BOARD_STRUCT* boardStruct);
 void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct);
 
+void freeBoardStruct(BOARD_STRUCT* boardStruct);
+
 #endif //SYSPRAKOTHELLO_BOARD_H
 
 

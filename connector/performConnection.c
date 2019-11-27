@@ -254,7 +254,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             // step six, read board information and time to move from server.
             // todo, extract timeToMove info
-            // todo, extract board info
+            // todo, extract board size
+            // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
             if (strlen(buff) > 75) { // todo make better (add check for first chars for example)
@@ -311,6 +312,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             if ((strncmp("+ ENDFIELD", buff, 10)) == 0) { // todo, is this necessary? I don't think this is ever called
                 printf("endfield received, possibly something is wrong!!!\n");
+
                 writeToServer(sockfd, thinking);
             }
 

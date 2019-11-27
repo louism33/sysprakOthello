@@ -43,20 +43,20 @@ void resetBoardToZero(BOARD board) {
 }
 
 
-void freeBoardStruct(BOARD_STRUCT* boardStruct){
+void freeBoardStruct(BOARD_STRUCT *boardStruct) {
 //    free(boardStruct->stack->stackArray);
 //    free(boardStruct->stack);
     free(boardStruct->board);
 }
 
 
-void initialiseBoardStructToStarter(BOARD_STRUCT* boardStruct){
+void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct) {
     boardStruct->board = malloc(64 * sizeof(int));
     resetBoardToStarter(boardStruct->board);
     boardStruct->sideToMove = STARTING_PLAYER;
 }
 
-void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct){
+void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct) {
     boardStruct->board = malloc(64 * sizeof(int));
     resetBoardToZero(boardStruct->board);
     boardStruct->sideToMove = STARTING_PLAYER;
@@ -243,12 +243,16 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     speicher[index] = LAST_MOVE;
     return speicher;
 }
+//todo board can be more than 8x8 !!!!
 
-MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER,MOVES allMoves) {
+
+
+MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
     //MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
-    MOVES speicher= malloc(64 * sizeof(int));
+    MOVES speicher = malloc(64 * sizeof(int)); //todo can we remove this
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
+    // todo careful of 64 magic numbers
     for (int pos = 0; pos < 64; pos++) {
         if (board[pos] == me) {
             MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
@@ -270,7 +274,7 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER,MOVES al
 
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES allMoves= malloc(64 * sizeof(int));
+    MOVES allMoves = malloc(64 * sizeof(int));
     getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 

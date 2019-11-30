@@ -2,10 +2,12 @@ CC=gcc
 CFLAGS=-I -Wall -Wextra -g -std=gnu11
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
 	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/thinkertests/boardtests2.h thinker/board.h \
-	connector/connectorTests/connectortests.h
+	connector/connectorTests/connectortests.h thinker/thinkertests/unmakemovetests.h thinker/thinkertests/makemovetests.h \
+	thinker/thinkertests/perft.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o \
 	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o thinker/thinkertests/boardtests2.o \
-	thinker/board.h connector/connectorTests/connectortests.o
+	 connector/connectorTests/connectortests.o thinker/thinkertests/unmakemovetests.o thinker/thinkertests/makemovetests.o \
+	 thinker/thinkertests/perft.o
 # todo, replace above with discoveries (find c files and replace extensions)
 
 # these are the "legitimate" targets
@@ -22,15 +24,16 @@ else
 	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE)
 endif
 
+# perft target
+perft: $(OBJ) sysprak-client
+	make -B && ./sysprak-client perft ${DEPTH}
+
 # test target
 test: $(OBJ) sysprak-client
 	make -B && ./sysprak-client TEST
 
 tests: $(OBJ) sysprak-client
 	make -B && ./sysprak-client TEST
-
-
-
 
 # these targets will connect to our mock server
 x-helper-mock: $(OBJ) sysprak-client

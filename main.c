@@ -19,6 +19,9 @@
 #include "thinker/thinkertests/boardtests.h"
 #include "thinker/thinkertests/boardtests2.h"
 #include "connector/connectorTests/connectortests.h"
+#include "thinker/thinkertests/unmakemovetests.h"
+#include "thinker/thinkertests/makemovetests.h"
+#include "thinker/thinkertests/perft.h"
 
 
 // if thinker is parent, retry logic may be easier to implement
@@ -27,17 +30,38 @@
 int main(int argc, char *argv[]) {
     printf("Hello World! I am Alex. This is the main method\n");
 
+    if (argc > 1 && strcmp(argv[1], "perft") == 0) {
+        if (argc == 2) {
+            printf("Please specify depth\n");
+            exit(1);
+        }
+        int depth = atoi(argv[2]);
+        fromCommandLine(depth);
+        exit(0);
+    }
+
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");
         printf("Running board test Suite\n");
-       int fail = fullTestSuite(); //board test1
+        int fail = 0;
 
-       fail += fullTestSuiteBoard2();//board test2
+        fail += fullTestSuite(); //board test1
+
+        fail += fullTestSuiteBoard2();//board test2
 
         printf("Running convert move test Suite\n");
         fail += testConvertMove();
 
-        if (fail) {// fail/=0 dann läuft if Bedingung 
+        printf("Running make move test Suite\n");
+        fail += runMakeMoveTests();
+
+        printf("Running unmake move test Suite\n");
+        fail += fullTestSuiteUnmakeMoveTests();
+
+        printf("Running perft Suite\n");
+        fail += perftSuite();
+
+        if (fail) {// fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");
             exit(1);
         }
@@ -56,7 +80,6 @@ int main(int argc, char *argv[]) {
 
     BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
-
 
 
     thinkerMasterMethod(thinkerBoard);

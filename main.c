@@ -31,11 +31,14 @@ int main(int argc, char *argv[]) {
     printf("Hello World! I am Alex. This is the main method\n");
 
     if (argc > 1 && strcmp(argv[1], "perft") == 0) {
+        if (argc == 2) {
+            printf("Please specify depth\n");
+            exit(1);
+        }
         int depth = atoi(argv[2]);
         fromCommandLine(depth);
         exit(0);
     }
-
 
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");

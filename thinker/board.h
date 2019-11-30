@@ -37,8 +37,14 @@ typedef struct BOARD_STRUCT {
 typedef int *MOVES;
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER);
+
 int countMoves(MOVES allMoves);
+
 void printBoardSide(BOARD_STRUCT *boardStruct);
+
+void printMoves(MOVES moves);
+
+char *getPrettyMove(int move, char *antwort);
 
 void printBoard(BOARD board);
 
@@ -96,13 +102,21 @@ STACK_OBJECT popMove(BOARD_STRUCT *boardStruct);
 int addToStackObject(STACK_OBJECT *stackObject, int direction, int numberOfKills);
 
 int getDirectionSize();
+
 DIRECTION getNorth();
+
 DIRECTION getNorthWest();
+
 DIRECTION getWest();
+
 DIRECTION getSouthWest();
+
 DIRECTION getSouth();
+
 DIRECTION getSouthEast();
+
 DIRECTION getEast();
+
 DIRECTION getNorthEast();
 
 #endif //SYSPRAKOTHELLO_BOARD_H

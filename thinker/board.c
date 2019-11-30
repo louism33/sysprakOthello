@@ -139,6 +139,29 @@ void printBoard(BOARD board) {
 
     printf("  +-----------------+ \n");
     printf("    A B C D E F G H \n");
+
+    // too print pretty moves as too?
+}
+
+char *getPrettyMove(int move, char *antwort) {
+    antwort[0] = 'A' + (move % 8);     //spalte
+    antwort[1] = '0' + (8 - move / 8); //zeile
+    antwort[2] = '\0';
+    return antwort;
+}
+
+void printMoves(MOVES moves) {
+    char *moveMem = malloc(3 * sizeof(char));
+    int index = 0;
+    while (1) {
+        MOVE move = moves[index++];
+        if (move == LAST_MOVE) {
+            break;
+        }
+        getPrettyMove(move, moveMem);
+        printf("%s\n", moveMem);
+    }
+    free(moveMem);
 }
 
 void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
@@ -863,7 +886,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach links unten
-    if (pos / 8 != 0 && pos / 8 != 1 && pos % 8 != 6 && pos % 8 != 7) {
+    if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 0 && pos % 8 != 1) {
         if (board[pos + 7] == TARGET_PLAYER) { //TODO am rand
             for (int i = 14; i < 50; i += 7) {
                 if (board[pos + i] == TARGET_PLAYER) {
@@ -890,9 +913,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     //Prüfung nach rechts unten
     if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 6 && pos % 8 != 7) {
-//        printf("aaa  pos: %d \n", pos);
         if (board[pos + 9] == TARGET_PLAYER) { //TODO am rand
-//            printf("aaaa  pos: %d \n", pos);
             for (int i = 18; i < 64; i += 9) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
@@ -905,7 +926,6 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 if (board[pos + i] == ME) {
                     numberOfKills = 0;
                     for (int j = 9; j < i; j += 9) {
-//                        printf("aaaa  pos + i - j: %d \n", (pos + i - j));
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }

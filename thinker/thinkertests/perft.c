@@ -130,33 +130,37 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     int totalMoves = countMoves(moves);
 
     printBoardSide(boardStruct);
-    printf("total moves from this position: %d\n", totalMoves);
+    printf("moves from this position: %d\n", totalMoves);
 
+    int totalNodes = 0;
     MOVE move;
     int index = 0;
+    char *m = malloc(3 * sizeof(char));
     while (1) {
         move = moves[index++];
         if (move == getLastMove()) {
             break;
         }
 
-        printf("move: %d ", move);
+        printf("move: %s, index %d, ", getPrettyMove(move, m), move);
         printf("total children: ");
 
         makeMove(boardStruct, move);
 
         int children = perft(boardStruct, depth - 1, 0);
-
+        totalNodes += children;
         printf("%d\n", children);
 
         unmakeMove(boardStruct);
     }
 
+    printf("total nodes from this position: %d\n", totalNodes);
+
     free(moves);
+    free(m);
 
     return 0;
 }
-
 
 int fromCommandLine(int depth) {
     int boardSize = 64;
@@ -267,9 +271,7 @@ int testBasicBoard() {
         }
     }
 
-    if (0) {
-//        perftDivide(b, 5);
-//        exit(0);
+    if (1) {
         int received = perft(b, 5, 0);
         int correct = 1396;
         if (received != correct) {
@@ -289,7 +291,7 @@ int testBasicBoard() {
         }
     }
 
-    if (0) {
+    if (1) {
         int received = perft(b, 6, 0);
         int correct = 8200;
         if (received != correct) {
@@ -309,7 +311,7 @@ int testBasicBoard() {
         }
     }
 
-    if (0) {
+    if (1) {
         int received = perft(b, 7, 0);
         int correct = 55092;
         if (received != correct) {
@@ -330,8 +332,28 @@ int testBasicBoard() {
     }
 
 
-    if (0) {
+    if (1) {
         int received = perft(b, 8, 0);
+        int correct = 390216;
+        if (received != correct) {
+            fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
+                    correct);
+            free(b);
+            exit(1);
+        }
+
+        if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+            printBoardSide(testBoardStruct);
+            printBoardSide(b);
+            fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
+            free(b);
+            free(testBoardStruct);
+            exit(1);
+        }
+    }
+
+    if (0) { // todo failing
+        int received = perft(b, 9, 0);
         int correct = 390216;
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
@@ -356,52 +378,6 @@ int testBasicBoard() {
     return 0; // success
 }
 
-
-
-
-
-
-
-//void perftTests() {
-//
-//    uint64_t p3 = Perft::splitPerft(board, 3);
-////    uint64_t p3 = Perft::perftP(board, 3);
-//    if (p3 != 56) {
-//        throw
-//        std::runtime_error("Perft failed on depth 3, expected " + std::__cxx11::to_string(56) + ", got " +
-//                           std::__cxx11::to_string(p3));
-//    }
-//
-//    uint64_t p4 = Perft::perft(board, 4);
-//    if (p4 != 244) {
-//        throw
-//        std::runtime_error("Perft failed on depth 4, expected " + std::__cxx11::to_string(244) + ", got " +
-//                           std::__cxx11::to_string(p4));
-//    }
-//
-//    uint64_t p5 = Perft::perft(board, 5);
-//    if (p5 != 1396) {
-//        throw
-//        std::runtime_error("Perft failed on depth 5, expected " + std::__cxx11::to_string(1396) + ", got " +
-//                           std::__cxx11::to_string(p5));
-//    }
-//
-//    uint64_t p6 = Perft::perft(board, 6);
-//    if (p6 != 8200) {
-//        throw
-//        std::runtime_error("Perft failed on depth 6, expected " + std::__cxx11::to_string(8200) + ", got " +
-//                           std::__cxx11::to_string(p6));
-//    }
-//
-////    uint64_t p7 = Perft::perftP(board, 7);
-//    uint64_t p7 = Perft::splitPerft(board, 7);
-//    if (p7 != 55092) {
-//        throw
-//        std::runtime_error("Perft failed on depth 7, expected " + std::__cxx11::to_string(55092) + ", got " +
-//                           std::__cxx11::to_string(p7));
-//    }
-//
-//}
 
 int perftSuite() {
 

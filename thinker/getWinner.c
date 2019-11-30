@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 //#include "board.h"
-//#include "getWinner.h"
+#include "getWinner.h"
 
 #define BLACK 2
 #define WHITE 1
@@ -64,16 +64,7 @@ int getWinner(int *board){
     }
     printf("%d %d \n",anzahlBlack,anzahlWhite);
 
-        if(anzahlBlack > anzahlWhite) printf("%d\n",BLACK); //return BLACK;
-        else if (anzahlBlack < anzahlWhite++) printf("%d\n",WHITE); //return WHITE;
-        else printf("%d\n",0); //return 0;
-        return 0;
+        if(anzahlBlack > anzahlWhite) return BLACK;
+        else if (anzahlBlack < anzahlWhite++) return WHITE;
+        else return 0;
 }
-
-/* int main(){
-    //resetBoardToZero(board);
-    //resetBoardToStarter(board);
-    //printBoard(board);
-    getWinner(board);
-    return 0;
-} */

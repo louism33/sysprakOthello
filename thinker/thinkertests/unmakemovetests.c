@@ -611,6 +611,83 @@ int startingBoard1MANUAL3Test() {
 
 
 
+int moveunmakeTest() {
+    int boardSize = 64;
+    // starting board normal
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    BOARD board = b->board;
+
+    resetBoardToStarter(board);
+
+    SIDE_TO_MOVE player = getStartingPlayer();
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+
+    BOARD_STRUCT *testBoardStruct = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(testBoardStruct);
+
+    copyBoardStruct(testBoardStruct, b, boardSize);
+
+    MOVE move = 26;
+
+    makeMove(b, move);
+
+    STACK_OBJECT stackObject = 0;
+
+    addToStackObject(&stackObject, getEast(), 1);
+
+    if (stackObject == 0) {
+        printBoardSide(b);
+        fprintf(stderr, "FAILED A UNMAKEMOVE TEST, stackObject did not seem to get updated\n");
+        free(b);
+        free(testBoardStruct);
+        exit(1);
+    }
+
+    pushObject(b, stackObject);
+
+    pushMove(b, move);
+
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+        printBoardSide(b);
+        fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
+        free(b);
+        free(testBoardStruct);
+        exit(1);
+    }
+
+    MOVE move2 = 20;
+
+    board[move2] = board[28] = switchPlayer(player);
+    switchPlayerStruct(b);
+
+    STACK_OBJECT stackObject2 = 0;
+
+    addToStackObject(&stackObject2, getSouth(), 1);
+
+    pushObject(b, stackObject2);
+
+    pushMove(b, move2);
+
+    unmakeMove(b);
+    unmakeMove(b);
+
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+        printBoardSide(b);
+        fprintf(stderr, "FAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
+        free(b);
+        free(testBoardStruct);
+        exit(1);
+    }
+
+
+    free(b);
+    free(testBoardStruct);
+    return 0; // success
+}
+
+
+
 int fullTestSuiteUnmakeMoveTests() {
     flipTurnTest();
     copyBoardStructTest();
@@ -624,4 +701,6 @@ int fullTestSuiteUnmakeMoveTests() {
     startingBoard1MANUALTest();
     startingBoard1MANUAL2Test();
     startingBoard1MANUAL3Test();
+
+    moveunmakeTest();
 }

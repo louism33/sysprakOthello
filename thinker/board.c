@@ -450,6 +450,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 // todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
 int *removeDuplicates(MOVES speicher, int index)
 {
+
     for (int i = 0; i < index - 1; i++)
     {
         for (int j = i + 1; j < index;)

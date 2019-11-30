@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../board.h"
-//#include "../board.c"
 #include "boardtests2.h"
 #include "../thinker.h"
 

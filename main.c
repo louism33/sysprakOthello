@@ -31,9 +31,9 @@ int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");
         printf("Running board test Suite\n");
-        int fail = fullTestSuite(); //board test
+       int fail = fullTestSuite(); //board test1
 
-        fail += fullTestSuiteBoard2();
+       fail += fullTestSuiteBoard2();//board test2
 
         printf("Running convert move test Suite\n");
         fail += testConvertMove();
@@ -41,7 +41,8 @@ int main(int argc, char *argv[]) {
         printf("Running unmake move test Suite\n");
         fail += fullTestSuiteUnmakeMoveTests();
 
-        if (fail) {
+
+        if (fail) {// fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");
             exit(1);
         }

@@ -7,20 +7,16 @@
 
 #include <stdint.h>
 
+typedef int DIRECTION;
+typedef unsigned long long int DIRECTION_MASK;
+
 typedef int MOVE;
 typedef int SIDE_TO_MOVE;
 
-typedef struct STACK_OBJECT {
-    // hack because we set BLACK and WHITE to one and two,
-    // and we want to access these through array index without caring about conversion
-    int64_t pieces[3];
-} STACK_OBJECT;
-
-typedef struct STACK {
-    // we allow 64 moves to be stored on the stack. Technically still risky, as more than 64 moves can occur due to passing,
-    // but unrealistic given compute constraints
-    STACK_OBJECT *stackArray;
-} STACK;
+typedef int64_t STACK_OBJECT;
+typedef STACK_OBJECT *STACK;
+typedef MOVE *MOVE_STACK;
+typedef int STACK_INDEX;
 
 typedef int *BOARD;
 
@@ -28,7 +24,13 @@ typedef struct BOARD_STRUCT {
     // BOARD has our board array, a side to move to determine the current player, and a stack to enable unmakeMove()
     BOARD board;
     SIDE_TO_MOVE sideToMove;
-    STACK *stack; // used to unmake a move
+
+    STACK stack; // used to store moves made
+    MOVE_STACK moveStack; // used to store move kill data
+
+    STACK_INDEX stackIndexObject; // used to remember where we are in the stack, object
+    STACK_INDEX stackIndexMove; // used to remember where we are in the stack, move
+
 } BOARD_STRUCT;
 
 // can't have more than 64 moves (and can't have exactly 64 either)
@@ -45,6 +47,7 @@ void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct);
 void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct);
 
 void resetBoardToStarter(BOARD board); // todo do we want to export this one?
+void resetBoardToZero(BOARD board); // todo do we want to export this one?
 
 void freeBoardStruct(BOARD_STRUCT *boardStruct);
 
@@ -53,7 +56,8 @@ int *removeDuplicates(MOVES speicher, int index);
 MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves);
 
 SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove);
-SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT* boardStruct);
+
+SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct);
 
 SIDE_TO_MOVE getStartingPlayer();
 
@@ -76,9 +80,30 @@ int areBoardStructsDifferent(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT 
 int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n);
 
 
+BOARD makeMoveSide(BOARD_STRUCT *boardStruct, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER);
 
-BOARD makeMoveSide(BOARD_STRUCT* boardStruct, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER);
-BOARD makeMove(BOARD_STRUCT* boardStruct, int legalPosition);
+BOARD makeMove(BOARD_STRUCT *boardStruct, int legalPosition);
+
+
+int pushObject(BOARD_STRUCT *boardStruct, STACK_OBJECT stackObject);
+
+STACK_OBJECT popObject(BOARD_STRUCT *boardStruct);
+
+int pushMove(BOARD_STRUCT *boardStruct, MOVE moveStackObject);
+
+STACK_OBJECT popMove(BOARD_STRUCT *boardStruct);
+
+int addToStackObject(STACK_OBJECT *stackObject, int direction, int numberOfKills);
+
+int getDirectionSize();
+DIRECTION getNorth();
+DIRECTION getNorthWest();
+DIRECTION getWest();
+DIRECTION getSouthWest();
+DIRECTION getSouth();
+DIRECTION getSouthEast();
+DIRECTION getEast();
+DIRECTION getNorthEast();
 
 #endif //SYSPRAKOTHELLO_BOARD_H
 

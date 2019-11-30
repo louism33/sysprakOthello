@@ -53,7 +53,7 @@ SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove) {
     return SWITCH_PLAYER_CONSTANT - sideToMove;
 }
 
-SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT* boardStruct) {
+SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct) {
     boardStruct->sideToMove = switchPlayer(boardStruct->sideToMove);
     return boardStruct->sideToMove;
 }
@@ -81,17 +81,25 @@ void freeBoardStruct(BOARD_STRUCT *boardStruct) {
     free(boardStruct->board);
 }
 
-void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct) {
+void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct) {
     boardStruct->board = malloc(64 * sizeof(int)); //todo careful of magic numbers!
-    resetBoardToStarter(boardStruct->board);
     boardStruct->sideToMove = STARTING_PLAYER;
+    boardStruct->stack = malloc(64 * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
+    boardStruct->moveStack = malloc(64 * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
+    boardStruct->stackIndexMove = 0;
+    boardStruct->stackIndexObject = 0;
+}
+
+void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct) {
+    initialiseBoardStructMemory(boardStruct);
+    resetBoardToStarter(boardStruct->board);
 }
 
 void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct) {
-    boardStruct->board = malloc(64 * sizeof(int));
+    initialiseBoardStructMemory(boardStruct);
     resetBoardToZero(boardStruct->board);
-    boardStruct->sideToMove = STARTING_PLAYER;
 }
+
 
 void printBoardSide(BOARD_STRUCT *boardStruct) {
     printBoard(boardStruct->board);
@@ -428,20 +436,207 @@ int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n) {
 }
 
 
-BOARD makeMoveSide(BOARD_STRUCT* boardStruct, int legalPosition, SIDE_TO_MOVE targetPlayer) {
+BOARD makeMoveSide(BOARD_STRUCT *boardStruct, int legalPosition, SIDE_TO_MOVE targetPlayer) {
     switchPlayerStruct(boardStruct);
     return NULL;
 }
 
-BOARD makeMove(BOARD_STRUCT* boardStruct, int legalPosition) {
+BOARD makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
     return makeMoveSide(boardStruct, legalPosition, boardStruct->sideToMove);
 }
 
+
+int pushObject(BOARD_STRUCT *boardStruct, STACK_OBJECT stackObject) {
+    boardStruct->stack[boardStruct->stackIndexObject++] = stackObject;
+    return 0;
+}
+
+STACK_OBJECT popObject(BOARD_STRUCT *boardStruct) {
+    return boardStruct->stack[--boardStruct->stackIndexObject];
+}
+
+int pushMove(BOARD_STRUCT *boardStruct, MOVE moveStackObject) {
+    boardStruct->moveStack[boardStruct->stackIndexMove++] = moveStackObject;
+    return 0;
+}
+
+STACK_OBJECT popMove(BOARD_STRUCT *boardStruct) {
+    return boardStruct->moveStack[--boardStruct->stackIndexMove];
+}
+
+#define DIRECTION_SIZE 8
+//static DIRECTION NORTH 0
+//static DIRECTION NORTH_MASK 0xffULL
+//static DIRECTION NORTH_WEST 1
+//static DIRECTION NORTH_WEST_MASK 0xff00ULL
+//static DIRECTION WEST 2
+//static DIRECTION WEST_MASK 0xff0000ULL
+//static DIRECTION SOUTH_WEST 3
+//static DIRECTION SOUTH_WEST_MASK 0xff000000ULL
+//static DIRECTION SOUTH 4
+//static DIRECTION SOUTH_MASK 0xff00000000ULL
+//static DIRECTION SOUTH_EAST 5
+//static DIRECTION SOUTH_EAST_MASK 0xff0000000000ULL
+//static DIRECTION EAST 6
+//static DIRECTION EAST_MASK 0xff000000000000ULL
+//static DIRECTION NORTH_EAST 7
+//static DIRECTION NORTH_EAST_MASK 0xff00000000000000ULL
+
+int getDirectionSize() {
+    return DIRECTION_SIZE;
+}
+
+
+DIRECTION getNorth() {
+    return 0;
+}
+
+DIRECTION getNorthWest() {
+    return 1;
+}
+
+DIRECTION getWest() {
+    return 2;
+}
+
+DIRECTION getSouthWest() {
+    return 3;
+}
+
+DIRECTION getSouth() {
+    return 4;
+}
+
+DIRECTION getSouthEast() {
+    return 5;
+}
+
+DIRECTION getEast() {
+    return 6;
+}
+
+DIRECTION getNorthEast() {
+    return 7;
+}
+
+
+DIRECTION_MASK getNorthMask() {
+    return 0xffULL;
+}
+
+DIRECTION_MASK getNorthWestMask() {
+    return 0xff00ULL;
+}
+
+DIRECTION_MASK getWestMask() {
+    return 0xff0000ULL;
+}
+
+DIRECTION_MASK getSouthWestMask() {
+    return 0xff000000ULL;
+}
+
+DIRECTION_MASK getSouthMask() {
+    return 0xff00000000ULL;
+}
+
+DIRECTION_MASK getSouthEastMask() {
+    return 0xff0000000000ULL;
+}
+
+DIRECTION_MASK getEastMask() {
+    return 0xff000000000000ULL;
+}
+
+DIRECTION_MASK getNorthEastMask() {
+    return 0xff00000000000000ULL;
+}
+
+int addToStackObject(STACK_OBJECT *stackObject, DIRECTION direction, int numberOfKills) {
+//    printf("      addToStackObject\n");
+//    printf(" (direction* DIRECTION_SIZE): %d\n", ((direction * DIRECTION_SIZE)));
+//    printf(" (shift: %ld\n", (((numberOfKills << (direction * DIRECTION_SIZE)))));
+
+    STACK_OBJECT temp = (((unsigned long long int) numberOfKills)
+                                 << (unsigned long long int)(direction * DIRECTION_SIZE));
+
+//    printf(" (shift: %ld\n", temp);
+
+    (*stackObject) |= temp; // todo , add AND  with mask ?
+
+//    printf("      addToStackObject over\n");
+    return 0;
+}
+
+int getNumberOfKillsFromDirection(STACK_OBJECT stackObject, DIRECTION direction, DIRECTION_MASK directionMask) {
+//    printf("      getNumberOfKillsFromDirection\n");
+//    printf(" SO: %d\n", (int) stackObject);
+//    printf(" mask: %llu\n", directionMask);
+//    printf(" mask& : %llu\n", (directionMask & stackObject));
+//    printf(" direction * DIRECTION_SIZE: %d\n", (int) (direction * DIRECTION_SIZE));
+//    printf(" answer : %llu\n", ((directionMask & stackObject) >> (direction * DIRECTION_SIZE)));
+
+    return ((directionMask & stackObject) >> (direction * DIRECTION_SIZE));
+}
+
 int unmakeMove(BOARD_STRUCT *boardStruct) {
+    // 0 means no kills in that dir
+    // index should point to first free entry
 
-    BOARD b = boardStruct->board;
-    STACK *stack = boardStruct->stack;
+    // todo consider allowing 4 bits maximum, might make more portable
 
+    SIDE_TO_MOVE addToPlayer = boardStruct->sideToMove;
+
+    BOARD board = boardStruct->board;
+
+    STACK_OBJECT stackObject = popObject(boardStruct);
+    MOVE stackMove = popMove(boardStruct);
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask()); i++) {
+        board[stackMove - 8 * i] = addToPlayer;
+    }
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthWest(), getNorthWest()); i++) {
+        board[stackMove - 9 * i] = addToPlayer;
+    }
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getWest(), getWestMask()); i++) {
+        board[stackMove - 1 * i] = addToPlayer;
+    }
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthWest(), getSouthWestMask()); i++) {
+        board[stackMove + 7 * i] = addToPlayer;
+    }
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()); i++) {
+        board[stackMove + 8 * i] = addToPlayer;
+    }
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthEast(), getSouthEastMask()); i++) {
+        board[stackMove + 9 * i] = addToPlayer;
+    }
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getEast(), getEastMask()); i++) {
+        board[stackMove + 1 * i] = addToPlayer;
+    }
+
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthEast(), getNorthEastMask()); i++) {
+        board[stackMove - 7 * i] = addToPlayer;
+    }
+
+    // 64 bit
+    /*
+     00000000
+     00000000
+     00000000
+     00000000
+     00000000
+     00000000
+     00000000
+     00000000
+     */
+
+    board[stackMove] = EMPTY;
     switchPlayerStruct(boardStruct);
 
     return 0;

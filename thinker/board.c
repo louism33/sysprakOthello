@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stddef.h>
 #include "board.h"
+#include <stdbool.h>
 
 #define ZEILE 8
 #define SPALTE 8
@@ -68,8 +69,10 @@ void resetBoardToStarter(BOARD board) {
     board[STARTING_BLACK_POSITION_2] = BLACK;
 }
 
-void resetBoardToZero(BOARD board) {
-    for (int i = 0; i < 64; i++) {
+void resetBoardToZero(BOARD board)
+{
+    for (int i = 0; i < 64; i++)
+    {
         board[i] = 0;
     }
 }
@@ -457,15 +460,6 @@ int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n) {
 }
 
 
-BOARD makeMoveSide(BOARD_STRUCT *boardStruct, int legalPosition, SIDE_TO_MOVE targetPlayer) {
-    switchPlayerStruct(boardStruct);
-    return NULL;
-}
-
-BOARD makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
-    return makeMoveSide(boardStruct, legalPosition, boardStruct->sideToMove);
-}
-
 
 int pushObject(BOARD_STRUCT *boardStruct, STACK_OBJECT stackObject) {
     boardStruct->stack[boardStruct->stackIndexObject++] = stackObject;
@@ -661,4 +655,217 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     switchPlayerStruct(boardStruct);
 
     return 0;
+}
+
+
+
+int makeMoveSide(BOARD_STRUCT* boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER) {
+    SIDE_TO_MOVE ME = 3 - TARGET_PLAYER;
+
+    BOARD board = boardStruct->board;
+
+    if(board[pos] != EMPTY) {
+        return 1;
+    }
+    //Prüfung nach links
+    if(pos%8 != 0 && pos%8 != 1)
+    {
+        if(board[pos-1] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 2; i<8; i++) {
+                if(board[pos-i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos-i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos-i] == ME) {
+                    for(int j=1; j<i; j++) {
+                        board[pos-i+j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach rechts
+    if(pos%8 != 6 && pos%8 != 7)
+    {
+        if(board[pos+1] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 2; i<8; i++) {
+                if(board[pos+i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos+i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos+i] == ME) {
+                    for(int j=1; j<i; j++) {
+                        board[pos+i-j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach oben
+    if(pos/8 != 0 && pos/8 != 1)
+    {
+        if(board[pos-8] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 16; i<57; i+=8) {
+                if(board[pos-i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos-i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos-i] == ME) {
+                    for(int j=8; j<i; j+=8) {
+                        board[pos-i+j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach unten
+    if(pos/8 != 6 && pos/8 != 7)
+    {
+        if(board[pos+8] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 16; i<57; i+=8) {
+                if(board[pos+i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos+i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos+i] == ME) {
+                    for(int j=8; j<i; j+=8) {
+                        board[pos+i-j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach rechts oben
+    if(pos/8 != 0 && pos/8 != 1 && pos%8 != 6 && pos%8 != 7)
+    {
+        if(board[pos-7] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 14; i<50; i+=7) {
+                if(board[pos-i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos-i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos-i] == ME) {
+                    for(int j=7; j<i; j+=7) {
+                        board[pos-i+j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+
+    //Prüfung nach links oben
+    if(pos/8 != 0 && pos/8 != 1 && pos%8 != 0 && pos%8 != 1)
+    {
+        if(board[pos-9] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 18; i<64; i+=9) {
+                if(board[pos-i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos-i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos-i] == ME) {
+                    for(int j=9; j<i; j+=9) {
+                        board[pos-i+j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach links unten
+    if(pos/8 != 0 && pos/8 != 1 && pos%8 != 6 && pos%8 != 7)
+    {
+        if(board[pos+7] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 14; i<50; i+=7) {
+                if(board[pos+i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos+i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos+i] == ME) {
+                    for(int j=7; j<i; j+=7) {
+                        board[pos+i-j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach rechts unten
+    if(pos/8 != 6 && pos/8 != 7 && pos%8 != 6 && pos%8 != 7)
+    {
+        if(board[pos+9] == TARGET_PLAYER) { //TODO am rand
+            for(int i = 18; i<64; i+=8) {
+                if(board[pos+i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if(board[pos+i] == EMPTY) {
+                    break;
+                }
+
+                if(board[pos+i] == ME) {
+                    for(int j=9; j<i; j+=9) {
+                        board[pos+i-j] = ME;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    board[pos] = ME;
+    switchPlayerStruct(boardStruct);
+    return 0;
+}
+
+
+int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
+    return makeMoveSide(boardStruct, legalPosition, switchPlayer(boardStruct->sideToMove));
 }

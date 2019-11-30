@@ -1,0 +1,10 @@
+//
+// Created by louis on 11/30/19.
+//
+
+#ifndef SYSPRAKOTHELLO_MAKEMOVETEST_H
+#define SYSPRAKOTHELLO_MAKEMOVETEST_H
+
+int runMakeMoveTests();
+
+#endif //SYSPRAKOTHELLO_MAKEMOVETEST_H

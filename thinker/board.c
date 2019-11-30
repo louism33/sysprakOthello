@@ -48,8 +48,7 @@ SIDE_TO_MOVE getEmpty() {
     return EMPTY;
 }
 
-SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove)
-{
+SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove) {
     return SWITCH_PLAYER_CONSTANT - sideToMove;
 }
 
@@ -167,19 +166,14 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     //for-Schleifer um nach rechts zu prüfen
-    if (spalte != 6 && spalte != 7)
-    {
-        if (board[position + 1] == TARGET_PLAYER)
-        {
+    if (spalte != 6 && spalte != 7) {
+        if (board[position + 1] == TARGET_PLAYER) {
             int i = position + 2;
-            while (1)
-            {
-                if (i % 8 == 0)
-                {
+            while (1) {
+                if (i % 8 == 0) {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER)
-                {
+                if (board[i] == TARGET_PLAYER) {
                     i++;
                     continue;
                 }
@@ -187,8 +181,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER)
-                {
+                if (board[i] == MY_PLAYER) {
                     break;
                 }
             }
@@ -196,19 +189,15 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach links zu prüfen
-    if (spalte != 0 && spalte != 1)
-    {
+    if (spalte != 0 && spalte != 1) {
         if (board[position - 1] == TARGET_PLAYER) {
             int i = position - 2;
-            while (1)
-            {
-                if (i % 8 == 7)
-                {
+            while (1) {
+                if (i % 8 == 7) {
                     break;
                 }
 
-                if (board[i] == TARGET_PLAYER)
-                {
+                if (board[i] == TARGET_PLAYER) {
                     i--;
                     continue;
                 }
@@ -224,58 +213,45 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach unten zu prüfen
-    if (zeile != 1 && zeile != 2)
-    {
-        if (board[position + 8] == TARGET_PLAYER)
-        {
+    if (zeile != 1 && zeile != 2) {
+        if (board[position + 8] == TARGET_PLAYER) {
             int i = position + 16;
-            while (1)
-            {
-                if (i >= 64)
-                {
+            while (1) {
+                if (i >= 64) {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER)
-                {
+                if (board[i] == TARGET_PLAYER) {
                     i += 8;
                     continue;
                 }
-                if (board[i] == EMPTY)
-                {
+                if (board[i] == EMPTY) {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER)
-                {
+                if (board[i] == MY_PLAYER) {
                     break;
                 }
             }
         }
     }
     // for-Schleifer um nach oben zu prüfen
-    if (zeile != 8 && zeile != 7)
-    {
-        if (board[position - 8] == TARGET_PLAYER)
-        {
+    if (zeile != 8 && zeile != 7) {
+        if (board[position - 8] == TARGET_PLAYER) {
             int i = position - 16;
-            while (1)
-            {
+            while (1) {
                 if (i < 0) //zeile
                 {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER)
-                {
+                if (board[i] == TARGET_PLAYER) {
                     i -= 8;
                     continue;
                 }
-                if (board[i] == EMPTY)
-                {
+                if (board[i] == EMPTY) {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER)
-                {
+                if (board[i] == MY_PLAYER) {
                     break;
                 }
             }
@@ -283,13 +259,10 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach rechts oben zu prüfen
-    if (spalte != 6 && spalte != 7 && zeile != 8 && zeile != 7)
-    {
-        if (board[position - 7] == TARGET_PLAYER)
-        {
+    if (spalte != 6 && spalte != 7 && zeile != 8 && zeile != 7) {
+        if (board[position - 7] == TARGET_PLAYER) {
             int i = position - 14;
-            while (1)
-            {
+            while (1) {
                 if (i % 8 == 0) //spalte
                 {
                     break;
@@ -298,18 +271,15 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                 {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER)
-                {
+                if (board[i] == TARGET_PLAYER) {
                     i -= 7;
                     continue;
                 }
-                if (board[i] == EMPTY)
-                {
+                if (board[i] == EMPTY) {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER)
-                {
+                if (board[i] == MY_PLAYER) {
                     break;
                 }
             }
@@ -317,13 +287,10 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach links oben zu prüfen
-    if (spalte != 0 && spalte != 1 && zeile != 8 && zeile != 7)
-    {
-        if (board[position - 9] == TARGET_PLAYER)
-        {
+    if (spalte != 0 && spalte != 1 && zeile != 8 && zeile != 7) {
+        if (board[position - 9] == TARGET_PLAYER) {
             int i = position - 18;
-            while (1)
-            {
+            while (1) {
                 if (i % 8 == 7) //zeile
                 {
                     break;
@@ -333,18 +300,15 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                     break;
                 }
 
-                if (board[i] == TARGET_PLAYER)
-                {
+                if (board[i] == TARGET_PLAYER) {
                     i -= 9;
                     continue;
                 }
-                if (board[i] == EMPTY)
-                {
+                if (board[i] == EMPTY) {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER)
-                {
+                if (board[i] == MY_PLAYER) {
                     break;
                 }
             }
@@ -354,10 +318,8 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     if (spalte != 6 && spalte != 7 && zeile != 1 && zeile != 2) {
         if (board[position + 9] == TARGET_PLAYER) {
             int i = position + 18;
-            while (1)
-            {
-                if (i >= 64)
-                { //zeile
+            while (1) {
+                if (i >= 64) { //zeile
                     break;
                 }
                 if (i % 8 == 0) //spalte
@@ -382,14 +344,11 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     if (spalte != 0 && spalte != 1 && zeile != 1 && zeile != 2) {
         if (board[position + 7] == TARGET_PLAYER) {
             int i = position + 14;
-            while (1)
-            {
-                if (i >= 64)
-                {
+            while (1) {
+                if (i >= 64) {
                     break;
                 }
-                if (i % 8 == 7)
-                {
+                if (i % 8 == 7) {
                     break;
                 }
                 if (board[i] == TARGET_PLAYER) {
@@ -430,16 +389,13 @@ int *removeDuplicates(MOVES speicher, int index) {
 }
 //todo board can be more than 8x8 !!!!
 
-MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves)
-{
+MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
     //MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
     MOVES speicher = malloc(64 * sizeof(int));
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
-    for (int pos = 0; pos < 64; pos++)
-    {
-        if (board[pos] == me)
-        {
+    for (int pos = 0; pos < 64; pos++) {
+        if (board[pos] == me) {
             MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
             int j = 0;
             while (1) {
@@ -460,10 +416,8 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
     MOVES finalspeicher = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 
-    for (int i = 0; i < 64; i++)
-    {
-        if (finalspeicher[i] == LAST_MOVE)
-        {
+    for (int i = 0; i < 64; i++) {
+        if (finalspeicher[i] == LAST_MOVE) {
             return total;
         }
         total++;
@@ -625,7 +579,7 @@ int addToStackObject(STACK_OBJECT *stackObject, DIRECTION direction, int numberO
 //    printf(" (shift: %ld\n", (((numberOfKills << (direction * DIRECTION_SIZE)))));
 
     STACK_OBJECT temp = (((unsigned long long int) numberOfKills)
-                                 << (unsigned long long int)(direction * DIRECTION_SIZE));
+            << (unsigned long long int) (direction * DIRECTION_SIZE));
 
 //    printf(" (shift: %ld\n", temp);
 

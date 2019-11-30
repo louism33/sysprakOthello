@@ -46,7 +46,7 @@ int testEasyLeft() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -61,9 +61,9 @@ int testEasyRightBottom() {
     SIDE_TO_MOVE player = getWhite();
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
-    
+
     makeMove(b, 18);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -86,7 +86,7 @@ int testEasyRightBottom() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -102,9 +102,9 @@ int testEasyLeftBottom() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 28);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -127,7 +127,7 @@ int testEasyLeftBottom() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -143,9 +143,9 @@ int testEasyTopLeft() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 45);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -155,7 +155,7 @@ int testEasyTopLeft() {
     boardTest[36] = getWhite();
     boardTest[45] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -168,7 +168,7 @@ int testEasyTopLeft() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -184,9 +184,9 @@ int testEasyTopRight() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //   
-    (board);
+
     makeMove(b, 42);
-    (board);
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -208,7 +208,7 @@ int testEasyTopRight() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -224,9 +224,9 @@ int testEasyRight() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 17);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -248,7 +248,7 @@ int testEasyRight() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -264,9 +264,9 @@ int testEasyTop() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 45);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -276,7 +276,7 @@ int testEasyTop() {
     boardTest[37] = getWhite();
     boardTest[45] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -289,7 +289,7 @@ int testEasyTop() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -305,9 +305,9 @@ int testEasyBottom() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 13);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -317,7 +317,7 @@ int testEasyBottom() {
     boardTest[21] = getWhite();
     boardTest[29] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -330,7 +330,7 @@ int testEasyBottom() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -349,9 +349,9 @@ int testEasyRightLeft() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 20);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -375,7 +375,7 @@ int testEasyRightLeft() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -395,9 +395,9 @@ int testEasyRightLeftTop() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 20);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -411,7 +411,6 @@ int testEasyRightLeftTop() {
     boardTest[12] = getBlack();
 
 
-    
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -424,7 +423,7 @@ int testEasyRightLeftTop() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -442,9 +441,9 @@ int testEasy2Left() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 20);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -455,7 +454,7 @@ int testEasy2Left() {
     boardTest[19] = getWhite();
     boardTest[20] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -468,7 +467,7 @@ int testEasy2Left() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -485,9 +484,9 @@ int testEasy2Right() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 18);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -498,7 +497,7 @@ int testEasy2Right() {
     boardTest[20] = getWhite();
     boardTest[21] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -511,7 +510,7 @@ int testEasy2Right() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -530,9 +529,9 @@ int testEasy3() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 22);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -544,7 +543,7 @@ int testEasy3() {
     boardTest[21] = getWhite();
     boardTest[22] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -557,7 +556,7 @@ int testEasy3() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -576,9 +575,9 @@ int testEasy3Top() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 53);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -590,7 +589,7 @@ int testEasy3Top() {
     boardTest[45] = getWhite();
     boardTest[53] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -603,7 +602,7 @@ int testEasy3Top() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -623,9 +622,9 @@ int testEasy4() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 23);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -638,7 +637,7 @@ int testEasy4() {
     boardTest[22] = getWhite();
     boardTest[23] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -651,7 +650,7 @@ int testEasy4() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -672,9 +671,9 @@ int testEasyMAX() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 39);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -689,7 +688,7 @@ int testEasyMAX() {
     boardTest[38] = getWhite();
     boardTest[39] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -702,7 +701,7 @@ int testEasyMAX() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -723,9 +722,9 @@ int testEasyMAXTop() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 61);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -740,7 +739,7 @@ int testEasyMAXTop() {
     boardTest[53] = getWhite();
     boardTest[61] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -753,7 +752,7 @@ int testEasyMAXTop() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -775,9 +774,9 @@ int testEasyMAXRight() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 32);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -792,7 +791,7 @@ int testEasyMAXRight() {
     boardTest[38] = getWhite();
     boardTest[39] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -805,7 +804,7 @@ int testEasyMAXRight() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 
 }
@@ -827,9 +826,9 @@ int testEasyMAXBottom() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    
+
     makeMove(b, 5);
-    
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -844,7 +843,7 @@ int testEasyMAXBottom() {
     boardTest[61] = getWhite();
     boardTest[5] = getWhite();
 
-    
+
     for (int i = 0; i < 64; i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
@@ -857,7 +856,7 @@ int testEasyMAXBottom() {
 
     free(b);
     free(b2);
-    
+
     return 0; // success
 }
 
@@ -881,9 +880,9 @@ int crazyTest() {
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
     //    
-    (board);
+
     makeMove(b, 28);
-    (board);
+
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -914,33 +913,73 @@ int crazyTest() {
 
     free(b);
     free(b2);
-    
+
+    return 0; // success
+}
+
+
+int startingBoardTest() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    resetBoardToStarter(board);
+
+    SIDE_TO_MOVE player = getWhite();
+    b->sideToMove = getWhite();
+    SIDE_TO_MOVE targetPlayer = getBlack();
+
+    makeMove(b, 20);
+
+    BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b2);
+    int *boardTest = b2->board;
+
+    resetBoardToStarter(boardTest);
+
+    boardTest[20] = getWhite();
+    boardTest[28] = getWhite();
+    for (int i = 0; i < 64; i++) {
+        if (boardTest[i] != board[i]) {
+            printBoardLouisSide(b, player);
+            printBoardLouisSide(b2, player);
+            fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
+            free(b2);
+            free(b);
+            exit(1);
+        }
+    }
+
+    free(b);
+    free(b2);
+
     return 0; // success
 }
 
 
 int runMakeMoveTests() {
-    testEasyLeft();
-    testEasy2Left();
-    testEasy3();
-    testEasy4();
-    testEasyMAX();
-    testEasyRight();
-    testEasy2Right();
-    testEasyMAXRight();
-    testEasyRightLeft();
-    testEasyTop();
-    testEasy3Top();
-    testEasyMAXTop();
-    testEasyRightLeftTop();
-    testEasyBottom();
-    testEasyMAXBottom();
-    crazyTest();
-    testEasyTopRight();
-    testEasyTopLeft();
-    testEasyLeftBottom();
-    testEasyRightBottom();
+//    testEasyLeft();
+//    testEasy2Left();
+//    testEasy3();
+//    testEasy4();
+//    testEasyMAX();
+//    testEasyRight();
+//    testEasy2Right();
+//    testEasyMAXRight();
+//    testEasyRightLeft();
+//    testEasyTop();
+//    testEasy3Top();
+//    testEasyMAXTop();
+//    testEasyRightLeftTop();
+//    testEasyBottom();
+//    testEasyMAXBottom();
+//    crazyTest();
+//    testEasyTopRight();
+//    testEasyTopLeft();
+//    testEasyLeftBottom();
+//    testEasyRightBottom();
 
+    startingBoardTest();
 
     return 0;
 }

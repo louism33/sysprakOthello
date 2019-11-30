@@ -37,7 +37,7 @@ typedef struct BOARD_STRUCT {
 typedef int *MOVES;
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER);
-
+int countMoves(MOVES allMoves);
 void printBoardSide(BOARD_STRUCT *boardStruct);
 
 void printBoard(BOARD board);

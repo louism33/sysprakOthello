@@ -97,8 +97,9 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
             unmakeMove(boardStruct);
 
             if (debug) {
+                printf("unmade\n");
                 printBoardLouisSide(boardStruct, boardStruct->sideToMove);
-                printf("\n\n\n\n");
+                printf("\n\n\n\n\n");
             }
 
             if (areBoardStructsDifferent(b, boardStruct, 64)) {
@@ -128,7 +129,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
 
     int totalMoves = countMoves(moves);
 
-    printBoardLouisSide(boardStruct, boardStruct->sideToMove);
+    printBoardSide(boardStruct);
     printf("total moves from this position: %d\n", totalMoves);
 
     MOVE move;
@@ -186,7 +187,7 @@ int testBasicBoard() {
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 
-    if (0) {
+    if (1) {
         int received = perft(b, 1, 0);
         int correct = 4;
         if (received != correct) {
@@ -206,7 +207,7 @@ int testBasicBoard() {
         }
     }
 
-    if (0) {
+    if (1) {
         int received = perft(b, 2, 0);
         int correct = 12;
         if (received != correct) {
@@ -226,7 +227,7 @@ int testBasicBoard() {
         }
     }
 
-    if (0) {
+    if (1) {
         int received = perft(b, 3, 0);
         int correct = 56;
         if (received != correct) {
@@ -246,7 +247,7 @@ int testBasicBoard() {
         }
     }
 
-    if (0) {
+    if (1) {
         int received = perft(b, 4, 0);
         int correct = 244;
         if (received != correct) {
@@ -266,9 +267,9 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
-        perftDivide(b, 5);
-        exit(0);
+    if (0) {
+//        perftDivide(b, 5);
+//        exit(0);
         int received = perft(b, 5, 0);
         int correct = 1396;
         if (received != correct) {
@@ -308,7 +309,7 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
+    if (0) {
         int received = perft(b, 7, 0);
         int correct = 55092;
         if (received != correct) {

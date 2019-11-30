@@ -601,6 +601,7 @@ int getNumberOfKillsFromDirection(STACK_OBJECT stackObject, DIRECTION direction,
 }
 
 int unmakeMove(BOARD_STRUCT *boardStruct) {
+//    printf("------------------- unmakeMovestart\n");
     // 0 means no kills in that dir
     // index should point to first free entry
 
@@ -614,34 +615,53 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     MOVE stackMove = popMove(boardStruct);
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask()); i++) {
+//        printf("north SO: %llu: %d\n", stackObject,
+//               (getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask())));
+        if (board[stackMove - 8 * i] == EMPTY) { exit(1); }
         board[stackMove - 8 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthWest(), getNorthWestMask()); i++) {
+        if (board[stackMove - 9 * i] == EMPTY) { exit(1); }
         board[stackMove - 9 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getWest(), getWestMask()); i++) {
+        if (board[stackMove - 1 * i] == EMPTY) { exit(1); }
         board[stackMove - 1 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthWest(), getSouthWestMask()); i++) {
+        if (board[stackMove + 7 * i] == EMPTY) { exit(1); }
         board[stackMove + 7 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()); i++) {
+//        printf("south SO: %llu %d \n", stackObject,
+//               getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()));
+
+
+
+        if (board[stackMove + 8 * i] == EMPTY) {
+            printBoardSide(boardStruct);
+            exit(1);
+        }
+
         board[stackMove + 8 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthEast(), getSouthEastMask()); i++) {
+        if (board[stackMove + 9 * i] == EMPTY) { exit(1); }
         board[stackMove + 9 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getEast(), getEastMask()); i++) {
+        if (board[stackMove + 1 * i] == EMPTY) { exit(1); }
         board[stackMove + 1 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthEast(), getNorthEastMask()); i++) {
+        if (board[stackMove - 7 * i] == EMPTY) { exit(1); }
         board[stackMove - 7 * i] = addToPlayer;
     }
 
@@ -660,6 +680,8 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     board[stackMove] = EMPTY;
     switchPlayerStruct(boardStruct);
 
+
+//    printf("------------------- unmakeMove end\n");
     return 0;
 }
 
@@ -777,6 +799,8 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
+
+//                    printf("add to stack object: %d\n", numberOfKills);
                     addToStackObject(&stackObject, getSouth(), numberOfKills);
                     break;
                 }

@@ -19,6 +19,7 @@
 #include "thinker/thinkertests/boardtests.h"
 #include "thinker/thinkertests/boardtests2.h"
 #include "connector/connectorTests/connectortests.h"
+#include "thinker/thinkertests/unmakemovetests.h"
 
 
 // if thinker is parent, retry logic may be easier to implement
@@ -36,6 +37,9 @@ int main(int argc, char *argv[]) {
 
         printf("Running convert move test Suite\n");
         fail += testConvertMove();
+
+        printf("Running unmake move test Suite\n");
+        fail += fullTestSuiteUnmakeMoveTests();
 
         if (fail) {
             printf("Some tests failed, please fix them as soon as possible.\n");

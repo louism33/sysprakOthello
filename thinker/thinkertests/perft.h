@@ -7,4 +7,6 @@
 
 int perftSuite();
 
+int fromCommandLine(int depth);
+
 #endif //SYSPRAKOTHELLO_PERFT_H

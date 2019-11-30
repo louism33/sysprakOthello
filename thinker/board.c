@@ -866,8 +866,10 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     //Prüfung nach rechts unten
     if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 6 && pos % 8 != 7) {
+//        printf("aaa  pos: %d \n", pos);
         if (board[pos + 9] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 18; i < 64; i += 8) {
+//            printf("aaaa  pos: %d \n", pos);
+            for (int i = 18; i < 64; i += 9) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -879,6 +881,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 if (board[pos + i] == ME) {
                     numberOfKills = 0;
                     for (int j = 9; j < i; j += 9) {
+//                        printf("aaaa  pos + i - j: %d \n", (pos + i - j));
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }

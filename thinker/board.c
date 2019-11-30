@@ -16,7 +16,7 @@
 #define STARTING_PLAYER BLACK
 
 // to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
+#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
 
 // 4 square occupied in starting board
 #define STARTING_WHITE_POSITION_1 27
@@ -32,61 +32,88 @@ int flipPlayer(SIDE_TO_MOVE TARGET_PLAYER) {
     return otherSide;
 }
 
-void resetBoardToStarter(BOARD board) {
-    for (int i = 0; i < 64; i++) {
-        board[i] = 0;
-    }
-    /*board[27] = WHITE;
-    board[28] = BLACK;
-    board[35] = BLACK;
-    board[36] = WHITE;*/
-    board[26] = BLACK;
-    board[27] = BLACK;
-    board[28] = BLACK;
-    board[29] = BLACK;
-    board[36] = BLACK;
-    board[19] = WHITE;
-    board[35] = WHITE;
-
+MOVE getLastMove(){
+    return LAST_MOVE;
 }
 
-void resetBoardToZero(BOARD board) {
-    for (int i = 0; i < 64; i++) {
-        board[i] = 0;
-    }
+SIDE_TO_MOVE getStartingPlayer(){
+    return STARTING_PLAYER;
+}
+
+SIDE_TO_MOVE getBlack(){
+    return BLACK;
 }
 
 
-void freeBoardStruct(BOARD_STRUCT* boardStruct){
-//    free(boardStruct->stack->stackArray);
-//    free(boardStruct->stack);
+SIDE_TO_MOVE getWhite(){
+    return WHITE;
+}
+
+
+SIDE_TO_MOVE getEmpty(){
+    return EMPTY;
+}
+
+
+SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove) {
+    return SWITCH_PLAYER_CONSTANT - sideToMove;
+}
+
+void resetBoardToStarter(BOARD board)
+{
+    for (int i = 0; i < 64; i++)
+    {
+        board[i] = 0;
+    }
+
+}
+
+void resetBoardToZero(BOARD board)
+{
+    for (int i = 0; i < 64; i++)
+    {
+        board[i] = 0;
+    }
+}
+
+void freeBoardStruct(BOARD_STRUCT *boardStruct)
+{
+    //    free(boardStruct->stack->stackArray);
+    //    free(boardStruct->stack);
     free(boardStruct->board);
 }
 
-
-void initialiseBoardStructToStarter(BOARD_STRUCT* boardStruct){
+void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct)
+{
     boardStruct->board = malloc(64 * sizeof(int));
     resetBoardToStarter(boardStruct->board);
     boardStruct->sideToMove = STARTING_PLAYER;
 }
 
-void initialiseBoardStructToZero(BOARD_STRUCT* boardStruct){
+void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct)
+{
     boardStruct->board = malloc(64 * sizeof(int));
     resetBoardToZero(boardStruct->board);
     boardStruct->sideToMove = STARTING_PLAYER;
 }
 
-void printBoard(BOARD board) {
+void printBoard(BOARD board)
+{
     printf("    A B C D E F G H \n");
     printf("  +-----------------+ \n");
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++)
+    {
         printf("%d | ", i + 1);
-        for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 8; j++)
+        {
             int p = board[8 * i + j];
-            if (p) {
+            if (p)
+            {
                 printf("%d ", p);
-            } else {
+            }
+            else
+            {
                 printf("  ");
             }
         }
@@ -98,197 +125,334 @@ void printBoard(BOARD board) {
     printf("    A B C D E F G H \n");
 }
 
-void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
-    if (move < 0 || move > 63) {
+void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move)
+{
+    if (move < 0 || move > 63)
+    {
         printf("Die Koordinaten liegen außerhalb des gültigen Bereichs. Bitte geben Sie sie erneut ein.\n");
         exit(1);
-    } else if (board[move] != 0) {
+    }
+    else if (board[move] != 0)
+    {
         printf("Die Koordinaten sind bereits belegt!\n");
         exit(1);
-    } else {
-        if (sideToMove == BLACK) {
+    }
+    else
+    {
+        if (sideToMove == BLACK)
+        {
             board[move] = BLACK;
-        } else {
+        }
+        else
+        {
             board[move] = WHITE;
         }
     }
 }
 
-int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER) {
+int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER)
+{
     int index = 0;
     int MY_PLAYER = 3 - TARGET_PLAYER;
+    int zeile = (8 - position / 8);
+    int spalte = position % 8;
 
-    if (board[position] != MY_PLAYER) {
+    if (board[position] != MY_PLAYER)
+    {
         printf("i don't have a player on this square\n");
         exit(1);
     }
 
-//    printf("position is %d\n", position);
+    //    printf("position is %d\n", position);
 
-//    for-Schleifer um nach rechts zu prüfen
-    for (int i = position + 1; i % 8 != 7; i++) {
-        //TODO: nicht machen in Spalte 7
-        if (board[i] == TARGET_PLAYER) {
-            continue;
-        }
-        if (board[i] == MY_PLAYER) {
-            break;
-        }
-        if (board[i] == EMPTY && board[position + 1] == TARGET_PLAYER) {
-            // legal move!!!
-            speicher[index++] = i;
-            printf("found move R:%d\n", speicher[index - 1]);
-            break;
+    //for-Schleifer um nach rechts zu prüfen
+    if (spalte != 6 && spalte != 7)
+    {
+        //  printf("-----in link for Schleife.\n");
+        if (board[position + 1] == TARGET_PLAYER)
+        {
+            int i = position + 2;
+            while (1)
+            {
+
+                if (board[i] == TARGET_PLAYER)
+                {
+                    i++;
+                    continue;
+                }
+                if (board[i] == EMPTY)
+                {
+                    speicher[index++] = i;
+//                    printf("found move L:%d\n", speicher[index - 1]);
+                    break;
+                }
+                if (board[i] == MY_PLAYER)
+                {
+                    break;
+                }
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+            }
         }
     }
 
     // for-Schleifer um nach links zu prüfen
-    for (int i = position - 1; i % 8 != 0; i--) {
-        //TODO: nicht machen in Spalte 0
-        if (board[i] == TARGET_PLAYER) {
-            continue;
-        }
-        if (board[i] == MY_PLAYER) {
-            break;
-        }
-        if (board[i] == EMPTY && board[position - 1] == TARGET_PLAYER) {
-            // legal move!!!
-            speicher[index++] = i;
-            printf("found move L:%d\n", speicher[index - 1]);
-            break;
+    //finished
+    //    int zeile = (8 - position / 8);
+    //    if (zeile != 0 && zeile != 1){
+
+    if (spalte != 0 && spalte != 1)
+    {
+        //  printf("-----in link for Schleife.\n");
+        if (board[position - 1] == TARGET_PLAYER)
+        {
+            int i = position - 2;
+            while (1)
+            {
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+                if (board[i] == TARGET_PLAYER)
+                {
+                    i--;
+                    continue;
+                }
+                if (board[i] == EMPTY)
+                {
+                    speicher[index++] = i;
+//                    printf("found move L:%d\n", speicher[index - 1]);
+                    break;
+                }
+                if (board[i] == MY_PLAYER)
+                {
+                    break;
+                }
+            }
         }
     }
 
     // for-Schleifer um nach unten zu prüfen
-    for (int i = position + 8; i < 64; i = i + 8) {
-        if (board[i] == TARGET_PLAYER) {
+    for (int i = position + 8; i < 64; i = i + 8)
+    {
+        if (board[i] == TARGET_PLAYER)
+        {
             continue;
         }
-        if (board[i] == MY_PLAYER) {
+        if (board[i] == MY_PLAYER)
+        {
             break;
         }
-        if (board[i] == EMPTY && board[position + 8] == TARGET_PLAYER) {
+        if (board[i] == EMPTY && board[position + 8] == TARGET_PLAYER)
+        {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move U:%d\n", speicher[index - 1]);
+//            printf("found move U:%d\n", speicher[index - 1]);
             break;
         }
     }
 
     // for-Schleifer um nach oben zu prüfen
-    for (int i = position - 8; i > -1; i = i - 8) {
-        if (board[i] == TARGET_PLAYER) {
+    for (int i = position - 8; i > -1; i = i - 8)
+    {
+        if (board[i] == TARGET_PLAYER)
+        {
             continue;
         }
-        if (board[i] == MY_PLAYER) {
+        if (board[i] == MY_PLAYER)
+        {
             break;
         }
-        if (board[i] == EMPTY && board[position - 8] == TARGET_PLAYER) {
+        if (board[i] == EMPTY && board[position - 8] == TARGET_PLAYER)
+        {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move O:%d\n", speicher[index - 1]);
+//            printf("found move O:%d\n", speicher[index - 1]);
             break;
         }
     }
 
-
     // for-Schleifer um nach rechts oben zu prüfen
-    for (int i = position - 7; i > -1 && i % 8 != 7; i = i - 7) {
-        if (board[i] == TARGET_PLAYER) {
+    for (int i = position - 7; i > -1 && i % 8 != 7; i = i - 7)
+    {
+        if (board[i] == TARGET_PLAYER)
+        {
             continue;
         }
-        if (board[i] == MY_PLAYER) {
+        if (board[i] == MY_PLAYER)
+        {
             break;
         }
-        if (board[i] == EMPTY && board[position - 7] == TARGET_PLAYER) {
+        if (board[i] == EMPTY && board[position - 7] == TARGET_PLAYER)
+        {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move RO:%d\n", speicher[index - 1]);
+//            printf("found move RO:%d\n", speicher[index - 1]);
             break;
         }
     }
 
     // for-Schleifer um nach links oben zu prüfen
-    for (int i = position - 9; i > -1 && i % 8 != 0; i = i - 9) {
-        if (board[i] == TARGET_PLAYER) {
+    for (int i = position - 9; i > -1 && i % 8 != 0; i = i - 9)
+    {
+        if (board[i] == TARGET_PLAYER)
+        {
             continue;
         }
-        if (board[i] == MY_PLAYER) {
+        if (board[i] == MY_PLAYER)
+        {
             break;
         }
-        if (board[i] == EMPTY && board[position - 9] == TARGET_PLAYER) {
+        if (board[i] == EMPTY && board[position - 9] == TARGET_PLAYER)
+        {
             // legal move!!!
             speicher[index++] = i;
-            printf("found move OL:%d\n", speicher[index - 1]);
+//            printf("found move OL:%d\n", speicher[index - 1]);
             break;
         }
     }
 
     // for-Schleifer um nach rechts unten zu prüfen
-    for (int i = position + 9; i < 64 && i % 8 != 7; i = i + 9) {
-        if (board[i] == TARGET_PLAYER) {
-            continue;
-        }
-        if (board[i] == MY_PLAYER) {
-            break;
-        }
-        if (board[i] == EMPTY && board[position + 9] == TARGET_PLAYER) {
-            // legal move!!!
-            speicher[index++] = i;
-            printf("found move UR:%d\n", speicher[index - 1]);
-            break;
+    if (spalte != 6 && spalte != 7 && zeile != 1 && zeile != 2)
+    {
+        //  printf("-----in link unten for Schleife.\n");
+        if (board[position + 9] == TARGET_PLAYER)
+        {
+            int i = position + 18;
+            while (1)
+            {
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+                if (board[i] == TARGET_PLAYER)
+                {
+                    i += 9;
+                    continue;
+                }
+                if (board[i] == EMPTY)
+                {
+                    speicher[index++] = i;
+//                    printf("found move L:%d\n", speicher[index - 1]);
+                    break;
+                }
+                if (board[i] == MY_PLAYER)
+                {
+                    break;
+                }
+            }
         }
     }
-    // for-Schleifer um nach links unten zu prüfen
-    for (int i = position + 7; i < 64 && i % 8 != 0; i = i + 7) {
-        if (board[i] == TARGET_PLAYER) {
-            continue;
+
+    //  for-Schleifer um nach links unten zu prüfen
+    if (spalte != 0 && spalte != 1 && zeile != 1 && zeile != 2)
+    {
+        // printf("-----in link unten for Schleife.\n");
+        if (board[position + 7] == TARGET_PLAYER)
+        {
+            int i = position + 14;
+            while (1)
+            {
+                if (i % 8 == 0)
+                {
+                    break;
+                }
+                if (board[i] == TARGET_PLAYER)
+                {
+                    i += 7;
+                    continue;
+                }
+                if (board[i] == EMPTY)
+                {
+                    speicher[index++] = i;
+//                    printf("found move L:%d\n", speicher[index - 1]);
+                    break;
+                }
+                if (board[i] == MY_PLAYER)
+                {
+                    break;
+                }
+            }
         }
-        if (board[i] == MY_PLAYER) {
-            break;
-        }
-        if (board[i] == EMPTY && board[position + 7] == TARGET_PLAYER) {
-            // legal move!!!
-            speicher[index++] = i;
-            printf("found move LU:%d\n", speicher[index - 1]);
-            break;
+    }
+
+    speicher[index] = LAST_MOVE;
+    // printf("ende oneposition\n");
+    return speicher;
+}
+
+// todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
+int *removeDuplicates(MOVES speicher, int index)
+{
+    for (int i = 0; i < index - 1; i++)
+    {
+        for (int j = i + 1; j < index;)
+        {
+            if (speicher[i] == speicher[j])
+            {
+                for (int k = j; k < index - 1; k++)
+                {
+                    speicher[k] = speicher[k + 1];
+                }
+                index--;
+            }
+            else
+            {
+                j++;
+            }
         }
     }
     speicher[index] = LAST_MOVE;
     return speicher;
 }
+//todo board can be more than 8x8 !!!!
 
-MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
-    MOVES speicher= malloc(64 * sizeof(int));
+
+
+MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves)
+{
+    //MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
+    MOVES speicher = malloc(64 * sizeof(int));
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
-    for (int pos = 0; pos < 64; pos++) {
-        if (board[pos] == me) {
+    for (int pos = 0; pos < 64; pos++)
+    {
+        if (board[pos] == me)
+        {
             MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
             int j = 0;
-            while (1) {
-                if (legalMovesFromHere[j] == LAST_MOVE) {
+            while (1)
+            {
+                if (legalMovesFromHere[j] == LAST_MOVE)
+                {
                     break;
                 }
                 allMoves[index++] = legalMovesFromHere[j++];
             }
         }
     }
-
+    // printf("index von allMove(): %d\n",index);
+    removeDuplicates(allMoves, index);
+    //printf("finalspeicher 4: %d\n",finalspeicher[4]);
     free(speicher);
-
-    allMoves[index] = LAST_MOVE;
+    //free(allMoves);
+    // printf("ende allmove()\n");
     return allMoves;
 }
 
-
-int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES legalMoves = getLegalMovesAllPositions(board, TARGET_PLAYER);
+int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER)
+{
+    MOVES allMoves = malloc(64 * sizeof(int));
+    MOVES finalspeicher = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 
-    for (int i = 0; i < 64; i++) {
-        if (legalMoves[i] == LAST_MOVE) {
+    for (int i = 0; i < 64; i++)
+    {
+        if (finalspeicher[i] == LAST_MOVE)
+        {
+            // printf("total fertig\n");
             return total;
         }
         total++;
@@ -298,186 +462,3 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
 
 }
 
-
-BOARD makeMove(BOARD board, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER) {
-    int *merkePos = malloc(64*sizeof(int)); //man kann max 64 Pos merken
-    int index = 0;
-    int me = 3-TARGET_PLAYER;
-    if(board[legalPosition] != EMPTY) {
-        printf("Diese Feld ist schon belegt. Da kannst du nicht hinspringen\n");
-        return board;
-    }
-
-    //for-Schleifer um nach rechts zu moven und flip player
-    for (int r = legalPosition - 1; r != me; r--) {
-
-        if(board[r] == EMPTY) {
-            break;
-        }
-    
-        if (board[r] == TARGET_PLAYER) {
-            board[r] = me;
-            continue;
-        }
-
-        if (board[r] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    
-    }
-
-    //for-Schleifer um nach links zu moven und zu flipen
-    for (int l = legalPosition + 1; l != me; l++) {
-
-        if(board[l] == EMPTY) {
-            break;
-        }
-    
-        if (board[l] == TARGET_PLAYER) {
-            board[l] = me;
-            continue;
-        }
-
-        if (board[l] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    
-    }
-
-    //for-Schleifer um nach unten zu moven und zu flipen
-    for (int u = legalPosition - 8; u != me; u-=8) {
-
-        if(board[u] == EMPTY) {
-            break;
-        }
-
-        if (board[u] == TARGET_PLAYER) {
-            board[u] = me;
-            continue;
-        }
-
-        if (board[u] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    
-    }
-
-    //for-Schleife um nach oben zu moven und zu flipen
-    for (int o = legalPosition + 8; o != me; o+=8) {
-
-        if(board[o] == EMPTY) {
-            break;
-        }
-
-        if (board[o] == TARGET_PLAYER) {
-            board[o] = me;
-            continue;
-        }
-
-        if (board[o] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    
-    }
-
-    //for-Schleife um nach rechts oben zu moven und zu flipen
-    for (int ro = legalPosition + 7; ro != me; ro+=7) {
-
-        if(board[ro] == EMPTY) {
-            break;
-        }
-
-        if (board[ro] == TARGET_PLAYER) {
-            board[ro] = me;
-            continue;
-        }
-
-        if (board[ro] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    }
-
-    //for-Schleifer um nach rechts unten zu moven und zu flipen
-    for (int ru = legalPosition - 9; ru != me; ru-=9) {
-
-        if(board[ru] == EMPTY) {
-            break;
-        }
-
-        if (board[ru] == TARGET_PLAYER) {
-            board[ru] = me; 
-            continue; 
-        }
-
-        if (board[ru] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    
-    }
-
-    //for-Schleifer um nach links unten zu moven und zu flipen
-    for (int lu = legalPosition - 7; lu != me; lu-=7) {
-
-        if(board[lu] == EMPTY) {
-            break;
-        }
-
-       if (board[lu] == TARGET_PLAYER) {
-            board[lu] = me;
-            continue;
-        }
-
-        if (board[lu] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    
-    }
-
-    //for-Schleife um nach links oben zu moven und zu flipen
-    for (int lo = legalPosition + 9; lo != me; lo+=9) {
-
-        if(board[lo] == EMPTY) {
-            break;
-        }
-
-        if (board[lo] == TARGET_PLAYER) {
-           board[lo] = me;
-           continue;
-        }
-
-        if (board[lo] == me) {
-            board[legalPosition] = me;
-            break;
-        }
-    
-    }
-} 
-
-int main() {
-    BOARD myBoard = malloc(64*sizeof (int));
-    resetBoardToStarter(myBoard);
-    printBoard(myBoard);
-    makeMove(myBoard,44,WHITE);
-    printBoard(myBoard);
-    makeMove(myBoard,43,BLACK);
-    printBoard(myBoard);
-    /*makeMove(myBoard,34,WHITE);
-    printBoard(myBoard);
-    makeMove(myBoard,25,BLACK);
-    printBoard(myBoard);
-    makeMove(myBoard,51,WHITE);
-    printBoard(myBoard);
-    makeMove(myBoard,59,BLACK);
-    printBoard(myBoard);
-    makeMove(myBoard,42,WHITE);
-    printBoard(myBoard);
-    makeMove(myBoard,33,BLACK);
-    printBoard(myBoard);*/
-}

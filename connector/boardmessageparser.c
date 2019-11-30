@@ -52,23 +52,6 @@
 
 #include "boardmessageparser.h"
 
-// pieces and SIDE_TO_MOVE constants
-#define BLACK 2
-#define WHITE 1
-#define EMPTY 0
-
-// black makes first move
-#define STARTING_PLAYER BLACK
-
-// to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-#define SWITCH_PLAYER_CONSTANT (BLACK+WHITE)
-
-// 4 square occupied in starting board
-#define STARTING_WHITE_POSITION_1 27
-#define STARTING_WHITE_POSITION_2 36
-#define STARTING_BLACK_POSITION_1 28
-#define STARTING_BLACK_POSITION_2 35
-
 /*
 + TOTAL 2
 + 0 IAMLOUIS 0
@@ -95,7 +78,7 @@ char sourceCopy[64]; // larger than needed
 char *regexString = "\\+ MOVE ([0-9]+)";
 size_t maxGroups = 2;
 regex_t regexCompiled;
-
+// todo remove this stupid regex crap
 void setupMessageParser() { // we do this to avoid wasting memory and compute on regex patterns
     if (messageParserReady) {
         printf("message parser already set up\n");
@@ -126,18 +109,18 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
             printf("\n");
         }
 //        printf("%d ", board[i]);
-        if (board[i] == WHITE) {
+        if (board[i] == getWhite()) {
             printf("W ");
-        } else if (board[i] == BLACK) {
+        } else if (board[i] == getBlack()) {
             printf("B ");
         } else {
-            printf(". ", board[i]);
+            printf(". ");
         }
     }
     printf("\n");
     if (sideToMove) {
         printf("%d to move\n", sideToMove);
-        if (sideToMove == BLACK) {
+        if (sideToMove == getBlack()) {
             printf("Black to move\n");
         } else {
             printf("White to move\n");
@@ -148,53 +131,20 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
     printf("-----------\n");
 }
 
-//void exampleUseCaseOfMessageParsing() {
-////    setupMessageParser();
-//
-//    char *exampleBoardMessage = "+ TOTAL 2\n"
-//                                "+ 0 IAMLOUIS 0\n"
-//                                "+ ENDPLAYERS\n"
-//                                "+ MOVE 3000\n"
-//                                "+ FIELD 8,8\n"
-//                                "+ 8 * * * * * * * *\n"
-//                                "+ 7 * * * * * B B B\n"
-//                                "+ 6 * * * * * W * *\n"
-//                                "+ 5 * * W W W B * *\n"
-//                                "+ 4 * B B B B * * *\n"
-//                                "+ 3 * * W * * * * *\n"
-//                                "+ 2 * * * * * * * *\n"
-//                                "+ 1 * * * * * * * *\n"
-//                                "+ ENDFIELD";
-//
-//
-//    BOARD_STRUCT  board;// = malloc(64 * sizeof(int)); // blank board
-//
-//    printBoardLouis(board);
-//
-//    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
-//
-//    parseBoardMessage(board, moveTimeAndBoard, exampleBoardMessage);
-//
-//    printBoardLouis(board);
-//
-////    tearDownMessageParser();
-//}
-
-
 void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
     int *boardBoard = board->board;
-    setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
-    regmatch_t groupArray[maxGroups];
+    // setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
+    // regmatch_t groupArray[maxGroups];
 
-    if (couldNotParseRegex) {
-        printf("Could not compile regular expression.\n");
-        moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
-    } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
-        strcpy(sourceCopy, message);
-        sourceCopy[groupArray[1].rm_eo] = 0;
-        char *found = sourceCopy + groupArray[1].rm_so;
-        moveTimeAndBoard->movetime = atoi(found);
-    }
+    // if (couldNotParseRegex) {
+    //     printf("Could not compile regular expression.\n");
+    //     moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
+    // } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
+    //     strcpy(sourceCopy, message);
+    //     sourceCopy[groupArray[1].rm_eo] = 0;
+    //     char *found = sourceCopy + groupArray[1].rm_so;
+    //     moveTimeAndBoard->movetime = atoi(found);
+    // }
 
     char c;
     int boardIndex = 0;
@@ -216,7 +166,6 @@ void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard,
             case 'E': // + ENDFIELD is the end of the message
                 break;
         }
-
     }
 
     moveTimeAndBoard->board = boardBoard; // todo, decide if board should be from argument or from here

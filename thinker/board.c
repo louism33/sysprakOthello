@@ -259,19 +259,17 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 
     int firstRow = 0;
     int secondRow = 1;
-    int preFinalRow = getRowSize()-1;
-    int finalRow = getRowSize()-2;
-
+    int preFinalRow = getRowSize()-2;
+    int finalRow = getRowSize()-1;
 
     int firstCol = 0;
     int secondCol = 1;
-    int preFinalCol = getColumnSize()-1;
-    int finalCol = getColumnSize()-2;
-//
-//    int smallDiagonal = getRowSize()-1;
-//    int bigDiagonal = getRowSize()+1;
-//
-//
+    int preFinalCol = getColumnSize()-2;
+    int finalCol = getColumnSize()-1;
+
+    int smallDiagonal = getRowSize()-1;
+    int bigDiagonal = getRowSize()+1;
+
 
     //for-Schleifer um nach rechts zu prüfen
     if (col != preFinalCol && col != finalCol) {
@@ -773,13 +771,13 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     int firstRow = 0;
     int secondRow = 1;
-    int preFinalRow = getRowSize()-1;
-    int finalRow = getRowSize()-2;
+    int preFinalRow = getRowSize()-2;
+    int finalRow = getRowSize()-1;
 
     int firstCol = 0;
     int secondCol = 1;
-    int preFinalCol = getColumnSize()-1;
-    int finalCol = getColumnSize()-2;
+    int preFinalCol = getColumnSize()-2;
+    int finalCol = getColumnSize()-1;
 
     int smallDiagonal = getRowSize()-1;
     int bigDiagonal = getRowSize()+1;

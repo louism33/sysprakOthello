@@ -1169,27 +1169,59 @@ int getWinner(BOARD_STRUCT *boardStruct)
     BOARD board = boardStruct->board;
     int anzahlBlack = 0;
     int anzahlWhite = 0;
-     for(int i = 0;i <64;i++){
-        if(board[i] == getBlack()) anzahlBlack++;
+    for (int i = 0; i < 64; i++)
+    {
+        if (board[i] == getBlack())
+            anzahlBlack++;
     }
-        for(int j = 0;j<64;j++){
-        if(board[j] == getWhite()) anzahlWhite++;
+    for (int j = 0; j < 64; j++)
+    {
+        if (board[j] == getWhite())
+            anzahlWhite++;
     }
     printf("AnzahlBlack: %d vs. AnzahlWhite: %d \n", anzahlBlack, anzahlWhite);
 
     if (anzahlBlack > anzahlWhite)
     {
-        printf("Winner is Side of Black.\n");
+        printf("Winner is Side of Black.\n\n\n");
         return getBlack();
     }
     else if (anzahlBlack < anzahlWhite++)
     {
-        printf("Winner is Side of White.\n");
+        printf("Winner is Side of White.\n\n\n");
         return getWhite();
     }
     else
     {
-        printf("No Winner. Because the Nummber of all Side are same.\n");
+        printf("No Winner. Because the Nummber of all Side are same.\n\n\n");
         return 0;
     }
+}
+
+int isGameOver(BOARD_STRUCT *boardStruct)
+{
+    BOARD board = boardStruct->board;
+    for (int i = 0; i < 64; i++)
+    {
+        if (i == 63)
+        {
+            printf("\n\n\nGame Over! The board is full.\n");
+            return 1;
+        }
+        else if (board[i] == getBlack() || board[i] == getWhite())
+        {
+            continue;
+        }
+        else if (getTotalNumberOfLegalMoves(board, BLACK) == 0 && getTotalNumberOfLegalMoves(board, WHITE) == 0)
+        {
+            printf("\n\n\nGame Over! Neither Black nor White can move.\n");
+            return 1;
+        }
+        else
+        {
+            printf("\n\n\nThe Game is not over.\n");
+            return 0;
+        }
+    }
+    return 0;
 }

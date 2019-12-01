@@ -1854,7 +1854,74 @@ int testWinner() {
         free(board);
         exit(1);
     }
-    getWinner(b);
+    if(isGameOver(b)){
+    getWinner(b);}
+    // printf("test successful\n\n");
+    free(b);
+    free(board);
+    return 0; // success
+}
+
+int testWinner2() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    for(int i=0;i<32;i++){
+        board[i]=getWhite();
+    }
+    for(int j=33;j<64;j++){
+        board[j]=getBlack();
+    }
+    SIDE_TO_MOVE player = getWhite();
+    //printBoardLouisSide(b, player);
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 0;
+    
+    if (myNumberOfMoves != correctNumberOfMoves) {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        free(board);
+        exit(1);
+    }
+    if(isGameOver(b)){
+    getWinner(b);}
+    // printf("test successful\n\n");
+    free(b);
+    free(board);
+    return 0; // success
+}
+
+int testWinner3() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    for(int i=0;i<32;i++){
+        board[i]=getWhite();
+    }
+    for(int j=32;j<64;j++){
+        board[j]=getBlack();
+    }
+    SIDE_TO_MOVE player = getWhite();
+    //printBoardLouisSide(b, player);
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 0;
+    
+    if (myNumberOfMoves != correctNumberOfMoves) {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        free(board);
+        exit(1);
+    }
+    if(isGameOver(b)){
+    getWinner(b);}
     // printf("test successful\n\n");
     free(b);
     free(board);
@@ -1950,6 +2017,8 @@ int basicTests() {
     //Daoben gibt es 63 Test! und laufen alles gut.
 
     testWinner();
+    testWinner2();
+    testWinner3();
 
     return 0; // success
 }

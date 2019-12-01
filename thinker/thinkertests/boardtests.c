@@ -138,7 +138,6 @@ int testStartingBoard1() {
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;

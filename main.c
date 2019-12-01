@@ -22,6 +22,7 @@
 #include "thinker/thinkertests/unmakemovetests.h"
 #include "thinker/thinkertests/makemovetests.h"
 #include "thinker/thinkertests/perft.h"
+#include "thinker/thinkertests/biggerboardtest.h"
 
 
 // if thinker is parent, retry logic may be easier to implement
@@ -60,6 +61,9 @@ int main(int argc, char *argv[]) {
 
         printf("Running perft Suite\n");
         fail += perftSuite();
+
+        printf("Running big board tests Suite\n");
+        fail += testSuiteBigBoard();
 
         if (fail) {// fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");

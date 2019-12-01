@@ -232,23 +232,51 @@ void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
     }
 }
 
+static inline int getColumn(int i) {
+    return i % getColumnSize();
+}
+
+static inline int getRow(int i) {
+    return i / getColumnSize();
+}
+
 int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER) {
     int index = 0;
     int MY_PLAYER = switchPlayer(TARGET_PLAYER);
-    int zeile = (getRowSize() - position / getRowSize());
-    int spalte = position % getColumnSize();
+    int zeile = (getRowSize() - position / getRowSize()); // todo, this is different from makemove
+//    int zeile = position / getRowSize(); // todo, this is different from makemove
+
+    int column = getColumn(position); // todo which is which
 
     if (board[position] != MY_PLAYER) {
         printf("i don't have a player on this square\n");
         exit(1);
     }
 
+//    int column = getColumn(pos);
+//    int row = getRow(pos);
+
+    int firstRow = 0;
+    int secondRow = 1;
+    int preFinalRow = zeile-1;
+    int finalRow = zeile-2;
+//
+//    int firstCol = 0;
+//    int secondCol = 1;
+//    int preFinalCol = column-1;
+//    int finalCol = column-2;
+//
+//    int smallDiagonal = getRowSize()-1;
+//    int bigDiagonal = getRowSize()+1;
+
+//    printf("POS IS %d\n", position);
+
     //for-Schleifer um nach rechts zu prüfen
-    if (spalte != 6 && spalte != 7) {
+    if (column != 6 && column != 7) {
         if (board[position + 1] == TARGET_PLAYER) {
             int i = position + 2;
             while (1) {
-                if (i % 8 == 0) {
+                if (getColumn(i) == 0) {
                     break;
                 }
                 if (board[i] == TARGET_PLAYER) {
@@ -267,11 +295,11 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach links zu prüfen
-    if (spalte != 0 && spalte != 1) {
+    if (column != 0 && column != 1) {
         if (board[position - 1] == TARGET_PLAYER) {
             int i = position - 2;
             while (1) {
-                if (i % 8 == 7) {
+                if (getColumn(i) == 7) {
                     break;
                 }
 
@@ -337,11 +365,11 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach rechts oben zu prüfen
-    if (spalte != 6 && spalte != 7 && zeile != 8 && zeile != 7) {
+    if (column != 6 && column != 7 && zeile != 8 && zeile != 7) {
         if (board[position - 7] == TARGET_PLAYER) {
             int i = position - 14;
             while (1) {
-                if (i % 8 == 0) //spalte
+                if (getColumn(i) == 0) //column
                 {
                     break;
                 }
@@ -365,15 +393,15 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach links oben zu prüfen
-    if (spalte != 0 && spalte != 1 && zeile != 8 && zeile != 7) {
+    if (column != 0 && column != 1 && zeile != 8 && zeile != 7) {
         if (board[position - 9] == TARGET_PLAYER) {
             int i = position - 18;
             while (1) {
-                if (i % 8 == 7) //zeile
+                if (getColumn(i) == 7) //zeile
                 {
                     break;
                 }
-                if (i < 0) //spalte
+                if (i < 0) //column
                 {
                     break;
                 }
@@ -393,14 +421,14 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         }
     }
     // for-Schleifer um nach rechts unten zu prüfen
-    if (spalte != 6 && spalte != 7 && zeile != 1 && zeile != 2) {
+    if (column != 6 && column != 7 && zeile != 1 && zeile != 2) {
         if (board[position + 9] == TARGET_PLAYER) {
             int i = position + 18;
             while (1) {
                 if (i >= 64) { //zeile
                     break;
                 }
-                if (i % 8 == 0) //spalte
+                if (getColumn(i) == 0) //column
                 {
                     break;
                 }
@@ -419,14 +447,14 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         }
     }
     //  for-Schleifer um nach links unten zu prüfen
-    if (spalte != 0 && spalte != 1 && zeile != 1 && zeile != 2) {
+    if (column != 0 && column != 1 && zeile != 1 && zeile != 2) {
         if (board[position + 7] == TARGET_PLAYER) {
             int i = position + 14;
             while (1) {
                 if (i >= 64) {
                     break;
                 }
-                if (i % 8 == 7) {
+                if (getColumn(i) == 7) {
                     break;
                 }
                 if (board[i] == TARGET_PLAYER) {
@@ -738,13 +766,28 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     STACK_OBJECT stackObject = 0;
     int numberOfKills = 0;
-    int column = pos % 8;
-    int row = pos / 8;
+    int column = getColumn(pos);
+    int row = getRow(pos);
+
+    int firstRow = 0;
+    int secondRow = 1;
+    int preFinalRow = row-1;
+    int finalRow = row-2;
+
+    int firstCol = 0;
+    int secondCol = 1;
+    int preFinalCol = column-1;
+    int finalCol = column-2;
+
+    int smallDiagonal = getRowSize()-1;
+    int bigDiagonal = getRowSize()+1;
+
+//    printf("POS IS %d\n", pos);
 
     //Prüfung nach links
-    if (column != 0 && column != 1) {
+    if (column != firstCol && column != secondCol) {
         if (board[pos - 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < 8; i++) {
+            for (int i = 2; i < getColumnSize(); i++) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -760,9 +803,6 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
-//
-//                    printf("--->numberOfKills: %d\n", numberOfKills);
-
                     addToStackObject(&stackObject, getWest(), numberOfKills);
                     break;
                 }
@@ -772,9 +812,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach rechts
-    if (column != 6 && column != 7) {
+    if (column != preFinalCol && column != finalCol) {
         if (board[pos + 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < 8; i++) {
+            for (int i = 2; i < getColumnSize(); i++) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -798,9 +838,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach oben
-    if (row != 0 && row != 1) {
-        if (board[pos - 8] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 16; i < 57; i += 8) {
+    if (row != firstRow && row != secondRow) {
+        if (board[pos - getColumnSize()] == TARGET_PLAYER) { //TODO am rand
+            for (int i = 2*getColumnSize(); i < getBoardSize() - getColumnSize(); i += getColumnSize()) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -811,7 +851,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
                 if (board[pos - i] == ME) {
                     numberOfKills = 0;
-                    for (int j = 8; j < i; j += 8) {
+                    for (int j = getColumnSize(); j < i; j += getColumnSize()) {
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
@@ -824,9 +864,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach unten
-    if (row != 6 && row != 7) {
-        if (board[pos + 8] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 16; i < 57; i += 8) {
+    if (row != preFinalRow && row != finalRow) {
+        if (board[pos + getColumnSize()] == TARGET_PLAYER) { //TODO am rand
+            for (int i = 2*getColumnSize(); i <  getBoardSize() - getColumnSize(); i += getColumnSize()) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -837,12 +877,11 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
                 if (board[pos + i] == ME) {
                     numberOfKills = 0;
-                    for (int j = 8; j < i; j += 8) {
+                    for (int j = getColumnSize(); j < i; j += getColumnSize()) {
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
 
-//                    printf("add to stack object: %d\n", numberOfKills);
                     addToStackObject(&stackObject, getSouth(), numberOfKills);
                     break;
                 }
@@ -852,9 +891,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach rechts oben
-    if (row != 0 && row != 1 && column != 6 && column != 7) {
-        if (board[pos - 7] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 14; i < 50; i += 7) {
+    if (row != firstRow && row != secondRow && column != preFinalCol && column != finalCol) {
+        if (board[pos - smallDiagonal] == TARGET_PLAYER) {
+            for (int i = 2*smallDiagonal; i < boardSize-2*smallDiagonal; i += smallDiagonal) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -865,7 +904,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
                 if (board[pos - i] == ME) {
                     numberOfKills = 0;
-                    for (int j = 7; j < i; j += 7) {
+                    for (int j = smallDiagonal; j < i; j += smallDiagonal) {
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
@@ -879,9 +918,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
 
     //Prüfung nach links oben
-    if (row != 0 && row != 1 && column != 0 && column != 1) {
-        if (board[pos - 9] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 18; i < 64; i += 9) {
+    if (row != firstRow && row != secondRow && column != firstCol && column != secondCol) {
+        if (board[pos - bigDiagonal] == TARGET_PLAYER) {
+            for (int i = 2*bigDiagonal; i < getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -892,7 +931,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
                 if (board[pos - i] == ME) {
                     numberOfKills = 0;
-                    for (int j = 9; j < i; j += 9) {
+                    for (int j = bigDiagonal; j < i; j += bigDiagonal) {
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
@@ -905,9 +944,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach links unten
-    if (row != 6 && row != 7 && column != 0 && column != 1) {
-        if (board[pos + 7] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 14; i < 50; i += 7) {
+    if (row != preFinalRow && row != finalRow && column != firstCol && column != secondCol) {
+        if (board[pos + smallDiagonal] == TARGET_PLAYER) {
+            for (int i = 2*smallDiagonal; i < getBoardSize()-2*smallDiagonal; i += smallDiagonal) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -918,7 +957,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
                 if (board[pos + i] == ME) {
                     numberOfKills = 0;
-                    for (int j = 7; j < i; j += 7) {
+                    for (int j = smallDiagonal; j < i; j += smallDiagonal) {
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
@@ -931,9 +970,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach rechts unten
-    if (row != 6 && row != 7 && column != 6 && column != 7) {
-        if (board[pos + 9] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 18; i < 64; i += 9) {
+    if (row != preFinalRow && row != finalRow && column != preFinalCol && column != finalCol) {
+        if (board[pos + bigDiagonal] == TARGET_PLAYER) {
+            for (int i = 2*bigDiagonal; i < getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -944,7 +983,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
                 if (board[pos + i] == ME) {
                     numberOfKills = 0;
-                    for (int j = 9; j < i; j += 9) {
+                    for (int j = bigDiagonal; j < i; j += bigDiagonal) {
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
@@ -956,7 +995,6 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
         }
     }
 
-//    printf("pushing %llu  to stack\n", stackObject);
     pushObject(boardStruct, stackObject);
 
     board[pos] = ME;

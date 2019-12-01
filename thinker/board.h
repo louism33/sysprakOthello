@@ -119,6 +119,9 @@ DIRECTION getEast();
 
 DIRECTION getNorthEast();
 
+int getWinner(BOARD_STRUCT *boardStruct);
+
+
 #endif //SYSPRAKOTHELLO_BOARD_H
 
 

@@ -17,10 +17,6 @@
 
 #define STARTING_PLAYER BLACK
 // to flip turn, we do SWITCH_PLAYER_CONSTANT - SIDE_TO_MOVE
-<<<<<<< HEAD
-#define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
-=======
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
 
 #define SWITCH_PLAYER_CONSTANT (BLACK + WHITE)
 // 4 square occupied in starting board
@@ -32,51 +28,46 @@
 
 #define LAST_MOVE (-1)
 
-<<<<<<< HEAD
 MOVE getLastMove()
 {
-=======
-MOVE getLastMove() {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
     return LAST_MOVE;
 }
 
-SIDE_TO_MOVE getStartingPlayer() {
+SIDE_TO_MOVE getStartingPlayer()
+{
     return STARTING_PLAYER;
 }
 
-
-SIDE_TO_MOVE getBlack() {
+SIDE_TO_MOVE getBlack()
+{
     return BLACK;
 }
 
-
-SIDE_TO_MOVE getWhite() {
+SIDE_TO_MOVE getWhite()
+{
     return WHITE;
 }
 
-SIDE_TO_MOVE getEmpty() {
+SIDE_TO_MOVE getEmpty()
+{
     return EMPTY;
 }
 
-SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove) {
+SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove)
+{
     return SWITCH_PLAYER_CONSTANT - sideToMove;
 }
 
-<<<<<<< HEAD
-void resetBoardToStarter(BOARD board)
+SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct)
 {
-    for (int i = 0; i < 64; i++)
-    {
-=======
-SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct) {
     boardStruct->sideToMove = switchPlayer(boardStruct->sideToMove);
     return boardStruct->sideToMove;
 }
 
-void resetBoardToStarter(BOARD board) {
-    for (int i = 0; i < 64; i++) {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
+void resetBoardToStarter(BOARD board)
+{
+    for (int i = 0; i < 64; i++)
+    {
         board[i] = 0;
     }
     // todo, if the coordinates are not 8x8, this would be wrong, so make sure not to call this in gameloop
@@ -94,54 +85,44 @@ void resetBoardToZero(BOARD board)
     }
 }
 
-<<<<<<< HEAD
 void freeBoardStruct(BOARD_STRUCT *boardStruct)
 {
-=======
-void freeBoardStruct(BOARD_STRUCT *boardStruct) {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
     //    free(boardStruct->stack->stackArray);
     //    free(boardStruct->stack);
     free(boardStruct->board);
 }
 
-<<<<<<< HEAD
-void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct)
+void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct)
 {
-    boardStruct->board = malloc(64 * sizeof(int));
-=======
-void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct) {
     boardStruct->board = malloc(64 * sizeof(int)); //todo careful of magic numbers!
     boardStruct->sideToMove = STARTING_PLAYER;
-    boardStruct->stack = malloc(64 * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
+    boardStruct->stack = malloc(64 * sizeof(STACK_OBJECT));     //todo careful of magic numbers!
     boardStruct->moveStack = malloc(64 * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
     boardStruct->stackIndexMove = 0;
     boardStruct->stackIndexObject = 0;
 }
 
-void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct) {
+void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct)
+{
     initialiseBoardStructMemory(boardStruct);
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
     resetBoardToStarter(boardStruct->board);
 }
 
-<<<<<<< HEAD
 void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct)
 {
-    boardStruct->board = malloc(64 * sizeof(int));
-=======
-
-void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct) {
     initialiseBoardStructMemory(boardStruct);
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
     resetBoardToZero(boardStruct->board);
 }
 
-void printBoardSide(BOARD_STRUCT *boardStruct) {
+void printBoardSide(BOARD_STRUCT *boardStruct)
+{
     printBoard(boardStruct->board);
-    if (boardStruct->sideToMove == BLACK) {
+    if (boardStruct->sideToMove == BLACK)
+    {
         printf("BLACK to move\n");
-    } else {
+    }
+    else
+    {
         printf("WHITE to move\n");
     }
 }
@@ -157,25 +138,20 @@ void printBoard(BOARD board)
         for (int j = 0; j < 8; j++)
         {
             int p = board[8 * i + j];
-<<<<<<< HEAD
-            if (p)
+            if (p == BLACK)
             {
-                printf("%d ", p);
-            }
-            else
-            {
-=======
-            if (p == BLACK) {
                 printf("B ");
-            } else if (p == WHITE) {
+            }
+            else if (p == WHITE)
+            {
                 printf("W ");
             }
-                //            if (p)
-                //            {
-                //                printf("%d ", p);
-                //            }
-            else {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
+            //            if (p)
+            //            {
+            //                printf("%d ", p);
+            //            }
+            else
+            {
                 printf("  ");
             }
         }
@@ -189,19 +165,23 @@ void printBoard(BOARD board)
     // too print pretty moves as too?
 }
 
-char *getPrettyMove(int move, char *antwort) {
+char *getPrettyMove(int move, char *antwort)
+{
     antwort[0] = 'A' + (move % 8);     //spalte
     antwort[1] = '0' + (8 - move / 8); //zeile
     antwort[2] = '\0';
     return antwort;
 }
 
-void printMoves(MOVES moves) {
+void printMoves(MOVES moves)
+{
     char *moveMem = malloc(3 * sizeof(char));
     int index = 0;
-    while (1) {
+    while (1)
+    {
         MOVE move = moves[index++];
-        if (move == LAST_MOVE) {
+        if (move == LAST_MOVE)
+        {
             break;
         }
         getPrettyMove(move, moveMem);
@@ -248,28 +228,30 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         exit(1);
     }
 
-<<<<<<< HEAD
-    printf("position is %d\n", position);
-
-=======
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
     //for-Schleifer um nach rechts zu prüfen
-    if (spalte != 6 && spalte != 7) {
-        if (board[position + 1] == TARGET_PLAYER) {
+    if (spalte != 6 && spalte != 7)
+    {
+        if (board[position + 1] == TARGET_PLAYER)
+        {
             int i = position + 2;
-            while (1) {
-                if (i % 8 == 0) {
+            while (1)
+            {
+                if (i % 8 == 0)
+                {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i++;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
@@ -277,32 +259,30 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach links zu prüfen
-<<<<<<< HEAD
-    printf("aaaaaa\n");
     if (spalte != 0 && spalte != 1)
     {
-        //  printf("-----in link for Schleife.\n");
         if (board[position - 1] == TARGET_PLAYER)
         {
-=======
-    if (spalte != 0 && spalte != 1) {
-        if (board[position - 1] == TARGET_PLAYER) {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
             int i = position - 2;
-            while (1) {
-                if (i % 8 == 7) {
+            while (1)
+            {
+                if (i % 8 == 7)
+                {
                     break;
                 }
 
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i--;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
@@ -310,62 +290,58 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach unten zu prüfen
-<<<<<<< HEAD
-
     if (zeile != 1 && zeile != 2)
     {
-        //  printf("-----in unten for Schleife.\n");
         if (board[position + 8] == TARGET_PLAYER)
         {
-=======
-    if (zeile != 1 && zeile != 2) {
-        if (board[position + 8] == TARGET_PLAYER) {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
             int i = position + 16;
-            while (1) {
-                if (i >= 64) {
+            while (1)
+            {
+                if (i >= 64)
+                {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i += 8;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
         }
     }
     // for-Schleifer um nach oben zu prüfen
-<<<<<<< HEAD
     if (zeile != 8 && zeile != 7)
     {
-        //  printf("-----in oben for Schleife.\n");
         if (board[position - 8] == TARGET_PLAYER)
         {
-=======
-    if (zeile != 8 && zeile != 7) {
-        if (board[position - 8] == TARGET_PLAYER) {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
             int i = position - 16;
-            while (1) {
+            while (1)
+            {
                 if (i < 0) //zeile
                 {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i -= 8;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
@@ -373,18 +349,13 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach rechts oben zu prüfen
-<<<<<<< HEAD
     if (spalte != 6 && spalte != 7 && zeile != 8 && zeile != 7)
     {
-        //  printf("-----in link oben for Schleife.\n");
         if (board[position - 7] == TARGET_PLAYER)
         {
-=======
-    if (spalte != 6 && spalte != 7 && zeile != 8 && zeile != 7) {
-        if (board[position - 7] == TARGET_PLAYER) {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
             int i = position - 14;
-            while (1) {
+            while (1)
+            {
                 if (i % 8 == 0) //spalte
                 {
                     break;
@@ -393,15 +364,18 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                 {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i -= 7;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
@@ -409,18 +383,13 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     // for-Schleifer um nach links oben zu prüfen
-<<<<<<< HEAD
     if (spalte != 0 && spalte != 1 && zeile != 8 && zeile != 7)
     {
-        //  printf("-----in link oben for Schleife.\n");
         if (board[position - 9] == TARGET_PLAYER)
         {
-=======
-    if (spalte != 0 && spalte != 1 && zeile != 8 && zeile != 7) {
-        if (board[position - 9] == TARGET_PLAYER) {
->>>>>>> d1ce64ab36bc4c4e63c3e2dbe760dadfb723f50b
             int i = position - 18;
-            while (1) {
+            while (1)
+            {
                 if (i % 8 == 7) //zeile
                 {
                     break;
@@ -430,66 +399,84 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                     break;
                 }
 
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i -= 9;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
         }
     }
     // for-Schleifer um nach rechts unten zu prüfen
-    if (spalte != 6 && spalte != 7 && zeile != 1 && zeile != 2) {
-        if (board[position + 9] == TARGET_PLAYER) {
+    if (spalte != 6 && spalte != 7 && zeile != 1 && zeile != 2)
+    {
+        if (board[position + 9] == TARGET_PLAYER)
+        {
             int i = position + 18;
-            while (1) {
-                if (i >= 64) { //zeile
+            while (1)
+            {
+                if (i >= 64)
+                { //zeile
                     break;
                 }
                 if (i % 8 == 0) //spalte
                 {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i += 9;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
         }
     }
     //  for-Schleifer um nach links unten zu prüfen
-    if (spalte != 0 && spalte != 1 && zeile != 1 && zeile != 2) {
-        if (board[position + 7] == TARGET_PLAYER) {
+    if (spalte != 0 && spalte != 1 && zeile != 1 && zeile != 2)
+    {
+        if (board[position + 7] == TARGET_PLAYER)
+        {
             int i = position + 14;
-            while (1) {
-                if (i >= 64) {
+            while (1)
+            {
+                if (i >= 64)
+                {
                     break;
                 }
-                if (i % 8 == 7) {
+                if (i % 8 == 7)
+                {
                     break;
                 }
-                if (board[i] == TARGET_PLAYER) {
+                if (board[i] == TARGET_PLAYER)
+                {
                     i += 7;
                     continue;
                 }
-                if (board[i] == EMPTY) {
+                if (board[i] == EMPTY)
+                {
                     speicher[index++] = i;
                     break;
                 }
-                if (board[i] == MY_PLAYER) {
+                if (board[i] == MY_PLAYER)
+                {
                     break;
                 }
             }
@@ -501,15 +488,22 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 }
 
 // todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
-int *removeDuplicates(MOVES speicher, int index) {
-    for (int i = 0; i < index - 1; i++) {
-        for (int j = i + 1; j < index;) {
-            if (speicher[i] == speicher[j]) {
-                for (int k = j; k < index - 1; k++) {
+int *removeDuplicates(MOVES speicher, int index)
+{
+    for (int i = 0; i < index - 1; i++)
+    {
+        for (int j = i + 1; j < index;)
+        {
+            if (speicher[i] == speicher[j])
+            {
+                for (int k = j; k < index - 1; k++)
+                {
                     speicher[k] = speicher[k + 1];
                 }
                 index--;
-            } else {
+            }
+            else
+            {
                 j++;
             }
         }
@@ -520,17 +514,22 @@ int *removeDuplicates(MOVES speicher, int index) {
 
 //todo board can be more than 8x8 !!!!
 
-MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
+MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves)
+{
     //MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
     MOVES speicher = malloc(64 * sizeof(int));
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
-    for (int pos = 0; pos < 64; pos++) {
-        if (board[pos] == me) {
+    for (int pos = 0; pos < 64; pos++)
+    {
+        if (board[pos] == me)
+        {
             MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
             int j = 0;
-            while (1) {
-                if (legalMovesFromHere[j] == LAST_MOVE) {
+            while (1)
+            {
+                if (legalMovesFromHere[j] == LAST_MOVE)
+                {
                     break;
                 }
                 allMoves[index++] = legalMovesFromHere[j++];
@@ -542,13 +541,16 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES a
     return allMoves;
 }
 
-int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
+int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER)
+{
     MOVES allMoves = malloc(64 * sizeof(int));
     MOVES finalspeicher = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 
-    for (int i = 0; i < 64; i++) {
-        if (finalspeicher[i] == LAST_MOVE) {
+    for (int i = 0; i < 64; i++)
+    {
+        if (finalspeicher[i] == LAST_MOVE)
+        {
             return total;
         }
         total++;
@@ -557,11 +559,14 @@ int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
     exit(1);
 }
 
-int countMoves(MOVES allMoves) {
+int countMoves(MOVES allMoves)
+{
     int total = 0;
 
-    for (int i = 0; i < 64; i++) {
-        if (allMoves[i] == LAST_MOVE) {
+    for (int i = 0; i < 64; i++)
+    {
+        if (allMoves[i] == LAST_MOVE)
+        {
             return total;
         }
         total++;
@@ -570,165 +575,194 @@ int countMoves(MOVES allMoves) {
     exit(1);
 }
 
-int copyBoardStruct(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBoardStruct, int n) {
+int copyBoardStruct(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBoardStruct, int n)
+{
     copyBoard(destinationBoardStruct->board, sourceBoardStruct->board, n);
     destinationBoardStruct->sideToMove = sourceBoardStruct->sideToMove;
     // todo , copy stack?
     return 0;
 }
 
-int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n) {
-    for (int i = 0; i < n; i++) {
+int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
         destinationBoard[i] = sourceBoard[i];
     }
     return 0;
 }
 
-int areBoardStructsDifferent(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBoardStruct, int n) {
-    if (!areBoardsDifferent(destinationBoardStruct->board, sourceBoardStruct->board, n)) {
+int areBoardStructsDifferent(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBoardStruct, int n)
+{
+    if (!areBoardsDifferent(destinationBoardStruct->board, sourceBoardStruct->board, n))
+    {
         return destinationBoardStruct->sideToMove != sourceBoardStruct->sideToMove;
     }
     return 1; // they are different
 }
 
+int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        //        printf("aaaa %d\n", i);
+        if (destinationBoard[i] != sourceBoard[i])
+        {
 
-int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n) {
-    for (int i = 0; i < n; i++) {
-//        printf("aaaa %d\n", i);
-        if (destinationBoard[i] != sourceBoard[i]) {
-
-//            printf("source board\n");
-//            printBoard(sourceBoard);
-//            printBoard(destinationBoard);
+            //            printf("source board\n");
+            //            printBoard(sourceBoard);
+            //            printBoard(destinationBoard);
             return 1; // yes they are different
         }
     }
     return 0; // they are the same
 }
 
-int pushObject(BOARD_STRUCT *boardStruct, STACK_OBJECT stackObject) {
+int pushObject(BOARD_STRUCT *boardStruct, STACK_OBJECT stackObject)
+{
     boardStruct->stack[boardStruct->stackIndexObject++] = stackObject;
     boardStruct->stack[boardStruct->stackIndexObject] = 0;
     return 0;
 }
 
-STACK_OBJECT popObject(BOARD_STRUCT *boardStruct) {
+STACK_OBJECT popObject(BOARD_STRUCT *boardStruct)
+{
     STACK_OBJECT ret = boardStruct->stack[--boardStruct->stackIndexObject];
     boardStruct->stack[boardStruct->stackIndexObject] = 0;
     return ret;
 }
 
-int pushMove(BOARD_STRUCT *boardStruct, MOVE moveStackObject) {
+int pushMove(BOARD_STRUCT *boardStruct, MOVE moveStackObject)
+{
     boardStruct->moveStack[boardStruct->stackIndexMove++] = moveStackObject;
     boardStruct->moveStack[boardStruct->stackIndexMove] = 0; // overwrite anything that might be hanging around from elsewhere
     return 0;
 }
 
-STACK_OBJECT popMove(BOARD_STRUCT *boardStruct) {
+STACK_OBJECT popMove(BOARD_STRUCT *boardStruct)
+{
     MOVE ret = boardStruct->moveStack[--boardStruct->stackIndexMove];
     boardStruct->moveStack[boardStruct->stackIndexMove] = 0; // overwrite
     return ret;
 }
 
-int getDirectionSize() {
+int getDirectionSize()
+{
     return DIRECTION_SIZE;
 }
 
-
-DIRECTION getNorth() {
+DIRECTION getNorth()
+{
     return 0;
 }
 
-DIRECTION getNorthWest() {
+DIRECTION getNorthWest()
+{
     return 1;
 }
 
-DIRECTION getWest() {
+DIRECTION getWest()
+{
     return 2;
 }
 
-DIRECTION getSouthWest() {
+DIRECTION getSouthWest()
+{
     return 3;
 }
 
-DIRECTION getSouth() {
+DIRECTION getSouth()
+{
     return 4;
 }
 
-DIRECTION getSouthEast() {
+DIRECTION getSouthEast()
+{
     return 5;
 }
 
-DIRECTION getEast() {
+DIRECTION getEast()
+{
     return 6;
 }
 
-DIRECTION getNorthEast() {
+DIRECTION getNorthEast()
+{
     return 7;
 }
 
-
-DIRECTION_MASK getNorthMask() {
+DIRECTION_MASK getNorthMask()
+{
     return 0xffULL;
 }
 
-DIRECTION_MASK getNorthWestMask() {
+DIRECTION_MASK getNorthWestMask()
+{
     return 0xff00ULL;
 }
 
-DIRECTION_MASK getWestMask() {
+DIRECTION_MASK getWestMask()
+{
     return 0xff0000ULL;
 }
 
-DIRECTION_MASK getSouthWestMask() {
+DIRECTION_MASK getSouthWestMask()
+{
     return 0xff000000ULL;
 }
 
-DIRECTION_MASK getSouthMask() {
+DIRECTION_MASK getSouthMask()
+{
     return 0xff00000000ULL;
 }
 
-DIRECTION_MASK getSouthEastMask() {
+DIRECTION_MASK getSouthEastMask()
+{
     return 0xff0000000000ULL;
 }
 
-DIRECTION_MASK getEastMask() {
+DIRECTION_MASK getEastMask()
+{
     return 0xff000000000000ULL;
 }
 
-DIRECTION_MASK getNorthEastMask() {
+DIRECTION_MASK getNorthEastMask()
+{
     return 0xff00000000000000ULL;
 }
 
-int addToStackObject(STACK_OBJECT *stackObject, DIRECTION direction, int numberOfKills) {
-//    printf("      addToStackObject\n");
-//    printf(" (direction* DIRECTION_SIZE): %d\n", ((direction * DIRECTION_SIZE)));
-//    printf(" (shift: %ld\n", (((numberOfKills << (direction * DIRECTION_SIZE)))));
+int addToStackObject(STACK_OBJECT *stackObject, DIRECTION direction, int numberOfKills)
+{
+    //    printf("      addToStackObject\n");
+    //    printf(" (direction* DIRECTION_SIZE): %d\n", ((direction * DIRECTION_SIZE)));
+    //    printf(" (shift: %ld\n", (((numberOfKills << (direction * DIRECTION_SIZE)))));
 
-    STACK_OBJECT temp = (((unsigned long long int) numberOfKills)
-            << (unsigned long long int) (direction * DIRECTION_SIZE));
+    STACK_OBJECT temp = (((unsigned long long int)numberOfKills)
+                         << (unsigned long long int)(direction * DIRECTION_SIZE));
 
-//    printf(" (shift: %ld\n", temp);
+    //    printf(" (shift: %ld\n", temp);
 
     (*stackObject) |= temp; // todo , add AND  with mask ?
 
-//    printf("      addToStackObject over\n");
+    //    printf("      addToStackObject over\n");
     return 0;
 }
 
-int getNumberOfKillsFromDirection(STACK_OBJECT stackObject, DIRECTION direction, DIRECTION_MASK directionMask) {
-//    printf("      getNumberOfKillsFromDirection\n");
-//    printf(" SO: %d\n", (int) stackObject);
-//    printf(" mask: %llu\n", directionMask);
-//    printf(" mask& : %llu\n", (directionMask & stackObject));
-//    printf(" direction * DIRECTION_SIZE: %d\n", (int) (direction * DIRECTION_SIZE));
-//    printf(" answer : %llu\n", ((directionMask & stackObject) >> (direction * DIRECTION_SIZE)));
+int getNumberOfKillsFromDirection(STACK_OBJECT stackObject, DIRECTION direction, DIRECTION_MASK directionMask)
+{
+    //    printf("      getNumberOfKillsFromDirection\n");
+    //    printf(" SO: %d\n", (int) stackObject);
+    //    printf(" mask: %llu\n", directionMask);
+    //    printf(" mask& : %llu\n", (directionMask & stackObject));
+    //    printf(" direction * DIRECTION_SIZE: %d\n", (int) (direction * DIRECTION_SIZE));
+    //    printf(" answer : %llu\n", ((directionMask & stackObject) >> (direction * DIRECTION_SIZE)));
 
     return ((directionMask & stackObject) >> (direction * DIRECTION_SIZE));
 }
 
-int unmakeMove(BOARD_STRUCT *boardStruct) {
-//    printf("------------------- unmakeMovestart\n");
+int unmakeMove(BOARD_STRUCT *boardStruct)
+{
+    //    printf("------------------- unmakeMovestart\n");
     // 0 means no kills in that dir
     // index should point to first free entry
 
@@ -741,35 +775,51 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     STACK_OBJECT stackObject = popObject(boardStruct);
     MOVE stackMove = popMove(boardStruct);
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask()); i++) {
-//        printf("north SO: %llu: %d\n", stackObject,
-//               (getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask())));
-        if (board[stackMove - 8 * i] == EMPTY) { exit(1); }
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask()); i++)
+    {
+        //        printf("north SO: %llu: %d\n", stackObject,
+        //               (getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask())));
+        if (board[stackMove - 8 * i] == EMPTY)
+        {
+            exit(1);
+        }
         board[stackMove - 8 * i] = addToPlayer;
     }
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthWest(), getNorthWestMask()); i++) {
-        if (board[stackMove - 9 * i] == EMPTY) { exit(1); }
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthWest(), getNorthWestMask()); i++)
+    {
+        if (board[stackMove - 9 * i] == EMPTY)
+        {
+            exit(1);
+        }
         board[stackMove - 9 * i] = addToPlayer;
     }
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getWest(), getWestMask()); i++) {
-        if (board[stackMove - 1 * i] == EMPTY) { exit(1); }
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getWest(), getWestMask()); i++)
+    {
+        if (board[stackMove - 1 * i] == EMPTY)
+        {
+            exit(1);
+        }
         board[stackMove - 1 * i] = addToPlayer;
     }
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthWest(), getSouthWestMask()); i++) {
-        if (board[stackMove + 7 * i] == EMPTY) { exit(1); }
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthWest(), getSouthWestMask()); i++)
+    {
+        if (board[stackMove + 7 * i] == EMPTY)
+        {
+            exit(1);
+        }
         board[stackMove + 7 * i] = addToPlayer;
     }
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()); i++) {
-//        printf("south SO: %llu %d \n", stackObject,
-//               getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()));
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()); i++)
+    {
+        //        printf("south SO: %llu %d \n", stackObject,
+        //               getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()));
 
-
-
-        if (board[stackMove + 8 * i] == EMPTY) {
+        if (board[stackMove + 8 * i] == EMPTY)
+        {
             printBoardSide(boardStruct);
             exit(1);
         }
@@ -777,18 +827,30 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
         board[stackMove + 8 * i] = addToPlayer;
     }
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthEast(), getSouthEastMask()); i++) {
-        if (board[stackMove + 9 * i] == EMPTY) { exit(1); }
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthEast(), getSouthEastMask()); i++)
+    {
+        if (board[stackMove + 9 * i] == EMPTY)
+        {
+            exit(1);
+        }
         board[stackMove + 9 * i] = addToPlayer;
     }
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getEast(), getEastMask()); i++) {
-        if (board[stackMove + 1 * i] == EMPTY) { exit(1); }
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getEast(), getEastMask()); i++)
+    {
+        if (board[stackMove + 1 * i] == EMPTY)
+        {
+            exit(1);
+        }
         board[stackMove + 1 * i] = addToPlayer;
     }
 
-    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthEast(), getNorthEastMask()); i++) {
-        if (board[stackMove - 7 * i] == EMPTY) { exit(1); }
+    for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthEast(), getNorthEastMask()); i++)
+    {
+        if (board[stackMove - 7 * i] == EMPTY)
+        {
+            exit(1);
+        }
         board[stackMove - 7 * i] = addToPlayer;
     }
 
@@ -807,16 +869,16 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     board[stackMove] = EMPTY;
     switchPlayerStruct(boardStruct);
 
-
-//    printf("------------------- unmakeMove end\n");
+    //    printf("------------------- unmakeMove end\n");
     return 0;
 }
 
-
-int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER) {
+int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
+{
     BOARD board = boardStruct->board;
 
-    if (board[pos] != EMPTY) {
+    if (board[pos] != EMPTY)
+    {
         return 1;
     }
     pushMove(boardStruct, pos);
@@ -827,50 +889,63 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     int numberOfKills = 0;
 
     //Prüfung nach links
-    if (pos % 8 != 0 && pos % 8 != 1) {
-        if (board[pos - 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < 8; i++) {
-                if (board[pos - i] == TARGET_PLAYER) {
+    if (pos % 8 != 0 && pos % 8 != 1)
+    {
+        if (board[pos - 1] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 2; i < 8; i++)
+            {
+                if (board[pos - i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos - i] == EMPTY) {
+                if (board[pos - i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos - i] == ME) {
+                if (board[pos - i] == ME)
+                {
                     numberOfKills = 0;
 
-                    for (int j = 1; j < i; j++) {
+                    for (int j = 1; j < i; j++)
+                    {
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
-//
-//                    printf("--->numberOfKills: %d\n", numberOfKills);
+                    //
+                    //                    printf("--->numberOfKills: %d\n", numberOfKills);
 
                     addToStackObject(&stackObject, getWest(), numberOfKills);
                     break;
                 }
             }
         }
-
     }
 
     //Prüfung nach rechts
-    if (pos % 8 != 6 && pos % 8 != 7) {
-        if (board[pos + 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < 8; i++) {
-                if (board[pos + i] == TARGET_PLAYER) {
+    if (pos % 8 != 6 && pos % 8 != 7)
+    {
+        if (board[pos + 1] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 2; i < 8; i++)
+            {
+                if (board[pos + i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos + i] == EMPTY) {
+                if (board[pos + i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos + i] == ME) {
+                if (board[pos + i] == ME)
+                {
                     numberOfKills = 0;
-                    for (int j = 1; j < i; j++) {
+                    for (int j = 1; j < i; j++)
+                    {
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
@@ -879,24 +954,30 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 }
             }
         }
-
     }
 
     //Prüfung nach oben
-    if (pos / 8 != 0 && pos / 8 != 1) {
-        if (board[pos - 8] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 16; i < 57; i += 8) {
-                if (board[pos - i] == TARGET_PLAYER) {
+    if (pos / 8 != 0 && pos / 8 != 1)
+    {
+        if (board[pos - 8] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 16; i < 57; i += 8)
+            {
+                if (board[pos - i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos - i] == EMPTY) {
+                if (board[pos - i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos - i] == ME) {
+                if (board[pos - i] == ME)
+                {
                     numberOfKills = 0;
-                    for (int j = 8; j < i; j += 8) {
+                    for (int j = 8; j < i; j += 8)
+                    {
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
@@ -905,52 +986,64 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 }
             }
         }
-
     }
 
     //Prüfung nach unten
-    if (pos / 8 != 6 && pos / 8 != 7) {
-        if (board[pos + 8] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 16; i < 57; i += 8) {
-                if (board[pos + i] == TARGET_PLAYER) {
+    if (pos / 8 != 6 && pos / 8 != 7)
+    {
+        if (board[pos + 8] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 16; i < 57; i += 8)
+            {
+                if (board[pos + i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos + i] == EMPTY) {
+                if (board[pos + i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos + i] == ME) {
+                if (board[pos + i] == ME)
+                {
                     numberOfKills = 0;
-                    for (int j = 8; j < i; j += 8) {
+                    for (int j = 8; j < i; j += 8)
+                    {
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
 
-//                    printf("add to stack object: %d\n", numberOfKills);
+                    //                    printf("add to stack object: %d\n", numberOfKills);
                     addToStackObject(&stackObject, getSouth(), numberOfKills);
                     break;
                 }
             }
         }
-
     }
 
     //Prüfung nach rechts oben
-    if (pos / 8 != 0 && pos / 8 != 1 && pos % 8 != 6 && pos % 8 != 7) {
-        if (board[pos - 7] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 14; i < 50; i += 7) {
-                if (board[pos - i] == TARGET_PLAYER) {
+    if (pos / 8 != 0 && pos / 8 != 1 && pos % 8 != 6 && pos % 8 != 7)
+    {
+        if (board[pos - 7] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 14; i < 50; i += 7)
+            {
+                if (board[pos - i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos - i] == EMPTY) {
+                if (board[pos - i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos - i] == ME) {
+                if (board[pos - i] == ME)
+                {
                     numberOfKills = 0;
-                    for (int j = 7; j < i; j += 7) {
+                    for (int j = 7; j < i; j += 7)
+                    {
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
@@ -959,25 +1052,30 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 }
             }
         }
-
     }
 
-
     //Prüfung nach links oben
-    if (pos / 8 != 0 && pos / 8 != 1 && pos % 8 != 0 && pos % 8 != 1) {
-        if (board[pos - 9] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 18; i < 64; i += 9) {
-                if (board[pos - i] == TARGET_PLAYER) {
+    if (pos / 8 != 0 && pos / 8 != 1 && pos % 8 != 0 && pos % 8 != 1)
+    {
+        if (board[pos - 9] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 18; i < 64; i += 9)
+            {
+                if (board[pos - i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos - i] == EMPTY) {
+                if (board[pos - i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos - i] == ME) {
+                if (board[pos - i] == ME)
+                {
                     numberOfKills = 0;
-                    for (int j = 9; j < i; j += 9) {
+                    for (int j = 9; j < i; j += 9)
+                    {
                         numberOfKills++;
                         board[pos - i + j] = ME;
                     }
@@ -986,24 +1084,30 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 }
             }
         }
-
     }
 
     //Prüfung nach links unten
-    if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 0 && pos % 8 != 1) {
-        if (board[pos + 7] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 14; i < 50; i += 7) {
-                if (board[pos + i] == TARGET_PLAYER) {
+    if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 0 && pos % 8 != 1)
+    {
+        if (board[pos + 7] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 14; i < 50; i += 7)
+            {
+                if (board[pos + i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos + i] == EMPTY) {
+                if (board[pos + i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos + i] == ME) {
+                if (board[pos + i] == ME)
+                {
                     numberOfKills = 0;
-                    for (int j = 7; j < i; j += 7) {
+                    for (int j = 7; j < i; j += 7)
+                    {
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
@@ -1012,24 +1116,30 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 }
             }
         }
-
     }
 
     //Prüfung nach rechts unten
-    if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 6 && pos % 8 != 7) {
-        if (board[pos + 9] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 18; i < 64; i += 9) {
-                if (board[pos + i] == TARGET_PLAYER) {
+    if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 6 && pos % 8 != 7)
+    {
+        if (board[pos + 9] == TARGET_PLAYER)
+        { //TODO am rand
+            for (int i = 18; i < 64; i += 9)
+            {
+                if (board[pos + i] == TARGET_PLAYER)
+                {
                     continue;
                 }
 
-                if (board[pos + i] == EMPTY) {
+                if (board[pos + i] == EMPTY)
+                {
                     break;
                 }
 
-                if (board[pos + i] == ME) {
+                if (board[pos + i] == ME)
+                {
                     numberOfKills = 0;
-                    for (int j = 9; j < i; j += 9) {
+                    for (int j = 9; j < i; j += 9)
+                    {
                         numberOfKills++;
                         board[pos + i - j] = ME;
                     }
@@ -1039,10 +1149,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 }
             }
         }
-        total++;
     }
 
-//    printf("pushing %llu  to stack\n", stackObject);
+    //    printf("pushing %llu  to stack\n", stackObject);
     pushObject(boardStruct, stackObject);
 
     board[pos] = ME;
@@ -1050,7 +1159,37 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     return 0;
 }
 
-
-int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
+int makeMove(BOARD_STRUCT *boardStruct, int legalPosition)
+{
     return makeMoveSide(boardStruct, legalPosition, switchPlayer(boardStruct->sideToMove));
+}
+
+int getWinner(BOARD_STRUCT *boardStruct)
+{
+    BOARD board = boardStruct->board;
+    int anzahlBlack = 0;
+    int anzahlWhite = 0;
+     for(int i = 0;i <64;i++){
+        if(board[i] == getBlack()) anzahlBlack++;
+    }
+        for(int j = 0;j<64;j++){
+        if(board[j] == getWhite()) anzahlWhite++;
+    }
+    printf("AnzahlBlack: %d vs. AnzahlWhite: %d \n", anzahlBlack, anzahlWhite);
+
+    if (anzahlBlack > anzahlWhite)
+    {
+        printf("Winner is Side of Black.\n");
+        return getBlack();
+    }
+    else if (anzahlBlack < anzahlWhite++)
+    {
+        printf("Winner is Side of White.\n");
+        return getWhite();
+    }
+    else
+    {
+        printf("No Winner. Because the Nummber of all Side are same.\n");
+        return 0;
+    }
 }

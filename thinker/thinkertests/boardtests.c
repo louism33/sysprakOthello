@@ -1832,6 +1832,35 @@ int testLinks3() {
     return 0; // success
 }
 
+int testWinner() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[20] = getWhite();
+    board[19] = board[18] = board[17] = getBlack();
+
+    SIDE_TO_MOVE player = getWhite();
+    //printBoardLouisSide(b, player);
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+    int correctNumberOfMoves = 1;
+    
+    if (myNumberOfMoves != correctNumberOfMoves) {
+        printBoardLouisSide(b, player);
+        fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
+                correctNumberOfMoves, myNumberOfMoves);
+        free(b);
+        free(board);
+        exit(1);
+    }
+    getWinner(b);
+    // printf("test successful\n\n");
+    free(b);
+    free(board);
+    return 0; // success
+}
+
 int basicTests() {
     //no legal moves
     testNoLegalMoves();
@@ -1919,6 +1948,8 @@ int basicTests() {
     testLinks2();
     testLinks3();
     //Daoben gibt es 63 Test! und laufen alles gut.
+
+    testWinner();
 
     return 0; // success
 }

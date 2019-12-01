@@ -13,6 +13,7 @@ typedef unsigned long long int DIRECTION_MASK;
 typedef int MOVE;
 typedef int SIDE_TO_MOVE;
 
+
 typedef int64_t STACK_OBJECT;
 typedef STACK_OBJECT *STACK;
 typedef MOVE *MOVE_STACK;
@@ -118,6 +119,8 @@ DIRECTION getSouthEast();
 DIRECTION getEast();
 
 DIRECTION getNorthEast();
+
+
 
 int getWinner(BOARD_STRUCT *boardStruct);
 int isGameOver(BOARD_STRUCT *boardStruct);

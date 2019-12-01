@@ -11,6 +11,8 @@
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
 #define WHITE 1
+#define GAMEOVER 0
+#define GAMENOTOVER 1
 
 #define EMPTY 0
 // black makes first move
@@ -27,7 +29,15 @@
 #define STARTING_BLACK_POSITION_2 35
 
 #define LAST_MOVE (-1)
+#define DRAW (0)
 
+MOVE getGameOver(){
+    return GAMEOVER;
+}
+
+MOVE getGameNotOver(){
+    return GAMENOTOVER;
+}
 MOVE getLastMove()
 {
     return LAST_MOVE;
@@ -1173,55 +1183,80 @@ int getWinner(BOARD_STRUCT *boardStruct)
     {
         if (board[i] == getBlack())
             anzahlBlack++;
-    }
-    for (int j = 0; j < 64; j++)
-    {
-        if (board[j] == getWhite())
+        else if (board[i] == getWhite())
+        {
             anzahlWhite++;
+            ;
+        }
     }
     printf("AnzahlBlack: %d vs. AnzahlWhite: %d \n", anzahlBlack, anzahlWhite);
 
     if (anzahlBlack > anzahlWhite)
     {
-        printf("Winner is Side of Black.\n\n\n");
+        printf("Winner is Side of Black.\n");
         return getBlack();
     }
     else if (anzahlBlack < anzahlWhite++)
     {
-        printf("Winner is Side of White.\n\n\n");
+        printf("Winner is Side of White.\n");
         return getWhite();
     }
     else
     {
-        printf("No Winner. Because the Nummber of all Side are same.\n\n\n");
-        return 0;
+        printf("No Winner. Because the Nummber of all Side are same.\n");
+        return DRAW;
     }
 }
 
 int isGameOver(BOARD_STRUCT *boardStruct)
 {
+    int anzahlBlack = 0;
+    int anzahlWhite = 0;
     BOARD board = boardStruct->board;
+
+    //Wenn es nur WHITE oder nur BLACK in Board gibt.
+    for (int i = 0; i < 64; i++)
+    {
+        if (board[i] == getBlack())
+        {
+            anzahlBlack++;
+            continue;
+        }
+        else if (board[i] == getWhite())
+        {
+            anzahlWhite++;
+            continue;
+        }
+    }
+    if (anzahlBlack == 0 || anzahlWhite == 0)
+    {
+        printf("Just one Side in Board.\n");
+        return GAMEOVER;
+    }
+
+    // Wenn es genau 64 Schach in Board gibt.
     for (int i = 0; i < 64; i++)
     {
         if (i == 63)
         {
-            printf("\n\n\nGame Over! The board is full.\n");
-            return 1;
+            printf("Game Over! The board is full.\n");
+            return GAMEOVER; //true
         }
         else if (board[i] == getBlack() || board[i] == getWhite())
         {
             continue;
         }
-        else if (getTotalNumberOfLegalMoves(board, BLACK) == 0 && getTotalNumberOfLegalMoves(board, WHITE) == 0)
-        {
-            printf("\n\n\nGame Over! Neither Black nor White can move.\n");
-            return 1;
-        }
         else
         {
-            printf("\n\n\nThe Game is not over.\n");
-            return 0;
+            break;
         }
     }
-    return 0;
+
+    // Wenn es kleiner als 64 Schach in Board gibt.
+    if (getTotalNumberOfLegalMoves(board, BLACK)==0 && getTotalNumberOfLegalMoves(board, WHITE)==0)
+    {
+        printf("Game Over! Neither Black nor White can move.\n");
+        return GAMEOVER; //true
+    }
+    return GAMENOTOVER;
 }

@@ -26,7 +26,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
         return getTotalNumberOfLegalMoves(board, switchPlayer(boardStruct->sideToMove));
     }
 
-    MOVES moves = malloc(64 * sizeof(MOVE));
+    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     int totalMoves = countMoves(moves);
@@ -51,7 +51,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
 
             BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
             initialiseBoardStructToZero(b);
-            copyBoardStruct(b, boardStruct, 64);
+            copyBoardStruct(b, boardStruct, getStandardBoardSize());
 
             SIDE_TO_MOVE s1 = boardStruct->sideToMove;
 
@@ -98,7 +98,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
                 printf("\n\n\n\n\n");
             }
 
-            if (areBoardStructsDifferent(b, boardStruct, 64)) {
+            if (areBoardStructsDifferent(b, boardStruct, getStandardBoardSize())) {
                 printf("My struct:\n");
                 printBoardSide(boardStruct);
                 printf("correct:\n");
@@ -124,7 +124,7 @@ int perft(BOARD_STRUCT *boardStruct, int depth, int passed) {
 int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     BOARD board = boardStruct->board;
 
-    MOVES moves = malloc(64 * sizeof(MOVE));
+    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     int totalMoves = countMoves(moves);

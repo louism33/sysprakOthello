@@ -208,7 +208,7 @@ int testRemoveDuplicatesLostMove() {
 // tests to make sure our method does not delete moves
 int testRemoveDuplicatesLostMove2() {
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
-    MOVES movesTest = malloc(64 * sizeof(int));
+    MOVES movesTest = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
 
     movesTest[0] = 0;
@@ -256,8 +256,8 @@ int testRemoveDuplicatesLostMove2() {
 
 // tests to make sure our method does not delete moves
 int testRemoveDuplicatesLostMove3() {
-    MOVES moves = malloc(64 * sizeof(int));
-    MOVES movesTest = malloc(64 * sizeof(int));
+    MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
+    MOVES movesTest = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
 
     movesTest[0] = 0;

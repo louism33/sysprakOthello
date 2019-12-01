@@ -34,7 +34,7 @@ int testEasyLeft() {
     boardTest[20] = getWhite();
 
     // (boardTest);
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -74,7 +74,7 @@ int testEasyRightBottom() {
     boardTest[18] = getWhite();
 
     // (boardTest);
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -115,7 +115,7 @@ int testEasyLeftBottom() {
     boardTest[42] = getWhite();
 
     // (boardTest);
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -156,7 +156,7 @@ int testEasyTopLeft() {
     boardTest[45] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -196,7 +196,7 @@ int testEasyTopRight() {
     boardTest[35] = getWhite();
     boardTest[42] = getWhite();
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -236,7 +236,7 @@ int testEasyRight() {
     boardTest[18] = getWhite();
     boardTest[19] = getWhite();
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -277,7 +277,7 @@ int testEasyTop() {
     boardTest[45] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -318,7 +318,7 @@ int testEasyBottom() {
     boardTest[29] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -363,7 +363,7 @@ int testEasyRightLeft() {
     boardTest[21] = getWhite();
     boardTest[22] = getWhite();
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -411,7 +411,7 @@ int testEasyRightLeftTop() {
     boardTest[12] = getBlack();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -455,7 +455,7 @@ int testEasy2Left() {
     boardTest[20] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -498,7 +498,7 @@ int testEasy2Right() {
     boardTest[21] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -544,7 +544,7 @@ int testEasy3() {
     boardTest[22] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -590,7 +590,7 @@ int testEasy3Top() {
     boardTest[53] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -638,7 +638,7 @@ int testEasy4() {
     boardTest[23] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -689,7 +689,7 @@ int testEasyMAX() {
     boardTest[39] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -740,7 +740,7 @@ int testEasyMAXTop() {
     boardTest[61] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -792,7 +792,7 @@ int testEasyMAXRight() {
     boardTest[39] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -844,7 +844,7 @@ int testEasyMAXBottom() {
     boardTest[5] = getWhite();
 
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -901,7 +901,7 @@ int crazyTest() {
     boardTest[28] = getWhite();
 
     (boardTest);
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
@@ -939,7 +939,7 @@ int startingBoardTest() {
 
     boardTest[20] = getWhite();
     boardTest[28] = getWhite();
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
             printBoardLouisSide(b, player);
             printBoardLouisSide(b2, player);

@@ -21,12 +21,13 @@ int testStartingBoardBigger() {
     board[41] = board[54] = getWhite();
     board[42] = board[53] = getBlack();
 
-    printBoardLouis(b);
+//    printBoardLouis(b);
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
+
     int correctNumberOfMoves = 4;
 
     if (myNumberOfMoves != correctNumberOfMoves) {
@@ -43,13 +44,12 @@ int testStartingBoardBigger() {
         exit(1);
     }
 
-    // printf("test successful\n\n");
+    printf("test successful\n\n");
     free(b);
     return 0; // success
 }
 
 
-
-int testSuiteBigBoard(){
+int testSuiteBigBoard() {
     testStartingBoardBigger();
 }

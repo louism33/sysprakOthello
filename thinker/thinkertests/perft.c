@@ -211,7 +211,7 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
+    if (0) {
         int received = perft(b, 2, 0);
         int correct = 12;
         if (received != correct) {
@@ -231,7 +231,7 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
+    if (0) {
         int received = perft(b, 3, 0);
         int correct = 56;
         if (received != correct) {
@@ -251,7 +251,7 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
+    if (0) {
         int received = perft(b, 4, 0);
         int correct = 244;
         if (received != correct) {
@@ -271,7 +271,7 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
+    if (0) {
         int received = perft(b, 5, 0);
         int correct = 1396;
         if (received != correct) {
@@ -291,7 +291,7 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
+    if (0) {
         int received = perft(b, 6, 0);
         int correct = 8200;
         if (received != correct) {
@@ -311,7 +311,7 @@ int testBasicBoard() {
         }
     }
 
-    if (1) {
+    if (0) {
         int received = perft(b, 7, 0);
         int correct = 55092;
         if (received != correct) {
@@ -332,7 +332,7 @@ int testBasicBoard() {
     }
 
 
-    if (1) {
+    if (0) {
         int received = perft(b, 8, 0);
         int correct = 390216;
         if (received != correct) {

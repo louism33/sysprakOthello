@@ -114,6 +114,7 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
             printf("B ");
         } else {
             printf(". ");
+//            printf("%d ", board[i]);
         }
     }
     printf("\n");

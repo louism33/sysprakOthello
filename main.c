@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
         fail += perftSuite();
 
         printf("Running big board tests Suite\n");
-//        fail += testSuiteBigBoard();
+        fail += testSuiteBigBoard();
 
         if (fail) {// fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");

@@ -127,6 +127,12 @@ void resetBoardToZero(BOARD board) {
     }
 }
 
+void resetBoardToZeroCustom(BOARD board, int boardSize) {
+    for (int i = 0; i < boardSize; i++) {
+        board[i] = 0;
+    }
+}
+
 void freeBoardStruct(BOARD_STRUCT *boardStruct) {
     //    free(boardStruct->stack->stackArray);
     //    free(boardStruct->stack);
@@ -157,7 +163,7 @@ void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct) {
 void initialiseBoardStructToZeroCustom(BOARD_STRUCT *boardStruct, int rows, int columns) {
     setBoardToCustomSize(rows, columns);
     initialiseBoardStructMemory(boardStruct, boardSize);
-    resetBoardToZero(boardStruct->board);
+    resetBoardToZeroCustom(boardStruct->board, boardSize);
 }
 
 void printBoardSide(BOARD_STRUCT *boardStruct) {
@@ -244,12 +250,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     int index = 0;
     int MY_PLAYER = switchPlayer(TARGET_PLAYER);
 
-//    int row = (getRowSize() - position / getRowSize());
     int row = getRow(position);
-
-
-//    printf("%d %d %d %d\n", row, row2, getRowSize(),getColumnSize() );
-
     int col = getColumn(position);
 
     if (board[position] != MY_PLAYER) {
@@ -270,6 +271,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     int smallDiagonal = getColumnSize() - 1;
     int bigDiagonal = getColumnSize() + 1;
 
+//    printf("POS is %d\n", position);
 
     //for-Schleifer um nach rechts zu prüfen
     if (col != preFinalCol && col != finalCol) {
@@ -293,7 +295,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
             }
         }
     }
-
+//    printf("a\n");
     // for-Schleifer um nach links zu prüfen
     if (col != firstCol && col != secondCol) {
         if (board[position - 1] == TARGET_PLAYER) {
@@ -317,12 +319,14 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
             }
         }
     }
-
+//    printf("b %d\n", getBoardSize());
     // for-Schleifer um nach unten zu prüfen
     if (row != preFinalRow && row != finalRow) {
         if (board[position + getRowSize()] == TARGET_PLAYER) {
             int i = position + 2 * getRowSize();
+//            printf("->i: %d\n", i);
             while (1) {
+//                printf("i: %d , boardi %d\n", i, board[i]);
                 if (i >= getBoardSize()) {
                     break;
                 }
@@ -337,9 +341,13 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                 if (board[i] == MY_PLAYER) {
                     break;
                 }
+//                board[i] = 1;
+//                printBoard(board);
+//                exit(1); // todo todo
             }
         }
     }
+//    printf("ac\n");
     // for-Schleifer um nach oben zu prüfen
     if (row != firstRow && row != secondRow) {
         if (board[position - getColumnSize()] == TARGET_PLAYER) {
@@ -497,10 +505,10 @@ int *removeDuplicates(MOVES speicher, int index) {
 //todo board can be more than 8x8 !!!!
 
 MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
-    MOVES speicher = malloc(64 * sizeof(int)); // todo can we remove
+    MOVES speicher = malloc(getBoardSize() * sizeof(int)); // todo can we remove
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
-    for (int pos = 0; pos < 64; pos++) {
+    for (int pos = 0; pos < getBoardSize(); pos++) {
         if (board[pos] == me) {
             MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
             int j = 0;
@@ -518,7 +526,7 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES a
 }
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES allMoves = malloc(64 * sizeof(int));
+    MOVES allMoves = malloc(getBoardSize() * sizeof(int));
     MOVES finalspeicher = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 

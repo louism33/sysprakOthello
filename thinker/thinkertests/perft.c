@@ -12,10 +12,6 @@
 #include "../../connector/boardmessageparser.h"
 
 
-int perft(BOARD_STRUCT *boardStruct, int depth, int passed) {
-    return perftFunction(boardStruct, depth, passed, 0);
-}
-
 int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
     int ans = 0;
 
@@ -41,7 +37,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
         }
 
         switchPlayerStruct(boardStruct);
-        ans += perft(boardStruct, depth - 1, 1);
+        ans += perftFunction(boardStruct, depth - 1, 1, debug);
         switchPlayerStruct(boardStruct);
     } else {
         MOVE move;
@@ -66,7 +62,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
                 printf("   index move %d\n", boardStruct->stackIndexMove);
                 printf("   ->  stack move-1 %d\n", boardStruct->moveStack[boardStruct->stackIndexMove - 1]);
                 printf("   index object %d\n", boardStruct->stackIndexObject);
-                printf("   -> stack object-1 %d\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
+                printf("   -> stack object-1 %lu\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
             }
 
             makeMove(boardStruct, move);
@@ -82,7 +78,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
                 exit(1);
             }
 
-            ans += perft(boardStruct, depth - 1, 0);
+            ans += perftFunction(boardStruct, depth - 1, 0, debug);
 
             if (debug) {
                 printf("after perft with depth %d\n", (depth - 1));
@@ -91,7 +87,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
                 printf("   index move %d\n", boardStruct->stackIndexMove);
                 printf("   ->  stack move-1 %d\n", boardStruct->moveStack[boardStruct->stackIndexMove - 1]);
                 printf("   index object %d\n", boardStruct->stackIndexObject);
-                printf("   -> stack object-1 %d\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
+                printf("   -> stack object-1 %lu\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
             }
 
             unmakeMove(boardStruct);
@@ -118,6 +114,10 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
     free(moves);
 
     return ans;
+}
+
+int perft(BOARD_STRUCT *boardStruct, int depth, int passed) {
+    return perftFunction(boardStruct, depth, passed, 0);
 }
 
 

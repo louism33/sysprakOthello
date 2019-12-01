@@ -119,6 +119,24 @@ DIRECTION getEast();
 
 DIRECTION getNorthEast();
 
+
+int getBoardSize();
+
+void setBoardSize(int rows, int columns);
+
+int getRowSize();
+
+int getColumnSize();
+
+void setRowSize(int rows);
+
+void setColumnSize(int columns);
+
+int getStandardBoardSize();
+
+void setBoardToStandardSize();
+
+
 #endif //SYSPRAKOTHELLO_BOARD_H
 
 

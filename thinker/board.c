@@ -29,6 +29,51 @@
 
 #define LAST_MOVE (-1)
 
+#define STANDARD_COLUMN_NUMBER (8)
+#define STANDARD_ROW_NUMBER (8)
+
+static int boardSize = 0;
+static int columnSize = 0;
+static int rowSize = 0;
+
+int getBoardSize(){
+    return boardSize;
+}
+
+void setBoardSize(int rows, int columns){
+    boardSize = rows * columns;
+}
+
+int getRowSize(){
+    return rowSize;
+}
+
+int getColumnSize(){
+    return columnSize;
+}
+
+void setRowSize(int rows){
+    rowSize = rows;
+}
+
+void setColumnSize(int columns){
+    columnSize = columns;
+}
+
+int getStandardBoardSize(){
+    return STANDARD_COLUMN_NUMBER*STANDARD_ROW_NUMBER;
+}
+
+void setBoardToStandardSize(){
+    setColumnSize(STANDARD_COLUMN_NUMBER);
+    setRowSize(STANDARD_ROW_NUMBER);
+    setBoardSize(rowSize, columnSize);
+}
+
+
+
+
+
 MOVE getLastMove() {
     return LAST_MOVE;
 }

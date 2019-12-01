@@ -31,6 +31,12 @@ int testStartingBoardBigger() {
 
     if (myNumberOfMoves != correctNumberOfMoves) {
         printBoardLouisSide(b, player);
+
+        MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
+        getLegalMovesAllPositions(board, switchPlayer(b->sideToMove), moves);
+        printf("moves:\n");
+        printMoves(moves);
+
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
         free(b);

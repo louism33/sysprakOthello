@@ -299,7 +299,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[position - 1] == TARGET_PLAYER) {
             int i = position - 2;
             while (1) {
-                if (getColumn(i) == 7) {
+                if (getColumn(i) == finalCol) {
                     break;
                 }
 
@@ -323,11 +323,11 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
         if (board[position + 8] == TARGET_PLAYER) {
             int i = position + 16;
             while (1) {
-                if (i >= 64) {
+                if (i >= getBoardSize()) {
                     break;
                 }
                 if (board[i] == TARGET_PLAYER) {
-                    i += 8;
+                    i += getRowSize();
                     continue;
                 }
                 if (board[i] == EMPTY) {
@@ -342,8 +342,8 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
     // for-Schleifer um nach oben zu prüfen
     if (row != firstRow && row != secondRow) {
-        if (board[position - 8] == TARGET_PLAYER) {
-            int i = position - 16;
+        if (board[position - getRowSize()] == TARGET_PLAYER) {
+            int i = position - 2*getRowSize();
             while (1) {
                 if (i < 0) //row
                 {

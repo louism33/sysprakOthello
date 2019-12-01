@@ -36,49 +36,47 @@ static int boardSize = 0;
 static int columnSize = 0;
 static int rowSize = 0;
 
-int getBoardSize(){
+int getBoardSize() {
     return boardSize;
 }
 
-void setBoardSize(int rows, int columns){
+void setBoardSize(int rows, int columns) {
     boardSize = rows * columns;
 }
 
-int getRowSize(){
+int getRowSize() {
     return rowSize;
 }
 
-int getColumnSize(){
+int getColumnSize() {
     return columnSize;
 }
 
-void setRowSize(int rows){
+void setRowSize(int rows) {
     rowSize = rows;
 }
 
-void setColumnSize(int columns){
+void setColumnSize(int columns) {
     columnSize = columns;
 }
 
-int getStandardBoardSize(){
-    return STANDARD_COLUMN_NUMBER*STANDARD_ROW_NUMBER;
+int getStandardBoardSize() {
+    return STANDARD_COLUMN_NUMBER * STANDARD_ROW_NUMBER;
 }
 
-int setBoardToStandardSize(){
+int setBoardToStandardSize() {
     setRowSize(STANDARD_ROW_NUMBER);
     setColumnSize(STANDARD_COLUMN_NUMBER);
     setBoardSize(rowSize, columnSize);
     return boardSize;
 }
 
-int setBoardToCustomSize(int rows, int columns){
+int setBoardToCustomSize(int rows, int columns) {
     setRowSize(rows);
     setColumnSize(columns);
     setBoardSize(rowSize, columnSize);
     return boardSize;
 }
-
-
 
 
 MOVE getLastMove() {
@@ -136,10 +134,10 @@ void freeBoardStruct(BOARD_STRUCT *boardStruct) {
 }
 
 void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct, int boardSize) {
-    boardStruct->board = malloc(64 * sizeof(int)); //todo careful of magic numbers!
+    boardStruct->board = malloc(boardSize * sizeof(int)); //todo careful of magic numbers!
     boardStruct->sideToMove = STARTING_PLAYER;
-    boardStruct->stack = malloc(64 * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
-    boardStruct->moveStack = malloc(64 * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
+    boardStruct->stack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
+    boardStruct->moveStack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
     boardStruct->stackIndexMove = 0;
     boardStruct->stackIndexObject = 0;
 }
@@ -175,20 +173,15 @@ void printBoard(BOARD board) {
     printf("    A B C D E F G H \n");
     printf("  +-----------------+ \n");
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < getColumnSize(); i++) {
         printf("%d | ", i + 1);
-        for (int j = 0; j < 8; j++) {
-            int p = board[8 * i + j];
+        for (int j = 0; j < getRowSize(); j++) {
+            int p = board[getRowSize() * i + j];
             if (p == BLACK) {
                 printf("B ");
             } else if (p == WHITE) {
                 printf("W ");
-            }
-                //            if (p)
-                //            {
-                //                printf("%d ", p);
-                //            }
-            else {
+            } else {
                 printf("  ");
             }
         }
@@ -203,8 +196,8 @@ void printBoard(BOARD board) {
 }
 
 char *getPrettyMove(int move, char *antwort) {
-    antwort[0] = 'A' + (move % 8);     //spalte
-    antwort[1] = '0' + (8 - move / 8); //zeile
+    antwort[0] = 'A' + (move % getColumnSize());     //spalte
+    antwort[1] = '0' + (getRowSize() - move / getRowSize()); //zeile
     antwort[2] = '\0';
     return antwort;
 }
@@ -224,7 +217,7 @@ void printMoves(MOVES moves) {
 }
 
 void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
-    if (move < 0 || move > 63) {
+    if (move < 0 || move > getBoardSize()) {
         printf("Die Koordinaten liegen außerhalb des gültigen Bereichs. Bitte geben Sie sie erneut ein.\n");
         exit(1);
     } else if (board[move] != 0) {
@@ -476,8 +469,7 @@ int *removeDuplicates(MOVES speicher, int index) {
 //todo board can be more than 8x8 !!!!
 
 MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
-    //MOVES allMoves= malloc(64 * sizeof(int)); // todo, clean up memory
-    MOVES speicher = malloc(64 * sizeof(int));
+    MOVES speicher = malloc(64 * sizeof(int)); // todo can we remove
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < 64; pos++) {
@@ -683,7 +675,6 @@ int getNumberOfKillsFromDirection(STACK_OBJECT stackObject, DIRECTION direction,
 }
 
 int unmakeMove(BOARD_STRUCT *boardStruct) {
-//    printf("------------------- unmakeMovestart\n");
     // 0 means no kills in that dir
     // index should point to first free entry
 
@@ -697,73 +688,40 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     MOVE stackMove = popMove(boardStruct);
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask()); i++) {
-//        printf("north SO: %llu: %d\n", stackObject,
-//               (getNumberOfKillsFromDirection(stackObject, getNorth(), getNorthMask())));
-        if (board[stackMove - 8 * i] == EMPTY) { exit(1); }
         board[stackMove - 8 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthWest(), getNorthWestMask()); i++) {
-        if (board[stackMove - 9 * i] == EMPTY) { exit(1); }
         board[stackMove - 9 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getWest(), getWestMask()); i++) {
-        if (board[stackMove - 1 * i] == EMPTY) { exit(1); }
         board[stackMove - 1 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthWest(), getSouthWestMask()); i++) {
-        if (board[stackMove + 7 * i] == EMPTY) { exit(1); }
         board[stackMove + 7 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()); i++) {
-//        printf("south SO: %llu %d \n", stackObject,
-//               getNumberOfKillsFromDirection(stackObject, getSouth(), getSouthMask()));
-
-
-
-        if (board[stackMove + 8 * i] == EMPTY) {
-            printBoardSide(boardStruct);
-            exit(1);
-        }
-
         board[stackMove + 8 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getSouthEast(), getSouthEastMask()); i++) {
-        if (board[stackMove + 9 * i] == EMPTY) { exit(1); }
         board[stackMove + 9 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getEast(), getEastMask()); i++) {
-        if (board[stackMove + 1 * i] == EMPTY) { exit(1); }
         board[stackMove + 1 * i] = addToPlayer;
     }
 
     for (int i = 1; i <= getNumberOfKillsFromDirection(stackObject, getNorthEast(), getNorthEastMask()); i++) {
-        if (board[stackMove - 7 * i] == EMPTY) { exit(1); }
         board[stackMove - 7 * i] = addToPlayer;
     }
-
-    // 64 bit
-    /*
-     00000000
-     00000000
-     00000000
-     00000000
-     00000000
-     00000000
-     00000000
-     00000000
-     */
 
     board[stackMove] = EMPTY;
     switchPlayerStruct(boardStruct);
 
-
-//    printf("------------------- unmakeMove end\n");
     return 0;
 }
 

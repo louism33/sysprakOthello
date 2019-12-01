@@ -104,11 +104,10 @@ void printBoardLouis(BOARD_STRUCT  *board) {
 void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
     int *board = b->board;
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getBoardSize(); i++) {
         if (i % 8 == 0) {
             printf("\n");
         }
-//        printf("%d ", board[i]);
         if (board[i] == getWhite()) {
             printf("W ");
         } else if (board[i] == getBlack()) {

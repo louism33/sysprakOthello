@@ -267,8 +267,8 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     int preFinalCol = getColumnSize()-2;
     int finalCol = getColumnSize()-1;
 
-    int smallDiagonal = getRowSize()-1;
-    int bigDiagonal = getRowSize()+1;
+    int smallDiagonal = getColumnSize()-1;
+    int bigDiagonal = getColumnSize()+1;
 
 
     //for-Schleifer um nach rechts zu prüfen
@@ -320,8 +320,8 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 
     // for-Schleifer um nach unten zu prüfen
     if (row != preFinalRow && row != finalRow) {
-        if (board[position + 8] == TARGET_PLAYER) {
-            int i = position + 16;
+        if (board[position + getRowSize()] == TARGET_PLAYER) {
+            int i = position + 2*getRowSize();
             while (1) {
                 if (i >= getBoardSize()) {
                     break;
@@ -342,15 +342,15 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
     // for-Schleifer um nach oben zu prüfen
     if (row != firstRow && row != secondRow) {
-        if (board[position - getRowSize()] == TARGET_PLAYER) {
-            int i = position - 2*getRowSize();
+        if (board[position - getColumnSize()] == TARGET_PLAYER) {
+            int i = position - 2*getColumnSize();
             while (1) {
                 if (i < 0) //row
                 {
                     break;
                 }
                 if (board[i] == TARGET_PLAYER) {
-                    i -= 8;
+                    i -= getColumnSize();
                     continue;
                 }
                 if (board[i] == EMPTY) {
@@ -366,8 +366,8 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 
     // for-Schleifer um nach rechts oben zu prüfen
     if (col != preFinalCol && col != finalCol && row != firstRow && row != secondRow) {
-        if (board[position - 7] == TARGET_PLAYER) {
-            int i = position - 14;
+        if (board[position - smallDiagonal] == TARGET_PLAYER) {
+            int i = position - 2*smallDiagonal;
             while (1) {
                 if (getColumn(i) == 0) //col
                 {

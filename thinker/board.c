@@ -64,12 +64,19 @@ int getStandardBoardSize(){
     return STANDARD_COLUMN_NUMBER*STANDARD_ROW_NUMBER;
 }
 
-void setBoardToStandardSize(){
-    setColumnSize(STANDARD_COLUMN_NUMBER);
+int setBoardToStandardSize(){
     setRowSize(STANDARD_ROW_NUMBER);
+    setColumnSize(STANDARD_COLUMN_NUMBER);
     setBoardSize(rowSize, columnSize);
+    return boardSize;
 }
 
+int setBoardToCustomSize(int rows, int columns){
+    setRowSize(rows);
+    setColumnSize(columns);
+    setBoardSize(rowSize, columnSize);
+    return boardSize;
+}
 
 
 
@@ -106,7 +113,7 @@ SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct) {
 }
 
 void resetBoardToStarter(BOARD board) {
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         board[i] = 0;
     }
     // todo, if the coordinates are not 8x8, this would be wrong, so make sure not to call this in gameloop
@@ -117,7 +124,7 @@ void resetBoardToStarter(BOARD board) {
 }
 
 void resetBoardToZero(BOARD board) {
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
         board[i] = 0;
     }
 }
@@ -128,7 +135,7 @@ void freeBoardStruct(BOARD_STRUCT *boardStruct) {
     free(boardStruct->board);
 }
 
-void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct) {
+void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct, int boardSize) {
     boardStruct->board = malloc(64 * sizeof(int)); //todo careful of magic numbers!
     boardStruct->sideToMove = STARTING_PLAYER;
     boardStruct->stack = malloc(64 * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
@@ -138,13 +145,20 @@ void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct) {
 }
 
 void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct) {
-    initialiseBoardStructMemory(boardStruct);
+    initialiseBoardStructMemory(boardStruct, getStandardBoardSize());
+    setBoardToStandardSize();
     resetBoardToStarter(boardStruct->board);
 }
 
-
 void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct) {
-    initialiseBoardStructMemory(boardStruct);
+    setBoardToStandardSize();
+    initialiseBoardStructMemory(boardStruct, boardSize);
+    resetBoardToZero(boardStruct->board);
+}
+
+void initialiseBoardStructToZeroCustom(BOARD_STRUCT *boardStruct, int rows, int columns) {
+    setBoardToCustomSize(rows, columns);
+    initialiseBoardStructMemory(boardStruct, boardSize);
     resetBoardToZero(boardStruct->board);
 }
 

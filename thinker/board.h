@@ -134,8 +134,9 @@ void setColumnSize(int columns);
 
 int getStandardBoardSize();
 
-void setBoardToStandardSize();
+int setBoardToStandardSize();
 
+int setBoardToCustomSize(int rows, int columns);
 
 #endif //SYSPRAKOTHELLO_BOARD_H
 

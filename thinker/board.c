@@ -234,9 +234,9 @@ void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
 
 int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER) {
     int index = 0;
-    int MY_PLAYER = 3 - TARGET_PLAYER;
-    int zeile = (8 - position / 8);
-    int spalte = position % 8;
+    int MY_PLAYER = switchPlayer(TARGET_PLAYER);
+    int zeile = (getRowSize() - position / getRowSize());
+    int spalte = position % getColumnSize();
 
     if (board[position] != MY_PLAYER) {
         printf("i don't have a player on this square\n");
@@ -734,13 +734,15 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
     pushMove(boardStruct, pos);
 
-    SIDE_TO_MOVE ME = 3 - TARGET_PLAYER;
+    SIDE_TO_MOVE ME = switchPlayer(TARGET_PLAYER);
 
     STACK_OBJECT stackObject = 0;
     int numberOfKills = 0;
+    int column = pos % 8;
+    int row = pos / 8;
 
     //Prüfung nach links
-    if (pos % 8 != 0 && pos % 8 != 1) {
+    if (column != 0 && column != 1) {
         if (board[pos - 1] == TARGET_PLAYER) { //TODO am rand
             for (int i = 2; i < 8; i++) {
                 if (board[pos - i] == TARGET_PLAYER) {
@@ -770,7 +772,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach rechts
-    if (pos % 8 != 6 && pos % 8 != 7) {
+    if (column != 6 && column != 7) {
         if (board[pos + 1] == TARGET_PLAYER) { //TODO am rand
             for (int i = 2; i < 8; i++) {
                 if (board[pos + i] == TARGET_PLAYER) {
@@ -796,7 +798,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach oben
-    if (pos / 8 != 0 && pos / 8 != 1) {
+    if (row != 0 && row != 1) {
         if (board[pos - 8] == TARGET_PLAYER) { //TODO am rand
             for (int i = 16; i < 57; i += 8) {
                 if (board[pos - i] == TARGET_PLAYER) {
@@ -822,7 +824,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach unten
-    if (pos / 8 != 6 && pos / 8 != 7) {
+    if (row != 6 && row != 7) {
         if (board[pos + 8] == TARGET_PLAYER) { //TODO am rand
             for (int i = 16; i < 57; i += 8) {
                 if (board[pos + i] == TARGET_PLAYER) {
@@ -850,7 +852,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach rechts oben
-    if (pos / 8 != 0 && pos / 8 != 1 && pos % 8 != 6 && pos % 8 != 7) {
+    if (row != 0 && row != 1 && column != 6 && column != 7) {
         if (board[pos - 7] == TARGET_PLAYER) { //TODO am rand
             for (int i = 14; i < 50; i += 7) {
                 if (board[pos - i] == TARGET_PLAYER) {
@@ -877,7 +879,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
 
     //Prüfung nach links oben
-    if (pos / 8 != 0 && pos / 8 != 1 && pos % 8 != 0 && pos % 8 != 1) {
+    if (row != 0 && row != 1 && column != 0 && column != 1) {
         if (board[pos - 9] == TARGET_PLAYER) { //TODO am rand
             for (int i = 18; i < 64; i += 9) {
                 if (board[pos - i] == TARGET_PLAYER) {
@@ -903,7 +905,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach links unten
-    if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 0 && pos % 8 != 1) {
+    if (row != 6 && row != 7 && column != 0 && column != 1) {
         if (board[pos + 7] == TARGET_PLAYER) { //TODO am rand
             for (int i = 14; i < 50; i += 7) {
                 if (board[pos + i] == TARGET_PLAYER) {
@@ -929,7 +931,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     }
 
     //Prüfung nach rechts unten
-    if (pos / 8 != 6 && pos / 8 != 7 && pos % 8 != 6 && pos % 8 != 7) {
+    if (row != 6 && row != 7 && column != 6 && column != 7) {
         if (board[pos + 9] == TARGET_PLAYER) { //TODO am rand
             for (int i = 18; i < 64; i += 9) {
                 if (board[pos + i] == TARGET_PLAYER) {

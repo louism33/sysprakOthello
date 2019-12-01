@@ -35,7 +35,6 @@ int testRemoveDuplicatesNoDuplicates() {
             }
         }
     }
-
     free(moves);
 
     return 0; // success

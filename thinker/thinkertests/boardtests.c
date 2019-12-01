@@ -10,6 +10,8 @@
 #include "../board.c"
 #include "../board.h"
 
+#define DRAW (0)
+
 int testStar() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -1829,6 +1831,135 @@ int testLinks3() {
     return 0; // success
 }
 
+int testWinner() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    for (int i = 0; i < 32; i++) {
+        board[i] = getWhite();
+    }
+    for (int j = 32; j < 64; j++) {
+        board[j] = getBlack();
+    }
+
+    SIDE_TO_MOVE player = getWhite();
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+//    printBoardLouisSide(b, player);
+    int connrectGameOver = getGameOver();
+    int correctWinner = DRAW;
+
+    int myGameOver = isGameOver(b);
+    int myWinner;
+    if (myGameOver == connrectGameOver) {
+        if (myGameOver == getGameNotOver()) {
+//            printf("Game is not over.\n");
+            return 0;
+        }
+        myWinner = getWinner(b);
+        if (myWinner != correctWinner) {
+            fprintf(stderr, "getWinner is false.\n");
+            free(b);
+            free(board);
+            exit(1);
+        }
+    } else {
+        fprintf(stderr, "GameOver Test is false.\n");
+        free(b);
+        free(board);
+        exit(1);
+    }
+    // printf("test successful\n\n");
+    free(b);
+    free(board);
+    return 0; // success
+}
+
+int testWinner2() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    for (int i = 0; i < 32; i++) {
+        board[i] = getWhite();
+    }
+
+    SIDE_TO_MOVE player = getWhite();
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+//    printBoardLouisSide(b, player);
+    int connrectGameOver = getGameOver();
+    int correctWinner = getWhite();
+
+    int myWinner;
+    int myGameOver = isGameOver(b);
+
+    if (myGameOver == connrectGameOver) {
+        if (myGameOver == getGameNotOver()) {
+//            printf("Game is not over.\n");
+            return 0;
+        }
+        myWinner = getWinner(b);
+        if (myWinner != correctWinner) {
+            fprintf(stderr, "getWinner is false.\n");
+            free(b);
+            free(board);
+            exit(1);
+        }
+    } else {
+        fprintf(stderr, "GameOver Test is false.\n");
+        free(b);
+        free(board);
+        exit(1);
+    }
+    // printf("test successful\n\n");
+    free(b);
+    free(board);
+    return 0; // success
+}
+
+int testWinner3() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    board[20] = getWhite();
+    board[19] = board[18] = board[17] = getBlack();
+
+    SIDE_TO_MOVE player = getWhite();
+    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+//    printBoardLouisSide(b, player);
+    int connrectGameOver = getGameNotOver();
+    int correctWinner = getBlack();
+
+    int myWinner;
+    int myGameOver = isGameOver(b);
+
+    if (myGameOver == connrectGameOver) {
+        if (myGameOver == getGameNotOver()) {
+//            printf("Game is not over.\n");
+            return 0;
+        }
+        myWinner = getWinner(b);
+        if (myWinner != correctWinner) {
+            fprintf(stderr, "getWinner is false.\n");
+            free(b);
+            free(board);
+            exit(1);
+        }
+    } else {
+        fprintf(stderr, "GameOver Test is false.\n");
+        free(b);
+        free(board);
+        exit(1);
+    }
+
+    // printf("test successful\n\n");
+    free(b);
+    free(board);
+    return 0; // success
+}
+
 int basicTests() {
     //no legal moves
     testNoLegalMoves();
@@ -1916,6 +2047,10 @@ int basicTests() {
     testLinks2();
     testLinks3();
     //Daoben gibt es 63 Test! und laufen alles gut.
+
+    testWinner();
+    testWinner2();
+    testWinner3();
 
     return 0; // success
 }

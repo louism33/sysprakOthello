@@ -44,7 +44,7 @@ int testStartingBoardBigger() {
         exit(1);
     }
 
-    printf("test successful\n\n");
+//    printf("test successful\n\n");
     free(b);
     return 0; // success
 }

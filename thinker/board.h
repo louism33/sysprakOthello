@@ -13,6 +13,7 @@ typedef unsigned long long int DIRECTION_MASK;
 typedef int MOVE;
 typedef int SIDE_TO_MOVE;
 
+
 typedef int64_t STACK_OBJECT;
 typedef STACK_OBJECT *STACK;
 typedef MOVE *MOVE_STACK;
@@ -122,6 +123,12 @@ DIRECTION getEast();
 DIRECTION getNorthEast();
 
 
+
+int getWinner(BOARD_STRUCT *boardStruct);
+int isGameOver(BOARD_STRUCT *boardStruct);
+
+
+
 int getBoardSize();
 
 void setBoardSize(int rows, int columns);
@@ -139,6 +146,7 @@ int getStandardBoardSize();
 int setBoardToStandardSize();
 
 int setBoardToCustomSize(int rows, int columns);
+
 
 #endif //SYSPRAKOTHELLO_BOARD_H
 

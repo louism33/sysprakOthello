@@ -12,6 +12,8 @@
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
 #define WHITE 1
+#define GAMEOVER 0
+#define GAMENOTOVER 1
 
 #define EMPTY 0
 // black makes first move
@@ -28,6 +30,7 @@
 #define STARTING_BLACK_POSITION_2 35
 
 #define LAST_MOVE (-1)
+#define DRAW (0)
 
 #define STANDARD_COLUMN_NUMBER (8)
 #define STANDARD_ROW_NUMBER (8)
@@ -54,6 +57,14 @@ int getColumnSize() {
 
 void setRowSize(int rows) {
     rowSize = rows;
+}
+
+MOVE getGameOver() {
+    return GAMEOVER;
+}
+
+MOVE getGameNotOver() {
+    return GAMENOTOVER;
 }
 
 void setColumnSize(int columns) {
@@ -684,29 +695,15 @@ DIRECTION_MASK getNorthEastMask() {
 }
 
 int addToStackObject(STACK_OBJECT *stackObject, DIRECTION direction, int numberOfKills) {
-//    printf("      addToStackObject\n");
-//    printf(" (direction* DIRECTION_SIZE): %d\n", ((direction * DIRECTION_SIZE)));
-//    printf(" (shift: %ld\n", (((numberOfKills << (direction * DIRECTION_SIZE)))));
-
     STACK_OBJECT temp = (((unsigned long long int) numberOfKills)
             << (unsigned long long int) (direction * DIRECTION_SIZE));
 
-//    printf(" (shift: %ld\n", temp);
-
     (*stackObject) |= temp; // todo , add AND  with mask ?
 
-//    printf("      addToStackObject over\n");
     return 0;
 }
 
 int getNumberOfKillsFromDirection(STACK_OBJECT stackObject, DIRECTION direction, DIRECTION_MASK directionMask) {
-//    printf("      getNumberOfKillsFromDirection\n");
-//    printf(" SO: %d\n", (int) stackObject);
-//    printf(" mask: %llu\n", directionMask);
-//    printf(" mask& : %llu\n", (directionMask & stackObject));
-//    printf(" direction * DIRECTION_SIZE: %d\n", (int) (direction * DIRECTION_SIZE));
-//    printf(" answer : %llu\n", ((directionMask & stackObject) >> (direction * DIRECTION_SIZE)));
-
     return ((directionMask & stackObject) >> (direction * DIRECTION_SIZE));
 }
 
@@ -1015,3 +1012,61 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
     return makeMoveSide(boardStruct, legalPosition, switchPlayer(boardStruct->sideToMove));
 }
+
+
+int getWinner(BOARD_STRUCT *boardStruct) {
+    BOARD board = boardStruct->board;
+    int anzahlBlack = 0;
+    int anzahlWhite = 0;
+    for (int i = 0; i < getBoardSize(); i++) {
+        if (board[i] == getBlack())
+            anzahlBlack++;
+        else if (board[i] == getWhite()) {
+            anzahlWhite++;
+        }
+    }
+//    printf("AnzahlBlack: %d vs. AnzahlWhite: %d \n", anzahlBlack, anzahlWhite);
+
+    if (anzahlBlack > anzahlWhite) {
+//        printf("Winner is Side of Black.\n");
+        return getBlack();
+    } else if (anzahlBlack < anzahlWhite++) {
+//        printf("Winner is Side of White.\n");
+        return getWhite();
+    } else {
+//        printf("No Winner. Because the Number of all Side are same.\n");
+        return DRAW;
+    }
+}
+
+int isGameOver(BOARD_STRUCT *boardStruct) {
+    int anzahlBlack = 0;
+    int anzahlWhite = 0;
+    BOARD board = boardStruct->board;
+
+    //Wenn es nur WHITE oder nur BLACK in Board gibt.
+    for (int i = 0; i < getBoardSize(); i++) {
+        if (board[i] == getBlack()) {
+            anzahlBlack++;
+        } else if (board[i] == getWhite()) {
+            anzahlWhite++;
+        }
+    }
+    if (anzahlBlack == 0 || anzahlWhite == 0) {
+//        printf("Just one Side in Board.\n");
+        return GAMEOVER;
+    }
+
+    // Wenn es genau 64 Schach in Board gibt.
+    if (anzahlBlack + anzahlWhite == getBoardSize()) {
+        return GAMEOVER;
+    }
+
+    // Wenn es kleiner als 64 Schach in Board gibt.
+    if (getTotalNumberOfLegalMoves(board, BLACK) == 0 && getTotalNumberOfLegalMoves(board, WHITE) == 0) {
+//        printf("Game Over! Neither Black nor White can move.\n");
+        return GAMEOVER; //true
+    }
+    return GAMENOTOVER;
+}
+

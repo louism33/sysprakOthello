@@ -163,7 +163,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
 }
 
 int fromCommandLine(int depth) {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -175,7 +175,7 @@ int fromCommandLine(int depth) {
 }
 
 int testBasicBoard() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);

@@ -227,7 +227,7 @@ int testOnePositionleft() //nach links bewegen
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
     //    printBoardLouisSide(b, player);
 
-    int *moves = malloc(64 * sizeof(int));
+    int *moves = malloc(getStandardBoardSize() * sizeof(int));
     int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, getBlack());
 
     int correctMove = 18;
@@ -264,10 +264,8 @@ int testOnePositionright() //nach rechts bewegen
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(b, player);
 
-    int *moves = malloc(64 * sizeof(int));
-    // int *finalMove=malloc(64 * sizeof(int));
+    int *moves = malloc(getStandardBoardSize() * sizeof(int));
     int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, getBlack());
 
     int correctMove = 20;

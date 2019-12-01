@@ -10,7 +10,7 @@
 #include "../../connector/boardmessageparser.h"
 
 int flipTurnTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -71,7 +71,7 @@ int flipTurnTest() {
 }
 
 int copyBoardStructTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
 
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -104,7 +104,7 @@ int copyBoardStructTest() {
 
 
 int copyBoardStructTest2() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
 
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -137,7 +137,7 @@ int copyBoardStructTest2() {
 }
 
 int stackpushPopTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
 
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -170,7 +170,7 @@ int stackpushPopTest() {
 }
 
 int stackpushPopManyTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
 
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -233,7 +233,7 @@ int stackpushPopManyTest() {
 
 
 int manualBabyTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -301,7 +301,7 @@ int manualBabyTest() {
 
 
 int manualBaby2Test() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -368,7 +368,7 @@ int manualBaby2Test() {
 
 
 int startingBoard1MANUALTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -430,7 +430,7 @@ int startingBoard1MANUALTest() {
 
 
 int startingBoard1MANUAL2Test() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -509,7 +509,7 @@ int startingBoard1MANUAL2Test() {
 
 
 int startingBoard1MANUAL3Test() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -612,7 +612,7 @@ int startingBoard1MANUAL3Test() {
 
 
 int moveunmakeTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
@@ -689,7 +689,7 @@ int moveunmakeTest() {
 
 
 int moveunmakeStackTest() {
-    int boardSize = 64;
+    int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);

@@ -43,7 +43,7 @@
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
 
-int getDefaultPort(){
+int getDefaultPort() {
     return PORTNUMBER;
 }
 
@@ -97,7 +97,9 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
 
     printf("Attempting to connect to game server.\n");
 
-    configurationStruct *configurationStruct;
+//    configurationStruct *configurationStruct
+    struct configurationStruct *configurationStruct = malloc(
+            sizeof(configurationStruct));
 
     if (mockGame) {
         printf("MOCK GAME IS TRUE\n");
@@ -127,7 +129,6 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         server.sin_addr.s_addr = inet_addr(local);
         printf("Attempting to connect to host %s on port %d\n", local,
                PORTNUMBER);
-        configurationStruct = malloc(sizeof(configurationStruct));
         configurationStruct->gamekindname = "REVERSI";
 
     } else {
@@ -139,10 +140,11 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
             printf("Using default configuration file: %s\n", DEFAULT_FILE_PATH);
         }
 
-        configurationStruct =
-                usingCustomConfigFile ?
-                readConfigurationFile(filePath) :
-                readConfigurationFile(DEFAULT_FILE_PATH);
+        if (usingCustomConfigFile) {
+            readConfigurationFile(filePath, configurationStruct);
+        } else {
+            readConfigurationFile(DEFAULT_FILE_PATH, configurationStruct);
+        }
 
         char *finalAddrstr = malloc(sizeof(char) * 200);
         finalAddrstr = lookup_host(configurationStruct->hostname, finalAddrstr);
@@ -189,10 +191,6 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
 }
 
 int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
-    printf("Hi I am good at connecting\n");
-//	char *configFromEnvironment = getenv("CONFIG_FILE");
-//	printf("     config file is %s \n", configFromEnvironment);
-
     char *gameID;
     char *player = 0;
     int ret;
@@ -212,11 +210,6 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
                 mockGame = 1;
                 break;
             case 'C':
-//			if (!configFromEnvironment) {
-//				printf(
-//						"Could not read config file from option, defaulting to client.conf\n");
-//				break;
-//			}
                 configPath = optarg;
                 usingCustomConfigFile = 1;
                 break;
@@ -228,14 +221,16 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     }
 
     //Fehlerbehandelung
+    if (!gameID || strlen(gameID) < 13) {
+        perror("Das Game-ID ist kleiner als 13-stellige.\n");
+        gameID = NULL;
+        exit(1);
+    }
+
     if (strlen(gameID) > 13) {
         perror("Das Game-ID ist grosser als 13-stellige.\n");
         gameID = NULL;
         exit(0);
-    } else if (strlen(gameID) < 13) {
-        perror("Das Game-ID ist kleiner als 13-stellige.\n");
-        gameID = NULL;
-        exit(1);
     }
     // todo, what if player is blank?
 

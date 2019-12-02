@@ -12,6 +12,6 @@ typedef struct configurationStruct {
 } configurationStruct;
 
 
-configurationStruct *readConfigurationFile(char *pathName);
+int readConfigurationFile(char *pathName, configurationStruct * configurationStruct);
 
 #endif //SYSPRAKOTHELLO_CONFIG_H

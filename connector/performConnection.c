@@ -216,7 +216,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("  Received YOU info from server, buff is:%s", buff);
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
-                printf("--------save  playerNumber: %s\n", playerNumber);
+                printf("--------save  playerNumber: %s\n", playerNumber); // this often gets weird crap
 
                 if (playerNumber[0] == '0') {
                     sideToMove = getBlack();
@@ -257,6 +257,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 char *moveRet=malloc(3*sizeof(char));
 
                 connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
+//                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
 
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,

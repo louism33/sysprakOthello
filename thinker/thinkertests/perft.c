@@ -353,8 +353,10 @@ int testBasicBoard() {
     }
 
     if (0) { // todo failing
+//        perftDivide(b, 9);
+
         int received = perft(b, 9, 0);
-        int correct = 390216;
+        int correct = 3005288;
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);

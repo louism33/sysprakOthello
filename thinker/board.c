@@ -537,12 +537,15 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES a
 }
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES allMoves = malloc(getBoardSize() * sizeof(int));
+    MOVES allMoves = malloc(getBoardSize() * sizeof(int)); // todo remove this crap
     MOVES finalspeicher = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     int total = 0;
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getBoardSize(); i++) {
         if (finalspeicher[i] == LAST_MOVE) {
+
+            free(allMoves);
+//            free(finalspeicher);
             return total;
         }
         total++;
@@ -787,11 +790,10 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     int smallDiagonal = getRowSize() - 1;
     int bigDiagonal = getRowSize() + 1;
 
-
     //Prüfung nach links
     if (column != firstCol && column != secondCol) {
         if (board[pos - 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < getColumnSize(); i++) {
+            for (int i = 2; i < getColumnSize() && i >= 0; i++) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -818,7 +820,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach rechts
     if (column != preFinalCol && column != finalCol) {
         if (board[pos + 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < getColumnSize(); i++) {
+            for (int i = 2; i < getColumnSize() &&  pos + i < getBoardSize(); i++) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -844,7 +846,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach oben
     if (row != firstRow && row != secondRow) {
         if (board[pos - getColumnSize()] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2 * getColumnSize(); i < getBoardSize() - getColumnSize(); i += getColumnSize()) {
+            for (int i = 2 * getColumnSize(); i < getBoardSize() - getColumnSize() && pos - i >= 0; i += getColumnSize()) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -870,7 +872,8 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach unten
     if (row != preFinalRow && row != finalRow) {
         if (board[pos + getColumnSize()] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2 * getColumnSize(); i < getBoardSize() - getColumnSize(); i += getColumnSize()) {
+            for (int i = 2 * getColumnSize();
+                 i < getBoardSize() - getColumnSize() && pos + i < getBoardSize(); i += getColumnSize()) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -897,7 +900,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach rechts oben
     if (row != firstRow && row != secondRow && column != preFinalCol && column != finalCol) {
         if (board[pos - smallDiagonal] == TARGET_PLAYER) {
-            for (int i = 2 * smallDiagonal; i < boardSize - 2 * smallDiagonal; i += smallDiagonal) {
+            for (int i = 2 * smallDiagonal; i < boardSize - 2 * smallDiagonal && pos - i >= 0; i += smallDiagonal) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -925,7 +928,8 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     if (row != firstRow && row != secondRow && column != firstCol && column != secondCol) {
         if (board[pos - bigDiagonal] == TARGET_PLAYER) {
             for (int i = 2 * bigDiagonal;
-                 i < getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+                 i < getBoardSize() &&
+                 pos - i >= 0; i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -951,7 +955,9 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach links unten
     if (row != preFinalRow && row != finalRow && column != firstCol && column != secondCol) {
         if (board[pos + smallDiagonal] == TARGET_PLAYER) {
-            for (int i = 2 * smallDiagonal; i < getBoardSize() - 2 * smallDiagonal; i += smallDiagonal) {
+            for (int i = 2 * smallDiagonal;
+                 i < getBoardSize() - 2 * smallDiagonal && pos + i < getBoardSize(); i += smallDiagonal) {
+
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -977,8 +983,8 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach rechts unten
     if (row != preFinalRow && row != finalRow && column != preFinalCol && column != finalCol) {
         if (board[pos + bigDiagonal] == TARGET_PLAYER) {
-            for (int i = 2 * bigDiagonal;
-                 i < getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+            for (int i = 2 * bigDiagonal; i < getBoardSize() && pos + i <
+                                                                getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }

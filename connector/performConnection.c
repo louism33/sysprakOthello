@@ -209,6 +209,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 }
             }
             // step four, read YOU
+            //todo die Info soll in shm geschriben werden.
             if (strncmp("+ YOU", buff, 5) == 0) {
                 // todo, save information from Server here
                 //finished

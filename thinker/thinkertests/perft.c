@@ -126,7 +126,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     printBoardSide(boardStruct);
-    printf("moves from this positionX: %d\n", totalMoves);
+    printf("moves from this positionXZ: %d\n", totalMoves);
 
     int totalNodes = 0;
     MOVE move;

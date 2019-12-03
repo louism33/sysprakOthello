@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "../thinker/board.h"
+#include "../connector/performConnection.h"
 /*variablen zur Speicherung der Pid's*/
 pid_t thinker;
 pid_t connector;
@@ -34,7 +35,7 @@ int createProcesses() {
             connector = getpid();
             thinker = getppid();
             printf("Meine PID = %i\n", connector);
-            performConnection();
+            //performConnection();
             writeShm(&g1, connector, thinker);
             break;
 
@@ -113,4 +114,9 @@ void waitForChild() {
     } else if (WIFSTOPPED(status)) {
         printf("Kind wurde angehalten mit Signalnummer %d\n", WSTOPSIG(status));
     }
+}
+
+int main() {
+    createProcesses();
+    return 0;
 }

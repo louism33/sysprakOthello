@@ -5,7 +5,7 @@
 #ifndef ALEXTHEFRIENDLYAI_CONNECTOR_H
 #define ALEXTHEFRIENDLYAI_CONNECTOR_H
 
-gameInfo* connectorMasterMethod(BOARD_STRUCT * connectorBoard, BOARD_STRUCT * thinkerBoard, int argc, char *argv[]);
+int connectorMasterMethod(BOARD_STRUCT * connectorBoard, BOARD_STRUCT * thinkerBoard, int argc, char *argv[]);
 
 void performConnection();
 

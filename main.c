@@ -56,103 +56,101 @@ int main(int argc, char *argv[])
         int depth = atoi(argv[2]);
         fromCommandLine(depth);
         exit(0);
-    }
 
-    if (argc > 1 && strcmp(argv[1], "TEST") == 0)
-    {
-        printf("Test begin:.........\n");
-        printf("Running board test Suite\n");
-        int fail = 0;
+        if (argc > 1 && strcmp(argv[1], "TEST") == 0)
+        {
+            printf("Test begin:.........\n");
+            printf("Running board test Suite\n");
+            int fail = 0;
 
-        fail += fullTestSuite(); //board test1
+            fail += fullTestSuite(); //board test1
 
-        fail += fullTestSuiteBoard2(); //board test2
+            fail += fullTestSuiteBoard2(); //board test2
 
-        printf("Running convert move test Suite\n");
-        fail += testConvertMove();
+            printf("Running convert move test Suite\n");
+            fail += testConvertMove();
 
-        printf("Running make move test Suite\n");
-        fail += runMakeMoveTests();
+            printf("Running make move test Suite\n");
+            fail += runMakeMoveTests();
 
-        printf("Running unmake move test Suite\n");
-        fail += fullTestSuiteUnmakeMoveTests();
+            printf("Running unmake move test Suite\n");
+            fail += fullTestSuiteUnmakeMoveTests();
 
-        printf("Running perft Suite\n");
-        fail += perftSuite();
+            printf("Running perft Suite\n");
+            fail += perftSuite();
 
-        printf("Running big board tests Suite\n");
-        fail += testSuiteBigBoard();
+            printf("Running big board tests Suite\n");
+            fail += testSuiteBigBoard();
 
-        if (fail)
-        { // fail/=0 dann läuft if Bedingung
-            printf("Some tests failed, please fix them as soon as possible.\n");
-            exit(1);
+            if (fail)
+            { // fail/=0 dann läuft if Bedingung
+                printf("Some tests failed, please fix them as soon as possible.\n");
+                exit(1);
+            }
+            printf("Tested. All good.\n");
+            return 0;
         }
-        printf("Tested. All good.\n");
+
+        // todo, this is just an idea, it depends on how we do shm (shared memory)
+        // we will use two separate boards. One for connector that we will update with info from server
+        // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
+
+        BOARD_STRUCT *connectorBoard = malloc(sizeof(BOARD_STRUCT));
+        initialiseBoardStructToStarter(connectorBoard);
+
+        BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
+        initialiseBoardStructToStarter(thinkerBoard);
+
+        createShm();
+        attachShm();
+
+        gameInfo aktuelleStruct = {"alex", 1234567, 2,0,0};
+        // gameInfo *infoVonServer;
+        // shmdata=infoVonServer;//kriegen wir von Server,also connectorMaterMethod()
+        switch (thinker = fork())
+        {
+        /*Fehlerfall*/
+        case -1:
+            printf("Fehler bei fork()\n");
+            break;
+
+        /*Kindsprozess = Connector*/
+        case 0:
+            printf("Im Kindsprozess\n");
+            connector = getpid();
+            thinker = getppid();
+            printf("Meine PID = %i\n", connector);
+
+            //  infoVonServer=connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
+            writeShm(&aktuelleStruct, connector, thinker);
+            //printf("ich ..\n");
+            while (1)
+            {
+
+                sleep(3);
+                signalVonKill = kill(thinker, SIGUSR1); //signal schicken
+            }
+
+            break;
+
+            /*Elternprozess = Thinker*/
+        default:
+            //sleep(3);
+            printf("Im Elternprozess\n");
+            thinker = getpid();
+            printf("Meine PID = %i\n", thinker);
+            //thinkerMasterMethod(thinkerBoard, signalVonKill);
+            signal(SIGUSR1, mysighandler); //signal behandeln
+            while (1)
+            {
+            }
+            readShm();
+            //waitForChild();
+            break;
+        }
+
+        freeBoardStruct(connectorBoard);
+        freeBoardStruct(thinkerBoard);
         return 0;
     }
-
-    // todo, this is just an idea, it depends on how we do shm (shared memory)
-    // we will use two separate boards. One for connector that we will update with info from server
-    // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
-
-    BOARD_STRUCT *connectorBoard = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToStarter(connectorBoard);
-
-    BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToStarter(thinkerBoard);
-
-    createShm();
-    shmdata = attachShm();
-    gameInfo *infoVonServer;
-    shmdata=infoVonServer;//kriegen wir von Server,also connectorMaterMethod()
-    switch (thinker = fork())
-    {
-    /*Fehlerfall*/
-    case -1:
-        printf("Fehler bei fork()\n");
-        break;
-
-    /*Kindsprozess = Connector*/
-    case 0:
-        printf("Im Kindsprozess\n");
-        connector = getpid();
-        thinker = getppid();
-        printf("Meine PID = %i\n", connector);
-       
-        infoVonServer=connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
-        writeShm(&shmdata, connector, thinker);
-        //printf("ich ..\n");
-        while (1)
-        {
-            sleep(3);
-            signalVonKill = kill(thinker, SIGUSR1); //signal schicken
-        }
-
-       
-        break;
-
-        /*Elternprozess = Thinker*/
-    default:
-        //sleep(3);
-        printf("Im Elternprozess\n");
-        thinker = getpid();
-        printf("Meine PID = %i\n", thinker);
-        //thinkerMasterMethod(thinkerBoard, signalVonKill);
-        signal(SIGUSR1, mysighandler); //signal behandeln
-        while (1)
-        {
-        }
-        readShm();
-        waitForChild();
-        break;
-    }
-
-
-
-
-
-    freeBoardStruct(connectorBoard);
-    freeBoardStruct(thinkerBoard);
-    return 0;
 }

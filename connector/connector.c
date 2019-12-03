@@ -37,7 +37,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include "../shm/shm.h"
+//#include "../shm/shm.h"
 
 #define GAMEKINDNAME "Reversi"
 #define PORTNUMBER 1357
@@ -94,7 +94,7 @@ char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock crea
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-                        BOARD_STRUCT *thinkerBoard,gameInfo* infoVonServer) {
+                        BOARD_STRUCT *thinkerBoard) {
 
     printf("Attempting to connect to game server.\n");
    
@@ -178,7 +178,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     }
 
      performConnectionLouis(sock, gameID, player,
-                          configurationStruct->gamekindname, connectorBoard, thinkerBoard,infoVonServer);
+                          configurationStruct->gamekindname, connectorBoard, thinkerBoard);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -189,7 +189,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     return 0;
 }
 
-gameInfo* connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
 //	char *configFromEnvironment = getenv("CONFIG_FILE");
 //	printf("     config file is %s \n", configFromEnvironment);
@@ -256,9 +256,10 @@ gameInfo* connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thin
     }
 
     connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-                        configPath, connectorBoard, thinkerBoard,infoVonServer);
+                        configPath, connectorBoard, thinkerBoard);
 
-    return infoVonServer;
+    //return infoVonServer;
+    return 0;
 }
 
 void performConnection() {

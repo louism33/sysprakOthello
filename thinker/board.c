@@ -531,6 +531,9 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES a
             }
         }
     }
+//    if (index == 0) {
+//        printf("no moves from here\n");
+//    }
     removeDuplicates(allMoves, index);
     free(speicher);
     return allMoves;

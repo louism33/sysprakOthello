@@ -375,6 +375,29 @@ int testBasicBoard() {
     }
 
 
+    if (0) { // todo failing
+//        perftDivide(b, 9);
+
+        int received = perft(b, 10, 0);
+        int correct = 24571284;
+        if (received != correct) {
+            fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
+                    correct);
+            free(b);
+            exit(1);
+        }
+
+        if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+            printBoardSide(testBoardStruct);
+            printBoardSide(b);
+            fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
+            free(b);
+            free(testBoardStruct);
+            exit(1);
+        }
+    }
+
+
     free(b);
 
     return 0; // success

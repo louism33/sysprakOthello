@@ -40,12 +40,12 @@ int testStartingBoardBigger() {
 
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
 
 //    printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 

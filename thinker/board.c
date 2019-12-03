@@ -125,7 +125,6 @@ void resetBoardToStarter(BOARD board) {
     for (int i = 0; i < getStandardBoardSize(); i++) {
         board[i] = 0;
     }
-    // todo, if the coordinates are not 8x8, this would be wrong, so make sure not to call this in gameloop
     board[STARTING_WHITE_POSITION_1] = WHITE;
     board[STARTING_WHITE_POSITION_2] = WHITE;
     board[STARTING_BLACK_POSITION_1] = BLACK;
@@ -154,7 +153,7 @@ void freeBoardStruct(BOARD_STRUCT *boardStruct) {
 void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct, int boardSize) {
     boardStruct->board = malloc(boardSize * sizeof(int)); //todo careful of magic numbers!
     boardStruct->stack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
-    boardStruct->moveStack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
+    boardStruct->moveStack = malloc(boardSize * sizeof(MOVE)); //todo careful of magic numbers!
     boardStruct->sideToMove = STARTING_PLAYER;
     boardStruct->stackIndexMove = 0;
     boardStruct->stackIndexObject = 0;
@@ -538,8 +537,9 @@ int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES all
     return numberOfRealMoves;
 }
 
+// please don't call this if performance matters
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
-    MOVES allMoves = malloc(getBoardSize() * sizeof(int)); // todo remove this crap
+    MOVES allMoves = malloc(getBoardSize() * sizeof(int));
     int total = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
     free(allMoves);
     return total;
@@ -687,7 +687,7 @@ int addToStackObject(STACK_OBJECT *stackObject, DIRECTION direction, int numberO
     STACK_OBJECT temp = (((unsigned long long int) numberOfKills)
             << (unsigned long long int) (direction * DIRECTION_SIZE));
 
-    (*stackObject) |= temp; // todo , add AND  with mask ?
+    (*stackObject) |= temp;
 
     return 0;
 }
@@ -853,14 +853,12 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
                 }
             }
         }
-
     }
 
     //Prüfung nach unten
     if (row != preFinalRow && row != finalRow) {
-        if (board[pos + getColumnSize()] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2 * getColumnSize();
-                 i < getBoardSize() - getColumnSize() && pos + i < getBoardSize(); i += getColumnSize()) {
+        if (board[pos + getColumnSize()] == TARGET_PLAYER) {
+            for (int i = 2 * getColumnSize(); pos + i < getBoardSize(); i += getColumnSize()) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -1044,12 +1042,10 @@ int isGameOver(BOARD_STRUCT *boardStruct) {
         return GAMEOVER;
     }
 
-    // Wenn es genau 64 Schach in Board gibt.
     if (anzahlBlack + anzahlWhite == getBoardSize()) {
         return GAMEOVER;
     }
 
-    // Wenn es kleiner als 64 Schach in Board gibt.
     if (getTotalNumberOfLegalMoves(board, BLACK) == 0 && getTotalNumberOfLegalMoves(board, WHITE) == 0) {
         return GAMEOVER; //true
     }

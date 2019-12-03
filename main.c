@@ -47,9 +47,9 @@ int main(int argc, char *argv[]) {
 
         int fail = 0;
 
-        fail += fullTestSuite(); //board test1
+        fail += fullTestSuite();
 
-        fail += fullTestSuiteBoard2();//board test2
+        fail += fullTestSuiteBoard2();
 
         printf("Running convert move test Suite\n");
         fail += testConvertMove();

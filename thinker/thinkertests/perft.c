@@ -105,7 +105,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
                 exit(1);
             }
 
-            free(b);
+            freeBoardStruct(b);
         }
     }
 
@@ -167,20 +167,9 @@ int fromCommandLine(int depth) {
 
     resetBoardToStarter(board);
 
-    makeMove(b, 26);
-    makeMove(b, 18);
-    makeMove(b, 10);
-    makeMove(b, 9);
-    makeMove(b, 19);
-    makeMove(b, 2);
-    makeMove(b, 1);
-    makeMove(b, 11);
+    perftDivide(b, depth - 9);
 
-//    printBoardSide(b);
-    makeMove(b, 0);
-//    printBoardSide(b);
-
-    perftDivide(b, depth-9);
+    freeBoardStruct(b);
 }
 
 int testBasicBoard() {
@@ -206,7 +195,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -214,8 +204,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -226,7 +216,7 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
             exit(1);
         }
 
@@ -234,8 +224,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -246,7 +236,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -254,8 +245,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -266,7 +257,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -274,8 +266,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -286,7 +278,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -294,8 +287,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -306,7 +299,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -314,8 +308,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -326,7 +320,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -334,8 +329,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -347,7 +342,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -355,8 +351,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -367,7 +363,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -375,8 +372,8 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
@@ -387,7 +384,8 @@ int testBasicBoard() {
         if (received != correct) {
             fprintf(stderr, "FAILED A PERFT TEST! wrong number of moves received: %d, but correct: %d\n", received,
                     correct);
-            free(b);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
 
@@ -395,14 +393,14 @@ int testBasicBoard() {
             printBoardSide(testBoardStruct);
             printBoardSide(b);
             fprintf(stderr, "FAILED A perft TEST: board structs are different after calling perft!!\n");
-            free(b);
-            free(testBoardStruct);
+            freeBoardStruct(b);
+            freeBoardStruct(testBoardStruct);
             exit(1);
         }
     }
 
-
-    free(b);
+    freeBoardStruct(b);
+    freeBoardStruct(testBoardStruct);
 
     return 0; // success
 }

@@ -88,7 +88,7 @@ echo "***** checking valgrind for perft command *****"
 
 ## check Valgrind with perft command
 rm -f $VALGRIND_LOG
-valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./sysprak-client perft 9
+valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./sysprak-client perft 8
 
 echo "***** finished checking valgrind for perft command *****"
 

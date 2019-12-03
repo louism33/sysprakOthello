@@ -1,0 +1,3257 @@
+==31232== Memcheck, a memory error detector
+==31232== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==31232== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==31232== Command: ./sysprak-client TEST
+==31232== Parent PID: 29671
+==31232== 
+==31232== 
+==31232== Process terminating with default action of signal 2 (SIGINT)
+==31232==    at 0x403C15: resetBoardToZero (board.c:136)
+==31232==    by 0x403DA4: initialiseBoardStructToZero (board.c:172)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232== 
+==31232== HEAP SUMMARY:
+==31232==     in use at exit: 130,474,016 bytes in 305,790 blocks
+==31232==   total heap usage: 611,610 allocs, 305,820 frees, 186,747,390 bytes allocated
+==31232== 
+==31232== 256 bytes in 1 blocks are possibly lost in loss record 29 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 32 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406662: testNoLegalMoves (boardtests.c:47)
+==31232==    by 0x40B747: basicTests (boardtests.c:1965)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 33 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406751: testNoLegalMoves2 (boardtests.c:75)
+==31232==    by 0x40B751: basicTests (boardtests.c:1966)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 34 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406843: testNoLegalMovesBecauseGameOver (boardtests.c:103)
+==31232==    by 0x40B75B: basicTests (boardtests.c:1967)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 35 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406973: testStartingBoard1 (boardtests.c:136)
+==31232==    by 0x40B765: basicTests (boardtests.c:1970)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 36 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406A42: testStartingBoard2 (boardtests.c:163)
+==31232==    by 0x40B76F: basicTests (boardtests.c:1971)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 37 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406B19: testBoardAfterOneMove (boardtests.c:188)
+==31232==    by 0x40B779: basicTests (boardtests.c:1974)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 38 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406F0C: testWeirdImpossibleBoard (boardtests.c:293)
+==31232==    by 0x40B797: basicTests (boardtests.c:1978)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 39 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40700F: testWeirdImpossibleBoard2 (boardtests.c:319)
+==31232==    by 0x40B7A1: basicTests (boardtests.c:1979)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 40 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407120: testWeirdImpossibleBoardLinks (boardtests.c:345)
+==31232==    by 0x40B7AB: basicTests (boardtests.c:1980)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 41 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407217: testWeirdImpossibleBoardRechts (boardtests.c:371)
+==31232==    by 0x40B7B5: basicTests (boardtests.c:1981)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 42 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4075BC: testAvoidTheDuplicateMove (boardtests.c:453)
+==31232==    by 0x40B7D3: basicTests (boardtests.c:1986)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 43 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4077D4: testAvoidTheDuplicateMove2 (boardtests.c:505)
+==31232==    by 0x40B7DD: basicTests (boardtests.c:1987)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 44 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406464: testStar (boardtests.c:17)
+==31232==    by 0x40B7E7: basicTests (boardtests.c:1990)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 45 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407903: testAvoidMovingOffTheSideOfTheBoard (boardtests.c:531)
+==31232==    by 0x40B7F1: basicTests (boardtests.c:1991)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 46 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407A32: testAvoidMovingOffTheSideOfTheBoard2 (boardtests.c:557)
+==31232==    by 0x40B7FB: basicTests (boardtests.c:1992)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 47 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x40C36F: testRemoveDuplicatesLostMove (boardtests2.c:165)
+==31232==    by 0x40CB19: basicTests2 (boardtests2.c:321)
+==31232==    by 0x40CB42: fullTestSuiteBoard2 (boardtests2.c:329)
+==31232==    by 0x4012F0: main (main.c:52)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 48 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x40C548: testRemoveDuplicatesLostMove2 (boardtests2.c:210)
+==31232==    by 0x40CB23: basicTests2 (boardtests2.c:322)
+==31232==    by 0x40CB42: fullTestSuiteBoard2 (boardtests2.c:329)
+==31232==    by 0x4012F0: main (main.c:52)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 49 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x40C7AF: testRemoveDuplicatesLostMove3 (boardtests2.c:259)
+==31232==    by 0x40CB2D: basicTests2 (boardtests2.c:323)
+==31232==    by 0x40CB42: fullTestSuiteBoard2 (boardtests2.c:329)
+==31232==    by 0x4012F0: main (main.c:52)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 50 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411425: startingBoardTest (makemovetests.c:923)
+==31232==    by 0x4115BA: runMakeMoveTests (makemovetests.c:982)
+==31232==    by 0x40131E: main (main.c:58)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 51 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411494: startingBoardTest (makemovetests.c:935)
+==31232==    by 0x4115BA: runMakeMoveTests (makemovetests.c:982)
+==31232==    by 0x40131E: main (main.c:58)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 52 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CD9E: flipTurnTest (unmakemovetests.c:16)
+==31232==    by 0x40EAFE: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:753)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 53 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CDB8: flipTurnTest (unmakemovetests.c:19)
+==31232==    by 0x40EAFE: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:753)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 54 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CFFE: copyBoardStructTest (unmakemovetests.c:78)
+==31232==    by 0x40EB08: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:754)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 55 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D049: copyBoardStructTest (unmakemovetests.c:87)
+==31232==    by 0x40EB08: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:754)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 56 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D124: copyBoardStructTest2 (unmakemovetests.c:110)
+==31232==    by 0x40EB12: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:755)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 57 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D1A4: copyBoardStructTest2 (unmakemovetests.c:121)
+==31232==    by 0x40EB12: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:755)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 58 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D283: stackpushPopTest (unmakemovetests.c:143)
+==31232==    by 0x40EB1C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:757)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 59 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D3A2: stackpushPopManyTest (unmakemovetests.c:176)
+==31232==    by 0x40EB26: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:758)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 60 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D66A: manualBabyTest (unmakemovetests.c:239)
+==31232==    by 0x40EB30: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:760)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 61 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D6CB: manualBabyTest (unmakemovetests.c:251)
+==31232==    by 0x40EB30: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:760)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 62 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D903: manualBaby2Test (unmakemovetests.c:307)
+==31232==    by 0x40EB3A: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:761)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 63 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D968: manualBaby2Test (unmakemovetests.c:319)
+==31232==    by 0x40EB3A: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:761)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 64 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DBA0: startingBoard1MANUALTest (unmakemovetests.c:374)
+==31232==    by 0x40EB44: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:762)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 65 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DBEB: startingBoard1MANUALTest (unmakemovetests.c:383)
+==31232==    by 0x40EB44: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:762)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 66 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DE26: startingBoard1MANUAL2Test (unmakemovetests.c:436)
+==31232==    by 0x40EB4E: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:763)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 67 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DE71: startingBoard1MANUAL2Test (unmakemovetests.c:445)
+==31232==    by 0x40EB4E: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:763)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 68 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E151: startingBoard1MANUAL3Test (unmakemovetests.c:515)
+==31232==    by 0x40EB58: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:764)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 69 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E1A2: startingBoard1MANUAL3Test (unmakemovetests.c:524)
+==31232==    by 0x40EB58: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:764)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 70 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E68D: moveunmakeTest (unmakemovetests.c:618)
+==31232==    by 0x40EB62: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:766)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 71 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E6D8: moveunmakeTest (unmakemovetests.c:627)
+==31232==    by 0x40EB62: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:766)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 72 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E980: moveunmakeStackTest (unmakemovetests.c:695)
+==31232==    by 0x40EB6C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:767)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 256 bytes in 1 blocks are definitely lost in loss record 73 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E9CB: moveunmakeStackTest (unmakemovetests.c:704)
+==31232==    by 0x40EB6C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:767)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are possibly lost in loss record 94 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 512 bytes in 1 blocks are possibly lost in loss record 95 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 100 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406662: testNoLegalMoves (boardtests.c:47)
+==31232==    by 0x40B747: basicTests (boardtests.c:1965)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 101 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406662: testNoLegalMoves (boardtests.c:47)
+==31232==    by 0x40B747: basicTests (boardtests.c:1965)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 102 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406751: testNoLegalMoves2 (boardtests.c:75)
+==31232==    by 0x40B751: basicTests (boardtests.c:1966)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 103 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406751: testNoLegalMoves2 (boardtests.c:75)
+==31232==    by 0x40B751: basicTests (boardtests.c:1966)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 104 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406843: testNoLegalMovesBecauseGameOver (boardtests.c:103)
+==31232==    by 0x40B75B: basicTests (boardtests.c:1967)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 105 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406843: testNoLegalMovesBecauseGameOver (boardtests.c:103)
+==31232==    by 0x40B75B: basicTests (boardtests.c:1967)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 106 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406973: testStartingBoard1 (boardtests.c:136)
+==31232==    by 0x40B765: basicTests (boardtests.c:1970)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 107 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406973: testStartingBoard1 (boardtests.c:136)
+==31232==    by 0x40B765: basicTests (boardtests.c:1970)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 108 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406A42: testStartingBoard2 (boardtests.c:163)
+==31232==    by 0x40B76F: basicTests (boardtests.c:1971)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 109 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406A42: testStartingBoard2 (boardtests.c:163)
+==31232==    by 0x40B76F: basicTests (boardtests.c:1971)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 110 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406B19: testBoardAfterOneMove (boardtests.c:188)
+==31232==    by 0x40B779: basicTests (boardtests.c:1974)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 111 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406B19: testBoardAfterOneMove (boardtests.c:188)
+==31232==    by 0x40B779: basicTests (boardtests.c:1974)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 112 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406C16: testOnePositionleft (boardtests.c:218)
+==31232==    by 0x40B783: basicTests (boardtests.c:1975)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 113 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406C16: testOnePositionleft (boardtests.c:218)
+==31232==    by 0x40B783: basicTests (boardtests.c:1975)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 114 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406D90: testOnePositionright (boardtests.c:257)
+==31232==    by 0x40B78D: basicTests (boardtests.c:1976)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 115 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406D90: testOnePositionright (boardtests.c:257)
+==31232==    by 0x40B78D: basicTests (boardtests.c:1976)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 116 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406F0C: testWeirdImpossibleBoard (boardtests.c:293)
+==31232==    by 0x40B797: basicTests (boardtests.c:1978)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 117 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406F0C: testWeirdImpossibleBoard (boardtests.c:293)
+==31232==    by 0x40B797: basicTests (boardtests.c:1978)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 118 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40700F: testWeirdImpossibleBoard2 (boardtests.c:319)
+==31232==    by 0x40B7A1: basicTests (boardtests.c:1979)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 119 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40700F: testWeirdImpossibleBoard2 (boardtests.c:319)
+==31232==    by 0x40B7A1: basicTests (boardtests.c:1979)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 120 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407120: testWeirdImpossibleBoardLinks (boardtests.c:345)
+==31232==    by 0x40B7AB: basicTests (boardtests.c:1980)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 121 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407120: testWeirdImpossibleBoardLinks (boardtests.c:345)
+==31232==    by 0x40B7AB: basicTests (boardtests.c:1980)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 122 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407217: testWeirdImpossibleBoardRechts (boardtests.c:371)
+==31232==    by 0x40B7B5: basicTests (boardtests.c:1981)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 123 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407217: testWeirdImpossibleBoardRechts (boardtests.c:371)
+==31232==    by 0x40B7B5: basicTests (boardtests.c:1981)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 124 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407312: testWeirdImpossibleBoardOben (boardtests.c:398)
+==31232==    by 0x40B7BF: basicTests (boardtests.c:1982)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 125 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407312: testWeirdImpossibleBoardOben (boardtests.c:398)
+==31232==    by 0x40B7BF: basicTests (boardtests.c:1982)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 126 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40745F: testWeirdImpossibleBoardUnten (boardtests.c:426)
+==31232==    by 0x40B7C9: basicTests (boardtests.c:1983)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 127 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40745F: testWeirdImpossibleBoardUnten (boardtests.c:426)
+==31232==    by 0x40B7C9: basicTests (boardtests.c:1983)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 128 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4075BC: testAvoidTheDuplicateMove (boardtests.c:453)
+==31232==    by 0x40B7D3: basicTests (boardtests.c:1986)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 129 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4075BC: testAvoidTheDuplicateMove (boardtests.c:453)
+==31232==    by 0x40B7D3: basicTests (boardtests.c:1986)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 130 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4077D4: testAvoidTheDuplicateMove2 (boardtests.c:505)
+==31232==    by 0x40B7DD: basicTests (boardtests.c:1987)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 131 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4077D4: testAvoidTheDuplicateMove2 (boardtests.c:505)
+==31232==    by 0x40B7DD: basicTests (boardtests.c:1987)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 132 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406464: testStar (boardtests.c:17)
+==31232==    by 0x40B7E7: basicTests (boardtests.c:1990)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 133 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x406464: testStar (boardtests.c:17)
+==31232==    by 0x40B7E7: basicTests (boardtests.c:1990)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 134 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407903: testAvoidMovingOffTheSideOfTheBoard (boardtests.c:531)
+==31232==    by 0x40B7F1: basicTests (boardtests.c:1991)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 135 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407903: testAvoidMovingOffTheSideOfTheBoard (boardtests.c:531)
+==31232==    by 0x40B7F1: basicTests (boardtests.c:1991)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 136 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407A32: testAvoidMovingOffTheSideOfTheBoard2 (boardtests.c:557)
+==31232==    by 0x40B7FB: basicTests (boardtests.c:1992)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 137 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407A32: testAvoidMovingOffTheSideOfTheBoard2 (boardtests.c:557)
+==31232==    by 0x40B7FB: basicTests (boardtests.c:1992)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 138 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407CF0: testAvoidMovingOffTheSideOfTheBoard3 (boardtests.c:610)
+==31232==    by 0x40B805: basicTests (boardtests.c:1993)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 139 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407CF0: testAvoidMovingOffTheSideOfTheBoard3 (boardtests.c:610)
+==31232==    by 0x40B805: basicTests (boardtests.c:1993)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 140 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407E6D: testAvoidMovingOffTheSideOfTheBoard4 (boardtests.c:637)
+==31232==    by 0x40B80F: basicTests (boardtests.c:1994)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 141 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407E6D: testAvoidMovingOffTheSideOfTheBoard4 (boardtests.c:637)
+==31232==    by 0x40B80F: basicTests (boardtests.c:1994)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 142 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407FE0: testAvoidMovingOffTheSideOfTheBoard5 (boardtests.c:664)
+==31232==    by 0x40B819: basicTests (boardtests.c:1995)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 143 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407FE0: testAvoidMovingOffTheSideOfTheBoard5 (boardtests.c:664)
+==31232==    by 0x40B819: basicTests (boardtests.c:1995)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 144 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40813F: testAvoidMovingOffTheSideOfTheBoard6 (boardtests.c:691)
+==31232==    by 0x40B823: basicTests (boardtests.c:1996)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 145 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40813F: testAvoidMovingOffTheSideOfTheBoard6 (boardtests.c:691)
+==31232==    by 0x40B823: basicTests (boardtests.c:1996)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 146 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40828E: testAvoidMovingOffTheSideOfTheBoard7 (boardtests.c:718)
+==31232==    by 0x40B82D: basicTests (boardtests.c:1997)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 147 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40828E: testAvoidMovingOffTheSideOfTheBoard7 (boardtests.c:718)
+==31232==    by 0x40B82D: basicTests (boardtests.c:1997)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 148 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407B7B: testAvoidMovingOffTheSideOfTheBoard8 (boardtests.c:583)
+==31232==    by 0x40B837: basicTests (boardtests.c:1998)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 149 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x407B7B: testAvoidMovingOffTheSideOfTheBoard8 (boardtests.c:583)
+==31232==    by 0x40B837: basicTests (boardtests.c:1998)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 150 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4083F2: testAvoidMovingOffTheSideOfTheBoard9 (boardtests.c:745)
+==31232==    by 0x40B841: basicTests (boardtests.c:1999)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 151 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4083F2: testAvoidMovingOffTheSideOfTheBoard9 (boardtests.c:745)
+==31232==    by 0x40B841: basicTests (boardtests.c:1999)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 152 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408647: testUnten (boardtests.c:772)
+==31232==    by 0x40B84B: basicTests (boardtests.c:2002)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 153 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408647: testUnten (boardtests.c:772)
+==31232==    by 0x40B84B: basicTests (boardtests.c:2002)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 154 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408755: testUnten2 (boardtests.c:800)
+==31232==    by 0x40B855: basicTests (boardtests.c:2003)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 155 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408755: testUnten2 (boardtests.c:800)
+==31232==    by 0x40B855: basicTests (boardtests.c:2003)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 156 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40888A: testUnten3 (boardtests.c:828)
+==31232==    by 0x40B85F: basicTests (boardtests.c:2004)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 157 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40888A: testUnten3 (boardtests.c:828)
+==31232==    by 0x40B85F: basicTests (boardtests.c:2004)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 158 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4089BF: testUnten4 (boardtests.c:856)
+==31232==    by 0x40B869: basicTests (boardtests.c:2005)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 159 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4089BF: testUnten4 (boardtests.c:856)
+==31232==    by 0x40B869: basicTests (boardtests.c:2005)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 160 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409070: testRechtUnten (boardtests.c:996)
+==31232==    by 0x40B873: basicTests (boardtests.c:2007)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 161 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409070: testRechtUnten (boardtests.c:996)
+==31232==    by 0x40B873: basicTests (boardtests.c:2007)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 162 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409194: testRechtUnten2 (boardtests.c:1024)
+==31232==    by 0x40B87D: basicTests (boardtests.c:2008)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 163 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409194: testRechtUnten2 (boardtests.c:1024)
+==31232==    by 0x40B87D: basicTests (boardtests.c:2008)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 164 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4092B8: testRechtUnten3 (boardtests.c:1052)
+==31232==    by 0x40B887: basicTests (boardtests.c:2009)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 165 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4092B8: testRechtUnten3 (boardtests.c:1052)
+==31232==    by 0x40B887: basicTests (boardtests.c:2009)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 166 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4093D3: testRechtUnten4 (boardtests.c:1080)
+==31232==    by 0x40B891: basicTests (boardtests.c:2010)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 167 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4093D3: testRechtUnten4 (boardtests.c:1080)
+==31232==    by 0x40B891: basicTests (boardtests.c:2010)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 168 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4094F7: testLinksUnten (boardtests.c:1108)
+==31232==    by 0x40B89B: basicTests (boardtests.c:2012)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 169 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x4094F7: testLinksUnten (boardtests.c:1108)
+==31232==    by 0x40B89B: basicTests (boardtests.c:2012)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 170 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40961B: testLinksUnten2 (boardtests.c:1136)
+==31232==    by 0x40B8A5: basicTests (boardtests.c:2013)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 171 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40961B: testLinksUnten2 (boardtests.c:1136)
+==31232==    by 0x40B8A5: basicTests (boardtests.c:2013)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 172 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40973E: testLinksUnten3 (boardtests.c:1164)
+==31232==    by 0x40B8AF: basicTests (boardtests.c:2014)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 173 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40973E: testLinksUnten3 (boardtests.c:1164)
+==31232==    by 0x40B8AF: basicTests (boardtests.c:2014)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 174 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408AF6: testUnten_RechtUnten_LinksUnten (boardtests.c:884)
+==31232==    by 0x40B8B9: basicTests (boardtests.c:2016)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 175 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408AF6: testUnten_RechtUnten_LinksUnten (boardtests.c:884)
+==31232==    by 0x40B8B9: basicTests (boardtests.c:2016)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 176 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408C55: testUnten_RechtUnten_LinksUnten2 (boardtests.c:912)
+==31232==    by 0x40B8C3: basicTests (boardtests.c:2017)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 177 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408C55: testUnten_RechtUnten_LinksUnten2 (boardtests.c:912)
+==31232==    by 0x40B8C3: basicTests (boardtests.c:2017)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 178 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408DB4: testUnten_RechtUnten_LinksUnten3 (boardtests.c:940)
+==31232==    by 0x40B8CD: basicTests (boardtests.c:2018)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 179 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408DB4: testUnten_RechtUnten_LinksUnten3 (boardtests.c:940)
+==31232==    by 0x40B8CD: basicTests (boardtests.c:2018)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 180 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408F13: testUnten_RechtUnten_LinksUnten4 (boardtests.c:968)
+==31232==    by 0x40B8D7: basicTests (boardtests.c:2019)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 181 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x408F13: testUnten_RechtUnten_LinksUnten4 (boardtests.c:968)
+==31232==    by 0x40B8D7: basicTests (boardtests.c:2019)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 182 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409877: testRechtOben (boardtests.c:1192)
+==31232==    by 0x40B8E1: basicTests (boardtests.c:2021)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 183 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409877: testRechtOben (boardtests.c:1192)
+==31232==    by 0x40B8E1: basicTests (boardtests.c:2021)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 184 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409992: testRechtOben2 (boardtests.c:1220)
+==31232==    by 0x40B8EB: basicTests (boardtests.c:2022)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 185 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409992: testRechtOben2 (boardtests.c:1220)
+==31232==    by 0x40B8EB: basicTests (boardtests.c:2022)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 186 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409AAD: testRechtOben3 (boardtests.c:1248)
+==31232==    by 0x40B8F5: basicTests (boardtests.c:2023)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 187 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409AAD: testRechtOben3 (boardtests.c:1248)
+==31232==    by 0x40B8F5: basicTests (boardtests.c:2023)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 188 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409BCE: testRechtOben4 (boardtests.c:1276)
+==31232==    by 0x40B8FF: basicTests (boardtests.c:2024)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 189 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409BCE: testRechtOben4 (boardtests.c:1276)
+==31232==    by 0x40B8FF: basicTests (boardtests.c:2024)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 190 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409CEF: testRechtOben5 (boardtests.c:1304)
+==31232==    by 0x40B909: basicTests (boardtests.c:2025)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 191 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409CEF: testRechtOben5 (boardtests.c:1304)
+==31232==    by 0x40B909: basicTests (boardtests.c:2025)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 192 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409E08: testLinksOben (boardtests.c:1332)
+==31232==    by 0x40B913: basicTests (boardtests.c:2027)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 193 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x409E08: testLinksOben (boardtests.c:1332)
+==31232==    by 0x40B913: basicTests (boardtests.c:2027)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 194 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A022: testLinksOben3 (boardtests.c:1384)
+==31232==    by 0x40B927: basicTests (boardtests.c:2029)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 195 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A022: testLinksOben3 (boardtests.c:1384)
+==31232==    by 0x40B927: basicTests (boardtests.c:2029)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 196 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A150: testLinksOben4 (boardtests.c:1412)
+==31232==    by 0x40B931: basicTests (boardtests.c:2030)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 197 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A150: testLinksOben4 (boardtests.c:1412)
+==31232==    by 0x40B931: basicTests (boardtests.c:2030)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 198 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A269: testLinksOben5 (boardtests.c:1441)
+==31232==    by 0x40B93B: basicTests (boardtests.c:2031)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 199 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A269: testLinksOben5 (boardtests.c:1441)
+==31232==    by 0x40B93B: basicTests (boardtests.c:2031)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 200 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A384: testLinksOben6 (boardtests.c:1470)
+==31232==    by 0x40B945: basicTests (boardtests.c:2032)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 201 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A384: testLinksOben6 (boardtests.c:1470)
+==31232==    by 0x40B945: basicTests (boardtests.c:2032)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 202 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A49D: testOben (boardtests.c:1499)
+==31232==    by 0x40B94F: basicTests (boardtests.c:2034)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 203 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A49D: testOben (boardtests.c:1499)
+==31232==    by 0x40B94F: basicTests (boardtests.c:2034)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 204 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A5A8: testOben2 (boardtests.c:1527)
+==31232==    by 0x40B959: basicTests (boardtests.c:2035)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 205 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A5A8: testOben2 (boardtests.c:1527)
+==31232==    by 0x40B959: basicTests (boardtests.c:2035)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 206 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A6D3: testOben_RechtOben_LinksOben (boardtests.c:1556)
+==31232==    by 0x40B963: basicTests (boardtests.c:2037)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 207 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A6D3: testOben_RechtOben_LinksOben (boardtests.c:1556)
+==31232==    by 0x40B963: basicTests (boardtests.c:2037)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 208 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A820: testOben_RechtOben_LinksOben2 (boardtests.c:1584)
+==31232==    by 0x40B96D: basicTests (boardtests.c:2038)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 209 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A820: testOben_RechtOben_LinksOben2 (boardtests.c:1584)
+==31232==    by 0x40B96D: basicTests (boardtests.c:2038)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 210 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A96D: testOben_RechtOben_LinksOben3 (boardtests.c:1612)
+==31232==    by 0x40B977: basicTests (boardtests.c:2039)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 211 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40A96D: testOben_RechtOben_LinksOben3 (boardtests.c:1612)
+==31232==    by 0x40B977: basicTests (boardtests.c:2039)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 212 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AABA: testOben_RechtOben_LinksOben4 (boardtests.c:1640)
+==31232==    by 0x40B981: basicTests (boardtests.c:2040)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 213 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AABA: testOben_RechtOben_LinksOben4 (boardtests.c:1640)
+==31232==    by 0x40B981: basicTests (boardtests.c:2040)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 214 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AC03: testRecht (boardtests.c:1668)
+==31232==    by 0x40B98B: basicTests (boardtests.c:2042)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 215 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AC03: testRecht (boardtests.c:1668)
+==31232==    by 0x40B98B: basicTests (boardtests.c:2042)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 216 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AD0C: testRecht2 (boardtests.c:1696)
+==31232==    by 0x40B995: basicTests (boardtests.c:2043)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 217 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AD0C: testRecht2 (boardtests.c:1696)
+==31232==    by 0x40B995: basicTests (boardtests.c:2043)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 218 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AE19: testRecht3 (boardtests.c:1724)
+==31232==    by 0x40B99F: basicTests (boardtests.c:2044)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 219 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AE19: testRecht3 (boardtests.c:1724)
+==31232==    by 0x40B99F: basicTests (boardtests.c:2044)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 220 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AF44: testLinks (boardtests.c:1752)
+==31232==    by 0x40B9A9: basicTests (boardtests.c:2046)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 221 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40AF44: testLinks (boardtests.c:1752)
+==31232==    by 0x40B9A9: basicTests (boardtests.c:2046)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 222 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B04D: testLinks2 (boardtests.c:1780)
+==31232==    by 0x40B9B3: basicTests (boardtests.c:2047)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 223 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B04D: testLinks2 (boardtests.c:1780)
+==31232==    by 0x40B9B3: basicTests (boardtests.c:2047)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 224 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B15A: testLinks3 (boardtests.c:1808)
+==31232==    by 0x40B9BD: basicTests (boardtests.c:2048)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 225 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B15A: testLinks3 (boardtests.c:1808)
+==31232==    by 0x40B9BD: basicTests (boardtests.c:2048)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 226 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B285: testWinner (boardtests.c:1837)
+==31232==    by 0x40B9C7: basicTests (boardtests.c:2051)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 227 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B285: testWinner (boardtests.c:1837)
+==31232==    by 0x40B9C7: basicTests (boardtests.c:2051)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 228 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B438: testWinner2 (boardtests.c:1881)
+==31232==    by 0x40B9D1: basicTests (boardtests.c:2052)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 229 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40B438: testWinner2 (boardtests.c:1881)
+==31232==    by 0x40B9D1: basicTests (boardtests.c:2052)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 230 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411425: startingBoardTest (makemovetests.c:923)
+==31232==    by 0x4115BA: runMakeMoveTests (makemovetests.c:982)
+==31232==    by 0x40131E: main (main.c:58)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 231 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411425: startingBoardTest (makemovetests.c:923)
+==31232==    by 0x4115BA: runMakeMoveTests (makemovetests.c:982)
+==31232==    by 0x40131E: main (main.c:58)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 232 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411494: startingBoardTest (makemovetests.c:935)
+==31232==    by 0x4115BA: runMakeMoveTests (makemovetests.c:982)
+==31232==    by 0x40131E: main (main.c:58)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 233 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411494: startingBoardTest (makemovetests.c:935)
+==31232==    by 0x4115BA: runMakeMoveTests (makemovetests.c:982)
+==31232==    by 0x40131E: main (main.c:58)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 234 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CD9E: flipTurnTest (unmakemovetests.c:16)
+==31232==    by 0x40EAFE: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:753)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 235 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CD9E: flipTurnTest (unmakemovetests.c:16)
+==31232==    by 0x40EAFE: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:753)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 236 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CDB8: flipTurnTest (unmakemovetests.c:19)
+==31232==    by 0x40EAFE: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:753)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 237 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CDB8: flipTurnTest (unmakemovetests.c:19)
+==31232==    by 0x40EAFE: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:753)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 238 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CFFE: copyBoardStructTest (unmakemovetests.c:78)
+==31232==    by 0x40EB08: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:754)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 239 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40CFFE: copyBoardStructTest (unmakemovetests.c:78)
+==31232==    by 0x40EB08: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:754)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 240 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D049: copyBoardStructTest (unmakemovetests.c:87)
+==31232==    by 0x40EB08: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:754)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 241 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D049: copyBoardStructTest (unmakemovetests.c:87)
+==31232==    by 0x40EB08: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:754)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 242 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D124: copyBoardStructTest2 (unmakemovetests.c:110)
+==31232==    by 0x40EB12: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:755)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 243 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D124: copyBoardStructTest2 (unmakemovetests.c:110)
+==31232==    by 0x40EB12: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:755)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 244 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D1A4: copyBoardStructTest2 (unmakemovetests.c:121)
+==31232==    by 0x40EB12: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:755)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 245 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D1A4: copyBoardStructTest2 (unmakemovetests.c:121)
+==31232==    by 0x40EB12: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:755)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 246 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D283: stackpushPopTest (unmakemovetests.c:143)
+==31232==    by 0x40EB1C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:757)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 247 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D283: stackpushPopTest (unmakemovetests.c:143)
+==31232==    by 0x40EB1C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:757)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 248 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D3A2: stackpushPopManyTest (unmakemovetests.c:176)
+==31232==    by 0x40EB26: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:758)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 249 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D3A2: stackpushPopManyTest (unmakemovetests.c:176)
+==31232==    by 0x40EB26: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:758)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 250 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D66A: manualBabyTest (unmakemovetests.c:239)
+==31232==    by 0x40EB30: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:760)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 251 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D66A: manualBabyTest (unmakemovetests.c:239)
+==31232==    by 0x40EB30: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:760)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 252 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D6CB: manualBabyTest (unmakemovetests.c:251)
+==31232==    by 0x40EB30: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:760)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 253 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D6CB: manualBabyTest (unmakemovetests.c:251)
+==31232==    by 0x40EB30: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:760)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 254 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D903: manualBaby2Test (unmakemovetests.c:307)
+==31232==    by 0x40EB3A: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:761)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 255 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D903: manualBaby2Test (unmakemovetests.c:307)
+==31232==    by 0x40EB3A: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:761)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 256 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D968: manualBaby2Test (unmakemovetests.c:319)
+==31232==    by 0x40EB3A: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:761)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 257 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40D968: manualBaby2Test (unmakemovetests.c:319)
+==31232==    by 0x40EB3A: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:761)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 258 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DBA0: startingBoard1MANUALTest (unmakemovetests.c:374)
+==31232==    by 0x40EB44: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:762)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 259 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DBA0: startingBoard1MANUALTest (unmakemovetests.c:374)
+==31232==    by 0x40EB44: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:762)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 260 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DBEB: startingBoard1MANUALTest (unmakemovetests.c:383)
+==31232==    by 0x40EB44: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:762)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 261 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DBEB: startingBoard1MANUALTest (unmakemovetests.c:383)
+==31232==    by 0x40EB44: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:762)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 262 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DE26: startingBoard1MANUAL2Test (unmakemovetests.c:436)
+==31232==    by 0x40EB4E: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:763)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 263 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DE26: startingBoard1MANUAL2Test (unmakemovetests.c:436)
+==31232==    by 0x40EB4E: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:763)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 264 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DE71: startingBoard1MANUAL2Test (unmakemovetests.c:445)
+==31232==    by 0x40EB4E: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:763)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 265 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40DE71: startingBoard1MANUAL2Test (unmakemovetests.c:445)
+==31232==    by 0x40EB4E: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:763)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 266 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E151: startingBoard1MANUAL3Test (unmakemovetests.c:515)
+==31232==    by 0x40EB58: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:764)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 267 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E151: startingBoard1MANUAL3Test (unmakemovetests.c:515)
+==31232==    by 0x40EB58: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:764)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 268 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E1A2: startingBoard1MANUAL3Test (unmakemovetests.c:524)
+==31232==    by 0x40EB58: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:764)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 269 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E1A2: startingBoard1MANUAL3Test (unmakemovetests.c:524)
+==31232==    by 0x40EB58: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:764)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 270 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E68D: moveunmakeTest (unmakemovetests.c:618)
+==31232==    by 0x40EB62: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:766)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 271 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E68D: moveunmakeTest (unmakemovetests.c:618)
+==31232==    by 0x40EB62: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:766)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 272 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E6D8: moveunmakeTest (unmakemovetests.c:627)
+==31232==    by 0x40EB62: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:766)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 273 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E6D8: moveunmakeTest (unmakemovetests.c:627)
+==31232==    by 0x40EB62: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:766)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 274 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E980: moveunmakeStackTest (unmakemovetests.c:695)
+==31232==    by 0x40EB6C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:767)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 275 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E980: moveunmakeStackTest (unmakemovetests.c:695)
+==31232==    by 0x40EB6C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:767)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 276 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E9CB: moveunmakeStackTest (unmakemovetests.c:704)
+==31232==    by 0x40EB6C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:767)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 512 bytes in 1 blocks are definitely lost in loss record 277 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x40E9CB: moveunmakeStackTest (unmakemovetests.c:704)
+==31232==    by 0x40EB6C: fullTestSuiteUnmakeMoveTests (unmakemovetests.c:767)
+==31232==    by 0x401335: main (main.c:61)
+==31232== 
+==31232== 576 bytes in 1 blocks are definitely lost in loss record 278 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403DDC: initialiseBoardStructToZeroCustom (board.c:177)
+==31232==    by 0x4125FB: testStartingBoardBigger (biggerboardtest.c:16)
+==31232==    by 0x412765: testSuiteBigBoard (biggerboardtest.c:54)
+==31232==    by 0x40134C: main (main.c:64)
+==31232== 
+==31232== 768 bytes in 3 blocks are definitely lost in loss record 279 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,024 bytes in 4 blocks are definitely lost in loss record 280 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411E73: testBasicBoard (perft.c:224)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,024 bytes in 4 blocks are definitely lost in loss record 281 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411F42: testBasicBoard (perft.c:244)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,024 bytes in 4 blocks are definitely lost in loss record 282 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,024 bytes in 4 blocks are definitely lost in loss record 283 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,024 bytes in 4 blocks are definitely lost in loss record 284 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,024 bytes in 4 blocks are definitely lost in loss record 285 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,024 bytes in 4 blocks are definitely lost in loss record 286 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,152 bytes in 1 blocks are definitely lost in loss record 287 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403DDC: initialiseBoardStructToZeroCustom (board.c:177)
+==31232==    by 0x4125FB: testStartingBoardBigger (biggerboardtest.c:16)
+==31232==    by 0x412765: testSuiteBigBoard (biggerboardtest.c:54)
+==31232==    by 0x40134C: main (main.c:64)
+==31232== 
+==31232== 1,152 bytes in 1 blocks are definitely lost in loss record 288 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403DDC: initialiseBoardStructToZeroCustom (board.c:177)
+==31232==    by 0x4125FB: testStartingBoardBigger (biggerboardtest.c:16)
+==31232==    by 0x412765: testSuiteBigBoard (biggerboardtest.c:54)
+==31232==    by 0x40134C: main (main.c:64)
+==31232== 
+==31232== 1,320 (40 direct, 1,280 indirect) bytes in 1 blocks are definitely lost in loss record 289 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x409F11: testLinksOben2 (boardtests.c:1359)
+==31232==    by 0x40B91D: basicTests (boardtests.c:2028)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 1,320 (40 direct, 1,280 indirect) bytes in 1 blocks are definitely lost in loss record 290 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x40B5B1: testWinner3 (boardtests.c:1922)
+==31232==    by 0x40B9DB: basicTests (boardtests.c:2053)
+==31232==    by 0x40B9F0: fullTestSuite (boardtests.c:2059)
+==31232==    by 0x4012E3: main (main.c:50)
+==31232== 
+==31232== 1,536 bytes in 3 blocks are definitely lost in loss record 291 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 1,536 bytes in 3 blocks are definitely lost in loss record 292 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 293 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411E73: testBasicBoard (perft.c:224)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 294 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411E73: testBasicBoard (perft.c:224)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 295 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411F42: testBasicBoard (perft.c:244)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 296 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411F42: testBasicBoard (perft.c:244)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 297 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 298 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 299 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 300 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 301 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 302 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 303 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 304 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 305 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 2,048 bytes in 4 blocks are definitely lost in loss record 306 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 3,072 bytes in 12 blocks are definitely lost in loss record 307 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411F42: testBasicBoard (perft.c:244)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 3,072 bytes in 12 blocks are definitely lost in loss record 308 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 3,072 bytes in 12 blocks are definitely lost in loss record 309 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 3,072 bytes in 12 blocks are definitely lost in loss record 310 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 3,072 bytes in 12 blocks are definitely lost in loss record 311 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 3,072 bytes in 12 blocks are definitely lost in loss record 312 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 3,072 bytes in 12 blocks are definitely lost in loss record 313 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 314 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411F42: testBasicBoard (perft.c:244)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 315 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x411F42: testBasicBoard (perft.c:244)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 316 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 317 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 318 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 319 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 320 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 321 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 322 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 323 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 324 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 325 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 326 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 6,144 bytes in 12 blocks are definitely lost in loss record 327 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 14,336 bytes in 56 blocks are definitely lost in loss record 328 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 14,336 bytes in 56 blocks are definitely lost in loss record 329 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 14,336 bytes in 56 blocks are definitely lost in loss record 330 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 14,336 bytes in 56 blocks are definitely lost in loss record 331 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 14,336 bytes in 56 blocks are definitely lost in loss record 332 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 18,176 bytes in 71 blocks are definitely lost in loss record 333 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 334 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 335 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x412011: testBasicBoard (perft.c:264)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 336 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 337 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 338 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 339 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 340 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 341 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 342 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 28,672 bytes in 56 blocks are definitely lost in loss record 343 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 36,352 bytes in 71 blocks are definitely lost in loss record 344 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 36,352 bytes in 71 blocks are definitely lost in loss record 345 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 62,464 bytes in 244 blocks are definitely lost in loss record 346 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 62,464 bytes in 244 blocks are definitely lost in loss record 347 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 62,464 bytes in 244 blocks are definitely lost in loss record 348 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 62,464 bytes in 244 blocks are definitely lost in loss record 349 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 108,032 bytes in 422 blocks are definitely lost in loss record 350 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 351 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 352 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4120E0: testBasicBoard (perft.c:284)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 353 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 354 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 355 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 356 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 357 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 124,928 bytes in 244 blocks are definitely lost in loss record 358 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 216,064 bytes in 422 blocks are definitely lost in loss record 359 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 216,064 bytes in 422 blocks are definitely lost in loss record 360 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 357,376 bytes in 1,396 blocks are definitely lost in loss record 361 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 357,376 bytes in 1,396 blocks are definitely lost in loss record 362 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 357,376 bytes in 1,396 blocks are definitely lost in loss record 363 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 714,752 bytes in 1,396 blocks are definitely lost in loss record 364 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 714,752 bytes in 1,396 blocks are definitely lost in loss record 365 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x4121AF: testBasicBoard (perft.c:304)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 714,752 bytes in 1,396 blocks are definitely lost in loss record 366 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 714,752 bytes in 1,396 blocks are definitely lost in loss record 367 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 714,752 bytes in 1,396 blocks are definitely lost in loss record 368 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 714,752 bytes in 1,396 blocks are definitely lost in loss record 369 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232==    by 0x401363: main (main.c:67)
+==31232== 
+==31232== 762,368 bytes in 2,978 blocks are definitely lost in loss record 370 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232== 
+==31232== 1,524,736 bytes in 2,978 blocks are definitely lost in loss record 371 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232== 
+==31232== 1,524,736 bytes in 2,978 blocks are definitely lost in loss record 372 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41241C: testBasicBoard (perft.c:365)
+==31232== 
+==31232== 2,099,200 bytes in 8,200 blocks are definitely lost in loss record 373 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 2,099,200 bytes in 8,200 blocks are definitely lost in loss record 374 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 4,197,888 bytes in 8,199 blocks are definitely lost in loss record 375 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 4,198,400 bytes in 8,200 blocks are definitely lost in loss record 376 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41227E: testBasicBoard (perft.c:324)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 4,198,400 bytes in 8,200 blocks are definitely lost in loss record 377 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 4,198,400 bytes in 8,200 blocks are definitely lost in loss record 378 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232==    by 0x4125C5: perftSuite (perft.c:413)
+==31232== 
+==31232== 5,456,640 bytes in 21,315 blocks are definitely lost in loss record 379 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232== 
+==31232== 10,913,280 bytes in 21,315 blocks are definitely lost in loss record 380 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232== 
+==31232== 10,913,280 bytes in 21,315 blocks are definitely lost in loss record 381 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232== 
+==31232== 14,103,296 bytes in 55,091 blocks are definitely lost in loss record 382 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CC3: initialiseBoardStructMemory (board.c:155)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232== 
+==31232== 28,206,592 bytes in 55,091 blocks are definitely lost in loss record 383 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CFA: initialiseBoardStructMemory (board.c:157)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232== 
+==31232== 28,207,104 bytes in 55,092 blocks are definitely lost in loss record 384 of 384
+==31232==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31232==    by 0x403CDE: initialiseBoardStructMemory (board.c:156)
+==31232==    by 0x403D95: initialiseBoardStructToZero (board.c:171)
+==31232==    by 0x411717: perftFunction (perft.c:51)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411899: perftFunction (perft.c:79)
+==31232==    by 0x411A74: perft (perft.c:118)
+==31232==    by 0x41234D: testBasicBoard (perft.c:345)
+==31232== 
+==31232== LEAK SUMMARY:
+==31232==    definitely lost: 130,454,928 bytes in 305,733 blocks
+==31232==    indirectly lost: 2,560 bytes in 6 blocks
+==31232==      possibly lost: 1,280 bytes in 3 blocks
+==31232==    still reachable: 15,248 bytes in 48 blocks
+==31232==         suppressed: 0 bytes in 0 blocks
+==31232== Reachable blocks (those to which a pointer was found) are not shown.
+==31232== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==31232== 
+==31232== For counts of detected and suppressed errors, rerun with: -v
+==31232== ERROR SUMMARY: 330 errors from 330 contexts (suppressed: 0 from 0)

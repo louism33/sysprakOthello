@@ -60,9 +60,9 @@ void resetBoardToZero(BOARD board); // todo do we want to export this one?
 
 void freeBoardStruct(BOARD_STRUCT *boardStruct);
 
-int *removeDuplicates(MOVES speicher, int index);
+int removeDuplicates(MOVES speicher, int index);
 
-MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves);
+int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves);
 
 SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove);
 

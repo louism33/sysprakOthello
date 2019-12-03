@@ -21,15 +21,13 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
         return 1;
     }
 
-    if (depth == 1) { // todo // do not ignore leaf nodes with no moves ?
+    if (depth == 1) {
         int i = getTotalNumberOfLegalMoves(board, switchPlayer(boardStruct->sideToMove));
-        return getTotalNumberOfLegalMoves(board, switchPlayer(boardStruct->sideToMove));
+        return i > 0 ? i : 1; // if there are no moves from here, it is still a end node
     }
 
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
-    getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
-
-    int totalMoves = countMoves(moves);
+    int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     if (totalMoves == 0) {
         if (passed) {
@@ -125,9 +123,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     BOARD board = boardStruct->board;
 
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
-    getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
-
-    int totalMoves = countMoves(moves);
+    int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     printBoardSide(boardStruct);
     printf("moves from this position: %d\n", totalMoves);
@@ -171,7 +167,20 @@ int fromCommandLine(int depth) {
 
     resetBoardToStarter(board);
 
-    perftDivide(b, depth);
+    makeMove(b, 26);
+    makeMove(b, 18);
+    makeMove(b, 10);
+    makeMove(b, 9);
+    makeMove(b, 19);
+    makeMove(b, 2);
+    makeMove(b, 1);
+    makeMove(b, 11);
+
+//    printBoardSide(b);
+    makeMove(b, 0);
+//    printBoardSide(b);
+
+    perftDivide(b, depth-9);
 }
 
 int testBasicBoard() {
@@ -352,9 +361,7 @@ int testBasicBoard() {
         }
     }
 
-    if (0) { // todo failing
-//        perftDivide(b, 9);
-
+    if (1) {
         int received = perft(b, 9, 0);
         int correct = 3005288;
         if (received != correct) {
@@ -374,10 +381,7 @@ int testBasicBoard() {
         }
     }
 
-
-    if (0) { // todo failing
-//        perftDivide(b, 9);
-
+    if (0) {
         int received = perft(b, 10, 0);
         int correct = 24571284;
         if (received != correct) {

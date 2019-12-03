@@ -145,16 +145,17 @@ void resetBoardToZeroCustom(BOARD board, int boardSize) {
 }
 
 void freeBoardStruct(BOARD_STRUCT *boardStruct) {
-    //    free(boardStruct->stack->stackArray);
-    //    free(boardStruct->stack);
+    free(boardStruct->moveStack);
+    free(boardStruct->stack);
     free(boardStruct->board);
+    free(boardStruct);
 }
 
 void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct, int boardSize) {
     boardStruct->board = malloc(boardSize * sizeof(int)); //todo careful of magic numbers!
-    boardStruct->sideToMove = STARTING_PLAYER;
     boardStruct->stack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
     boardStruct->moveStack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
+    boardStruct->sideToMove = STARTING_PLAYER;
     boardStruct->stackIndexMove = 0;
     boardStruct->stackIndexObject = 0;
 }
@@ -250,7 +251,8 @@ void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
 }
 
 static inline int getColumn(int i) {
-    return i % getColumnSize();
+    int col = i % getColumnSize();
+    return col < 0 ? col + getColumnSize() : col;
 }
 
 static inline int getRow(int i) {
@@ -282,8 +284,6 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     int smallDiagonal = getColumnSize() - 1;
     int bigDiagonal = getColumnSize() + 1;
 
-//    printf("POS is %d\n", position);
-
     //for-Schleifer um nach rechts zu prüfen
     if (col != preFinalCol && col != finalCol) {
         if (board[position + 1] == TARGET_PLAYER) {
@@ -306,7 +306,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
             }
         }
     }
-//    printf("a\n");
+
     // for-Schleifer um nach links zu prüfen
     if (col != firstCol && col != secondCol) {
         if (board[position - 1] == TARGET_PLAYER) {
@@ -330,14 +330,12 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
             }
         }
     }
-//    printf("b %d\n", getBoardSize());
+
     // for-Schleifer um nach unten zu prüfen
     if (row != preFinalRow && row != finalRow) {
         if (board[position + getRowSize()] == TARGET_PLAYER) {
             int i = position + 2 * getRowSize();
-//            printf("->i: %d\n", i);
             while (1) {
-//                printf("i: %d , boardi %d\n", i, board[i]);
                 if (i >= getBoardSize()) {
                     break;
                 }
@@ -352,13 +350,10 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                 if (board[i] == MY_PLAYER) {
                     break;
                 }
-//                board[i] = 1;
-//                printBoard(board);
-//                exit(1); // todo todo
             }
         }
     }
-//    printf("ac\n");
+
     // for-Schleifer um nach oben zu prüfen
     if (row != firstRow && row != secondRow) {
         if (board[position - getColumnSize()] == TARGET_PLAYER) {
@@ -439,6 +434,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
             }
         }
     }
+
     // for-Schleifer um nach rechts unten zu prüfen
     if (col != preFinalCol && col != finalCol && row != finalRow && row != preFinalRow) {
         if (board[position + bigDiagonal] == TARGET_PLAYER) {
@@ -465,6 +461,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
             }
         }
     }
+
     //  for-Schleifer um nach links unten zu prüfen
     if (col != firstCol && col != secondCol && row != finalRow && row != preFinalRow) {
         if (board[position + smallDiagonal] == TARGET_PLAYER) {
@@ -473,7 +470,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
                 if (i >= getBoardSize()) {
                     break;
                 }
-                if (getColumn(i) == smallDiagonal) {
+                if (getColumn(i) == finalCol) {
                     break;
                 }
                 if (board[i] == TARGET_PLAYER) {
@@ -496,9 +493,15 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
 }
 
 // todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
-int *removeDuplicates(MOVES speicher, int index) {
+int removeDuplicates(MOVES speicher, int index) {
     for (int i = 0; i < index - 1; i++) {
+        if (speicher[i] == LAST_MOVE) {
+            break;
+        }
         for (int j = i + 1; j < index;) {
+            if (speicher[j] == LAST_MOVE) {
+                break;
+            }
             if (speicher[i] == speicher[j]) {
                 for (int k = j; k < index - 1; k++) {
                     speicher[k] = speicher[k + 1];
@@ -510,18 +513,17 @@ int *removeDuplicates(MOVES speicher, int index) {
         }
     }
     speicher[index] = LAST_MOVE;
-    return speicher;
+    return index;
 }
 
-//todo board can be more than 8x8 !!!!
-
-MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
+int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
     MOVES speicher = malloc(getBoardSize() * sizeof(int)); // todo can we remove
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < getBoardSize(); pos++) {
         if (board[pos] == me) {
-            MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos, TARGET_PLAYER);
+            MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos,
+                                                                TARGET_PLAYER); // todo add starting index or something to this
             int j = 0;
             while (1) {
                 if (legalMovesFromHere[j] == LAST_MOVE) {
@@ -531,36 +533,22 @@ MOVES getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES a
             }
         }
     }
-//    if (index == 0) {
-//        printf("no moves from here\n");
-//    }
-    removeDuplicates(allMoves, index);
+    int numberOfRealMoves = removeDuplicates(allMoves, index);
     free(speicher);
-    return allMoves;
+    return numberOfRealMoves;
 }
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {
     MOVES allMoves = malloc(getBoardSize() * sizeof(int)); // todo remove this crap
-    MOVES finalspeicher = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
-    int total = 0;
-
-    for (int i = 0; i < getBoardSize(); i++) {
-        if (finalspeicher[i] == LAST_MOVE) {
-
-            free(allMoves);
-//            free(finalspeicher);
-            return total;
-        }
-        total++;
-    }
-    printf("did not find a LAST_MOVE... are you sure you did not make a mistake\n");
-    exit(1);
+    int total = getLegalMovesAllPositions(board, TARGET_PLAYER, allMoves);
+    free(allMoves);
+    return total;
 }
 
 int countMoves(MOVES allMoves) {
     int total = 0;
 
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < getBoardSize(); i++) {
         if (allMoves[i] == LAST_MOVE) {
             return total;
         }
@@ -594,12 +582,7 @@ int areBoardStructsDifferent(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT 
 
 int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n) {
     for (int i = 0; i < n; i++) {
-//        printf("aaaa %d\n", i);
         if (destinationBoard[i] != sourceBoard[i]) {
-
-//            printf("source board\n");
-//            printBoard(sourceBoard);
-//            printBoard(destinationBoard);
             return 1; // yes they are different
         }
     }
@@ -823,7 +806,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach rechts
     if (column != preFinalCol && column != finalCol) {
         if (board[pos + 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < getColumnSize() &&  pos + i < getBoardSize(); i++) {
+            for (int i = 2; i < getColumnSize() && pos + i < getBoardSize(); i++) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -849,7 +832,8 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach oben
     if (row != firstRow && row != secondRow) {
         if (board[pos - getColumnSize()] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2 * getColumnSize(); i < getBoardSize() - getColumnSize() && pos - i >= 0; i += getColumnSize()) {
+            for (int i = 2 * getColumnSize();
+                 i < getBoardSize() - getColumnSize() && pos - i >= 0; i += getColumnSize()) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -1034,16 +1018,11 @@ int getWinner(BOARD_STRUCT *boardStruct) {
             anzahlWhite++;
         }
     }
-//    printf("AnzahlBlack: %d vs. AnzahlWhite: %d \n", anzahlBlack, anzahlWhite);
-
     if (anzahlBlack > anzahlWhite) {
-//        printf("Winner is Side of Black.\n");
         return getBlack();
     } else if (anzahlBlack < anzahlWhite++) {
-//        printf("Winner is Side of White.\n");
         return getWhite();
     } else {
-//        printf("No Winner. Because the Number of all Side are same.\n");
         return DRAW;
     }
 }
@@ -1062,7 +1041,6 @@ int isGameOver(BOARD_STRUCT *boardStruct) {
         }
     }
     if (anzahlBlack == 0 || anzahlWhite == 0) {
-//        printf("Just one Side in Board.\n");
         return GAMEOVER;
     }
 
@@ -1073,7 +1051,6 @@ int isGameOver(BOARD_STRUCT *boardStruct) {
 
     // Wenn es kleiner als 64 Schach in Board gibt.
     if (getTotalNumberOfLegalMoves(board, BLACK) == 0 && getTotalNumberOfLegalMoves(board, WHITE) == 0) {
-//        printf("Game Over! Neither Black nor White can move.\n");
         return GAMEOVER; //true
     }
     return GAMENOTOVER;

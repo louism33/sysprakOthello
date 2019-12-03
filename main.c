@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
         fail += runMakeMoveTests();
 
         printf("Running unmake move test Suite\n");
-        fail += fullalTestSuiteUnmakeMoveTests();
+        fail += fullTestSuiteUnmakeMoveTests();
 
         printf("Running big board tests Suite\n");
         fail += testSuiteBigBoard();

@@ -19,19 +19,12 @@ VALGRIND_LOG=VALGRINDTESTLOGgithub.log
 FILE=sysprakOthello.zip
 BUILD_DIR=buildDir
 
-echo "     +++++++++++++i wanna remove $FILE"
-
 rm -f $FILE
 rm -rf $BUILD_DIR
 
-echo
-ls
-echo
 my_dir="$(dirname "$0")"
 "$my_dir/zipSysprakOthello.sh"
-echo
-ls
-echo
+
 ## Test 1: Check size maximum of 500 KiB
 if [ $(unzip -p "$FILE" | wc -c) -lt 512000 ]; then
 	echo "Filesize: OK"
@@ -95,7 +88,7 @@ echo "***** checking valgrind for perft command *****"
 
 ## check Valgrind with perft command
 rm -f $VALGRIND_LOG
-valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./sysprak-client perft 3
+valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./sysprak-client perft 9
 
 echo "***** finished checking valgrind for perft command *****"
 

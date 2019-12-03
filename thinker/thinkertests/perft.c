@@ -126,7 +126,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     printBoardSide(boardStruct);
-    printf("moves from this positionXyZ: %d\n", totalMoves);
+    printf("moves from this position: %d\n", totalMoves);
 
     int totalNodes = 0;
     MOVE move;
@@ -134,7 +134,6 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     char *m = malloc(3 * sizeof(char));
     while (1) {
         move = moves[index++];
-        printf("loop in divide, move %d\n", move);
         if (move == getLastMove()) {
             break;
         }

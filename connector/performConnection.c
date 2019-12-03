@@ -45,7 +45,10 @@
 
 #include "boardmessageparser.h"
 #include "../thinker/thinker.h"
+#include "../shm/shm.h"
 
+//headerdatei 
+//perfromConnection.c parameter
 #define MAX 240 // todo make better
 #define PLAYER // todo, still necessary?
 
@@ -54,6 +57,8 @@ enum Phase {
     SPIELVERLAUF = 1,
     SPIELZUG = 2
 };
+
+
 
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
@@ -110,8 +115,7 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 }
 
 // todo, handle end state, what do we do once game is over?
-void
-haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
+void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
                            BOARD_STRUCT *thinkerBoard) {
     char buff[MAX];    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64]; // example: Game from 2019-11-18 17:42
@@ -119,6 +123,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char myPlayerName[32];
     char opponent[32];
     int n = 0, readResponse = 0;
+    
+    // //info in SHM speichern
+    // strcpy(infoVonServer->nGamer,playerNumber);
+    // strcpy(infoVonServer->myGamerId,gameID);
+    // strcpy(infoVonServer->myGamerName, myPlayerName);
+
+
 
     char version[] = "VERSION 2.42\n";
     char okWait[] = "OKWAIT\n";
@@ -209,6 +220,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 }
             }
             // step four, read YOU
+            //todo die Info soll in shm geschriben werden.
             if (strncmp("+ YOU", buff, 5) == 0) {
                 // todo, save information from Server here
                 //finished
@@ -309,15 +321,18 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         }
     }
 
+
     free(moveTimeAndBoard);
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
                            BOARD_STRUCT *thinkerBoard) {
-
     haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard);
-
     printf("performConnection %d\n", sock);
 
     return 0;
 }
+// gameInfo* writeInStruct(char* playerNummer,char* myPlayerName,char playerNumber){
+    
+
+// }

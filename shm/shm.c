@@ -17,41 +17,7 @@ int shmid;
 gameInfo *shmdata;
 
 
-int createProcesses() {
-    gameInfo g1 = {"Marlene", 4356, 1};
 
-    createShm();
-    attachShm();
-
-    switch (thinker = fork()) {
-        /*Fehlerfall*/
-        case -1:
-            printf("Fehler bei fork()\n");
-            break;
-
-            /*Kindsprozess = Connector*/
-        case 0:
-            printf("Im Kindsprozess\n");
-            connector = getpid();
-            thinker = getppid();
-            printf("Meine PID = %i\n", connector);
-            //performConnection();
-            writeShm(&g1, connector, thinker);
-            break;
-
-            /*Elternprozess = Thinker*/
-        default:
-            sleep(1);
-            printf("Im Elternprozess\n");
-            thinker = getpid();
-            printf("Meine PID = %i\n", thinker);
-            readShm();
-            deleteShm();
-            break;
-
-    }
-    return EXIT_SUCCESS;
-}
 
 void createShm() {
 
@@ -72,6 +38,8 @@ void attachShm() {
     if (shmdata == (void *) -1) {
         printf("Fehler bei der Anbindung mit shmat(): shmid %d\n", shmid);
     }
+    
+    
 }
 
 void deleteShm() {
@@ -97,7 +65,7 @@ void writeShm(gameInfo *g, pid_t me, pid_t pa) {
 
 void readShm() {
     printf("Der erste Inhalt im shm ist: %i\n", shmdata->nGamer);
-    printf("Das zweite Element im shm ist: %i\n", shmdata->myGamerId);
+    printf("Das zweite Element im shm ist: %li\n", shmdata->myGamerId);
     printf("Das dritte Element im shm ist: %s\n", shmdata->myGamerName);
     printf("Das vierte Element im shm ist: %i\n", shmdata->thinker);
     printf("Das fuenfte Element im shm ist: %i\n", shmdata->connector);

@@ -8,8 +8,8 @@
 
 int performConnection(int sock, char *version, char *id, char *player);
 
-int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT * connectorBoard, BOARD_STRUCT * thinkerBoard);
-
+int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
+                           BOARD_STRUCT *thinkerBoard);
 char *convertMove(int move, char *antwort);
 
 

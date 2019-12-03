@@ -132,8 +132,6 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     // strcpy(infoVonServer->myGamerId,gameID);
     // strcpy(infoVonServer->myGamerName, myPlayerName);
 
-
-
     char version[] = "VERSION 2.42\n";
     char okWait[] = "OKWAIT\n";
 

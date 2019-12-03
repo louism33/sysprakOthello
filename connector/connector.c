@@ -95,6 +95,9 @@ char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock crea
 int connectToGameServer(int mockGame, char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
                         BOARD_STRUCT *thinkerBoard) {
+    //Marlene start----------------------------------------------------------------------------------------
+    configurationStruct c1;
+    //Marlene Ende ----------------------------------------------------------------------------------------
 
     printf("Attempting to connect to game server.\n");
 

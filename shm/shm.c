@@ -64,13 +64,14 @@ void createShm() {
     }
 }
 
-void attachShm() {
+gameInfo *attachShm() {
     /* Shared-Memory-Segment anbinden */
     shmdata = (gameInfo *) shmat(shmid, NULL, 0);
     //printf("Die Anfangsadresse vom Shm ist: %d\n", (int)*shmdata);
     if (shmdata == (void *) -1) {
         printf("Fehler bei der Anbindung mit shmat(): shmid %d\n", shmid);
     }
+    return shmdata;
 }
 
 void deleteShm() {

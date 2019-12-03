@@ -102,12 +102,10 @@ int main(int argc, char *argv[])
     BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
 
-
-
     createShm();
-    attachShm();
-    //gameInfo *aktuellInfo;
-    gameInfo i1={"bm",1234567,2};
+    shmdata = attachShm();
+    gameInfo *infoVonServer;
+    shmdata=infoVonServer;//kriegen wir von Server,also connectorMaterMethod()
     switch (thinker = fork())
     {
     /*Fehlerfall*/
@@ -115,22 +113,23 @@ int main(int argc, char *argv[])
         printf("Fehler bei fork()\n");
         break;
 
-        /*Kindsprozess = Connector*/
+    /*Kindsprozess = Connector*/
     case 0:
         printf("Im Kindsprozess\n");
         connector = getpid();
         thinker = getppid();
         printf("Meine PID = %i\n", connector);
-        writeShm(&i1,connector,thinker);
+       
+        infoVonServer=connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
+        writeShm(&shmdata, connector, thinker);
         //printf("ich ..\n");
         while (1)
         {
             sleep(3);
-            signalVonKill = kill(thinker, SIGUSR1);
+            signalVonKill = kill(thinker, SIGUSR1); //signal schicken
         }
-        // sleep(3);
-         
-        // connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
+
+       
         break;
 
         /*Elternprozess = Thinker*/
@@ -140,15 +139,19 @@ int main(int argc, char *argv[])
         thinker = getpid();
         printf("Meine PID = %i\n", thinker);
         //thinkerMasterMethod(thinkerBoard, signalVonKill);
-        
-        signal(SIGUSR1, mysighandler);
+        signal(SIGUSR1, mysighandler); //signal behandeln
         while (1)
         {
         }
         readShm();
-
+        waitForChild();
         break;
     }
+
+
+
+
+
     freeBoardStruct(connectorBoard);
     freeBoardStruct(thinkerBoard);
     return 0;

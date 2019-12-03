@@ -8,7 +8,7 @@ void createShm();
 
 int createProcesses();
 
-void attachShm();
+gameInfo* attachShm();
 
 void writeShm();
 
@@ -23,7 +23,7 @@ void waitForChild();
 die Infos bekommt der Connector vom Server und legt sie in shm in dieses Struct gameInfo ab */
 
 typedef struct {
-    char myGamerName[10];
+    char myGamerName[32];
     long myGamerId;
     int nGamer;
     /* PID von Kind- und Vaterprozess*/

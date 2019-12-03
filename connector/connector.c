@@ -37,6 +37,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include "../shm/shm.h"
 
 #define GAMEKINDNAME "Reversi"
 #define PORTNUMBER 1357
@@ -93,10 +94,10 @@ char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock crea
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-                        BOARD_STRUCT *thinkerBoard) {
+                        BOARD_STRUCT *thinkerBoard,gameInfo* infoVonServer) {
 
     printf("Attempting to connect to game server.\n");
-
+   
     configurationStruct *configurationStruct;
 
     if (mockGame) {
@@ -176,8 +177,8 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         printf("success!!!! connected to the server..\n");
     }
 
-    // performConnectionLouis(sock, gameID, player,
-    //                        configurationStruct->gamekindname, connectorBoard, thinkerBoard);
+     performConnectionLouis(sock, gameID, player,
+                          configurationStruct->gamekindname, connectorBoard, thinkerBoard,infoVonServer);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -188,7 +189,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     return 0;
 }
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
+gameInfo* connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
     printf("Hi I am good at connecting\n");
 //	char *configFromEnvironment = getenv("CONFIG_FILE");
 //	printf("     config file is %s \n", configFromEnvironment);
@@ -199,6 +200,7 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     int mockGame = 0;
     int usingCustomConfigFile = 0;
     char *configPath;
+    gameInfo* infoVonServer;
 
     while ((ret = getopt(argc, argv, "g:p:m:C:")) != -1) {
         switch (ret) {
@@ -254,9 +256,9 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     }
 
     connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-                        configPath, connectorBoard, thinkerBoard);
+                        configPath, connectorBoard, thinkerBoard,infoVonServer);
 
-    return 0;
+    return infoVonServer;
 }
 
 void performConnection() {

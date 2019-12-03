@@ -193,11 +193,13 @@ int testRemoveDuplicatesLostMove() {
         if(fail) {
             fprintf(stderr, "FAILED A BOARD TEST! findDuplicates deleted a move!!!\n");
             free(moves);
+            free(movesTest);
             exit(1);
         }
     }
 
     free(moves);
+    free(movesTest);
 
     return 0; // success
 }
@@ -243,11 +245,13 @@ int testRemoveDuplicatesLostMove2() {
         if(fail) {
             fprintf(stderr, "FAILED A BOARD TEST! findDuplicates deleted a move!!!\n");
             free(moves);
+            free(movesTest);
             exit(1);
         }
     }
 
     free(moves);
+    free(movesTest);
 
     return 0; // success
 }
@@ -302,11 +306,13 @@ int testRemoveDuplicatesLostMove3() {
         if(fail) {
             fprintf(stderr, "FAILED A BOARD TEST! findDuplicates deleted a move!!!\n");
             free(moves);
+            free(movesTest);
             exit(1);
         }
     }
 
     free(moves);
+    free(movesTest);
 
     return 0; // success
 }

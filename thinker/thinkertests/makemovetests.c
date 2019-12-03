@@ -38,14 +38,14 @@ int testEasyLeft() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -78,14 +78,14 @@ int testEasyRightBottom() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -119,14 +119,14 @@ int testEasyLeftBottom() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -160,14 +160,14 @@ int testEasyTopLeft() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -200,14 +200,14 @@ int testEasyTopRight() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -240,14 +240,14 @@ int testEasyRight() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -281,14 +281,14 @@ int testEasyTop() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -322,14 +322,14 @@ int testEasyBottom() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -367,14 +367,14 @@ int testEasyRightLeft() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -415,14 +415,14 @@ int testEasyRightLeftTop() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -459,14 +459,14 @@ int testEasy2Left() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -502,14 +502,14 @@ int testEasy2Right() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -548,14 +548,14 @@ int testEasy3() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -594,14 +594,14 @@ int testEasy3Top() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -642,14 +642,14 @@ int testEasy4() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -693,14 +693,14 @@ int testEasyMAX() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -744,14 +744,14 @@ int testEasyMAXTop() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -796,14 +796,14 @@ int testEasyMAXRight() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 
@@ -825,10 +825,8 @@ int testEasyMAXBottom() {
     SIDE_TO_MOVE player = getWhite();
     b->sideToMove = getWhite();
     SIDE_TO_MOVE targetPlayer = getBlack();
-    //    
 
     makeMove(b, 5);
-
 
     BOARD_STRUCT *b2 = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b2);
@@ -846,16 +844,17 @@ int testEasyMAXBottom() {
 
     for (int i = 0; i < getStandardBoardSize(); i++) {
         if (boardTest[i] != board[i]) {
-            //printBoardLouisSide(b, player);
+//            printBoardLouisSide(b, player);
+//            printBoardLouisSide(b2, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -905,14 +904,14 @@ int crazyTest() {
         if (boardTest[i] != board[i]) {
             //printBoardLouisSide(b, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
@@ -944,40 +943,43 @@ int startingBoardTest() {
             printBoardLouisSide(b, player);
             printBoardLouisSide(b2, player);
             fprintf(stderr, "FAILED A BOARD TEST! Du kannst da  nicht hin\n");
-            free(b2);
-            free(b);
+            freeBoardStruct(b2);
+            
+            freeBoardStruct(b);
             exit(1);
         }
     }
 
-    free(b);
-    free(b2);
+    freeBoardStruct(b);
+    freeBoardStruct(b2);
 
     return 0; // success
 }
 
 
 int runMakeMoveTests() {
-//    testEasyLeft();
-//    testEasy2Left();
-//    testEasy3();
-//    testEasy4();
-//    testEasyMAX();
-//    testEasyRight();
-//    testEasy2Right();
-//    testEasyMAXRight();
-//    testEasyRightLeft();
-//    testEasyTop();
-//    testEasy3Top();
-//    testEasyMAXTop();
-//    testEasyRightLeftTop();
-//    testEasyBottom();
-//    testEasyMAXBottom();
-//    crazyTest();
-//    testEasyTopRight();
-//    testEasyTopLeft();
-//    testEasyLeftBottom();
-//    testEasyRightBottom();
+    testEasyLeft();
+    testEasy2Left();
+    testEasy3();
+    testEasy4();
+    testEasyMAX();
+    testEasyRight();
+    testEasy2Right();
+    testEasyMAXRight();
+    testEasyRightLeft();
+    testEasyTop();
+    testEasy3Top();
+    testEasyMAXTop();
+    testEasyRightLeftTop();
+    testEasyBottom();
+
+    testEasyMAXBottom();
+
+    crazyTest();
+    testEasyTopRight();
+    testEasyTopLeft();
+    testEasyLeftBottom();
+    testEasyRightBottom();
 
     startingBoardTest();
 

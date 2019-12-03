@@ -57,15 +57,11 @@ int main(int argc, char *argv[])
         fromCommandLine(depth);
         exit(0);
 
-        if (argc > 1 && strcmp(argv[1], "TEST") == 0)
-        {
-            printf("Test begin:.........\n");
-            printf("Running board test Suite\n");
-            int fail = 0;
 
-            fail += fullTestSuite(); //board test1
 
-            fail += fullTestSuiteBoard2(); //board test2
+
+
+
 
             printf("Running convert move test Suite\n");
             fail += testConvertMove();
@@ -76,19 +72,9 @@ int main(int argc, char *argv[])
             printf("Running unmake move test Suite\n");
             fail += fullTestSuiteUnmakeMoveTests();
 
-            printf("Running perft Suite\n");
-            fail += perftSuite();
 
-            printf("Running big board tests Suite\n");
-            fail += testSuiteBigBoard();
 
-            if (fail)
-            { // fail/=0 dann läuft if Bedingung
-                printf("Some tests failed, please fix them as soon as possible.\n");
-                exit(1);
-            }
-            printf("Tested. All good.\n");
-            return 0;
+
         }
 
         // todo, this is just an idea, it depends on how we do shm (shared memory)

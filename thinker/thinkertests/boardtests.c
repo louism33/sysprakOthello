@@ -24,7 +24,6 @@ int testStar() {
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 8;
@@ -33,12 +32,11 @@ int testStar() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
 
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -52,7 +50,6 @@ int testNoLegalMoves() {
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 0;
@@ -61,12 +58,11 @@ int testNoLegalMoves() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
 
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -80,7 +76,6 @@ int testNoLegalMoves2() {
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 0;
@@ -89,12 +84,11 @@ int testNoLegalMoves2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
 
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -112,7 +106,6 @@ int testNoLegalMovesBecauseGameOver() {
 
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
 
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 0;
@@ -121,17 +114,15 @@ int testNoLegalMovesBecauseGameOver() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
 
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
 int testStartingBoard1() {
-    // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
     int *board = b->board;
@@ -148,17 +139,15 @@ int testStartingBoard1() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
 
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
 int testStartingBoard2() {
-    // starting board with other player first
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
     initialiseBoardStructToZero(b);
     int *board = b->board;
@@ -167,7 +156,6 @@ int testStartingBoard2() {
 
     SIDE_TO_MOVE player = switchPlayer(getStartingPlayer());
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 4;
 
@@ -175,11 +163,10 @@ int testStartingBoard2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -191,7 +178,6 @@ int testBoardAfterOneMove() {
     resetBoardToStarter(board);
     board[27] = getBlack();
     board[26] = getBlack();
-    //    printBoardLouisSide(b, getWhite());
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
@@ -203,17 +189,15 @@ int testBoardAfterOneMove() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
 int testOnePositionleft() //nach links bewegen
 {
-    // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
     int *board = b->board;
@@ -226,7 +210,6 @@ int testOnePositionleft() //nach links bewegen
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(b, player);
 
     int *moves = malloc(getStandardBoardSize() * sizeof(int));
     int *legalMoves = getLegalMovesOnePosition(board, moves, mypos, getBlack());
@@ -237,22 +220,18 @@ int testOnePositionleft() //nach links bewegen
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A MOVE TEST! Expected %d from this position, but received %d!\n",
                 correctMove, legalMoves[0]);
-        free(b);
+        freeBoardStruct(b);
         free(moves);
-        free(board);
         exit(1);
     }
 
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     free(moves);
-    free(board);
     return 0; // success
 }
 
 int testOnePositionright() //nach rechts bewegen
 {
-    // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
     int *board = b->board;
@@ -275,15 +254,12 @@ int testOnePositionright() //nach rechts bewegen
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A MOVE TEST! Expected %d from this position, but received %d!\n",
                 correctMove, legalMoves[0]);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
         free(moves);
         exit(1);
     }
 
-    // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
     free(moves);
     return 0; // success
 }
@@ -298,7 +274,6 @@ int testWeirdImpossibleBoard() {
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 2;
 
@@ -306,11 +281,10 @@ int testWeirdImpossibleBoard() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -324,7 +298,6 @@ int testWeirdImpossibleBoard2() {
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 3;
 
@@ -332,11 +305,10 @@ int testWeirdImpossibleBoard2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -350,7 +322,6 @@ int testWeirdImpossibleBoardLinks() {
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 1;
 
@@ -358,11 +329,10 @@ int testWeirdImpossibleBoardLinks() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -376,7 +346,6 @@ int testWeirdImpossibleBoardRechts() {
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 1;
 
@@ -384,11 +353,10 @@ int testWeirdImpossibleBoardRechts() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -410,13 +378,11 @@ int testWeirdImpossibleBoardOben() // rand test
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -438,13 +404,11 @@ int testWeirdImpossibleBoardUnten() // rand test
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -458,7 +422,6 @@ int testAvoidTheDuplicateMove() {
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 1;
 
@@ -466,11 +429,11 @@ int testAvoidTheDuplicateMove() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -484,7 +447,6 @@ int testAvoidTheDuplicateMove3() {
 
     SIDE_TO_MOVE player = getWhite();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-    //    printBoardLouisSide(board, player);
     int myNumberOfMoves = getTotalNumberOfLegalMoves(board, targetPlayer);
     int correctNumberOfMoves = 1;
 
@@ -492,11 +454,10 @@ int testAvoidTheDuplicateMove3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -518,11 +479,11 @@ int testAvoidTheDuplicateMove2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -544,11 +505,11 @@ int testAvoidMovingOffTheSideOfTheBoard() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -570,11 +531,10 @@ int testAvoidMovingOffTheSideOfTheBoard2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 
@@ -595,13 +555,11 @@ int testAvoidMovingOffTheSideOfTheBoard8() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
         exit(1);
     }
-    // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -622,13 +580,13 @@ int testAvoidMovingOffTheSideOfTheBoard3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -649,13 +607,13 @@ int testAvoidMovingOffTheSideOfTheBoard4() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -676,13 +634,13 @@ int testAvoidMovingOffTheSideOfTheBoard5() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -703,13 +661,13 @@ int testAvoidMovingOffTheSideOfTheBoard6() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -730,13 +688,13 @@ int testAvoidMovingOffTheSideOfTheBoard7() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -757,13 +715,13 @@ int testAvoidMovingOffTheSideOfTheBoard9() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -785,13 +743,13 @@ int testUnten() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -813,13 +771,13 @@ int testUnten2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -841,13 +799,13 @@ int testUnten3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -869,13 +827,13 @@ int testUnten4() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -897,13 +855,13 @@ int testUnten_RechtUnten_LinksUnten() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -925,13 +883,13 @@ int testUnten_RechtUnten_LinksUnten2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -953,13 +911,13 @@ int testUnten_RechtUnten_LinksUnten3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -981,13 +939,13 @@ int testUnten_RechtUnten_LinksUnten4() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1009,13 +967,13 @@ int testRechtUnten() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1037,13 +995,13 @@ int testRechtUnten2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1065,13 +1023,13 @@ int testRechtUnten3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1093,13 +1051,13 @@ int testRechtUnten4() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1121,13 +1079,13 @@ int testLinksUnten() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1149,13 +1107,13 @@ int testLinksUnten2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1177,13 +1135,13 @@ int testLinksUnten3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1205,13 +1163,13 @@ int testRechtOben() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1233,13 +1191,13 @@ int testRechtOben2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1261,13 +1219,13 @@ int testRechtOben3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1289,13 +1247,13 @@ int testRechtOben4() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1317,13 +1275,13 @@ int testRechtOben5() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1345,13 +1303,13 @@ int testLinksOben() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1373,10 +1331,14 @@ int testLinksOben2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
+
+    freeBoardStruct(b);
+
+    return 0; // success
 }
 
 int testLinksOben3() {
@@ -1397,13 +1359,13 @@ int testLinksOben3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1425,14 +1387,14 @@ int testLinksOben4() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
 
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1454,14 +1416,14 @@ int testLinksOben5() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
 
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1483,14 +1445,14 @@ int testLinksOben6() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
 
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1512,13 +1474,13 @@ int testOben() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1540,14 +1502,14 @@ int testOben2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
 
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1569,13 +1531,13 @@ int testOben_RechtOben_LinksOben() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1597,13 +1559,13 @@ int testOben_RechtOben_LinksOben2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1625,13 +1587,13 @@ int testOben_RechtOben_LinksOben3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1653,13 +1615,13 @@ int testOben_RechtOben_LinksOben4() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1681,13 +1643,13 @@ int testRecht() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1709,13 +1671,13 @@ int testRecht2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1737,13 +1699,13 @@ int testRecht3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1765,13 +1727,13 @@ int testLinks() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1793,13 +1755,13 @@ int testLinks2() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1821,13 +1783,13 @@ int testLinks3() {
         printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected %d moves from this position, but received %d!\n",
                 correctNumberOfMoves, myNumberOfMoves);
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1860,19 +1822,19 @@ int testWinner() {
         myWinner = getWinner(b);
         if (myWinner != correctWinner) {
             fprintf(stderr, "getWinner is false.\n");
-            free(b);
-            free(board);
+            freeBoardStruct(b);
+            
             exit(1);
         }
     } else {
         fprintf(stderr, "GameOver Test is false.\n");
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1902,19 +1864,19 @@ int testWinner2() {
         myWinner = getWinner(b);
         if (myWinner != correctWinner) {
             fprintf(stderr, "getWinner is false.\n");
-            free(b);
-            free(board);
+            freeBoardStruct(b);
+            
             exit(1);
         }
     } else {
         fprintf(stderr, "GameOver Test is false.\n");
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 
@@ -1937,26 +1899,27 @@ int testWinner3() {
 
     if (myGameOver == connrectGameOver) {
         if (myGameOver == getGameNotOver()) {
+            freeBoardStruct(b);
 //            printf("Game is not over.\n");
             return 0;
         }
         myWinner = getWinner(b);
         if (myWinner != correctWinner) {
             fprintf(stderr, "getWinner is false.\n");
-            free(b);
-            free(board);
+            freeBoardStruct(b);
+            
             exit(1);
         }
     } else {
         fprintf(stderr, "GameOver Test is false.\n");
-        free(b);
-        free(board);
+        freeBoardStruct(b);
+        
         exit(1);
     }
 
     // printf("test successful\n\n");
-    free(b);
-    free(board);
+    freeBoardStruct(b);
+    
     return 0; // success
 }
 

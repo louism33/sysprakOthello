@@ -10,4 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: scriptFromLectureIsh
-      run: cd scripts/ && ./testGithubScript.sh
+      run: 
+        cd scripts/ 
+        apt install valgrind
+        ./testGithubScript.sh

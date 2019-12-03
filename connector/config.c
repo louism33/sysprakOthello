@@ -15,12 +15,11 @@
 #include <string.h>
 
 // todo, probably pass configStruct as argument?
-configurationStruct *readConfigurationFile(char *pathName) {
+int readConfigurationFile(char *pathName, configurationStruct * configurationStruct) {
 
     printf("Attempting to read configuration data from %s\n", pathName);
 
-    struct configurationStruct *configurationStruct = malloc(
-            sizeof(configurationStruct));
+
 
     // todo, careful of malloc here
     configurationStruct->hostname = (char *) malloc(200);
@@ -125,5 +124,6 @@ configurationStruct *readConfigurationFile(char *pathName) {
     printf("gamekindname: %s\n", configurationStruct->gamekindname);
 
     printf("Successfully read data from %s\n", pathName);
-    return configurationStruct;
+//    return configurationStruct;
+    return 0;
 }

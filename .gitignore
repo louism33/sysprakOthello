@@ -9,6 +9,9 @@ makefileM
 .DS_store
 .project
 
+scripts/sysprakOthello.zip
+scripts/buildDir
+
 # Prerequisites
 *.d
 

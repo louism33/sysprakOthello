@@ -6,9 +6,18 @@ Course project for System Praktikum, Winter Semester 2019 / 2020 at the LMU <br>
 Reversi client and AI. <br>
 <br>
 
-`make test` to run tests
+to run tests
 
-`make perft DEPTH=(depth)` to run get perft results to depth
+`make test `
+
+to run get perft results to depth
+
+`make perft DEPTH=(depth)`
+
+
+to run valgrind:
+
+`make -B && rm -f VALGRINDTESTLOG.log && valgrind --log-file=VALGRINDTESTLOG.log --leak-check=full --trace-children=yes ./sysprak-client TEST`
 
 Written by : 
 

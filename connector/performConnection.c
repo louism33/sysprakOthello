@@ -90,6 +90,9 @@ eine Partie in einem Unentschieden endet. In dem Fall ist allen Mitspielern der 
 Nach QUIT beendet der Server die Verbindung
      */
 
+
+
+
     printf("%s\n", buff);
     return 0; // todo, implement
 }
@@ -169,10 +172,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 ////                writeToServer(sockfd, version);
 //            }
 //
-//            if ((strncmp("-move error xx", buff, 29)) == 0) {
-            // switch on phase?
-////                writeToServer(sockfd, version);
-//            }
+            if ((strncmp("- No free player", buff, 16)) == 0) {
+                printf("Could not connect to game, the player is already taken, or there are no free players.\n");
+            }
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
@@ -201,10 +203,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 printf("-----------save gameName: %s\n", gameName);
                 if (player == NULL || strlen(player) != 1) {
+                    printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
+
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
+                    printf("### -------------> connecting with player string:'%s'\n", playerToSend);
                     writeToServer(sockfd, playerToSend);
                 }
             }
@@ -216,7 +221,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("  Received YOU info from server, buff is:%s", buff);
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
-                printf("--------save  playerNumber: %s\n", playerNumber);
+                printf("--------save  playerNumber: %s\n", playerNumber); // this often gets weird crap
 
                 if (playerNumber[0] == '0') {
                     sideToMove = getBlack();
@@ -257,6 +262,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 char *moveRet=malloc(3*sizeof(char));
 
                 connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
+//                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
 
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,

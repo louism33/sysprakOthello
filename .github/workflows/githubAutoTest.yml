@@ -11,6 +11,6 @@ jobs:
     - uses: actions/checkout@v1
     - name: scriptFromLectureIsh
       run: 
-        cd scripts/ 
-        apt install valgrind
+        cd scripts/ && 
+        apt install valgrind && 
         ./testGithubScript.sh

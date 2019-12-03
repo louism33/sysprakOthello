@@ -176,7 +176,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         printf("success!!!! connected to the server..\n");
     }
 
-     performConnectionLouis(sock, gameID, player,
+    performConnectionLouis(sock, gameID, player,
                           configurationStruct->gamekindname, connectorBoard, thinkerBoard);
 
     free(configurationStruct->gamekindname);

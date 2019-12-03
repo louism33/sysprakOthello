@@ -68,7 +68,7 @@ char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock crea
     while (res) {
         inet_ntop(res->ai_family, res->ai_addr->sa_data, addrstr, 100);
 
-        switch (res->ai_family) {
+        switch (res->ai_family) { // todo put sock in here
             case AF_INET:
                 ptr = &((struct sockaddr_in *) res->ai_addr)->sin_addr;
                 break;

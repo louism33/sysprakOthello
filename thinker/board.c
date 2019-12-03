@@ -779,7 +779,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     //Prüfung nach links
     if (column != firstCol && column != secondCol) {
         if (board[pos - 1] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2; i < getColumnSize() && i >= 0; i++) {
+            for (int i = 2; i < getColumnSize() && pos - i >= 0; i++) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }

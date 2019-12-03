@@ -51,20 +51,20 @@ int main(int argc, char *argv[]) {
 
         fail += fullTestSuiteBoard2();
 
-        printf("Running convert move test Suite\n");
-        fail += testConvertMove();
-
-        printf("Running make move test Suite\n");
-        fail += runMakeMoveTests();
-
-        printf("Running unmake move test Suite\n");
-        fail += fullTestSuiteUnmakeMoveTests();
-
-        printf("Running big board tests Suite\n");
-        fail += testSuiteBigBoard();
-
-        printf("Running perft Suite\n");
-        fail += perftSuite();
+//        printf("Running convert move test Suite\n");
+//        fail += testConvertMove();
+//
+//        printf("Running make move test Suite\n");
+//        fail += runMakeMoveTests();
+//
+//        printf("Running unmake move test Suite\n");
+//        fail += fullalTestSuiteUnmakeMoveTests();
+//
+//        printf("Running big board tests Suite\n");
+//        fail += testSuiteBigBoard();
+//
+//        printf("Running perft Suite\n");
+//        fail += perftSuite();
 
         if (fail) {// fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");

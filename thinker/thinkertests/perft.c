@@ -17,7 +17,7 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
 
     BOARD board = boardStruct->board;
 
-    if (depth == 0) {
+    if (depth <= 0) {
         return 1;
     }
 
@@ -126,7 +126,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     printBoardSide(boardStruct);
-    printf("moves from this position: %d\n", totalMoves);
+    printf("moves from this positionX: %d\n", totalMoves);
 
     int totalNodes = 0;
     MOVE move;
@@ -134,6 +134,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     char *m = malloc(3 * sizeof(char));
     while (1) {
         move = moves[index++];
+        printf("loop in divide, move %d\n", move);
         if (move == getLastMove()) {
             break;
         }
@@ -167,9 +168,13 @@ int fromCommandLine(int depth) {
 
     resetBoardToStarter(board);
 
-    perftDivide(b, depth - 9);
+    perftDivide(b, depth);
+
+    printf("finished from command line\n");
 
     freeBoardStruct(b);
+
+    return 0;
 }
 
 int testBasicBoard() {

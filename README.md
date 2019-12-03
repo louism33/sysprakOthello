@@ -14,10 +14,9 @@ to run get perft results to depth
 
 `make perft DEPTH=(depth)`
 
+but easier is:
 
-to run valgrind:
-
-`make -B && rm -f VALGRINDTESTLOG.log && valgrind --log-file=VALGRINDTESTLOG.log --leak-check=full --trace-children=yes ./sysprak-client TEST`
+`cd scripts && ./testGithubScript.sh`
 
 Written by : 
 

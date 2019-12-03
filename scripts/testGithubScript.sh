@@ -67,7 +67,6 @@ else
 fi
 
 echo "***** checking valgrind for test *****"
-
 ## check Valgrind
 rm -f $VALGRIND_LOG
 valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./sysprak-client TEST

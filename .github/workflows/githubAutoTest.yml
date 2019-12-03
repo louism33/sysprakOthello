@@ -1,0 +1,13 @@
+name: C CI and various checks
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: scriptFromLectureIsh
+      run: cd scripts/testGithubScript.sh

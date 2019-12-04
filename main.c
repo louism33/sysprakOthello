@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/shm.h>
 #include <string.h>
 #include <signal.h>
 #include "connector/connector.h"
@@ -30,6 +31,8 @@ pid_t thinker;
 pid_t connector;
 int shmid;
 gameInfo *shmdata;
+gameInfo g1 = {"Marlene","7647","2"};
+
 
 // if thinker is parent, retry logic may be easier to implement
 // including learning
@@ -79,10 +82,11 @@ int main(int argc, char *argv[])
     BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
 
+    //shmid = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | SHM_R | SHM_W);
+    //printf("Id: %d\n", shmid);
     createShm();
     attachShm();
 
-    gameInfo aktuelleStruct = {"alex", 1234567, 2,0,0};
         // gameInfo *infoVonServer;
         // shmdata=infoVonServer;//kriegen wir von Server,also connectorMaterMethod()
     switch (thinker = fork())
@@ -99,34 +103,40 @@ int main(int argc, char *argv[])
         thinker = getppid();
         printf("Meine PID = %i\n", connector);
 
-            //  infoVonServer=connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
-        writeShm(&aktuelleStruct, connector, thinker);
+        //connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
+        writeShm(&g1, connector, thinker);
             //printf("ich ..\n");
-        while (1)
+        /*while (0)
         {
             sleep(3);
             signalVonKill = kill(thinker, SIGUSR1); //signal schicken
-        }
+        }*/
 
         break;
 
         /*Elternprozess = Thinker*/
         default:
-        //sleep(3);
+        sleep(2);
         printf("Im Elternprozess\n");
         thinker = getpid();
         printf("Meine PID = %i\n", thinker);
         //thinkerMasterMethod(thinkerBoard, signalVonKill);
         signal(SIGUSR1, mysighandler); //signal behandeln
-        while (1)
-        {
-        }
         readShm();
-        //waitForChild();
-        break;
+        
+        
+        /*while (1)
+        {
+            
+
+        }*/
+                //waitForChild();
+        //break;
     }
 
         freeBoardStruct(connectorBoard);
         freeBoardStruct(thinkerBoard);
+        //shmctl(shmid, IPC_RMID,0);
+        deleteShm();
         return 0;
 }

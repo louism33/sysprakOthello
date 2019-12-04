@@ -58,7 +58,8 @@ enum Phase {
     SPIELZUG = 2
 };
 
-
+/*lege spielInfo an. Belegung wärend der Kommunikation mit dem Server*/
+gameInfo gI; 
 
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
@@ -232,6 +233,8 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
                 printf("--------save  playerNumber: %s\n", playerNumber); // this often gets weird crap
+                /*Struct belegen --- nGamer*/
+                strcpy(gI.nGamer,playerNumber);
 
                 if (playerNumber[0] == '0') {
                     sideToMove = getBlack();
@@ -243,6 +246,9 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 myPlayerName[l] = '\0';
                 printf("--------save my playerName: %s\n", myPlayerName);
+                /*Struct belegen --- myGamerName*/
+                strcpy(gI.myGamerName,myPlayerName);
+                printf("Mein Gamer Name ist: %c\n", gI.myGamerName);
             }
 
             // step five, read TOTAL

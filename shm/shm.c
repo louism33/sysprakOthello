@@ -44,7 +44,7 @@ void attachShm() {
 
 void deleteShm() {
     /*Löschen des SHM*/
-    int res = shmctl(shmid, IPC_RMID, NULL);
+    int res = shmctl(shmid, IPC_RMID,0);
     if (res == -1) {
         printf("Fehler beim Löschen des SHM");
     }
@@ -54,8 +54,10 @@ void deleteShm() {
 void writeShm(gameInfo *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
-    shmdata->nGamer = (*g).nGamer;
-    shmdata->myGamerId = (*g).myGamerId;
+    //shmdata->nGamer = (*g).nGamer;
+    //shmdata->myGamerId = (*g).myGamerId;
+    strcpy(shmdata->nGamer, (*g).nGamer);
+    strcpy(shmdata->myGamerId, (*g).myGamerId);
     strcpy(shmdata->myGamerName, (*g).myGamerName);
     shmdata->thinker = pa;
     shmdata->connector = me;
@@ -64,8 +66,8 @@ void writeShm(gameInfo *g, pid_t me, pid_t pa) {
 }
 
 void readShm() {
-    printf("Der erste Inhalt im shm ist: %i\n", shmdata->nGamer);
-    printf("Das zweite Element im shm ist: %li\n", shmdata->myGamerId);
+    printf("Der erste Inhalt im shm ist: %s\n", shmdata->nGamer);
+    printf("Das zweite Element im shm ist: %s\n", shmdata->myGamerId);
     printf("Das dritte Element im shm ist: %s\n", shmdata->myGamerName);
     printf("Das vierte Element im shm ist: %i\n", shmdata->thinker);
     printf("Das fuenfte Element im shm ist: %i\n", shmdata->connector);
@@ -84,7 +86,8 @@ void waitForChild() {
     }
 }
 
-int main() {
+/*int main() {
     createProcesses();
     return 0;
 }
+*/

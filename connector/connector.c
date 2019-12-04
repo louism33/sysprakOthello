@@ -37,7 +37,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-//#include "../shm/shm.h"
 
 #define GAMEKINDNAME "Reversi"
 #define PORTNUMBER 1357
@@ -95,12 +94,12 @@ char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock crea
 int connectToGameServer(int mockGame, char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
                         BOARD_STRUCT *thinkerBoard) {
-    //Marlene start----------------------------------------------------------------------------------------
-    configurationStruct c1;
-    //Marlene Ende ----------------------------------------------------------------------------------------
 
     printf("Attempting to connect to game server.\n");
 
+//    configurationStruct *configurationStruct
+    struct configurationStruct *configurationStruct = malloc(
+            sizeof(configurationStruct));
 
     if (mockGame) {
         printf("MOCK GAME IS TRUE\n");
@@ -180,7 +179,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     }
 
     performConnectionLouis(sock, gameID, player,
-                          configurationStruct->gamekindname, connectorBoard, thinkerBoard);
+                           configurationStruct->gamekindname, connectorBoard, thinkerBoard);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -198,7 +197,6 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     int mockGame = 0;
     int usingCustomConfigFile = 0;
     char *configPath;
-    gameInfo* infoVonServer;
 
     while ((ret = getopt(argc, argv, "g:p:m:C:")) != -1) {
         switch (ret) {
@@ -253,7 +251,6 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
                         configPath, connectorBoard, thinkerBoard);
 
-    //return infoVonServer;
     return 0;
 }
 

@@ -23,9 +23,9 @@ void waitForChild();
 die Infos bekommt der Connector vom Server und legt sie in shm in dieses Struct gameInfo ab */
 
 typedef struct {
-    char myGamerName[10];
-    long myGamerId;
-    int nGamer;
+    char myGamerName[32];
+    char myGamerId[32];
+    char nGamer[32];
     /* PID von Kind- und Vaterprozess*/
     pid_t thinker;
     pid_t connector;

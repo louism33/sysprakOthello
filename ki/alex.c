@@ -52,11 +52,7 @@ void addTotalMoveInfo(Node *node, int totalMoves) {
 }
 
 void expandNode(Node *child, Node *parent, int moveIndex) {
-    child->nodeType = LEAF;
-    child->playoutCount = 0;
-    child->numberOfExpandedChildren = 0;
-    child->numberOfChildren = 0;
-    child->winCount = 0;
+    setupNode(child);
     child->parentNode = parent;
 
     parent->nodeType = parent->nodeType == ROOT ? ROOT : BRANCH;
@@ -107,7 +103,8 @@ struct Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
 
     child = malloc(sizeof(Node));
 
-    setupNode((child));
+    expandNode(child, node, r);
+//    setupNode((child));
 
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE)); // todo, free
     int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
@@ -133,7 +130,9 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 
     // todo only continue if actually has children
 
-    setupNode(node);
+//    if (node->nodeType != ROOT) {
+//        setupNode(node);
+//    }
 
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
@@ -149,16 +148,22 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 
     child = malloc(sizeof(Node));
 
+    expandNode(child, node, r);
+
     free(moves);
 
+    assert(child->nodeType != ROOT);
     return child;
 
 }
 
 
-int simulation(Node *node, BOARD_STRUCT *boardStruct) {
+int simulation(BOARD_STRUCT *boardStruct) {
 
     SIDE_TO_MOVE originalSideToMove = boardStruct->sideToMove;
+
+//    printf("          ->>>>><<original side to move is %d\n", originalSideToMove);
+
     int pass = 0;
 //    while (!isGameOver(boardStruct)) {
     while (pass != 2) {
@@ -182,26 +187,61 @@ int simulation(Node *node, BOARD_STRUCT *boardStruct) {
         }
     }
 
-    printBoardSide(boardStruct);
-    int w = getWinner(boardStruct);
-    printf("   WINNER IS %d\n", w);
 //    printBoardSide(boardStruct);
+    int w = getWinner(boardStruct);
+//    printf("   WINNER IS %d\n", w);
+    printBoardSide(boardStruct);
 //    printf("   WINNER IS %d\n", w);
 
     if (w == originalSideToMove) {
-        printf("   I win!!!\n");
+//        printf("   I win!!!\n");
         return AIWIN;
     }
 
     if (w == getDraw()) {
-        printf("   it was a draw!\n");
+//        printf("   it was a draw!\n");
         return AIDRAW;
     }
 
-    printf("   it was a loss!\n");
+//    printf("   it was a loss!\n");
     return AILOSS;
 //    return getWinner(boardStruct);
+}
 
+int switchOutcome(int outcome) {
+    return -outcome;
+}
+
+int backprop(Node *finalNode, int outcome) {
+    Node *temp = finalNode;
+//    printf("backprop called on node:\n");
+//    printNode(finalNode);
+
+    do {
+//        printf("/*/*/*/*/*/*/*/*/*/*/*/* outcome %d, aiwin is %d ailose is %d \n", outcome, AIWIN, AILOSS);
+//        printNode(finalNode);
+//        printf("         backprop called on node:\n");
+//        printNode(finalNode);
+
+        temp->playoutCount++;
+//        printNode(finalNode);
+//        printf("/*/*/*/*/* outcome %d, aiwin is %d ailose is %d \n", outcome, AIWIN, AILOSS);
+        printNode(temp);
+        if (outcome == AIWIN) {
+//            printf("                                                                WIN recording!\n");
+            temp->winCount++;
+        } else{
+//            printf("                                                      not    win  recording :(\n");
+
+        }
+        temp = temp->parentNode;
+        outcome = switchOutcome(outcome);
+
+    } while (temp != NULL);
+
+
+
+    return 0;
 }
 
 // todo instead of unmake consider cloning, 60 unmakes vs arraycopy??
@@ -212,6 +252,8 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     BOARD board = boardStruct->board;
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
+
+    printBoardSide(boardStruct);
 
     if (totalMoves == 0) {
         return getPassMove();
@@ -225,37 +267,72 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 
     setupNode(root);
     root->nodeType = ROOT;
-//    root->numberOfChildren = totalMoves;
+    root->parentNode = NULL;
     addTotalMoveInfo(root, totalMoves);
 
-//    printNode(root);
-//    printBoardSide(boardStruct);
-
-
+    assert(root->nodeType == ROOT);
     Node *toExpand = selection(root, boardStruct);
+    assert(root->nodeType == ROOT);
 
+//    if (root == toExpand) {
+//        printf("                  we are selecting root!\n");
+//    } else {
+//        printf("              we are not selecting root!\n");
+//    }
 
-    printf("//////////////////\n");
-    printf("//////////////////\n");
-    printf("////////////////// to expand\n");
+//    printNode(root);
+//    printNode(toExpand);
 
-
-    printNode(toExpand);
-    printBoardSide(boardStruct);
-
-    printf("//////////////////\n");
-    printf("//////////////////\n");
-    printf("//////////////////\n");
-
+//    printf("root: %p, toExpand %p\n", *root, *toExpand);
+//    printf("//////////////////\n");
+//    printf("//////////////////\n");
+//    printf("////////////////// to expand\n");
+//
+//    printNodeBoardStruct(root, boardStruct);
+//
+//    printf("//////////////////\n");
+//    printf("//////////////////\n");
+//    printf("//////////////////\n");
 
     Node *expandedChild = expansion(toExpand, boardStruct);
 
-    printf("  --->>>> RUNNING SIMULATION FOR\n");
-    printNodeBoardStruct(expandedChild, boardStruct);
+//    if (root == expandedChild) {
+//        printf("                    we are expanding root!\n");
+//    } else {
+//        printf("                we are not expanding root!\n");
+//    }
 
-    simulation(expandedChild, boardStruct);
+//    printf("  before simulation child\n");
+//    printNode(expandedChild);
+//    printf("  root\n");
+//    printNode(root);
+//    assert(root->nodeType == ROOT);
+//    printf("  time to simulate\n");
+//    printNodeBoardStruct(expandedChild, boardStruct);
 
+    int outcome = simulation(boardStruct);
+//    printf("  time to simulate over\n");
+//
+//
+//    printf("  after simulation child\n");
+//    printNode(expandedChild);
+//    printf("  root\n");
+//    printNode(root);
+//    assert(root->nodeType == ROOT);
+//
+//
+//    printf("  --->>>> outcome %d\n", outcome);
+////
+    backprop(expandedChild, outcome);
 
+    printf("  after backprop child\n");
+    printNode(expandedChild);
+    printf("  root\n");
+    printNode(root);
+    assert(root->nodeType == ROOT);
+
+//
+//    printNode(root);
     MOVE move = moves[0];
 
     free(moves); // todo, recursive

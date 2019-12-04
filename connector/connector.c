@@ -93,7 +93,7 @@ char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock crea
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-                        BOARD_STRUCT *thinkerBoard) {
+                        BOARD_STRUCT *thinkerBoard,infoVonServer* info) {
 
     printf("Attempting to connect to game server.\n");
 
@@ -179,7 +179,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     }
 
     performConnectionLouis(sock, gameID, player,
-                           configurationStruct->gamekindname, connectorBoard, thinkerBoard);
+                           configurationStruct->gamekindname, connectorBoard, thinkerBoard,info);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -190,7 +190,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     return 0;
 }
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[],infoVonServer *info) {
     char *gameID;
     char *player = 0;
     int ret;
@@ -249,7 +249,8 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     }
 
     connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-                        configPath, connectorBoard, thinkerBoard);
+                        configPath, connectorBoard, thinkerBoard,info);
+  //printf("----------------################################connectormasterMethod:%s\n",info.myPlayerName);
 
     return 0;
 }

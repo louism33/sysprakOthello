@@ -7,54 +7,58 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "../thinker/board.h"
+#include "../connector/connector.h"
+
+
 /*variablen zur Speicherung der Pid's*/
 pid_t thinker;
 pid_t connector;
 int shmid;
 gameInfo *shmdata;
 
+//gameInfo *shmdata=malloc(sizeof(gameInfo));
 
-int createProcesses() {
-    gameInfo g1 = {"Marlene", 4356, 1};
 
-    createShm();
-    attachShm();
+    // int createProcesses() {
+    //     gameInfo g1 = {"Marlene", 4356, 1};
 
-    switch (thinker = fork()) {
-        /*Fehlerfall*/
-        case -1:
-            printf("Fehler bei fork()\n");
-            break;
+    //     createShm();
+    //     attachShm();
 
-            /*Kindsprozess = Connector*/
-        case 0:
-            printf("Im Kindsprozess\n");
-            connector = getpid();
-            thinker = getppid();
-            printf("Meine PID = %i\n", connector);
-            performConnection();
-            writeShm(&g1, connector, thinker);
-            break;
+    //     switch (thinker = fork()) {
+    //         /*Fehlerfall*/
+    //         case -1:
+    //             printf("Fehler bei fork()\n");
+    //             break;
 
-            /*Elternprozess = Thinker*/
-        default:
-            sleep(1);
-            printf("Im Elternprozess\n");
-            thinker = getpid();
-            printf("Meine PID = %i\n", thinker);
-            readShm();
-            deleteShm();
-            break;
+    //             /*Kindsprozess = Connector*/
+    //         case 0:
+    //             printf("Im Kindsprozess\n");
+    //             connector = getpid();
+    //             thinker = getppid();
+    //             printf("Meine PID = %i\n", connector);
+    //             performConnection();
+    //             writeShm(&g1, connector, thinker);
+    //             break;
 
-    }
-    return EXIT_SUCCESS;
-}
+    //             /*Elternprozess = Thinker*/
+    //         default:
+    //             sleep(1);
+    //             printf("Im Elternprozess\n");
+    //             thinker = getpid();
+    //             printf("Meine PID = %i\n", thinker);
+    //             readShm();
+    //             deleteShm();
+    //             break;
+
+    //     }
+    //     return EXIT_SUCCESS;
+    // }
 
 void createShm() {
 
-    printf("Ich bin ein Shared Memory\n");
+        printf("Ich bin ein Shared Memory\n");
 
     /*erstelle ein Shm mit getshm() */
     shmid = shmget(IPC_PRIVATE, sizeof(gameInfo) + sizeof(gamer), IPC_CREAT | SHM_R | SHM_W);
@@ -82,21 +86,36 @@ void deleteShm() {
 }
 
 
+// void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
+//     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
+
+//     strcpy(shmdata->nGamer,g->playerNumber);
+//   //  strcpy(shmdata->nGamer,(g->nGamer));
+//     strcpy(shmdata->myGamerId,g->gameId);
+//     strcpy(shmdata->myGamerName, g->myPlayerName);
+//     shmdata->thinker = pa;
+//     shmdata->connector = me;
+// printf("ich habe geschrieben.\n");
+// printf("shmdata.nGamer: %s\n",shmdata->nGamer);
+
+// }
 void writeShm(gameInfo *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
-    shmdata->nGamer = (*g).nGamer;
-    shmdata->myGamerId = (*g).myGamerId;
+    //shmdata->nGamer = (*g).nGamer;
+    //shmdata->myGamerId = (*g).myGamerId;
+    strcpy(shmdata->nGamer, (*g).nGamer);
+    strcpy(shmdata->myGamerId, (*g).myGamerId);
     strcpy(shmdata->myGamerName, (*g).myGamerName);
     shmdata->thinker = pa;
     shmdata->connector = me;
 
 
 }
-
 void readShm() {
-    printf("Der erste Inhalt im shm ist: %i\n", shmdata->nGamer);
-    printf("Das zweite Element im shm ist: %i\n", shmdata->myGamerId);
+    printf("read \n");
+    printf("Der erste Inhalt im shm ist: %s\n", shmdata->nGamer);
+    printf("Das zweite Element im shm ist: %s\n", shmdata->myGamerId);
     printf("Das dritte Element im shm ist: %s\n", shmdata->myGamerName);
     printf("Das vierte Element im shm ist: %i\n", shmdata->thinker);
     printf("Das fuenfte Element im shm ist: %i\n", shmdata->connector);

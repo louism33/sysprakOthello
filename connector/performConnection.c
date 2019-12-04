@@ -90,7 +90,8 @@ eine Partie in einem Unentschieden endet. In dem Fall ist allen Mitspielern der 
 Nach QUIT beendet der Server die Verbindung
      */
 
-    printf("%s\n", buff);
+    printf("XXXXXXXXXXXXXXX  game is over!!!!!!!!!! \n");
+    printf("   final thing received from server::::%s\n", buff);
     return 0; // todo, implement
 }
 

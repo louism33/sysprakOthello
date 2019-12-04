@@ -249,16 +249,39 @@ int testAvoidLossNextMove() {
     return 0; // success
 }
 
+int testWhatever() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+    int moveTime = 1000;
+
+    board[20] = getBlack();
+    board[19] = board[12] = board[21] = getWhite();
+
+    b->sideToMove = getBlack();
+
+    printBoardSide(b);
+
+    MOVE move = getBestMove(b, moveTime);
+
+    printf("move return in whatever is: %d\n", move);
+
+    freeBoardStruct(b);
+    return 0; // success
+}
+
 
 int kiTestsBasicThinking() {
-    testOneObviousBestMove();
-    testOneObviousBestMove2();
-    testOneObviousBestMove3();
+//    testOneObviousBestMove();
+//    testOneObviousBestMove2();
+//    testOneObviousBestMove3();
+//
+//    testPossibleGameWin();
+//    testPossibleGameWin2();
+//    testAvoidLossFromPreviousTest();
+//    testAvoidLossNextMove();
 
-    testPossibleGameWin();
-    testPossibleGameWin2();
-    testAvoidLossFromPreviousTest();
-    testAvoidLossNextMove();
+    testWhatever();
 
     return 0;
 }

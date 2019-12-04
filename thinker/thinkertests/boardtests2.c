@@ -42,7 +42,7 @@ int testRemoveDuplicatesNoDuplicates() {
 
 
 int testRemoveDuplicatesAllDuplicates() {
-    MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
+    MOVES moves = malloc(getStandardBoardSize() * sizeof(int)); // todo replace all this with MOVE
     int index = 0;
 
     moves[index++] = 0;

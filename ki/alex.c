@@ -4,16 +4,17 @@
 
 #include "alex.h"
 #include <stdlib.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
-#include <stdio.h>
+#include <time.h>
+
 
 /*
  * Uses monte carlo tree search
  */
+
+
 
 
 enum NodeType {
@@ -28,10 +29,24 @@ struct Node {
     int playoutCount;
     int winCount;
     Node *parentNode;
-    Node *childrenNodes; // indexed by move index
+    Node **childrenNodes; // indexed by move index
     int numberOfChildren;
     int numberOfExpandedChildren;
 };
+
+void setupNode(Node* node){
+    node->nodeType = LEAF;
+    node->winCount = 0;
+    node->playoutCount = 0;
+    node->numberOfChildren = 0; // careful
+    node->numberOfExpandedChildren = 0;
+//    node->childrenNodes = malloc(totalMoves * sizeof(Node));
+}
+
+void addTotalMoveInfo(Node* node, int totalMoves){
+    node->numberOfChildren = totalMoves;
+    node->childrenNodes = malloc(totalMoves * sizeof(Node));
+}
 
 void expandNode(Node *child, Node *parent, int moveIndex) {
     child->nodeType = LEAF;
@@ -42,7 +57,7 @@ void expandNode(Node *child, Node *parent, int moveIndex) {
     child->parentNode = parent;
 
     parent->nodeType = parent->nodeType == ROOT ? ROOT : BRANCH;
-    parent->childrenNodes[moveIndex] = *child;
+    parent->childrenNodes[moveIndex] = child;
     parent->numberOfExpandedChildren++;
 
     if (parent->numberOfExpandedChildren > parent->numberOfChildren) {
@@ -63,14 +78,41 @@ void printNode(Node *node) {
     printf("** playouts: %d\n", node->playoutCount);
     printf("**   wins  : %d\n", node->winCount);
     printf("** numkids : %d\n", node->numberOfChildren);
+    printf("**\n");
 }
 
 struct Node *selection(struct Node *node) {
+    int r = rand() % node->numberOfChildren;
+//    printf("rand kid: %d\n", r);
+
+    Node* child = node->childrenNodes[r];
+
+    child = malloc(sizeof(Node));
+
+    setupNode((child));
+
+//    printf("is kid null ?\n");
+//    printf("is kid null %d ?\n", child->nodeType);
+
+//    if (child->nodeType == LEAF) {
+//        return child;
+//    }
+//
+//    return selection(child);
+
+    printNode(child);
+
+    return child;
+}
+
+struct Node *playout(struct Node *node) {
 
 }
 
 // selection expansion simulation backprop
 int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
+    srand(time(NULL)); // todo move out ?
+
     BOARD board = boardStruct->board;
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
@@ -85,12 +127,15 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 
     Node *root = malloc(sizeof(Node));
 
+    setupNode(root);
     root->nodeType = ROOT;
-    root->winCount = 0;
-    root->playoutCount = 0;
-    root->numberOfChildren = totalMoves;
-    root->numberOfExpandedChildren = 0;
+//    root->numberOfChildren = totalMoves;
+    addTotalMoveInfo(root, totalMoves);
 
+    printNode(root);
+
+
+    selection(root);
 
 
     MOVE move = moves[0];

@@ -72,7 +72,7 @@ int testKINoLegalMovesBecauseGameOver() {
     for (int i = 0; i < 20; i++) {
         board[i] = getWhite();
     }
-    for (int i = 20; i < 63; i++) {
+    for (int i = 20; i <= 63; i++) {
         board[i] = getBlack();
     }
 
@@ -93,7 +93,35 @@ int testKINoLegalMovesBecauseGameOver() {
     return 0; // success
 }
 
+int testKIOneLegalMovesBecauseAlmostGameOver() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+    int moveTime = 1000;
 
+    for (int i = 0; i < 20; i++) {
+        board[i] = getWhite();
+    }
+    for (int i = 20; i < 63; i++) {
+        board[i] = getBlack();
+    }
+
+    b->sideToMove = getWhite();
+
+    MOVE correctMove = 63;
+    MOVE move = getBestMove(b, moveTime);
+
+    if (move != correctMove) {
+        printBoardSide(b);
+        fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
+                correctMove, move);
+        freeBoardStruct(b);
+        exit(1);
+    }
+
+    freeBoardStruct(b);
+    return 0; // success
+}
 
 int testKIOneLegalMove() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -156,6 +184,7 @@ int kiTestsSimple() {
 
     testKIOneLegalMove();
     testKIOneLegalMove2();
+    testKIOneLegalMovesBecauseAlmostGameOver();
 
     return 0;
 }

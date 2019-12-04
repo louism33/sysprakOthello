@@ -783,7 +783,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     //Prüfung nach links
     if (column != firstCol && column != secondCol) {
-        if (board[pos - 1] == TARGET_PLAYER) { //TODO am rand
+        if (board[pos - 1] == TARGET_PLAYER) { //TODO these checks look weird
             for (int i = 2; i < getColumnSize() && pos - i >= 0; i++) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
@@ -810,7 +810,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     //Prüfung nach rechts
     if (column != preFinalCol && column != finalCol) {
-        if (board[pos + 1] == TARGET_PLAYER) { //TODO am rand
+        if (board[pos + 1] == TARGET_PLAYER) { //TODO these checks look weird
             for (int i = 2; i < getColumnSize() && pos + i < getBoardSize(); i++) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
@@ -836,9 +836,8 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     //Prüfung nach oben
     if (row != firstRow && row != secondRow) {
-        if (board[pos - getColumnSize()] == TARGET_PLAYER) { //TODO am rand
-            for (int i = 2 * getColumnSize();
-                 i < getBoardSize() - getColumnSize() && pos - i >= 0; i += getColumnSize()) {
+        if (board[pos - getColumnSize()] == TARGET_PLAYER) {
+            for (int i = 2 * getColumnSize(); pos - i >= 0; i += getColumnSize()) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -1021,6 +1020,8 @@ int getWinner(BOARD_STRUCT *boardStruct) {
             anzahlWhite++;
         }
     }
+    printf("b %d   w %d \n", anzahlBlack, anzahlWhite);
+
     if (anzahlBlack > anzahlWhite) {
         return getBlack();
     } else if (anzahlBlack < anzahlWhite++) {

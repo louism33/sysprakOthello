@@ -4,11 +4,13 @@ CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11
 DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
 	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/thinkertests/boardtests2.h thinker/board.h \
 	connector/connectorTests/connectortests.h thinker/thinkertests/unmakemovetests.h thinker/thinkertests/makemovetests.h \
-	thinker/thinkertests/perft.h thinker/thinkertests/biggerboardtest.h ki/alex.h ki/kitests/testkisimple.h
+	thinker/thinkertests/perft.h thinker/thinkertests/biggerboardtest.h ki/alex.h ki/kitests/testkisimple.h \
+	ki/kitests/testkibasicthinking.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o \
 	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o thinker/thinkertests/boardtests2.o \
 	 connector/connectorTests/connectortests.o thinker/thinkertests/unmakemovetests.o thinker/thinkertests/makemovetests.o \
-	 thinker/thinkertests/perft.o thinker/thinkertests/biggerboardtest.o ki/alex.o ki/kitests/testkisimple.o
+	 thinker/thinkertests/perft.o thinker/thinkertests/biggerboardtest.o ki/alex.o ki/kitests/testkisimple.o \
+	 ki/kitests/testkibasicthinking.o
 # todo, replace above with discoveries (find c files and replace extensions)
 
 # these are the "legitimate" targets

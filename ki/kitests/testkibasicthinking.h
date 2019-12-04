@@ -1,0 +1,10 @@
+//
+// Created by louis on 12/4/19.
+//
+
+#ifndef SYSPRAKOTHELLO_TESTKIBASICTHINKING_H
+#define SYSPRAKOTHELLO_TESTKIBASICTHINKING_H
+
+int kiTestsBasicThinking();
+
+#endif //SYSPRAKOTHELLO_TESTKIBASICTHINKING_H

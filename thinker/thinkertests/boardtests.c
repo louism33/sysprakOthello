@@ -100,7 +100,7 @@ int testNoLegalMovesBecauseGameOver() {
     for (int i = 0; i < 20; i++) {
         board[i] = getWhite();
     }
-    for (int i = 20; i < 63; i++) {
+    for (int i = 20; i <= 63; i++) {
         board[i] = getBlack();
     }
 

@@ -24,7 +24,7 @@ enum NodeType {
 };
 
 typedef struct Node Node;
-struct Node {
+struct Node { // todo add name, add depth (for unmake)
     enum NodeType nodeType;
     int playoutCount;
     int winCount;
@@ -34,7 +34,7 @@ struct Node {
     int numberOfExpandedChildren;
 };
 
-void setupNode(Node* node){
+void setupNode(Node *node) {
     node->nodeType = LEAF;
     node->winCount = 0;
     node->playoutCount = 0;
@@ -43,7 +43,7 @@ void setupNode(Node* node){
 //    node->childrenNodes = malloc(totalMoves * sizeof(Node));
 }
 
-void addTotalMoveInfo(Node* node, int totalMoves){
+void addTotalMoveInfo(Node *node, int totalMoves) {
     node->numberOfChildren = totalMoves;
     node->childrenNodes = malloc(totalMoves * sizeof(Node));
 }
@@ -78,14 +78,15 @@ void printNode(Node *node) {
     printf("** playouts: %d\n", node->playoutCount);
     printf("**   wins  : %d\n", node->winCount);
     printf("** numkids : %d\n", node->numberOfChildren);
+    printf("** numXkids: %d\n", node->numberOfExpandedChildren);
     printf("**\n");
 }
 
-struct Node *selection(struct Node *node) {
+struct Node *selection(Node *node, BOARD_STRUCT* boardStruct) {
     int r = rand() % node->numberOfChildren;
 //    printf("rand kid: %d\n", r);
 
-    Node* child = node->childrenNodes[r];
+    Node *child = node->childrenNodes[r];
 
     child = malloc(sizeof(Node));
 
@@ -94,19 +95,32 @@ struct Node *selection(struct Node *node) {
 //    printf("is kid null ?\n");
 //    printf("is kid null %d ?\n", child->nodeType);
 
-//    if (child->nodeType == LEAF) {
-//        return child;
-//    }
-//
-//    return selection(child);
+    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE)); // todo, free
+    int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
 
-    printNode(child);
+    makeMove(boardStruct, moves[r]);
 
-    return child;
+    if (child->nodeType == LEAF) {
+        return child;
+    }
+
+
+    return selection(child, boardStruct);
+
+//    printNode(child);
+
+//    return child;
 }
 
-struct Node *playout(struct Node *node) {
+struct Node *expansion(struct Node *node) {
 
+
+}
+
+
+struct Node *playout(struct Node *node) {
+//    int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
+//    isG
 }
 
 // selection expansion simulation backprop
@@ -125,7 +139,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
         return moves[0];
     }
 
-    Node *root = malloc(sizeof(Node));
+    Node *root = malloc(sizeof(Node)); // todo consider giving each node an id, made by the moves to get to it?
 
     setupNode(root);
     root->nodeType = ROOT;
@@ -133,14 +147,22 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     addTotalMoveInfo(root, totalMoves);
 
     printNode(root);
+    printBoardSide(boardStruct);
 
 
-    selection(root);
+    Node *toExpand = selection(root, boardStruct);
 
+
+    printf("//////////////////\n");
+    printf("//////////////////\n");
+    printf("//////////////////\n");
+
+    printNode(toExpand);
+    printBoardSide(boardStruct);
 
     MOVE move = moves[0];
 
-    free(moves);
+    free(moves); // todo, recursive
 
     return move;
 }

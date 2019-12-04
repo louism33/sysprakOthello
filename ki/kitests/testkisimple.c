@@ -19,8 +19,7 @@ int testKINoLegalMoves() {
     board[0] = getWhite();
     board[20] = getBlack();
 
-    SIDE_TO_MOVE player = getStartingPlayer();
-    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    b->sideToMove = getBlack();
 
     MOVE correctMove = getPassMove();
     MOVE move = getBestMove(b, moveTime);
@@ -28,7 +27,7 @@ int testKINoLegalMoves() {
     if (move != correctMove) {
         printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
-                move, correctMove);
+                correctMove, move);
         freeBoardStruct(b);
         exit(1);
     }
@@ -47,8 +46,7 @@ int testKINoLegalMoves2() {
     board[0] = getWhite();
     board[63] = getBlack();
 
-    SIDE_TO_MOVE player = getStartingPlayer();
-    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    b->sideToMove = getBlack();
 
     MOVE correctMove = getPassMove();
     MOVE move = getBestMove(b, moveTime);
@@ -56,7 +54,7 @@ int testKINoLegalMoves2() {
     if (move != correctMove) {
         printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
-                move, correctMove);
+                correctMove, move);
         freeBoardStruct(b);
         exit(1);
     }
@@ -78,8 +76,7 @@ int testKINoLegalMovesBecauseGameOver() {
         board[i] = getBlack();
     }
 
-    SIDE_TO_MOVE player = getStartingPlayer();
-    SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+    b->sideToMove = getBlack();
 
     MOVE correctMove = getPassMove();
     MOVE move = getBestMove(b, moveTime);
@@ -87,7 +84,7 @@ int testKINoLegalMovesBecauseGameOver() {
     if (move != correctMove) {
         printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
-                move, correctMove);
+                correctMove, move);
         freeBoardStruct(b);
         exit(1);
     }
@@ -97,11 +94,68 @@ int testKINoLegalMovesBecauseGameOver() {
 }
 
 
+
+int testKIOneLegalMove() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    int moveTime = 1000;
+
+    board[21] = getWhite();
+    board[20] = getBlack();
+
+    b->sideToMove = getBlack();
+
+    MOVE correctMove = 22;
+    MOVE move = getBestMove(b, moveTime);
+
+    if (move != correctMove) {
+        printBoardSide(b);
+        fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
+                correctMove, move);
+        freeBoardStruct(b);
+        exit(1);
+    }
+
+    freeBoardStruct(b);
+    return 0; // success
+}
+
+int testKIOneLegalMove2() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+
+    int moveTime = 1000;
+
+    board[21] = getWhite();
+    board[20] = getBlack();
+
+    b->sideToMove = getWhite();
+
+    MOVE correctMove = 19;
+    MOVE move = getBestMove(b, moveTime);
+
+    if (move != correctMove) {
+        printBoardSide(b);
+        fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
+                correctMove, move);
+        freeBoardStruct(b);
+        exit(1);
+    }
+
+    freeBoardStruct(b);
+    return 0; // success
+}
+
 int kiTestsSimple() {
     testKINoLegalMoves();
     testKINoLegalMoves2();
     testKINoLegalMovesBecauseGameOver();
 
+    testKIOneLegalMove();
+    testKIOneLegalMove2();
 
     return 0;
 }

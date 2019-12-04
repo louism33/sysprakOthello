@@ -16,9 +16,9 @@ int getBestMove(BOARD_STRUCT* boardStruct, int moveTime){
         return getPassMove();
     }
 
-//    if (totalMoves == 1) {
-//        return moves[0];
-//    }
+    if (totalMoves == 1) {
+        return moves[0];
+    }
 
     free(moves);
 

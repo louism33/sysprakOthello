@@ -70,6 +70,8 @@ SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct);
 
 SIDE_TO_MOVE getStartingPlayer();
 
+MOVE getPassMove();
+
 MOVE getLastMove();
 
 SIDE_TO_MOVE getBlack();

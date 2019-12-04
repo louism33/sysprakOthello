@@ -30,6 +30,7 @@
 #define STARTING_BLACK_POSITION_2 35
 
 #define LAST_MOVE (-1)
+#define PASS_MOVE (-42)
 #define DRAW (0)
 
 #define STANDARD_COLUMN_NUMBER (8)
@@ -38,6 +39,10 @@
 static int boardSize = 0;
 static int columnSize = 0;
 static int rowSize = 0;
+
+MOVE getPassMove() {
+    return PASS_MOVE;
+}
 
 int getBoardSize() {
     return boardSize;

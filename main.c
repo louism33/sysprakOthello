@@ -23,6 +23,7 @@
 #include "thinker/thinkertests/makemovetests.h"
 #include "thinker/thinkertests/perft.h"
 #include "thinker/thinkertests/biggerboardtest.h"
+#include "ki/kitests/testkisimple.h"
 
 int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "perft") == 0) {
@@ -60,6 +61,9 @@ int main(int argc, char *argv[]) {
 
         printf("Running perft Suite\n");
         fail += perftSuite();
+
+        printf("Running KI Suite\n");
+        fail += kiTestsSimple();
 
         if (fail) {// fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");

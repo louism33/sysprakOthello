@@ -1,0 +1,10 @@
+//
+// Created by louis on 12/4/19.
+//
+
+#ifndef SYSPRAKOTHELLO_TESTKISIMPLE_H
+#define SYSPRAKOTHELLO_TESTKISIMPLE_H
+
+int kiTestsSimple();
+
+#endif //SYSPRAKOTHELLO_TESTKISIMPLE_H

@@ -263,7 +263,7 @@ int testWhatever() {
 
     printf("move return in whatever is: %d\n", move);
 
-    freeBoardStruct(b);
+//    freeBoardStruct(b);
     return 0; // success
 }
 

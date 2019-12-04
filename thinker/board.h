@@ -74,11 +74,15 @@ MOVE getPassMove();
 
 MOVE getLastMove();
 
+int getDraw();
+
 SIDE_TO_MOVE getBlack();
 
 SIDE_TO_MOVE getWhite();
 
 SIDE_TO_MOVE getEmpty();
+
+void passMove(BOARD_STRUCT *boardStruct);
 
 int unmakeMove(BOARD_STRUCT *boardStruct);
 

@@ -251,16 +251,13 @@ int testAvoidLossNextMove() {
 
 int testWhatever() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToZero(b);
+    initialiseBoardStructToStarter(b);
     int *board = b->board;
     int moveTime = 1000;
 
-    board[20] = getBlack();
-    board[19] = board[12] = board[21] = getWhite();
-
     b->sideToMove = getBlack();
 
-    printBoardSide(b);
+//    printBoardSide(b);
 
     MOVE move = getBestMove(b, moveTime);
 

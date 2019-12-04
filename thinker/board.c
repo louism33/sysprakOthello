@@ -12,8 +12,8 @@
 // pieces and SIDE_TO_MOVE constants
 #define BLACK 2
 #define WHITE 1
-#define GAMEOVER 0
-#define GAMENOTOVER 1
+#define GAMEOVER 1
+#define GAMENOTOVER 0
 
 #define EMPTY 0
 // black makes first move
@@ -42,6 +42,10 @@ static int rowSize = 0;
 
 MOVE getPassMove() {
     return PASS_MOVE;
+}
+
+int getDraw(){
+    return DRAW;
 }
 
 int getBoardSize() {
@@ -752,6 +756,9 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     return 0;
 }
 
+void passMove(BOARD_STRUCT *boardStruct){
+    switchPlayerStruct(boardStruct);
+}
 
 int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER) {
     BOARD board = boardStruct->board;
@@ -1009,7 +1016,7 @@ int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
 }
 
 
-int getWinner(BOARD_STRUCT *boardStruct) {
+int getWinner(BOARD_STRUCT *boardStruct) { // todo, new method combining getWINner and isGameOver
     BOARD board = boardStruct->board;
     int anzahlBlack = 0;
     int anzahlWhite = 0;

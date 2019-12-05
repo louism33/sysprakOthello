@@ -568,16 +568,31 @@ int countMoves(MOVES allMoves) {
 }
 
 int copyBoardStruct(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBoardStruct, int n) {
+//    printf(" coppy\n");
     copyBoard(destinationBoardStruct->board, sourceBoardStruct->board, n);
+//    printf(" coppyy\n");
     destinationBoardStruct->sideToMove = sourceBoardStruct->sideToMove;
+//    printf(" coppyysf\n");
     // todo , copy stack?
     return 0;
 }
 
 int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n) {
+//    printf("copy board n%d\n", n);
+//    printf("  ax %p\n", destinationBoard);
+//    printf("  ay %p\n", sourceBoard);
+    if (sourceBoard == destinationBoard) {
+
+//        printf("  adwadwadwcopy boardx\n");
+    }
+//    printf("copy boardx\n");
+//    printf("copy dboard[0]%d\n", destinationBoard[0]);
+//    printf("copy board[0]%d\n", sourceBoard[0]);
     for (int i = 0; i < n; i++) {
+//        printf("%d ", i);
         destinationBoard[i] = sourceBoard[i];
     }
+//    printf("dwwdw\n");
     return 0;
 }
 

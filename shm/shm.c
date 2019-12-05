@@ -7,9 +7,8 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "../thinker/board.h"
-#include "../connector/performConnection.h"
+
 /*variablen zur Speicherung der Pid's*/
 pid_t thinker;
 pid_t connector;
@@ -18,10 +17,9 @@ gameInfo *shmdata;
 
 
 
-
 void createShm() {
 
-    printf("Ich bin ein Shared Memory\n");
+        printf("Ich bin ein Shared Memory\n");
 
     /*erstelle ein Shm mit getshm() */
     shmid = shmget(IPC_PRIVATE, sizeof(gameInfo) + sizeof(gamer), IPC_CREAT | SHM_R | SHM_W);
@@ -51,6 +49,19 @@ void deleteShm() {
 }
 
 
+// void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
+//     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
+
+//     strcpy(shmdata->nGamer,g->playerNumber);
+//   //  strcpy(shmdata->nGamer,(g->nGamer));
+//     strcpy(shmdata->myGamerId,g->gameId);
+//     strcpy(shmdata->myGamerName, g->myPlayerName);
+//     shmdata->thinker = pa;
+//     shmdata->connector = me;
+// printf("ich habe geschrieben.\n");
+// printf("shmdata.nGamer: %s\n",shmdata->nGamer);
+
+// }
 void writeShm(gameInfo *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
@@ -64,10 +75,8 @@ void writeShm(gameInfo *g, pid_t me, pid_t pa) {
 
 
 }
-
 void readShm() {
-    printf("Der erste Inhalt im shm ist: %s\n", shmdata->nGamer);
-    printf("Das zweite Element im shm ist: %s\n", shmdata->myGamerId);
+
     printf("Das dritte Element im shm ist: %s\n", shmdata->myGamerName);
     printf("Das vierte Element im shm ist: %i\n", shmdata->thinker);
     printf("Das fuenfte Element im shm ist: %i\n", shmdata->connector);

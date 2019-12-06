@@ -13,7 +13,7 @@ typedef unsigned long long int DIRECTION_MASK;
 typedef int MOVE;
 typedef int SIDE_TO_MOVE;
 
-
+// todo, we are not really using stack....
 typedef int64_t STACK_OBJECT;
 typedef STACK_OBJECT *STACK;
 typedef MOVE *MOVE_STACK;

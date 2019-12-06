@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../thinker/board.h"
+#include "../connector/connector.h"
 
 /*variablen zur Speicherung der Pid's*/
 pid_t thinker;
@@ -49,37 +50,40 @@ void deleteShm() {
 }
 
 
-// void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
-//     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
+void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
+    /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
-//     strcpy(shmdata->nGamer,g->playerNumber);
-//   //  strcpy(shmdata->nGamer,(g->nGamer));
-//     strcpy(shmdata->myGamerId,g->gameId);
-//     strcpy(shmdata->myGamerName, g->myPlayerName);
-//     shmdata->thinker = pa;
-//     shmdata->connector = me;
-// printf("ich habe geschrieben.\n");
-// printf("shmdata.nGamer: %s\n",shmdata->nGamer);
+strcpy(shmdata->nGamer,(*g).playerNumber);
+strcpy(shmdata->myGamerId,(*g).gameId);
+strcpy(shmdata->myGamerName,(*g).myPlayerName);
+shmdata->thinker = pa;
+shmdata->connector = me;
+printf("ich habe geschrieben.\n");
+printf("shmdata.nGamer: %s\n",shmdata->nGamer);
 
-// }
-void writeShm(gameInfo *g, pid_t me, pid_t pa) {
+}
+//void writeShm(gameInfo *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
     //shmdata->nGamer = (*g).nGamer;
     //shmdata->myGamerId = (*g).myGamerId;
-    strcpy(shmdata->nGamer, (*g).nGamer);
-    strcpy(shmdata->myGamerId, (*g).myGamerId);
-    strcpy(shmdata->myGamerName, (*g).myGamerName);
-    shmdata->thinker = pa;
-    shmdata->connector = me;
+    //strcpy(shmdata->nGamer, (*g).nGamer);
+    //strcpy(shmdata->myGamerId, (*g).myGamerId);
+    //strcpy(shmdata->myGamerName, (*g).myGamerName);
+    //shmdata->thinker = pa;
+    //shmdata->connector = me;
 
 
-}
+//}
 void readShm() {
 
+    printf("read\n");
+    printf("Das erste Element im shm ist: %s\n", shmdata->nGamer);
+    printf("Das zweite Element im shm ist: %s\n", shmdata->myGamerId);
     printf("Das dritte Element im shm ist: %s\n", shmdata->myGamerName);
     printf("Das vierte Element im shm ist: %i\n", shmdata->thinker);
     printf("Das fuenfte Element im shm ist: %i\n", shmdata->connector);
+
 }
 
 void waitForChild() {
@@ -95,8 +99,3 @@ void waitForChild() {
     }
 }
 
-/*int main() {
-    createProcesses();
-    return 0;
-}
-*/

@@ -347,6 +347,13 @@ int backprop(Node *finalNode, int outcome) {
     return 0;
 }
 
+void freeKids(Node* node){
+
+    for (int i = 0; i < node->numberOfChildren; i++) {
+        free(node->childrenNodes[i]);
+    }
+}
+
 // todo instead of unmake consider cloning, 60 unmakes vs arraycopy??
 // selection expansion simulation backprop
 int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
@@ -378,41 +385,44 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     root->nodeType = ROOT;
     root->parentNode = NULL;
 
-    Node *toExpand = selection(root, boardStruct); // pick a node with no children      ROOT
+    int magic = 0;
+    while (magic < 1) {
 
-    printf("root: %p, toExpand %p\n", root, toExpand);
-    if (root == toExpand) {
-        printf("expanding root\n");
+        Node *toExpand = selection(root, boardStruct); // pick a node with no children      ROOT
+
+        printf("root: %p, toExpand %p\n", root, toExpand);
+        if (root == toExpand) {
+            printf("expanding root\n");
+        }
+
+        printf("trying expansion %p\n", toExpand);
+        Node *expandedChild = expansion(toExpand, boardStruct);
+        // reserve memory for children and pick one     ROOT->child[0]
+        if (expandedChild == toExpand) {
+            printf("expansion gave same node :(((\n");
+        }
+        printf("expansion done %p\n", expandedChild);
+
+
+        printf("trying simulation\n");
+        int outcome = simulation(boardStruct); // run a game, return result
+        printf("simulation done %d\n", outcome);
+
+
+        printf("trying backprop\n");
+        backprop(expandedChild, outcome);
+        printf("backprop done\n");
+
+        magic++;
     }
 
-    printf("trying expansion %p\n", toExpand);
-    Node *expandedChild = expansion(toExpand, boardStruct);
-    // reserve memory for children and pick one     ROOT->child[0]
-    if (expandedChild == toExpand) {
-        printf("expansion gave same node :(((\n");
-    }
-    printf("expansion done %p\n", expandedChild);
+//    free(expandedChild->childrenNodes);
+//    free(expandedChild);
 
+    freeKids(root);
 
-    printf("trying simulation\n");
-    int outcome = simulation(boardStruct); // run a game, return result
-    printf("simulation done %d\n", outcome);
-
-
-    printf("trying backprop\n");
-    backprop(expandedChild, outcome);
-    printf("backprop done\n");
-
-//
-//    root->nodeType = ROOT;
-//    root->parentNode = NULL;
-////    addTotalMoveInfo(root, totalMoves);
-
-    free(expandedChild->childrenNodes);
-    free(expandedChild);
     free(root->childrenNodes);
     free(root);
-
     return move;
 
 //    int magic = 0;

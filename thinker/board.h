@@ -58,6 +58,8 @@ void initialiseBoardStructToZeroCustom(BOARD_STRUCT *boardStruct, int rows, int 
 void resetBoardToStarter(BOARD board); // todo do we want to export this one?
 void resetBoardToZero(BOARD board); // todo do we want to export this one?
 
+void resetStackStuff(BOARD_STRUCT *boardStruct);
+
 void printMoves(MOVES moves);
 
 void freeBoardStruct(BOARD_STRUCT *boardStruct);

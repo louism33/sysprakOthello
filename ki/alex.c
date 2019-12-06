@@ -32,6 +32,7 @@ struct Node { // todo add name, add depth (for unmake)
     enum NodeType nodeType;
     int playoutCount;
     int ready;
+    int movesReady;
     int winCount;
     Node *parentNode;
     Node **childrenNodes; // indexed by move index
@@ -41,12 +42,16 @@ struct Node { // todo add name, add depth (for unmake)
 
 void setupNode(Node *node) {
 
+//    if (node->ready) {
+//        return;
+//    }
     node->nodeType = LEAF;
     node->winCount = 0;
     node->playoutCount = 0;
     node->numberOfChildren = 0;
     node->numberOfExpandedChildren = 0;
     node->ready = 1;
+    node->movesReady = 0;
 //    node->childrenNodes = malloc(totalMoves * sizeof(Node));
 }
 
@@ -85,15 +90,19 @@ void printNode(Node *node) {
 
 
 void addTotalMoveInfo(Node *node, int totalMoves) {
-    printf("addTotalMoveInfo '%p'\n", node);
+    printf("     addTotalMoveInfo '%p', totalmoves: %d\n", node, totalMoves);
     // todo careful of endgame?
     // if there are no moves, there is still a pass move
+    if (node->movesReady) {
+        return;
+    }
     if (!totalMoves) {
         totalMoves = 1;
     }
     node->numberOfChildren = totalMoves;
     node->childrenNodes = calloc(totalMoves, sizeof(Node));
     Node *c = node->childrenNodes[0];
+    node->movesReady = 1;
     printf("addTotalMoveInfo over '%p'\n", node);
 }
 
@@ -109,7 +118,7 @@ void expandNode(Node *child, Node *parent, int moveIndex) {
     if (parent->numberOfExpandedChildren > parent->numberOfChildren) {
         printf("too many children, parent has %d expanded, but only %d children\n", parent->numberOfExpandedChildren,
                parent->numberOfChildren);
-        printf("PARENT:\n");
+        printf("PARENT: %p\n", parent);
         printNode(parent);
 //        printf("CHILD:\n");
 //        printNode(child);
@@ -217,9 +226,14 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) { //todo, append all poss
 //    assert(node->nodeType == LEAF || (node->nodeType == ROOT && node->playoutCount == 0));
     assert(node->ready);
 
+    printf("expansion node %p\n", node);
+
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
 
+//    printBoardSide(boardStruct);
+
+    printf("expansion  add total %d\n", totalMoves);
     addTotalMoveInfo(node, totalMoves);
 //    int r = rand() % node->numberOfChildren;
     int r = 0;
@@ -227,21 +241,20 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) { //todo, append all poss
 
     makeMove(boardStruct, moves[r]);
 
-    printf("x\n");
+
     Node *child = node->childrenNodes[r];
-    child = calloc(1, sizeof(Node));
-    printf("x %p\n", child);
+    if (!child) {
+        child = calloc(1, sizeof(Node));
+    }
+//    printf("x %p\n", child);
 
 
     expandNode(child, node, r);
     printf("xxs\n");
 
     free(moves);
-//
 //    assert(child->nodeType != ROOT);
     return child;
-//    return 0;
-
 }
 
 
@@ -392,8 +405,11 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     free(moves);
 
     int magic = 0;
-    while (magic < 1) {
+    while (magic < 2) {
         printf("/// magic: %d\n", magic);
+
+        resetBoardToStarter(board);
+        resetStackStuff(boardStruct);
 
         Node *toExpand = selection(root, boardStruct); // pick a node with no children      ROOT
 
@@ -424,7 +440,6 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     }
 
 //    free(expandedChild->childrenNodes);
-//    free(expandedChild);
 
     freeKids(root);
 

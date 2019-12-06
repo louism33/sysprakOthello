@@ -140,6 +140,14 @@ void resetBoardToStarter(BOARD board) {
     board[STARTING_BLACK_POSITION_2] = BLACK;
 }
 
+void resetStackStuff(BOARD_STRUCT* boardStruct) {
+    for (int i = 0; i < getStandardBoardSize(); i++) {
+        boardStruct->moveStack[i] = 0;
+    }
+    boardStruct->stackIndexMove = 0;
+    boardStruct->stackIndexObject = 0;
+}
+
 void resetBoardToZero(BOARD board) {
     for (int i = 0; i < getStandardBoardSize(); i++) {
         board[i] = 0;

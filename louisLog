@@ -1,0 +1,193 @@
+==5826== Memcheck, a memory error detector
+==5826== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==5826== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==5826== Command: ./sysprak-client TEST
+==5826== Parent PID: 4045
+==5826== 
+--5826-- 
+--5826-- Valgrind options:
+--5826--    --leak-check=full
+--5826--    --trace-children=yes
+--5826--    --track-origins=yes
+--5826--    --log-file=louisLog
+--5826--    -v
+--5826-- Contents of /proc/version:
+--5826--   Linux version 4.15.0-66-generic (buildd@lgw01-amd64-050) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10)) #75~16.04.1-Ubuntu SMP Tue Oct 1 14:01:08 UTC 2019
+--5826-- 
+--5826-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--5826-- Page sizes: currently 4096, max supported 4096
+--5826-- Valgrind library directory: /usr/lib/valgrind
+--5826-- Reading syms from /home/louis/CLionProjects/sysprakProject/sysprakOthello/sysprak-client
+--5826-- Reading syms from /lib/x86_64-linux-gnu/ld-2.23.so
+--5826--   Considering /lib/x86_64-linux-gnu/ld-2.23.so ..
+--5826--   .. CRC mismatch (computed 10d8ea02 wanted 4fdda1aa)
+--5826--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.23.so ..
+--5826--   .. CRC is valid
+--5826-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--5826--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--5826--   .. CRC mismatch (computed eea41ea9 wanted 2009db78)
+--5826--    object doesn't have a symbol table
+--5826--    object doesn't have a dynamic symbol table
+--5826-- Scheduler: using generic scheduler lock implementation.
+--5826-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==5826== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-5826-by-louis-on-???
+==5826== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-5826-by-louis-on-???
+==5826== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-5826-by-louis-on-???
+==5826== 
+==5826== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==5826== don't want to do, unless you know exactly what you're doing,
+==5826== or are doing some strange experiment):
+==5826==   /usr/lib/valgrind/../../bin/vgdb --pid=5826 ...command...
+==5826== 
+==5826== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==5826==   /path/to/gdb ./sysprak-client
+==5826== and then give GDB the following command
+==5826==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=5826
+==5826== --pid is optional if only one valgrind process is running
+==5826== 
+--5826-- REDIR: 0x401cf10 (ld-linux-x86-64.so.2:strlen) redirected to 0x3809e181 (???)
+--5826-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--5826--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--5826--   .. CRC mismatch (computed 2567ccf6 wanted 49420590)
+--5826--    object doesn't have a symbol table
+--5826-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--5826--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--5826--   .. CRC mismatch (computed 0e27c9a8 wanted ac585421)
+--5826--    object doesn't have a symbol table
+==5826== WARNING: new redirection conflicts with existing -- ignoring it
+--5826--     old: 0x0401cf10 (strlen              ) R-> (0000.0) 0x3809e181 ???
+--5826--     new: 0x0401cf10 (strlen              ) R-> (2007.0) 0x04c31020 strlen
+--5826-- REDIR: 0x401b860 (ld-linux-x86-64.so.2:index) redirected to 0x4c30bc0 (index)
+--5826-- REDIR: 0x401ba80 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c320d0 (strcmp)
+--5826-- REDIR: 0x401dc70 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c35270 (mempcpy)
+--5826-- Reading syms from /lib/x86_64-linux-gnu/libc-2.23.so
+--5826--   Considering /lib/x86_64-linux-gnu/libc-2.23.so ..
+--5826--   .. CRC mismatch (computed 10016417 wanted 1f868c97)
+--5826--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.23.so ..
+--5826--   .. CRC is valid
+--5826-- REDIR: 0x4ec9a00 (libc.so.6:strcasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--5826-- REDIR: 0x4ec5280 (libc.so.6:strcspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--5826-- REDIR: 0x4ecbcf0 (libc.so.6:strncasecmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--5826-- REDIR: 0x4ec76f0 (libc.so.6:strpbrk) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--5826-- REDIR: 0x4ec7a80 (libc.so.6:strspn) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--5826-- REDIR: 0x4ec914b (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--5826-- REDIR: 0x4ec7400 (libc.so.6:rindex) redirected to 0x4c308a0 (rindex)
+--5826-- REDIR: 0x4ec3cd0 (libc.so.6:strcmp) redirected to 0x4a286f0 (_vgnU_ifunc_wrapper)
+--5826-- REDIR: 0x4ed9570 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x4c31f90 (strcmp)
+--5826-- REDIR: 0x4ec5720 (libc.so.6:strlen) redirected to 0x4c30f60 (strlen)
+--5826-- REDIR: 0x4ebe130 (libc.so.6:malloc) redirected to 0x4c2db20 (malloc)
+--5826-- REDIR: 0x4ec93b0 (libc.so.6:__GI_mempcpy) redirected to 0x4c34fa0 (__GI_mempcpy)
+--5826-- REDIR: 0x4ebe4f0 (libc.so.6:free) redirected to 0x4c2ed80 (free)
+--5826-- REDIR: 0x4ed0760 (libc.so.6:strchrnul) redirected to 0x4c34da0 (strchrnul)
+==5826== Invalid read of size 8
+==5826==    at 0x412B43: getBestMove (alex.c:442)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Address 0x5205178 is 24 bytes inside a block of size 40 free'd
+==5826==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412B3E: getBestMove (alex.c:441)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Block was alloc'd at
+==5826==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412951: getBestMove (alex.c:381)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826== 
+==5826== Invalid free() / delete / delete[] / realloc()
+==5826==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412B5A: getBestMove (alex.c:443)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Address 0x5205160 is 0 bytes inside a block of size 40 free'd
+==5826==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412B3E: getBestMove (alex.c:441)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Block was alloc'd at
+==5826==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412951: getBestMove (alex.c:381)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826== 
+==5826== 
+==5826== HEAP SUMMARY:
+==5826==     in use at exit: 80 bytes in 2 blocks
+==5826==   total heap usage: 17 allocs, 16 frees, 4,456 bytes allocated
+==5826== 
+==5826== Searching for pointers to 2 not-freed blocks
+==5826== Checked 64,144 bytes
+==5826== 
+==5826== 40 bytes in 1 blocks are definitely lost in loss record 1 of 2
+==5826==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412793: expansion (alex.c:233)
+==5826==    by 0x412A7F: getBestMove (alex.c:408)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826== 
+==5826== 40 bytes in 1 blocks are definitely lost in loss record 2 of 2
+==5826==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412599: expandNode (alex.c:102)
+==5826==    by 0x4127C3: expansion (alex.c:238)
+==5826==    by 0x412A7F: getBestMove (alex.c:408)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826== 
+==5826== LEAK SUMMARY:
+==5826==    definitely lost: 80 bytes in 2 blocks
+==5826==    indirectly lost: 0 bytes in 0 blocks
+==5826==      possibly lost: 0 bytes in 0 blocks
+==5826==    still reachable: 0 bytes in 0 blocks
+==5826==         suppressed: 0 bytes in 0 blocks
+==5826== 
+==5826== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
+==5826== 
+==5826== 1 errors in context 1 of 4:
+==5826== Invalid free() / delete / delete[] / realloc()
+==5826==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412B5A: getBestMove (alex.c:443)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Address 0x5205160 is 0 bytes inside a block of size 40 free'd
+==5826==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412B3E: getBestMove (alex.c:441)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Block was alloc'd at
+==5826==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412951: getBestMove (alex.c:381)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826== 
+==5826== 
+==5826== 1 errors in context 2 of 4:
+==5826== Invalid read of size 8
+==5826==    at 0x412B43: getBestMove (alex.c:442)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Address 0x5205178 is 24 bytes inside a block of size 40 free'd
+==5826==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412B3E: getBestMove (alex.c:441)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826==  Block was alloc'd at
+==5826==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5826==    by 0x412951: getBestMove (alex.c:381)
+==5826==    by 0x413C12: testWhatever (testkibasicthinking.c:262)
+==5826==    by 0x413C3E: kiTestsBasicThinking (testkibasicthinking.c:281)
+==5826==    by 0x4013B1: main (main.c:70)
+==5826== 
+==5826== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)

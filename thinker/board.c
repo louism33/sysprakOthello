@@ -160,9 +160,9 @@ void freeBoardStruct(BOARD_STRUCT *boardStruct) {
 }
 
 void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct, int boardSize) {
-    boardStruct->board = malloc(boardSize * sizeof(int)); //todo careful of magic numbers!
-    boardStruct->stack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
-    boardStruct->moveStack = malloc(boardSize * sizeof(MOVE)); //todo careful of magic numbers!
+    boardStruct->board = malloc(boardSize * sizeof(int));
+    boardStruct->stack = malloc(boardSize * sizeof(STACK_OBJECT));
+    boardStruct->moveStack = malloc(boardSize * sizeof(MOVE));
     boardStruct->sideToMove = STARTING_PLAYER;
     boardStruct->stackIndexMove = 0;
     boardStruct->stackIndexObject = 0;
@@ -237,7 +237,8 @@ void printMoves(MOVES moves) {
             break;
         }
         getPrettyMove(move, moveMem);
-        printf("%s\n", moveMem);
+//        printf("%s\n", moveMem);
+        printf("%d: %s\n", move, moveMem);
     }
     free(moveMem);
 }
@@ -578,21 +579,9 @@ int copyBoardStruct(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBo
 }
 
 int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n) {
-//    printf("copy board n%d\n", n);
-//    printf("  ax %p\n", destinationBoard);
-//    printf("  ay %p\n", sourceBoard);
-    if (sourceBoard == destinationBoard) {
-
-//        printf("  adwadwadwcopy boardx\n");
-    }
-//    printf("copy boardx\n");
-//    printf("copy dboard[0]%d\n", destinationBoard[0]);
-//    printf("copy board[0]%d\n", sourceBoard[0]);
     for (int i = 0; i < n; i++) {
-//        printf("%d ", i);
         destinationBoard[i] = sourceBoard[i];
     }
-//    printf("dwwdw\n");
     return 0;
 }
 

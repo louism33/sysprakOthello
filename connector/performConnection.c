@@ -118,7 +118,7 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 
 // todo, handle end state, what do we do once game is over?
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-    BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker)
+    BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker,pid_t connector, moveTimeAndBoard *moveTimeAndBoard )
 {
     char buff[MAX];        // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64];     // example: Game from 2019-11-18 17:42
@@ -149,7 +149,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     enum Phase phase = PROLOG; // this can be used to make sure we do not get confused about what stage of the game we are in
 
-    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
+    //moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
 
     // todo, + ENDPLAYERS
 
@@ -301,7 +301,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("sending relevant info to thinker\n");
                 char *moveRet = malloc(3 * sizeof(char));
-
                 connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
                                                          //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
@@ -321,7 +320,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 moveReceivedFromThinker[2] = '\0';
 
                 free(moveRet);
-
+                //Speilzug senden.
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
                 strcat(playCommandToSend, "\n");
@@ -364,13 +363,18 @@ free(moveTimeAndBoard);
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
- BOARD_STRUCT *thinkerBoard, infoVonServer *info,pid_t thinker)
+ BOARD_STRUCT *thinkerBoard, infoVonServer *info,pid_t thinker,pid_t connector, moveTimeAndBoard *moveTimeAndBoard )
 {
 
-    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard, info, thinker);
+    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard, info, thinker,connector, moveTimeAndBoard );
     //printf("###############################################################louis:%s\n", info->myPlayerName);
 
     printf("performConnection %d\n", sock);
 
     return 0;
 }
+
+
+
+
+

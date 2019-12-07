@@ -2,13 +2,14 @@
 #include <unistd.h>
 #include "pipe.h"
 
-int createPipe(int mypipe, int pd[]) {
+int createPipe(int pd[]) {
 	/*pipe erstellen mit pipe()*/
-	mypipe = pipe(pd);
-	if(mypipe == -1) {
+	
+	if(pipe(pd) == -1) {
 		printf("Fehler bei der Erstellung der Pipe\n");
-	}
+	}else{
 	printf("Erfolg bei der Erstellung der Pipe\n");
+}
 }
 
 

@@ -26,15 +26,14 @@
 #include "thinker/thinkertests/biggerboardtest.h"
 #include "shm/shm.h"
 #include "pipe/pipe.h"
-
 pid_t thinker;
 pid_t connector;
 // if thinker is parent, retry logic may be easier to implement
 // including learning
 int shmid;
 gameInfo *shmdata;
+char buff[10];
 
-int mypipe;
 /*File-deskriptor für die Pipe*/
 int pd[2];
 
@@ -45,10 +44,12 @@ void mysighandler(int sig) {
     }
 }
 
+
+
 int main(int argc, char *argv[])
 {    
     infoVonServer *info = malloc(sizeof(infoVonServer));
-   
+    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
     printf("Hello World! I am Alex. This is the main method\n");
 
     if (argc > 1 && strcmp(argv[1], "perft") == 0)
@@ -110,7 +111,7 @@ int main(int argc, char *argv[])
 
     createShm();
     attachShm();
-    createPipe(mypipe,pd);
+    createPipe(pd);
 
     /*signal empfagen und behandeln -> thinkMasterMethod() aufrufen */
         if (SIG_ERR == signal(SIGUSR1, mysighandler)) {
@@ -119,6 +120,9 @@ int main(int argc, char *argv[])
         else {
             thinkerMasterMethod(thinkerBoard);
             printf("Ich denke jetzt ------------------------------------\n");
+        //   char move[1]=dothink(thinkerBoard,moveTimeAndBoard->movetime);
+        //   write(pd[1],move,sizeof(move));
+
         }
 
     //connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv,info);
@@ -142,8 +146,9 @@ int main(int argc, char *argv[])
         close (pd[1]);
         printf("Die Schreibseite der Pipe wurde geschlossen\n");
         //readPipe(pd[0]);
+    
 
-        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker);
+        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker,connector, moveTimeAndBoard );
         printf("info: %s\n",info->gameId);
         
         //while (1)

@@ -264,6 +264,7 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
         if (totalMovesFlip == 0) { // gameover
             node->gameOver = 1;
             assert(isGameOver(boardStruct));
+            free(moves);
             return node;
         }
     }

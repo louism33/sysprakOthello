@@ -100,13 +100,37 @@ void addTotalMoveInfo(Node *node, int totalMoves) {
     }
     node->numberOfChildren = totalMoves;
     node->childrenNodes = calloc(totalMoves, sizeof(Node));
-//    Node *c = node->childrenNodes[0];
     node->movesReady = 1;
     printf("addTotalMoveInfo over '%p'\n", node);
 }
 
+
+void addTotalMoveInfoAllocAllChildren(Node *node, int totalMoves) {
+    printf("     addTotalMoveInfoAllocAllChildren '%p', totalmoves: %d\n", node, totalMoves);
+    // todo careful of endgame?
+    // if there are no moves, there is still a pass move
+    if (node->movesReady) {
+        printf("%p is already ready\n", node);
+        return;
+    }
+    if (!totalMoves) {
+        totalMoves = 1;
+    }
+    node->numberOfChildren = totalMoves;
+    node->childrenNodes = calloc(totalMoves, sizeof(Node));
+
+    for (int i = 0; i < totalMoves; i++) {
+        node->childrenNodes[i] = calloc(1, sizeof(Node));
+        printf(" callocing child %p, index %d\n", node->childrenNodes[i], i);
+        setupNode(node->childrenNodes[i]);
+    }
+
+    node->movesReady = 1;
+    printf("addTotalMoveInfoAllocAllChildren over '%p'\n", node);
+}
+
 void expandNode(Node *child, Node *parent, int moveIndex) {
-    printf("expand node\n");
+    printf("expand node child: %p, parent: %p, moveIndex: %d\n", child, parent, moveIndex);
     setupNode(child);
     child->parentNode = parent;
 
@@ -233,7 +257,8 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
     int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
 
     printf("expansion  add total %d\n", totalMoves);
-    addTotalMoveInfo(node, totalMoves);
+//    addTotalMoveInfo(node, totalMoves);
+    addTotalMoveInfoAllocAllChildren(node, totalMoves);
 //    int r = rand() % node->numberOfChildren;
     int r = 0;
 
@@ -312,41 +337,45 @@ int backprop(Node *finalNode, int outcome) {
     return 0;
 }
 
+//void freeKids(Node *node) {
+//    for (int i = 0; i < node->numberOfChildren; i++) {
+////        free(node->childrenNodes[i]);
+//
+//        if (node->childrenNodes[i]) {
+//            if (node->childrenNodes[i]->childrenNodes) {
+//                if (node->childrenNodes[i]->childrenNodes[i]) {
+//                    free(node->childrenNodes[i]->childrenNodes[i]);
+//                }
+//                free(node->childrenNodes[i]->childrenNodes);
+//            }
+//            free(node->childrenNodes[i]);
+//        }
+//    }
+//
+//    free(node->childrenNodes);
+//    free(node);
+//}
+
 void freeKids(Node *node) {
-
-//    if (node->childrenNodes[1]) {
-//        if (node->childrenNodes[1]->childrenNodes[1]) {
-//            free(node->childrenNodes[1]->childrenNodes[1]);
-//        }
-//        if (node->childrenNodes[1]->childrenNodes) {
-//            free(node->childrenNodes[1]->childrenNodes);
-//        }
-//    }
-//
-//
-//
-//    if (node->childrenNodes[0]->childrenNodes[0]) {
-//        free(node->childrenNodes[0]->childrenNodes[0]);
-//    }
-//    if (node->childrenNodes[0]->childrenNodes) {
-//        free(node->childrenNodes[0]->childrenNodes);
-//    }
-
-
     for (int i = 0; i < node->numberOfChildren; i++) {
 //        free(node->childrenNodes[i]);
 
-        if (node->childrenNodes[i]) {
-            if (node->childrenNodes[i]->childrenNodes[i]) {
-                free(node->childrenNodes[i]->childrenNodes[i]);
+        if (node->childrenNodes) {
+            if (node->childrenNodes[i]) {
+                freeKids(node->childrenNodes[i]);
+//                if (node->childrenNodes[i]->childrenNodes) {
+//                    if (node->childrenNodes[i]->childrenNodes[i]) {
+//                        free(node->childrenNodes[i]->childrenNodes[i]);
+//                    }
+//                    free(node->childrenNodes[i]->childrenNodes);
+//                }
+//                free(node->childrenNodes[i]);
             }
-            if (node->childrenNodes[i]->childrenNodes) {
-                free(node->childrenNodes[i]->childrenNodes);
-            }
-            free(node->childrenNodes[i]);
+
+        } else {
+            free(node);
         }
     }
-
 
     free(node->childrenNodes);
     free(node);
@@ -385,7 +414,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     free(moves);
 
     int magic = 0;
-    while (magic < 2) {
+    while (magic < 3) {
         printf("/////////// magic: %d\n", magic);
 
         resetBoardToStarter(board);

@@ -1,15 +1,15 @@
-==11493== Memcheck, a memory error detector
-==11493== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
-==11493== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
-==11493== Command: ./sysprak-client TEST
-==11493== Parent PID: 22552
-==11493== 
-==11493== 
-==11493== HEAP SUMMARY:
-==11493==     in use at exit: 0 bytes in 0 blocks
-==11493==   total heap usage: 256 allocs, 256 frees, 65,592 bytes allocated
-==11493== 
-==11493== All heap blocks were freed -- no leaks are possible
-==11493== 
-==11493== For counts of detected and suppressed errors, rerun with: -v
-==11493== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==13163== Memcheck, a memory error detector
+==13163== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==13163== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==13163== Command: ./sysprak-client TEST
+==13163== Parent PID: 22552
+==13163== 
+==13163== 
+==13163== HEAP SUMMARY:
+==13163==     in use at exit: 0 bytes in 0 blocks
+==13163==   total heap usage: 389 allocs, 389 frees, 97,496 bytes allocated
+==13163== 
+==13163== All heap blocks were freed -- no leaks are possible
+==13163== 
+==13163== For counts of detected and suppressed errors, rerun with: -v
+==13163== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

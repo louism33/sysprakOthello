@@ -776,12 +776,13 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     BOARD board = boardStruct->board;
 
     if (pos == LAST_MOVE) {
-        printf("    ------------> POS %d\n", pos);
+        printf("  ERROR last move  ------------> POS %d\n", pos);
         exit(1);
     }
 
     if (board[pos] != EMPTY) {
-        printf("    ------------> POS %d\n", pos);
+        printf(" ERROR   ------------> POS %d, board[pos] %d\n", pos, board[pos]);
+        printBoardSide(boardStruct);
 //        return 1;
         exit(1);
     }
@@ -1046,7 +1047,7 @@ int getWinner(BOARD_STRUCT *boardStruct) { // todo, new method combining getWINn
             anzahlWhite++;
         }
     }
-    printf("b %d   w %d \n", anzahlBlack, anzahlWhite);
+//    printf("b %d   w %d \n", anzahlBlack, anzahlWhite);
 
     if (anzahlBlack > anzahlWhite) {
         return getBlack();

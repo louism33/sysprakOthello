@@ -13,6 +13,9 @@
 int testOneObviousBestMove() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
+
+
+
     int *board = b->board;
     int moveTime = 1000;
 
@@ -29,7 +32,7 @@ int testOneObviousBestMove() {
     board[18] = getWhite();
 
     b->sideToMove = getWhite();
-
+//    printBoardSide(b);
     // there are two legal moves from this position, 0 and 63. 63 wins, 0 loses
     MOVE correctMove = 63;
     MOVE move = getBestMove(b, moveTime);
@@ -269,14 +272,14 @@ int testWhatever() {
 
 
 int kiTestsBasicThinking() {
-//    testOneObviousBestMove();
-//    testOneObviousBestMove2();
-//    testOneObviousBestMove3();
-//
-//    testPossibleGameWin();
-//    testPossibleGameWin2();
-//    testAvoidLossFromPreviousTest();
-//    testAvoidLossNextMove();
+    testOneObviousBestMove();
+    testOneObviousBestMove2();
+    testOneObviousBestMove3();
+
+    testPossibleGameWin();
+    testPossibleGameWin2();
+    testAvoidLossFromPreviousTest();
+    testAvoidLossNextMove();
 
     testWhatever();
 

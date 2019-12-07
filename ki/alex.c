@@ -82,7 +82,10 @@ void printNode(Node *node) {
     }
     printf("**     my&   : %p\n", node);
     printf("** parentNode: %p\n", node->parentNode);
-    printf("** childNode : %p\n", node->childrenNodes ? node->childrenNodes : NULL);
+    printf("** childNode : %p\n", node->childrenNodes);
+    if (node->childrenNodes) {
+        printf("** firstChild: %p\n", node->childrenNodes[0]);
+    }
     printf("**  playouts : %d\n", node->playoutCount);
     printf("**    wins   : %d\n", node->winCount);
     printf("**  numkids  : %d\n", node->numberOfChildren);
@@ -371,7 +374,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //    printBoardSide(boardStruct);
 
     int magic = 0;
-    while (magic < 100) {
+    while (magic < 400) {
         printf("/////////// magic: %d\n", magic);
 
 //        resetBoardToStarter(board);
@@ -406,6 +409,21 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     }
 
     printNode(root);
+    int totalPlayoutsFromRoot = root->playoutCount;
+    int totalPlayoutsFromChildren =0;
+    int mostPlayoutsFromChild =0;
+
+    for (int i = 0; i < root->numberOfExpandedChildren; i++) {
+        if (root->childrenNodes[i]) {
+            totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
+            mostPlayoutsFromChild =
+                    root->childrenNodes[i]->playoutCount > mostPlayoutsFromChild ? root->childrenNodes[i]->playoutCount
+                                                                                 : mostPlayoutsFromChild;
+            printNode(root->childrenNodes[i]);
+        }
+    }
+
+    assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
 
     freeKids(root);
 

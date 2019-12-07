@@ -54,21 +54,38 @@ void setupNode(Node *node) {
     node->childrenNodes = NULL;
 }
 
-void freeNode(Node *node) {
-    if (node->childrenNodes) {
-        free(node->childrenNodes);
-    }
-    free(node);
+
+void setupNodeParent(Node *node, Node* parent) {
+
+//    if (node->ready) {
+//        return;
+//    }
+    node->parentNode = parent;
+    node->nodeType = LEAF;
+    node->winCount = 0;
+    node->playoutCount = 0;
+    node->numberOfChildren = 0;
+    node->numberOfExpandedChildren = 0;
+    node->ready = 1;
+    node->movesReady = 0;
+    node->childrenNodes = NULL;
 }
 
-void freeRootAndChildren(Node *root) {
-    if (root->childrenNodes) {
-        for (int i = 0; i < root->numberOfChildren; i++) {
-            freeRootAndChildren(root->childrenNodes[i]);
-        }
-    }
-    freeNode(root);
-}
+//void freeNode(Node *node) {
+//    if (node->childrenNodes) {
+//        free(node->childrenNodes);
+//    }
+//    free(node);
+//}
+//
+//void freeRootAndChildren(Node *root) {
+//    if (root->childrenNodes) {
+//        for (int i = 0; i < root->numberOfChildren; i++) {
+//            freeRootAndChildren(root->childrenNodes[i]);
+//        }
+//    }
+//    freeNode(root);
+//}
 
 
 void printNode(Node *node) {
@@ -130,7 +147,7 @@ void addTotalMoveInfoAllocAllChildren(Node *node, int totalMoves) {
     for (int i = 0; i < totalMoves; i++) {
         node->childrenNodes[i] = calloc(1, sizeof(Node));
 //        printf(" callocing child %p, index %d\n", node->childrenNodes[i], i);
-        setupNode(node->childrenNodes[i]);
+        setupNodeParent(node->childrenNodes[i], node);
     }
 
     node->movesReady = 1;
@@ -139,7 +156,7 @@ void addTotalMoveInfoAllocAllChildren(Node *node, int totalMoves) {
 
 void expandNode(Node *child, Node *parent, int moveIndex) {
 //    printf("expand node child: %p, parent: %p, moveIndex: %d\n", child, parent, moveIndex);
-    setupNode(child);
+    setupNodeParent(child, parent);
     child->parentNode = parent;
 
     parent->nodeType = parent->nodeType == ROOT ? ROOT : BRANCH;
@@ -211,8 +228,8 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 //    printf("expansion  add total %d\n", totalMoves);
 //    addTotalMoveInfo(node, totalMoves);
     addTotalMoveInfoAllocAllChildren(node, totalMoves);
-//    int r = rand() % node->numberOfChildren;
-    int r = 0;
+    int r = rand() % node->numberOfChildren;
+//    int r = 0;
 
     if (totalMoves) {
         assert(moves[r] != getLastMove());
@@ -279,7 +296,7 @@ int switchOutcome(int outcome) {
 }
 
 int backprop(Node *finalNode, int outcome) {
-//    printf("final node:\n");
+    printf("final node: %p\n", finalNode);
 //    printNode(finalNode);
 //    printf("final node\n\n\n\n");
 
@@ -374,26 +391,26 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //    printBoardSide(boardStruct);
 
     int magic = 0;
-    while (magic < 400) {
+    while (magic < 100) {
         printf("/////////// magic: %d\n", magic);
 
 //        resetBoardToStarter(board);
         copyBoardStruct(boardStruct, copy, getBoardSize());
         resetStackStuff(boardStruct);
 
-        Node *toExpand = selection(root, boardStruct); // pick a node with no children
+        Node *fromSelection = selection(root, boardStruct); // pick a node with no children
 
-//        printf("root: %p, toExpand %p\n", root, toExpand);
-//        if (root == toExpand) {
+        printf("root: %p, fromSelection %p\n", root, fromSelection);
+//        if (root == fromSelection) {
 //            printf("expanding root\n");
 //        }
 
-//        printf("trying expansion %p\n", toExpand);
-        Node *expandedChild = expansion(toExpand, boardStruct); // reserve memory for children and pick one
-//        if (expandedChild == toExpand) {
-//            printf("expansion gave same node :(((\n");
-//        }
-//        printf("expansion done %p\n", expandedChild);
+        printf("trying expansion %p\n", fromSelection);
+        Node *expandedChild = expansion(fromSelection, boardStruct); // reserve memory for children and pick one
+        if (expandedChild == fromSelection) {
+            printf("expansion gave same node :(((\n");
+        }
+        printf("expansion done %p\n", expandedChild);
 
 
 //        printf("trying simulation\n");
@@ -401,7 +418,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //        printf("simulation done %d\n", outcome);
 
 
-//        printf("trying backprop\n");
+        printf("trying backprop %p\n", expandedChild);
         backprop(expandedChild, outcome);
 //        printf("backprop done\n");
 
@@ -413,7 +430,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     int totalPlayoutsFromChildren =0;
     int mostPlayoutsFromChild =0;
 
-    for (int i = 0; i < root->numberOfExpandedChildren; i++) {
+    for (int i = 0; i < root->numberOfChildren; i++) {
         if (root->childrenNodes[i]) {
             totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
             mostPlayoutsFromChild =

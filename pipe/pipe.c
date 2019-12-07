@@ -29,3 +29,4 @@ void readPipe (int file) {
   putchar (c);
   fclose (stream);
 }
+    

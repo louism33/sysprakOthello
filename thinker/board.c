@@ -775,8 +775,15 @@ void passMove(BOARD_STRUCT *boardStruct){
 int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER) {
     BOARD board = boardStruct->board;
 
+    if (pos == LAST_MOVE) {
+        printf("    ------------> POS %d\n", pos);
+        exit(1);
+    }
+
     if (board[pos] != EMPTY) {
-        return 1;
+        printf("    ------------> POS %d\n", pos);
+//        return 1;
+        exit(1);
     }
     pushMove(boardStruct, pos);
 

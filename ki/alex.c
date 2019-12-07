@@ -162,9 +162,9 @@ void printNodeBoardStruct(Node *node, BOARD_STRUCT *boardStruct) {
 }
 
 Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
-    printf("selection with %p\n", node);
+//    printf("selection with %p\n", node);
     if (node->nodeType == ROOT && node->playoutCount == 0) {
-        printf("selection: picking root %p\n", node);
+//        printf("selection: picking root %p\n", node);
         assert(node->ready);
         return node;
     }
@@ -189,7 +189,7 @@ Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
         switchPlayerStruct(boardStruct);
     }
 
-    printf("recursive selection with %p\n", node->childrenNodes[r]);
+//    printf("recursive selection with %p\n", node->childrenNodes[r]);
     free(moves);
     return selection(node->childrenNodes[r], boardStruct);
 }
@@ -209,7 +209,13 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 //    int r = rand() % node->numberOfChildren;
     int r = 0;
 
-    makeMove(boardStruct, moves[r]);
+    if (totalMoves) {
+        assert(moves[r] != getLastMove());
+        makeMove(boardStruct, moves[r]);
+    } else {
+        assert(moves[0] == getLastMove());
+        switchPlayerStruct(boardStruct);
+    }
 
     Node *child = node->childrenNodes[r];
     if (!child) {
@@ -313,10 +319,10 @@ void freeKids(Node *node) {
 int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     srand(time(NULL)); // todo move out ?
 
-//    BOARD_STRUCT *copy = malloc(sizeof(BOARD_STRUCT));
+    BOARD_STRUCT *copy = malloc(sizeof(BOARD_STRUCT));
 
-//    initialiseBoardStructToZero(copy);
-//    copyBoardStruct(copy, boardStruct, getBoardSize());
+    initialiseBoardStructToZero(copy);
+    copyBoardStruct(copy, boardStruct, getBoardSize());
 
     BOARD board = boardStruct->board;
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
@@ -341,35 +347,36 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     free(moves);
 
     int magic = 0;
-    while (magic < 50) {
+    while (magic < 200) {
         printf("/////////// magic: %d\n", magic);
 
         resetBoardToStarter(board);
+//        copyBoardStruct(boardStruct, copy, getBoardSize());
         resetStackStuff(boardStruct);
 
         Node *toExpand = selection(root, boardStruct); // pick a node with no children
 
-        printf("root: %p, toExpand %p\n", root, toExpand);
-        if (root == toExpand) {
-            printf("expanding root\n");
-        }
+//        printf("root: %p, toExpand %p\n", root, toExpand);
+//        if (root == toExpand) {
+//            printf("expanding root\n");
+//        }
 
-        printf("trying expansion %p\n", toExpand);
+//        printf("trying expansion %p\n", toExpand);
         Node *expandedChild = expansion(toExpand, boardStruct); // reserve memory for children and pick one
-        if (expandedChild == toExpand) {
-            printf("expansion gave same node :(((\n");
-        }
-        printf("expansion done %p\n", expandedChild);
+//        if (expandedChild == toExpand) {
+//            printf("expansion gave same node :(((\n");
+//        }
+//        printf("expansion done %p\n", expandedChild);
 
 
-        printf("trying simulation\n");
+//        printf("trying simulation\n");
         int outcome = simulation(boardStruct); // run a game, return result
-        printf("simulation done %d\n", outcome);
+//        printf("simulation done %d\n", outcome);
 
 
-        printf("trying backprop\n");
+//        printf("trying backprop\n");
         backprop(expandedChild, outcome);
-        printf("backprop done\n");
+//        printf("backprop done\n");
 
         magic++;
     }
@@ -377,6 +384,8 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     printNode(root);
 
     freeKids(root);
+
+    freeBoardStruct(copy);
 
     return move;
 }

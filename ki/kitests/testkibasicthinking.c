@@ -10,11 +10,79 @@
 #include <stdio.h>
 
 
-int testOneObviousBestMove() {
+int testOneTrivialBestMove() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToZero(b);
 
+    int *board = b->board;
+    int moveTime = 1000;
 
+    for (int i = 0; i < 63; i++) {
+        board[i] = getBlack();
+    }
+
+    for (int i = 0; i < 8; i++) {
+        board[i] = getWhite();
+        board[48+i] = getWhite();
+        board[i * 8] = getWhite();
+    }
+
+    board[0] = getEmpty();
+    board[2] = getBlack();
+
+    board[41] = getWhite();
+    board[42] = getWhite();
+    board[43] = getWhite();
+
+    board[54] = getBlack();
+    board[18] = getWhite();
+    b->sideToMove = getWhite();
+
+
+//    int www = 0;
+//    int bbb = 0;
+//    printBoardSide(b);
+//    makeMove(b, 63);
+//    makeMove(b, 0);
+//
+//    printBoardSide(b);
+//
+//    for (int i = 0; i < 64; i++) {
+//        if (board[i] == getBlack()){
+//            bbb++;
+//        }else if (board[i] == getWhite()){
+//            www++;
+//        }
+//    }
+//
+//    printf("w: %d, b: %d\n", www, bbb);
+//
+
+
+//    printBoardSide(b);
+    // there are two legal moves from this position, 0 and 63. 63 wins, 0 loses
+    MOVE correctMove = 63;
+    MOVE move = getBestMove(b, moveTime);
+
+    makeMove(b, move);
+
+    if (move != correctMove || getWinner(b) != getWhite()) {
+//        printBoardSide(b);
+        fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
+                correctMove, move);
+        freeBoardStruct(b);
+        exit(1);
+    }
+
+    freeBoardStruct(b);
+    return 0; // success
+}
+
+
+
+int testOneObviousBestMove() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
 
     int *board = b->board;
     int moveTime = 1000;
@@ -40,7 +108,7 @@ int testOneObviousBestMove() {
     makeMove(b, move);
 
     if (move != correctMove || getWinner(b) != getWhite()) {
-        printBoardSide(b);
+//        printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
                 correctMove, move);
         freeBoardStruct(b);
@@ -272,16 +340,17 @@ int testWhatever() {
 
 
 int kiTestsBasicThinking() {
-    testOneObviousBestMove();
-    testOneObviousBestMove2();
-    testOneObviousBestMove3();
-
-    testPossibleGameWin();
-    testPossibleGameWin2();
-    testAvoidLossFromPreviousTest();
-    testAvoidLossNextMove();
-
-    testWhatever();
+    testOneTrivialBestMove();
+//    testOneObviousBestMove();
+//    testOneObviousBestMove2();
+//    testOneObviousBestMove3();
+//
+//    testPossibleGameWin();
+//    testPossibleGameWin2();
+//    testAvoidLossFromPreviousTest();
+//    testAvoidLossNextMove();
+//
+//    testWhatever();
 
     return 0;
 }

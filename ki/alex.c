@@ -79,10 +79,15 @@ void printNode(Node *node) {
     } else {
         printf("-> type LEAF\n");
     }
-    printf("** playouts: %d\n", node->playoutCount);
-    printf("**   wins  : %d\n", node->winCount);
-    printf("** numkids : %d\n", node->numberOfChildren);
-    printf("** numXkids: %d\n", node->numberOfExpandedChildren);
+    printf("**parentNode: %p\n", node->parentNode);
+    printf("**childNode : %p\n", node->childrenNodes);
+    printf("** playouts : %d\n", node->playoutCount);
+    printf("** playouts : %d\n", node->playoutCount);
+    printf("**   wins   : %d\n", node->winCount);
+    printf("** numkids  : %d\n", node->numberOfChildren);
+    printf("** numXkids : %d\n", node->numberOfExpandedChildren);
+    printf("**movesReady: %d\n", node->movesReady);
+    printf("**   ready  : %d\n", node->ready);
     printf("**\n");
 }
 
@@ -159,93 +164,130 @@ void printNodeBoardStruct(Node *node, BOARD_STRUCT *boardStruct) {
 }
 
 int xxx = 0;
+//
+//Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
+//    if (node->nodeType == ROOT && node->playoutCount == 0) {
+//        printf("selection: picking root\n");
+//        assert(node->ready);
+//        return node;
+//    }
+//
+//    if (node->nodeType == ROOT) {
+//        assert(node->playoutCount > 0);
+//    }
+//
+//    if (1) {
+//        return node->childrenNodes[xxx++];
+//    }
+//
+//    if (1) {
+//
+//        printf("abc\n");
+//
+//        Node *child = node->childrenNodes[0];
+//        printf("abcd\n");
+//
+//        if (xxx == 0) {
+//            child = malloc(sizeof(Node));
+//            printf("abcde\n");
+//
+//            expandNode(child, node, 0);
+//            printf("abcf\n");
+//        }
+//        xxx++;
+//        return child;
+//    }
+//
+//    int passNode = 0;
+//
+//    if (node->nodeType == LEAF && node->playoutCount == 0) {
+//        printf("   node->nodeType == LEAF && node->playoutCount == 0\n");
+//        return node;
+//    }
+//
+//    if (!node->ready) {
+////        printf(" node not ready\n");
+//        setupNode(node);
+//        MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
+//        int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
+//        addTotalMoveInfo(node, totalMoves);
+//        passNode = !totalMoves;
+//        free(moves);
+////        printf(" node not ready after\n");
+//        return node;
+//    }
+//
+//    assert(node->ready);
+//    assert(node->numberOfChildren);
+//
+////    printf("  moveindex\n");
+//    int moveIndex = rand() % node->numberOfChildren;
+//
+//    Node *child = node->childrenNodes[moveIndex];
+////    printf("  a\n");
+//    int childUnready = 0;
+//
+//    child = malloc(sizeof(Node));
+//
+//    expandNode(child, node, moveIndex);
+//    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE)); // todo, consider saving moves
+//    int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
+//
+//    if (passNode) {
+//        passMove(boardStruct);
+//    } else {
+//        MOVE m = moves[moveIndex];
+//        makeMove(boardStruct, moves[moveIndex]);
+//    }
+//    if (child->nodeType == LEAF) {
+//        assert(child->numberOfChildren == 0);
+//        free(moves);
+//        return child;
+//    }
+//
+//    free(moves);
+//
+//    printf("    recursive %d\n", child->nodeType);
+//    return selection(child, boardStruct);
+//}
+
+
 
 Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
+    printf("selection with %p\n", node);
     if (node->nodeType == ROOT && node->playoutCount == 0) {
-        printf("selection: picking root\n");
+        printf("selection: picking root %p\n", node);
         assert(node->ready);
         return node;
     }
-
     if (node->nodeType == ROOT) {
         assert(node->playoutCount > 0);
     }
 
-    if (1) {
-        return node->childrenNodes[xxx++];
-//        return node;
-    }
-
-    if (1) {
-
-        printf("abc\n");
-
-        Node *child = node->childrenNodes[0];
-        printf("abcd\n");
-
-        if (xxx == 0) {
-            child = malloc(sizeof(Node));
-            printf("abcde\n");
-
-            expandNode(child, node, 0);
-            printf("abcf\n");
-        }
-        xxx++;
-        return child;
-    }
-
-    int passNode = 0;
-
-    if (node->nodeType == LEAF && node->playoutCount == 0) {
-        printf("   node->nodeType == LEAF && node->playoutCount == 0\n");
+    if (node->playoutCount == 0 || node->nodeType == LEAF) {
         return node;
     }
 
-    if (!node->ready) {
-//        printf(" node not ready\n");
-        setupNode(node);
-        MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
-        int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
-        addTotalMoveInfo(node, totalMoves);
-        passNode = !totalMoves;
-        free(moves);
-//        printf(" node not ready after\n");
-        return node;
-    }
+    printNode(node);
+    assert(node->playoutCount > 0);
 
-    assert(node->ready);
-    assert(node->numberOfChildren);
+    int r = 0;
 
-//    printf("  moveindex\n");
-    int moveIndex = rand() % node->numberOfChildren;
-
-    Node *child = node->childrenNodes[moveIndex];
-//    printf("  a\n");
-    int childUnready = 0;
-
-    child = malloc(sizeof(Node));
-
-    expandNode(child, node, moveIndex);
-    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE)); // todo, consider saving moves
+    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
-
-    if (passNode) {
-        passMove(boardStruct);
-    } else {
-        MOVE m = moves[moveIndex];
-        makeMove(boardStruct, moves[moveIndex]);
-    }
-    if (child->nodeType == LEAF) {
-        assert(child->numberOfChildren == 0);
-        free(moves);
-        return child;
+    if (totalMoves) {
+        //    makeMove(boardStruct, moves[r]);
+    }else  {
+        switchPlayerStruct(boardStruct);
     }
 
+    printf("xxxxx with %p\n", node);
     free(moves);
+    return selection(node->childrenNodes[r], boardStruct);
+//        return node->childrenNodes[r];
 
-    printf("    recursive %d\n", child->nodeType);
-    return selection(child, boardStruct);
 }
+
 
 // todo return wld?
 Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
@@ -377,7 +419,7 @@ void freeKids(Node *node) {
         }
     }
 
-    free(node->childrenNodes);
+    free(node->childrenNodes); // careful?
     free(node);
 }
 
@@ -414,7 +456,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     free(moves);
 
     int magic = 0;
-    while (magic < 3) {
+    while (magic < 120) {
         printf("/////////// magic: %d\n", magic);
 
         resetBoardToStarter(board);

@@ -26,25 +26,10 @@ MOVE doThink(BOARD_STRUCT *board, int moveTime)
 void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard)
 {
 	printf("Hi I am very good at thinking\n");
-	
-	//createProcesses();
 
-	/*
-	was wir brauchen für die thinkerMasterMethod
-	- eine printBoard() Funktion 
-	-signal Handler mit getSignal(), sendSignal() etc. 
-	
-	enthält makeTurn()
-	sendTurn()
-	unnamed Pipe erstllen -- bevor fork()!
-	Seiten schließen
-	makeTurn() 
-	makeMove()
-	isLegalMove()
-	canPlay()
-	*/
+	/*Lese aus dem shm*/
+    readShm();
 }
-
 /*think() Methode: wartet auf Signal SIGURS1 und ließt anschließend alle benötigten Infos
  aus dem SM und berechnet Spielzug*/
 void think()

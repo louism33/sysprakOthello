@@ -11,21 +11,23 @@ int createPipe(int mypipe, int pd[]) {
 	printf("Erfolg bei der Erstellung der Pipe\n");
 }
 
-void writePipe (int file) {
+
+/* nur zum Testen gewesen brauchen wir nicht mehr !*/
+/*void writePipe (int file) {
   FILE *stream;
   stream = fdopen (file, "w");
   fprintf (stream, "hello, world!\n");
   fprintf (stream, "goodbye, world!\n");
   fclose (stream);
-}
+}*/
 
 
 /*lesen tut der Connector*/
-void readPipe (int file) {
+/*void readPipe (int file) {
   FILE *stream;
   int c;
   stream = fdopen (file, "r");
   while ((c = fgetc (stream)) != EOF)
   putchar (c);
   fclose (stream);
-}
+}*/

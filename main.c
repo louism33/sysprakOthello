@@ -1,4 +1,3 @@
-
 #include "thinker/board.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,14 +110,17 @@ int main(int argc, char *argv[])
 
     createShm();
     attachShm();
+    createPipe(mypipe,pd);
 
-    /*signal empfagen und behandeln*/
-    if (SIG_ERR == signal(SIGUSR1, mysighandler)) {
-        printf("error bei empfangen des Signals\n");
-    }
+    /*signal empfagen und behandeln -> thinkMasterMethod() aufrufen */
+        if (SIG_ERR == signal(SIGUSR1, mysighandler)) {
+            printf("error bei empfangen des Signals\n");
+        }
+        else {
+            thinkerMasterMethod(thinkerBoard);
+            printf("Ich denke jetzt ------------------------------------\n");
+        }
 
-    //createPipe(mypipe,pd);
-    // thinkerMasterMethod(thinkerBoard);
     //connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv,info);
     // //printf("main2----------gameID: %s\n", info->gameId);
     switch (thinker = fork())
@@ -137,22 +139,19 @@ int main(int argc, char *argv[])
         
         /*Connector ließt aus der Pipe den Spielzug aus
         als schließe die Schreibseite hier*/
-        //close (pd[1]);
-        //printf("Die Schreibseite der Pipe wurde geschlossen\n");
+        close (pd[1]);
+        printf("Die Schreibseite der Pipe wurde geschlossen\n");
         //readPipe(pd[0]);
 
-        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info);
+        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker);
         printf("info: %s\n",info->gameId);
-
-        /*schreibe in das Shm das gefüllte Struct aus connectorMasterMethod*/
-        writeShm(info, connector, thinker);
-
+        
         //while (1)
         //{
             //sleep(3);
-        if (kill(thinker, SIGUSR1)==-1){
-            printf("Fehler beim senden des Signals\n");
-        }
+        //if (kill(thinker, SIGUSR1)==-1){
+          //  printf("Fehler beim senden des Signals\n");
+        //}
         //}
 
         break;
@@ -165,15 +164,12 @@ int main(int argc, char *argv[])
         printf("Meine PID = %i\n", thinker);
 
         /*Thinker schreibt in die Pipe rein, also schließe die Leseseite*/
-        //close(pd[0]);
-        //printf("Die Leseseite der Pipe wurde geschlossen\n");
+        close(pd[0]);
+        printf("Die Leseseite der Pipe wurde geschlossen\n");
         //writePipe(pd[1]);
 
-
-        //thinkerMasterMethod(thinkerBoard, signalVonKill)
-
-        /*Lese aus dem shm*/
-        readShm();
+        
+        
         while (1) {
 
         }

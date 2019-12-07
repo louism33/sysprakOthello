@@ -18,6 +18,7 @@
 #include <getopt.h>
 #include <string.h>
 #include <stdio.h>
+#include <signal.h>
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -59,6 +60,7 @@ enum Phase
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
 // todo, be careful of people trolling you by calling game "game over", implement PHASE int/enum
+
 
 int writeToServer(int sockfd, char message[])
 {
@@ -116,7 +118,7 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 
 // todo, handle end state, what do we do once game is over?
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                                BOARD_STRUCT *thinkerBoard, infoVonServer *info)
+    BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker)
 {
     char buff[MAX];        // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64];     // example: Game from 2019-11-18 17:42
@@ -210,7 +212,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
-                       strlen(buff) < 1)
+                 strlen(buff) < 1)
                     ; // todo, possibly stick to only one central read?
                 printf("%s\n", buff);
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
@@ -259,16 +261,11 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strcpy(info->myPlayerName, myPlayerName);
                 printf("------------------------------------myplayerName:%s\n", info->myPlayerName);
 
-                if (1)
-                {
-                    return 0;
-                }
-
-
-
-
-
             }
+ 
+            /* ----------------------- fertig mit schreiben in struct infoVonServer -------------------------*/
+            /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
+            //writeShm(info, connector, thinker);  ToDo: übergebe connector und thinker zu haveConversationwithServer()
 
             // step five, read TOTAL
             if (strncmp("+ TOTAL", buff, 7) == 0)
@@ -287,6 +284,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             { // todo make better (add check for first chars for example)
                 printf("sending thinking command\n");
                 writeToServer(sockfd, thinking);
+
+                if (kill(thinker, SIGUSR1)==-1){
+                    printf("Fehler beim senden des Signals\n");
+                }
+                printf("******************************************kill\n");
+
                 printf("sent thinking command\n");
 
                 printf("starting parse board, setting phase to spielzug\n");
@@ -295,6 +298,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
+
                 printf("sending relevant info to thinker\n");
                 char *moveRet = malloc(3 * sizeof(char));
 
@@ -302,14 +306,14 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                                                          //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
-                                                                 moveTimeAndBoard->movetime, moveRet);
+                   moveTimeAndBoard->movetime, moveRet);
                 printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);
 
                 printf("%s   %d\n", moveRet, (int)strlen(moveRet));
                 if (strlen(moveRet) != 2)
                 {
                     fprintf(stderr, "move of incorrect length received from thinker: %s\n",
-                            moveRet);
+                        moveRet);
                     exit(1); // todo in future we want to implement retry logic etc to avoid crashing on a single error
                 }
                 moveReceivedFromThinker[0] = moveRet[0];
@@ -342,28 +346,28 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if ((strncmp("+ ENDFIELD", buff, 10)) == 0)
             { // todo, is this necessary? I don't think this is ever called
-                printf("endfield received, possibly something is wrong!!!\n");
+        printf("endfield received, possibly something is wrong!!!\n");
 
-                writeToServer(sockfd, thinking);
-            }
-
-            if (readResponse == -1)
-            {
-                printf("Could not read from server");
-                exit(0);
-            }
-            bzero(buff, sizeof(buff));
-        }
+        writeToServer(sockfd, thinking);
     }
 
-    free(moveTimeAndBoard);
+    if (readResponse == -1)
+    {
+        printf("Could not read from server");
+        exit(0);
+    }
+    bzero(buff, sizeof(buff));
+}
+}
+
+free(moveTimeAndBoard);
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           BOARD_STRUCT *thinkerBoard, infoVonServer *info)
+ BOARD_STRUCT *thinkerBoard, infoVonServer *info,pid_t thinker)
 {
 
-    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard, info);
+    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard, info, thinker);
     //printf("###############################################################louis:%s\n", info->myPlayerName);
 
     printf("performConnection %d\n", sock);

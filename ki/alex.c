@@ -108,6 +108,8 @@ void printNode(Node *node) {
     if (node->childrenNodes) {
         printf("** firstChild: %p\n", node->childrenNodes[0]);
     }
+    printf("**  passNode : %d\n", node->passNode);
+    printf("** parentMove: %d\n", node->moveFromParent);
     printf("**  playouts : %d\n", node->playoutCount);
     printf("**    wins   : %d\n", node->winCount);
     printf("**  numkids  : %d\n", node->numberOfChildren);
@@ -206,16 +208,22 @@ Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
 
     assert(node->playoutCount > 0);
 
-    int r = node->passNode == 0 ? 0 : rand() % node->numberOfChildren;
+    int r = node->passNode ? 0 : rand() % node->numberOfChildren;
+
+//    printf("selection: r is %d\n", r);
 
     if (node->childrenNodes[r]->moveFromParent != getPassMove()) {
-        printf("yy\n");
+//        printf("yy\n");
         assert(node->childrenNodes[r]->moveFromParent != getPassMove());
         assert(node->childrenNodes[r]->moveFromParent >= 0);
         assert(node->childrenNodes[r]->moveFromParent < getBoardSize());
+        assert(!node->childrenNodes[r]->parentNode->passNode);
+
         makeMove(boardStruct, node->childrenNodes[r]->moveFromParent);
     } else {
-        printf("XX\n");
+//        printf("XX\n");
+        assert(node->childrenNodes[r]->parentNode->passNode);
+
         switchPlayerStruct(boardStruct);
     }
 
@@ -442,8 +450,9 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     int totalPlayoutsFromRoot = root->playoutCount;
     int totalPlayoutsFromChildren = 0;
     int mostPlayoutsFromChild = 0;
-    double weakestChildScore = 0;
+    double weakestChildScore = 100;
     MOVE weakestChild = 0;
+    MOVE weakestChildMove = 0;
 
     for (int i = 0; i < root->numberOfChildren; i++) {
         if (root->childrenNodes[i]) {
@@ -454,15 +463,19 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
             printNode(root->childrenNodes[i]);
 
             if (root->childrenNodes[i]->playoutCount) {
-                double ratio = root->childrenNodes[i]->winCount / root->childrenNodes[i]->playoutCount;
+                double ratio = (double)root->childrenNodes[i]->winCount / root->childrenNodes[i]->playoutCount;
+                printf("ratio: %lf, weakest: %lf\n", ratio, weakestChildScore);
                 if (ratio < weakestChildScore) {
 
-                    weakestChildScore = weakestChildScore;
+                    weakestChildScore = ratio;
                     weakestChild = i;
+                    weakestChildMove = root->childrenNodes[i]->moveFromParent;
                 }
             }
         }
     }
+
+    printf("weakest child %d, score %lf, move: %d\n", weakestChild, weakestChildScore, weakestChildMove);
 
     assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
 
@@ -470,6 +483,6 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 
     freeBoardStruct(copy);
 
-    return move;
+    return weakestChildMove;
 }
 

@@ -206,56 +206,21 @@ Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
 
     assert(node->playoutCount > 0);
 
-    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE)); // todo replace with numberOfChildren
-    int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
-    int r = totalMoves == 0 ? getPassMove() : rand() % totalMoves;
+    int r = node->passNode == 0 ? 0 : rand() % node->numberOfChildren;
 
-    if (totalMoves == 0) {
-        node->passNode = 1;
-    }else {
-        assert(!node->passNode);
-    }
-
-    if (totalMoves == 0) {
-        assert(node->numberOfChildren == 1);
-    } else {
-        assert(totalMoves == node->numberOfChildren);
-    }
-
-
-
-    if (totalMoves) {
+    if (node->childrenNodes[r]->moveFromParent != getPassMove()) {
         printf("yy\n");
-//        assert(moves[r] == node->childrenNodes[r]->moveFromParent);
-//        assert(moves[r] != getPassMove());
-//        assert(moves[r] >= 0);
-//        assert(moves[r] < getBoardSize());
-        makeMove(boardStruct, moves[r]);
-//        makeMove(boardStruct, node->childrenNodes[r]->moveFromParent);
+        assert(node->childrenNodes[r]->moveFromParent != getPassMove());
+        assert(node->childrenNodes[r]->moveFromParent >= 0);
+        assert(node->childrenNodes[r]->moveFromParent < getBoardSize());
+        makeMove(boardStruct, node->childrenNodes[r]->moveFromParent);
     } else {
         printf("XX\n");
-//        assert(node)
         switchPlayerStruct(boardStruct);
     }
 
 
-
-//    int r = totalMoves == 0 ? getPassMove() : rand() % node->numberOfChildren;
-//    if (totalMoves) {
-//        printf("yy\n");
-////        assert(moves[r] == node->childrenNodes[r]->moveFromParent);
-//        assert(moves[r] != getPassMove());
-//        assert(moves[r] >= 0);
-//        assert(moves[r] < getBoardSize());
-//        makeMove(boardStruct, moves[r]);
-//    } else {
-//        printf("XX\n");
-////        assert(node)
-//        switchPlayerStruct(boardStruct);
-//    }
-
 //    printf("recursive selection with %p\n", node->childrenNodes[r]);
-    free(moves);
     return selection(node->childrenNodes[r], boardStruct);
 }
 
@@ -440,7 +405,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //    printBoardSide(boardStruct);
 
     int magic = 0;
-    while (magic < 1) {
+    while (magic < 100) {
 //        printf("/////////// magic: %d\n", magic);
 
         copyBoardStruct(boardStruct, copy, getBoardSize());

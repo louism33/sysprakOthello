@@ -32,3 +32,4 @@ int createPipe(int pd[]) {
   putchar (c);
   fclose (stream);
 }*/
+////

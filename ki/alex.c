@@ -20,6 +20,8 @@
 #define AIDRAW (0)
 #define AILOSS (-1)
 
+#define GAME_NOT_OVER (69)
+
 enum NodeType {
     ROOT = 0,
     BRANCH = 1,
@@ -64,6 +66,7 @@ void setupNode(Node *node) {
     node->childrenNodes = NULL;
     node->sideToMove = getEmpty();
     node->hasJustMoved = getEmpty();
+    node->gameOverWinner = GAME_NOT_OVER;
 }
 
 
@@ -83,6 +86,7 @@ void setupNodeParent(Node *node, Node *parent) {
     node->childrenNodes = NULL;
     node->sideToMove = switchPlayer(parent->sideToMove);
     node->hasJustMoved = switchPlayer(parent->hasJustMoved);
+    node->gameOverWinner = GAME_NOT_OVER;
 }
 
 
@@ -103,6 +107,7 @@ void setupNodeParentMove(Node *node, Node *parent, MOVE move) {
     node->moveFromParent = move;
     node->sideToMove = switchPlayer(parent->sideToMove);
     node->hasJustMoved = switchPlayer(parent->hasJustMoved);
+    node->gameOverWinner = GAME_NOT_OVER;
 }
 
 void printNode(Node *node) {
@@ -128,11 +133,26 @@ void printNode(Node *node) {
     printf("**  numXkids : %d\n", node->numberOfExpandedChildren);
     printf("**    side   : %d, %s\n", node->sideToMove, node->sideToMove == getBlack() ? "BLACK" : "WHITE");
     printf("**  hasjust  : %d, %s\n", node->hasJustMoved, node->hasJustMoved == getBlack() ? "BLACK" : "WHITE");
+    printf("** gameover? : %s\n", node->gameOver ? "YES" : "NO");
+    if (node->gameOver) {
+        printf("** WINNER : %s\n", node->gameOverWinner == getWhite() ? "WHITE" : "BLACK");
+        printf("** this is : %s\n", node->gameOverWinner == node->hasJustMoved ? "GOOD for me" : "BAD for me");
+    }
     printf("** movesReady: %d\n", node->movesReady);
     printf("**    ready  : %d\n", node->ready);
     printf("**\n");
 }
 
+void printNodeLittle(Node *node) {
+    printf("*** type: %s, my&: %p, parent: %p, passNode: %d, w/p: %d/%d, hasJustMoved: %s, g/o? %s\n",
+           node->nodeType == ROOT ? "R" : node->nodeType == BRANCH ? "B" : "L", node, node->parentNode, node->passNode,
+           node->winCount, node->playoutCount, node->hasJustMoved == getBlack() ? "B" : "W",
+           node->gameOver ? "Y" : "N");
+    if (node->gameOver) {
+        printf("*** WINNER : %s\n", node->gameOverWinner == getWhite() ? "WHITE" : "BLACK");
+        printf("*** this is : %s\n", node->gameOverWinner == node->hasJustMoved ? "GOOD for me" : "BAD for me");
+    }
+}
 
 void addTotalMoveInfo(Node *node, int totalMoves) {
 //    printf("     addTotalMoveInfo '%p', totalmoves: %d\n", node, totalMoves);
@@ -206,15 +226,20 @@ void printNodeBoardStruct(Node *node, BOARD_STRUCT *boardStruct) {
 }
 
 #define ROOT_TWO (1.414)
-double getUCT(Node* node){
+
+double getUCT(Node *node) {
     assert(node->nodeType != ROOT);
-    int ni = node->playoutCount ? node->playoutCount : 1;
-//    printf("%d\n", node->playoutCount);
-//    printf("%d\n", node->parentNode->playoutCount);
-//    printf("%lf\n", ((double) node->winCount / ni));
-//    printf("%lf\n", ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
+    if (!node->playoutCount || !node->parentNode->playoutCount) {
+        return 1;
+    }
+    int ni = node->playoutCount;
+//    printf("node playouts %d\n", node->playoutCount);
+//    printf(" parent playouts %d\n", node->parentNode->playoutCount);
+//    printf("ni %d\n", ni);
+//    printf("win ratio %lf\n", ((double) node->winCount / ni));
+//    printf("root2 stuff %lf\n", ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
     return (((double) node->winCount / ni) +
-            (double)ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
+            (double) ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
 }
 
 Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
@@ -287,8 +312,17 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 //        printf("game already over at this node %p\n", node);
 
         assert(isGameOver(boardStruct));
-        if (node->hasJustMoved == getWinner(boardStruct)) { // todo don't recalc this
+        int w = getWinner(boardStruct);
+
+        assert(w == node->gameOverWinner);
+
+        if (node->hasJustMoved == w) { // todo don't recalc this
+            assert(node->gameOverWinner == node->hasJustMoved);
             node->winCount += 2;
+        } else if (w == getDraw()) {
+            assert(node->gameOverWinner == getDraw());
+        } else {
+            assert(node->gameOverWinner == switchPlayer(node->hasJustMoved));
         }
         return node;
     }
@@ -308,8 +342,15 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
             node->gameOver = 1;
             assert(isGameOver(boardStruct));
             free(moves);
-            if (node->hasJustMoved == getWinner(boardStruct)) {
+            int w = getWinner(boardStruct);
+            if (node->hasJustMoved == w) {
+                node->gameOverWinner = node->hasJustMoved;
                 node->winCount += 2;
+            } else if (w == getDraw()) {
+                node->winCount++;
+                node->gameOverWinner = getDraw();
+            } else {
+                node->gameOverWinner = switchPlayer(node->hasJustMoved);
             }
             return node;
         }
@@ -320,17 +361,22 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
     addTotalMoveInfoAllocAllChildren(node, totalMoves, moves);
 //    int r = rand() % node->numberOfChildren;
 
-    int r;
+    int r = -1;
     double bestUCT = -1;
-//    printf("                   iii\n");
+//    printf("\n\n\n                   iii\n");
     for (int i = 0; i < node->numberOfChildren; i++) {
-//        printf("                   i %d\n", i);
+        printf("                   i %d\n", i);
         double thisUCT = getUCT((node->childrenNodes[i]));
-//        printf("i: %d, UCT: %f, child %p\n", i, thisUCT, node->childrenNodes[i]);
+        printf("i: %d, UCT: %f, child %p\n", i, thisUCT, node->childrenNodes[i]);
         if (thisUCT > bestUCT) {
             bestUCT = thisUCT;
             r = i;
         }
+    }
+
+    if (r == -1) {
+        printf("no uct child selected?\n");
+        exit(1);
     }
 
 //    r = 0;
@@ -406,7 +452,7 @@ int switchOutcome(int outcome) {
 }
 
 int backprop(Node *finalNode, int outcome) {
-    printf("final node: %p, outcome: %d, == ? %d\n", finalNode, outcome, (outcome == finalNode->sideToMove));
+//    printf("final node: %p, outcome: %d, == ? %d\n", finalNode, outcome, (outcome == finalNode->sideToMove));
 
     Node *temp = finalNode;
     if (!temp->parentNode) {
@@ -420,7 +466,7 @@ int backprop(Node *finalNode, int outcome) {
         temp->playoutCount += 2;
 
         if (outcome == temp->hasJustMoved) {
-            printf("increasing win count by 2 of %p\n", temp);
+//            printf("increasing win count by 2 of %p\n", temp);
             temp->winCount += 2;
         } else if (outcome == getDraw()) {
             temp->winCount++;
@@ -519,7 +565,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //            printf("            expansion gave same node GAMEOVER NODE\n");
 //            printBoardSide(boardStruct);
         }
-        printf("expansion done %p\n", expandedChild);
+//        printf("expansion done %p\n", expandedChild);
 
 
 //        printf("trying simulation\n");
@@ -528,14 +574,14 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
             assert(isGameOver(boardStruct));
 //            printf("winner is %d\n", getWinner(boardStruct));
             outcome = (getWinner(boardStruct));
-            printf("game over node, winner is: %d, move from parent %d\n", outcome, expandedChild->moveFromParent);
+//            printf("game over node, winner is: %d, move from parent %d\n", outcome, expandedChild->moveFromParent);
 //            printf("outcome is %d\n", outcome);
         } else {
             outcome = simulation(boardStruct); // run a game, return result
         }
 
         if (outcome == expandedChild->hasJustMoved) {
-            printf("a win for side to move, exchild %p\n", expandedChild);
+//            printf("a win for side to move, exchild %p\n", expandedChild);
         }
 
 //        outcome = simulation(boardStruct); // run a game, return result
@@ -557,7 +603,8 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
         magic++;
     }
 
-    printNode(root);
+//    printNode(root);
+    printNodeLittle(root);
 
     int totalWinsRoot = root->winCount;
     int totalWinsChildren = 0;
@@ -580,8 +627,8 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
                                                                                  : mostPlayoutsFromChild;
 
 
-
-            printNode(root->childrenNodes[i]);
+//            printNode(root->childrenNodes[i]);
+            printNodeLittle(root->childrenNodes[i]);
 
             totalWinsChildren += root->childrenNodes[i]->winCount;
 
@@ -616,7 +663,6 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 
     freeBoardStruct(copy);
 
-//    return weakestChildMove;
     return mostPlayedKid;
 }
 

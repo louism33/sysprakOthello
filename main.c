@@ -144,7 +144,6 @@ int main(int argc, char *argv[])
         printf("Meine PID = %i\n", thinker);
         close(pd[1]);
         /*write pipe*/
-        
 
         break;
     }

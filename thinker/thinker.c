@@ -47,14 +47,18 @@ void doThink(BOARD_STRUCT *board, int moveTime)
 	MOVES allMoves = malloc(64 * sizeof(int));
 	getLegalMovesAllPositions(board->board, switchPlayer(board->sideToMove),
 							  allMoves);
-	close(pd[1]);
+	close(pd[0]);
+	int *move=malloc(3*sizeof(int));
+	move[0]=allMoves[0];
+	move[1]='\0';
 	printf("dothinker move: %d\n", allMoves[0]);
-	if (write(pd[0], allMoves, sizeof(allMoves)) < 0)
+	if (write(pd[1],move, sizeof(move)) < 0)
 	{
 		printf("error bei Schreiben in pipe.\n");
 		exit(1);
 	}
 	printf("***pipe in dothinker.***\n");
+	free(move);
 	// todo, implement to return any move (later we make it good) that can legally be played on the board
 }
 

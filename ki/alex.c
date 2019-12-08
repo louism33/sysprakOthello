@@ -144,14 +144,14 @@ void printNode(Node *node) {
 }
 
 void printNodeLittle(Node *node) {
-    printf("*** type: %s, my&: %p, parent: %p, passNode: %d, w/p: %d/%d, hasJustMoved: %s, g/o? %s\n",
+    printf("*** type: %s, my&: %p, parent: %p, passNode: %d, w/p: %d/%d, hasJustMoved: %s, g/o? %s, %s\n",
            node->nodeType == ROOT ? "R" : node->nodeType == BRANCH ? "B" : "L", node, node->parentNode, node->passNode,
            node->winCount, node->playoutCount, node->hasJustMoved == getBlack() ? "B" : "W",
-           node->gameOver ? "Y" : "N");
-    if (node->gameOver) {
-        printf("*** WINNER : %s\n", node->gameOverWinner == getWhite() ? "WHITE" : "BLACK");
-        printf("*** this is : %s\n", node->gameOverWinner == node->hasJustMoved ? "GOOD for me" : "BAD for me");
-    }
+           node->gameOver ? "Y" : "N", node->gameOver ? node->gameOverWinner == getWhite() ? "Winner WHITE" : "Winner BLACK" : "");
+//    if (node->gameOver) {
+//        printf("*** WINNER : %s\n", node->gameOverWinner == getWhite() ? "WHITE" : "BLACK");
+//        printf("*** this is : %s\n", node->gameOverWinner == node->hasJustMoved ? "GOOD for me" : "BAD for me");
+//    }
 }
 
 void addTotalMoveInfo(Node *node, int totalMoves) {
@@ -233,11 +233,6 @@ double getUCT(Node *node) {
         return 1;
     }
     int ni = node->playoutCount;
-//    printf("node playouts %d\n", node->playoutCount);
-//    printf(" parent playouts %d\n", node->parentNode->playoutCount);
-//    printf("ni %d\n", ni);
-//    printf("win ratio %lf\n", ((double) node->winCount / ni));
-//    printf("root2 stuff %lf\n", ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
     return (((double) node->winCount / ni) +
             (double) ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
 }
@@ -318,7 +313,6 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 
         if (node->hasJustMoved == w) { // todo don't recalc this
             assert(node->gameOverWinner == node->hasJustMoved);
-            node->winCount += 2;
         } else if (w == getDraw()) {
             assert(node->gameOverWinner == getDraw());
         } else {
@@ -345,9 +339,7 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
             int w = getWinner(boardStruct);
             if (node->hasJustMoved == w) {
                 node->gameOverWinner = node->hasJustMoved;
-                node->winCount += 2;
             } else if (w == getDraw()) {
-                node->winCount++;
                 node->gameOverWinner = getDraw();
             } else {
                 node->gameOverWinner = switchPlayer(node->hasJustMoved);
@@ -538,8 +530,8 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 
     free(moves);
 
-    printNode(root);
-    printf("\n\n\n");
+//    printNode(root);
+//    printf("\n\n\n");
 
 //    printBoardSide(boardStruct);
 

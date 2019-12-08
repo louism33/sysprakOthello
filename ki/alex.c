@@ -144,8 +144,8 @@ void printNode(Node *node) {
 }
 
 void printNodeLittle(Node *node) {
-    printf("*** type: %s, my&: %p, parent: %p, passNode: %d, w/p: %d/%d, hasJustMoved: %s, g/o? %s, %s\n",
-           node->nodeType == ROOT ? "R" : node->nodeType == BRANCH ? "B" : "L", node, node->parentNode, node->passNode,
+    printf("*** type: %s, my&: %p, parent: %p, move: %d, passNode: %d, w/p: %d/%d, hasJustMoved: %s, g/o? %s, %s\n",
+           node->nodeType == ROOT ? "R" : node->nodeType == BRANCH ? "B" : "L", node, node->parentNode, node->moveFromParent, node->passNode,
            node->winCount, node->playoutCount, node->hasJustMoved == getBlack() ? "B" : "W",
            node->gameOver ? "Y" : "N", node->gameOver ? node->gameOverWinner == getWhite() ? "Winner WHITE" : "Winner BLACK" : "");
 //    if (node->gameOver) {
@@ -345,9 +345,17 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
                 node->gameOverWinner = switchPlayer(node->hasJustMoved);
             }
             return node;
+        }else {
+            assert(totalMoves == 0);
+            addTotalMoveInfoAllocAllChildren(node, 1, moves);
+            switchPlayerStruct(boardStruct);
+            Node *child = node->childrenNodes[0];
+            expandNodeMove(child, node, 0, getPassMove());
+            free(moves);
+            return child;
         }
-    }
 
+    }
 //    printf("expansion  add total %d\n", totalMoves);
 //    addTotalMoveInfo(node, totalMoves);
     addTotalMoveInfoAllocAllChildren(node, totalMoves, moves);
@@ -357,9 +365,9 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
     double bestUCT = -1;
 //    printf("\n\n\n                   iii\n");
     for (int i = 0; i < node->numberOfChildren; i++) {
-        printf("                   i %d\n", i);
+//        printf("                   i %d\n", i);
         double thisUCT = getUCT((node->childrenNodes[i]));
-        printf("i: %d, UCT: %f, child %p\n", i, thisUCT, node->childrenNodes[i]);
+//        printf("i: %d, UCT: %f, child %p\n", i, thisUCT, node->childrenNodes[i]);
         if (thisUCT > bestUCT) {
             bestUCT = thisUCT;
             r = i;
@@ -439,7 +447,7 @@ int simulation(Node* node, BOARD_STRUCT *boardStruct) {
 
     int w = getWinner(boardStruct);
 
-    printf("                   winner is %s\n", w == getWhite() ? "WHITE" : "BLACK");
+//    printf("                   winner is %s\n", w == getWhite() ? "WHITE" : "BLACK");
     return w;
 }
 
@@ -536,7 +544,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //    printBoardSide(boardStruct);
 
     int magic = 0;
-    while (magic < 100) {
+    while (magic < 400) {
 //        printf("/////////// magic: %d\n", magic);
 
         copyBoardStruct(boardStruct, copy, getBoardSize());
@@ -625,6 +633,8 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     freeKids(root);
 
     freeBoardStruct(copy);
+
+    printf("Alex returns move: %d\n", mostPlayedKid);
 
     return mostPlayedKid;
 }

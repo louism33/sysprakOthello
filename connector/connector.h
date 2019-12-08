@@ -14,7 +14,7 @@ typedef struct infoVonServer{
     char gameId[32];//13 stellige nummer
 }infoVonServer;
 
-int connectorMasterMethod(BOARD_STRUCT * connectorBoard, BOARD_STRUCT * thinkerBoard, int argc, char *argv[],infoVonServer *info, pid_t thinker,pid_t connector, moveTimeAndBoard *moveTimeAndBoard );
+int connectorMasterMethod(BOARD_STRUCT * connectorBoard, BOARD_STRUCT * thinkerBoard, int argc, char *argv[],infoVonServer *info, pid_t thinker,pid_t connector );
 
 void performConnection();
 

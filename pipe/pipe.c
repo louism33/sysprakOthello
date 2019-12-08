@@ -5,7 +5,7 @@
 int createPipe(int pd[]) {
 	/*pipe erstellen mit pipe()*/
 	
-	if(pipe(pd) == -1) {
+	if(pipe(pd) <0) {
 		printf("Fehler bei der Erstellung der Pipe\n");
 	}else{
 	printf("Erfolg bei der Erstellung der Pipe\n");

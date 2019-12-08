@@ -94,7 +94,7 @@ char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock crea
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-                        BOARD_STRUCT *thinkerBoard,infoVonServer* info, pid_t thinker,pid_t connector, moveTimeAndBoard *moveTimeAndBoard ) {
+                        BOARD_STRUCT *thinkerBoard,infoVonServer* info, pid_t thinker,pid_t connector) {
 
     printf("Attempting to connect to game server.\n");
 
@@ -180,7 +180,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     }
 
     performConnectionLouis(sock, gameID, player,
-                           configurationStruct->gamekindname, connectorBoard, thinkerBoard,info,thinker,connector,moveTimeAndBoard);
+                           configurationStruct->gamekindname, connectorBoard, thinkerBoard,info,thinker,connector);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -191,7 +191,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     return 0;
 }
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[],infoVonServer *info, pid_t thinker,pid_t connector, moveTimeAndBoard *moveTimeAndBoard ) {
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[],infoVonServer *info, pid_t thinker,pid_t connector ) {
     char *gameID;
     char *player = 0;
     int ret;
@@ -250,7 +250,7 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     }
 
     connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-                        configPath, connectorBoard, thinkerBoard,info,thinker,connector,moveTimeAndBoard );
+                        configPath, connectorBoard, thinkerBoard,info,thinker,connector);
   //printf("----------------################################connectormasterMethod:%s\n",info.myPlayerName);
 
     return 0;

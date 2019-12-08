@@ -9,7 +9,7 @@
 
 void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard);
 
-MOVE doThink(BOARD_STRUCT* board, int moveTime);
+void doThink(BOARD_STRUCT* board, int moveTime);
 
 
 #endif //ALEXTHEFRIENDLYAI_THINKER_H

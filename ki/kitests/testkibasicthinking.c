@@ -38,7 +38,7 @@ int testOneTrivialBestMove() {
     board[18] = getWhite();
     b->sideToMove = getWhite();
 
-
+    printBoardSide(b);
 //    int www = 0;
 //    int bbb = 0;
 //    printBoardSide(b);
@@ -270,6 +270,8 @@ int testAvoidLossFromPreviousTest() {
     board[19] = board[12] = board[28] = getWhite();
 
     b->sideToMove = getBlack();
+
+    printBoardSide(b);
 
     MOVE incorrectMove = 36;
     MOVE move = getBestMove(b, moveTime);

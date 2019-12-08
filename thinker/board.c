@@ -1036,7 +1036,7 @@ int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
 }
 
 
-int getWinner(BOARD_STRUCT *boardStruct) { // todo, new method combining getWINner and isGameOver
+int getWinner(BOARD_STRUCT *boardStruct) { // todo, new method combining getWinner and isGameOver
     BOARD board = boardStruct->board;
     int anzahlBlack = 0;
     int anzahlWhite = 0;

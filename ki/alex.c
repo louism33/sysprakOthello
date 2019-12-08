@@ -3,6 +3,7 @@
 //
 
 #include "alex.h"
+#include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -40,7 +41,9 @@ struct Node {
     MOVE moveFromParent;
     int passNode;
     int gameOver;
+    SIDE_TO_MOVE gameOverWinner;
     SIDE_TO_MOVE sideToMove;
+    SIDE_TO_MOVE hasJustMoved;
 };
 
 void setupNode(Node *node) {
@@ -60,6 +63,7 @@ void setupNode(Node *node) {
     node->moveFromParent = getLastMove();
     node->childrenNodes = NULL;
     node->sideToMove = getEmpty();
+    node->hasJustMoved = getEmpty();
 }
 
 
@@ -78,6 +82,7 @@ void setupNodeParent(Node *node, Node *parent) {
     node->movesReady = 0;
     node->childrenNodes = NULL;
     node->sideToMove = switchPlayer(parent->sideToMove);
+    node->hasJustMoved = switchPlayer(parent->hasJustMoved);
 }
 
 
@@ -97,6 +102,7 @@ void setupNodeParentMove(Node *node, Node *parent, MOVE move) {
     node->childrenNodes = NULL;
     node->moveFromParent = move;
     node->sideToMove = switchPlayer(parent->sideToMove);
+    node->hasJustMoved = switchPlayer(parent->hasJustMoved);
 }
 
 void printNode(Node *node) {
@@ -120,6 +126,8 @@ void printNode(Node *node) {
     printf("**    wins   : %d\n", node->winCount);
     printf("**  numkids  : %d\n", node->numberOfChildren);
     printf("**  numXkids : %d\n", node->numberOfExpandedChildren);
+    printf("**    side   : %d, %s\n", node->sideToMove, node->sideToMove == getBlack() ? "BLACK" : "WHITE");
+    printf("**  hasjust  : %d, %s\n", node->hasJustMoved, node->hasJustMoved == getBlack() ? "BLACK" : "WHITE");
     printf("** movesReady: %d\n", node->movesReady);
     printf("**    ready  : %d\n", node->ready);
     printf("**\n");
@@ -197,6 +205,18 @@ void printNodeBoardStruct(Node *node, BOARD_STRUCT *boardStruct) {
     printf("////////////////////////////\n");
 }
 
+#define ROOT_TWO (1.414)
+double getUCT(Node* node){
+    assert(node->nodeType != ROOT);
+    int ni = node->playoutCount ? node->playoutCount : 1;
+//    printf("%d\n", node->playoutCount);
+//    printf("%d\n", node->parentNode->playoutCount);
+//    printf("%lf\n", ((double) node->winCount / ni));
+//    printf("%lf\n", ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
+    return (((double) node->winCount / ni) +
+            (double)ROOT_TWO * sqrt((log(node->parentNode->playoutCount)) / ni));
+}
+
 Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
 //    printf("selection with %p\n", node);
     if (node->nodeType == ROOT && node->playoutCount == 0) {
@@ -214,7 +234,26 @@ Node *selection(Node *node, BOARD_STRUCT *boardStruct) {
 
     assert(node->playoutCount > 0);
 
-    int r = node->passNode ? 0 : rand() % node->numberOfChildren;
+    if (node->passNode) {
+        switchPlayerStruct(boardStruct);
+        return selection(node->childrenNodes[0], boardStruct);
+    }
+
+    int r;
+    double bestUCT = -1;
+//    printf("                   iii\n");
+    for (int i = 0; i < node->numberOfChildren; i++) {
+//        printf("                   i %d\n", i);
+        double thisUCT = getUCT((node->childrenNodes[i]));
+//        printf("i: %d, UCT: %f, child %p\n", i, thisUCT, node->childrenNodes[i]);
+        if (thisUCT > bestUCT) {
+            bestUCT = thisUCT;
+            r = i;
+        }
+    }
+
+//    r = 0;
+
 
 //    printf("selection: r is %d\n", r);
 
@@ -245,12 +284,16 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
     assert(node->ready);
 
     if (node->gameOver) {
-        printf("game already over at this node %p\n", node);
+//        printf("game already over at this node %p\n", node);
 
         assert(isGameOver(boardStruct));
+        if (node->hasJustMoved == getWinner(boardStruct)) { // todo don't recalc this
+            node->winCount += 2;
+        }
         return node;
     }
 
+    // todo, not always necessary to do this generation
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
 
@@ -265,6 +308,9 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
             node->gameOver = 1;
             assert(isGameOver(boardStruct));
             free(moves);
+            if (node->hasJustMoved == getWinner(boardStruct)) {
+                node->winCount += 2;
+            }
             return node;
         }
     }
@@ -272,7 +318,25 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 //    printf("expansion  add total %d\n", totalMoves);
 //    addTotalMoveInfo(node, totalMoves);
     addTotalMoveInfoAllocAllChildren(node, totalMoves, moves);
-    int r = rand() % node->numberOfChildren;
+//    int r = rand() % node->numberOfChildren;
+
+    int r;
+    double bestUCT = -1;
+//    printf("                   iii\n");
+    for (int i = 0; i < node->numberOfChildren; i++) {
+//        printf("                   i %d\n", i);
+        double thisUCT = getUCT((node->childrenNodes[i]));
+//        printf("i: %d, UCT: %f, child %p\n", i, thisUCT, node->childrenNodes[i]);
+        if (thisUCT > bestUCT) {
+            bestUCT = thisUCT;
+            r = i;
+        }
+    }
+
+//    r = 0;
+    assert(totalMoves > 0);
+
+
     MOVE move = totalMoves == 0 ? getPassMove() : moves[r];
     if (totalMoves) {
         assert(moves[r] != getLastMove());
@@ -300,11 +364,15 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 
 int simulation(BOARD_STRUCT *boardStruct) {
     SIDE_TO_MOVE originalSideToMove = boardStruct->sideToMove;
-    printf("original board to simulation \n");
-    printBoardSide(boardStruct);
+//    printf("original board to simulation \n");
+//    printBoardSide(boardStruct);
 
     int passs = 0;
     for (int i = 0; i < 100; i++) {
+        if (i > 80) {
+            printf("80 moves in one game?????;");
+            printBoardSide(boardStruct);
+        }
         if (passs == 2) {
 //            printf("Double pass, game over\n");
 //            printBoardSide(boardStruct);
@@ -315,8 +383,10 @@ int simulation(BOARD_STRUCT *boardStruct) {
         int totalMoves = getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove), moves);
 
         if (totalMoves) {
+            int r = rand() % totalMoves;
             passs = 0;
-            makeMove(boardStruct, moves[0]);
+            makeMove(boardStruct, moves[r]);
+//            makeMove(boardStruct, moves[0]);
         } else {
             passs++;
             switchPlayerStruct(boardStruct);
@@ -327,16 +397,8 @@ int simulation(BOARD_STRUCT *boardStruct) {
 
     int w = getWinner(boardStruct);
 
-    printf("Winner is: %d, same as original(%d)? %d\n", w, originalSideToMove, (w == originalSideToMove));
-    if (w == originalSideToMove) {
-        return AIWIN;
-    }
-
-    if (w == getDraw()) {
-        return AIDRAW;
-    }
-
-    return AILOSS;
+    printf("                   winner is %s\n", w == getWhite() ? "WHITE" : "BLACK");
+    return w;
 }
 
 int switchOutcome(int outcome) {
@@ -344,9 +406,7 @@ int switchOutcome(int outcome) {
 }
 
 int backprop(Node *finalNode, int outcome) {
-//    printf("final node: %p\n", finalNode);
-//    printNode(finalNode);
-//    printf("final node\n\n\n\n");
+    printf("final node: %p, outcome: %d, == ? %d\n", finalNode, outcome, (outcome == finalNode->sideToMove));
 
     Node *temp = finalNode;
     if (!temp->parentNode) {
@@ -359,19 +419,15 @@ int backprop(Node *finalNode, int outcome) {
         }
         temp->playoutCount += 2;
 
-        if (outcome == AIWIN) {
+        if (outcome == temp->hasJustMoved) {
+            printf("increasing win count by 2 of %p\n", temp);
             temp->winCount += 2;
-        } else if (outcome == AIDRAW) {
+        } else if (outcome == getDraw()) {
             temp->winCount++;
         }
         temp = temp->parentNode;
 
-        if (!temp) {
-//            printf(" outcome at root is: %d\n", outcome);
-//            printNode(temp);
-//            printf(" outcome at root is: %d\n\n\n\n", outcome);
-        }
-        outcome = switchOutcome(outcome);
+//        outcome = switchOutcome(outcome);
     } while (temp);
 
 
@@ -380,18 +436,10 @@ int backprop(Node *finalNode, int outcome) {
 
 void freeKids(Node *node) {
     for (int i = 0; i < node->numberOfChildren; i++) {
-//        free(node->childrenNodes[i]);
 
         if (node->childrenNodes) {
             if (node->childrenNodes[i]) {
                 freeKids(node->childrenNodes[i]);
-//                if (node->childrenNodes[i]->childrenNodes) {
-//                    if (node->childrenNodes[i]->childrenNodes[i]) {
-//                        free(node->childrenNodes[i]->childrenNodes[i]);
-//                    }
-//                    free(node->childrenNodes[i]->childrenNodes);
-//                }
-//                free(node->childrenNodes[i]);
             }
 
         } else {
@@ -436,6 +484,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     root->nodeType = ROOT;
     root->parentNode = NULL;
     root->sideToMove = boardStruct->sideToMove;
+    root->hasJustMoved = switchPlayer(boardStruct->sideToMove);
 
     free(moves);
 
@@ -445,7 +494,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //    printBoardSide(boardStruct);
 
     int magic = 0;
-    while (magic < 10) {
+    while (magic < 100) {
 //        printf("/////////// magic: %d\n", magic);
 
         copyBoardStruct(boardStruct, copy, getBoardSize());
@@ -485,6 +534,10 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
             outcome = simulation(boardStruct); // run a game, return result
         }
 
+        if (outcome == expandedChild->hasJustMoved) {
+            printf("a win for side to move, exchild %p\n", expandedChild);
+        }
+
 //        outcome = simulation(boardStruct); // run a game, return result
 
 //        printf("simulation done %d\n", outcome);
@@ -506,6 +559,9 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 
     printNode(root);
 
+    int totalWinsRoot = root->winCount;
+    int totalWinsChildren = 0;
+
     int totalPlayoutsFromRoot = root->playoutCount;
     int totalPlayoutsFromChildren = 0;
     int mostPlayoutsFromChild = 0;
@@ -513,31 +569,46 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     MOVE weakestChild = 0;
     MOVE weakestChildMove = getLastMove();
 
+    int mostPlayedKidNumber = 0;
+    MOVE mostPlayedKid = getPassMove();
+
     for (int i = 0; i < root->numberOfChildren; i++) {
         if (root->childrenNodes[i]) {
             totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
             mostPlayoutsFromChild =
                     root->childrenNodes[i]->playoutCount > mostPlayoutsFromChild ? root->childrenNodes[i]->playoutCount
                                                                                  : mostPlayoutsFromChild;
+
+
+
             printNode(root->childrenNodes[i]);
+
+            totalWinsChildren += root->childrenNodes[i]->winCount;
 
             if (root->childrenNodes[i]->playoutCount) {
                 double ratio = (double) root->childrenNodes[i]->winCount / root->childrenNodes[i]->playoutCount;
-                printf("ratio: %lf, weakest: %lf and weakest child move: %d\n", ratio, weakestChildScore,
-                       weakestChildMove);
+//                printf("ratio: %lf, weakest: %lf and weakest child move: %d\n", ratio, weakestChildScore,
+//                       weakestChildMove);
                 if (ratio <= weakestChildScore) {
                     weakestChildScore = ratio;
                     weakestChild = i;
                     weakestChildMove = root->childrenNodes[i]->moveFromParent;
-                    printf("new weakest child %d\n", weakestChildMove);
+//                    printf("new weakest child %d\n", weakestChildMove);
                 }
+            }
+
+            if (mostPlayedKidNumber < root->childrenNodes[i]->playoutCount) {
+                mostPlayedKidNumber = root->childrenNodes[i]->playoutCount;
+                mostPlayedKid = root->childrenNodes[i]->moveFromParent;
             }
         }
     }
 
+    assert(root->playoutCount - totalWinsRoot == totalWinsChildren);
+
     copyBoardStruct(boardStruct, copy, getBoardSize());
 
-    printf("weakest child %d, score %lf, move: %d\n", weakestChild, weakestChildScore, weakestChildMove);
+//    printf("weakest child %d, score %lf, move: %d\n", weakestChild, weakestChildScore, weakestChildMove);
 
     assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
 
@@ -545,6 +616,11 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 
     freeBoardStruct(copy);
 
-    return weakestChildMove;
+//    return weakestChildMove;
+    return mostPlayedKid;
 }
 
+/*
+ *
+ score of node is from perspective of side that HAS JUST MOVED
+ */

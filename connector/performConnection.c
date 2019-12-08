@@ -129,10 +129,10 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
     memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
 
     thinkerBoard->sideToMove = connectorBoard->sideToMove;
-    doThink(thinkerBoard, moveTime);//write into pipe
+    doThink(thinkerBoard, moveTime); //write into pipe
     int *move = malloc(3 * sizeof(int));
-    read(pd[1], move, sizeof(move));//read by pipe
-   int temp=move[0];
+    read(pd[1], move, sizeof(move)); //read by pipe
+    int temp = move[0];
     printf("move is: %d\n", move[0]);
     convertMove(temp, moveRet);
 
@@ -309,14 +309,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("sending thinking command\n");
                 writeToServer(sockfd, thinking);
 
-               
-
                 printf("sent thinking command\n");
 
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
-                 if (kill(thinker, SIGUSR1) == -1)
+                if (kill(thinker, SIGUSR1) == -1)
                 {
                     printf("Fehler beim senden des Signals\n");
                 }

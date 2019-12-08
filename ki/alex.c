@@ -408,10 +408,14 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 }
 
 
-int simulation(BOARD_STRUCT *boardStruct) {
+int simulation(Node* node, BOARD_STRUCT *boardStruct) {
     SIDE_TO_MOVE originalSideToMove = boardStruct->sideToMove;
 //    printf("original board to simulation \n");
 //    printBoardSide(boardStruct);
+
+    if (node->gameOver) {
+        return node->gameOverWinner;
+    }
 
     int passs = 0;
     for (int i = 0; i < 100; i++) {
@@ -546,58 +550,25 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
         copyBoardStruct(boardStruct, copy, getBoardSize());
         resetStackStuff(boardStruct);
 
+//        printf("trying selection on root %p\n", root);
         Node *fromSelection = selection(root, boardStruct); // pick a node with no children
+//        printf("selection done %p\n", fromSelection);
 
-//        printf("*************************** from selection board:\n");
-//        printf("*************************** from selection node:\n");
-//        printBoardSide(boardStruct);
-//        printNode(fromSelection);
-//        printf("*************************** from\n");
-//        printf("root: %p, fromSelection %p\n", root, fromSelection);
-//        if (root == fromSelection) {
-//            printf("expanding root\n");
-//        }
 
 //        printf("trying expansion %p\n", fromSelection);
         Node *expandedChild = expansion(fromSelection, boardStruct); // reserve memory for children and pick one
-
-        if (expandedChild == fromSelection) {
-//            printf("            expansion gave same node GAMEOVER NODE\n");
-//            printBoardSide(boardStruct);
-        }
 //        printf("expansion done %p\n", expandedChild);
 
-
-//        printf("trying simulation\n");
-        int outcome;
         if (expandedChild == fromSelection) {
             assert(isGameOver(boardStruct));
-//            printf("winner is %d\n", getWinner(boardStruct));
-            outcome = (getWinner(boardStruct));
-//            printf("game over node, winner is: %d, move from parent %d\n", outcome, expandedChild->moveFromParent);
-//            printf("outcome is %d\n", outcome);
-        } else {
-            outcome = simulation(boardStruct); // run a game, return result
         }
 
-        if (outcome == expandedChild->hasJustMoved) {
-//            printf("a win for side to move, exchild %p\n", expandedChild);
-        }
-
-//        outcome = simulation(boardStruct); // run a game, return result
-
+//        printf("trying simulation %p\n", expandedChild);
+        int outcome = simulation(expandedChild, boardStruct); // run a game, return result
 //        printf("simulation done %d\n", outcome);
 
-
-//        printf("trying backprop %p\n", expandedChild);
-//        if (expandedChild == fromSelection) {
-//            backprop(fromSelection, outcome);
-//        } else {
-//            backprop(expandedChild, outcome);
-//        }
-
+//        printf("trying backprop\n", expandedChild);
         backprop(expandedChild, outcome);
-
 //        printf("backprop done\n");
 
         magic++;

@@ -131,8 +131,8 @@ int main(int argc, char *argv[])
 
         connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector);
         printf("info: %s\n", info->gameId);
-        close(pd[1]);
-        /* read pipe*/
+        
+
 
         break;
 
@@ -142,8 +142,8 @@ int main(int argc, char *argv[])
         printf("Im Elternprozess\n");
         thinker = getpid();
         printf("ThinkerPID = %i\n", thinker);
-        close(pd[1]);
-        /*write pipe*/
+        
+     
 
         break;
     }

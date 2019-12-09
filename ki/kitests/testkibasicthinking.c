@@ -306,25 +306,6 @@ int testAvoidLossNextMove() {
     return 0; // success
 }
 
-int testWhatever() {
-    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToStarter(b);
-    int *board = b->board;
-    int moveTime = 1000;
-
-    b->sideToMove = getBlack();
-
-//    printBoardSide(b);
-
-    MOVE move = getBestMove(b, moveTime);
-
-    printf("move return in whatever is: %d\n", move);
-
-    freeBoardStruct(b);
-    return 0; // success
-}
-
-
 int kiTestsBasicThinking() {
     testOneTrivialBestMove();
     testOneTrivialBestMoveSwitch();
@@ -335,8 +316,6 @@ int kiTestsBasicThinking() {
 
     testAvoidLossFromPreviousTest();
     testAvoidLossNextMove();
-//
-//    testWhatever();
 
     return 0;
 }

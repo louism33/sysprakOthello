@@ -25,6 +25,7 @@
 #include "thinker/thinkertests/biggerboardtest.h"
 #include "ki/kitests/testkisimple.h"
 #include "ki/kitests/testkibasicthinking.h"
+#include "ki/kitests/testkibasicstrategy.h"
 
 int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "perft") == 0) {
@@ -41,33 +42,36 @@ int main(int argc, char *argv[]) {
         printf("Test begin:.........\n");
 
         int fail = 0;
+//
+//        printf("Running fullTestSuite\n");
+//        fail += fullTestSuite();
+//
+//        printf("Running fullTestSuiteBoard2\n");
+//        fail += fullTestSuiteBoard2();
+//
+//        printf("Running convert move test Suite\n");
+//        fail += testConvertMove();
+//
+//        printf("Running make move test Suite\n");
+//        fail += runMakeMoveTests();
+//
+//        printf("Running unmake move test Suite\n");
+//        fail += fullTestSuiteUnmakeMoveTests();
+//
+//        printf("Running big board tests Suite\n");
+//        fail += testSuiteBigBoard();
+//
+//        printf("Running perft Suite\n");
+//        fail += perftSuite();
+//
+//        printf("Running basic KI Suite\n");
+//        fail += kiTestsSimple();
+//
+//        printf("Running medium KI Suite\n");
+//        fail += kiTestsBasicThinking();
 
-        printf("Running fullTestSuite\n");
-        fail += fullTestSuite();
-
-        printf("Running fullTestSuiteBoard2\n");
-        fail += fullTestSuiteBoard2();
-
-        printf("Running convert move test Suite\n");
-        fail += testConvertMove();
-
-        printf("Running make move test Suite\n");
-        fail += runMakeMoveTests();
-
-        printf("Running unmake move test Suite\n");
-        fail += fullTestSuiteUnmakeMoveTests();
-
-        printf("Running big board tests Suite\n");
-        fail += testSuiteBigBoard();
-
-        printf("Running perft Suite\n");
-        fail += perftSuite();
-
-        printf("Running basic KI Suite\n");
-        fail += kiTestsSimple();
-
-        printf("Running medium KI Suite\n");
-        fail += kiTestsBasicThinking();
+        printf("Running strategy KI Suite\n");
+        fail += kiTestsBasicStrategy();
 
         if (fail) {// fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");

@@ -540,7 +540,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     free(moves);
 
     int magic = 0;
-    while (magic < 400) {
+    while (magic < 10000) {
 //        printf("/////////// magic: %d\n", magic);
 
         copyBoardStruct(boardStruct, copy, getBoardSize());

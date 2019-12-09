@@ -55,8 +55,6 @@ enum Phase {
     SPIELZUG = 2
 };
 
-//Die Prolog-Phase der Kommunikation
-// todo, reconnect logic
 // todo, be careful of people trolling you by calling game "game over", implement PHASE int/enum
 
 int writeToServer(int sockfd, char message[]) {
@@ -154,7 +152,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         exit(1);
     }
 
-    printf("########## %s\n", gameKindName);
     for (;;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("--->%s\n", buff);
@@ -213,6 +210,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                     writeToServer(sockfd, playerToSend);
                 }
             }
+
             // step four, read YOU
             if (strncmp("+ YOU", buff, 5) == 0) {
                 // todo, save information from Server here

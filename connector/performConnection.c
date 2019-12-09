@@ -125,19 +125,17 @@ Nach QUIT beendet der Server die Verbindung
 // }
 char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet)
 {
-    close(pd[1]);
     memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
 
     thinkerBoard->sideToMove = connectorBoard->sideToMove;
-    doThink(thinkerBoard, moveTime); //write into pipe
-    int *move = malloc(3 * sizeof(int));
-    read(pd[0], move, sizeof(move)); //read by pipe
-    int temp = move[0];
-    printf("move is: %d\n", move[0]);
-    convertMove(temp, moveRet);
+
+    int move = doThink(thinkerBoard, moveTime);
+
+    printf("move is: %d\n", move);
+    convertMove(move, moveRet);
 
     printf("converted move is: %s\n", moveRet);
-    free(move);
+
     return moveRet;
 }
 

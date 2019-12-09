@@ -1,35 +1,76 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
 #include "pipe.h"
+#include "../thinker/board.h"
 
-int createPipe(int pd[]) {
-	/*pipe erstellen mit pipe()*/
-	
-	if(pipe(pd) <0) {
-		printf("Fehler bei der Erstellung der Pipe\n");
-	}else{
-	printf("Erfolg bei der Erstellung der Pipe\n");
+int createPipe(int pd[])
+{
+    /*pipe erstellen mit pipe()*/
+
+    if (pipe(pd) < 0)
+    {
+        printf("Fehler bei der Erstellung der Pipe\n");
+    }
+    else
+    {
+        printf("Erfolg bei der Erstellung der Pipe\n");
+    }
 }
+
+
+// void changeMsg(char *antwort, int flag)
+// {
+
+//     switch (flag)
+//     {
+//     case 1:
+//         strcpy(antwort, "1");
+
+//         break;
+//     case 2:
+//         strcpy(antwort, "2");
+
+//         break;
+//     case 3:
+//         strcpy(antwort, "3");
+
+//         break;
+//     case 4:
+//         strcpy(antwort, "4");
+//         break;
+//     case 5:
+//         strcpy(antwort, "5");
+
+//         break;
+
+//     default:
+//         antwort = NULL;
+//         break;
+//     }
+//    // return antwort;
+// }
+void changeMsg(char* antwort){
+    int random=rand()%63;
+    getPrettyMove(random,antwort);
 }
 
+// /* nur zum Testen gewesen brauchen wir nicht mehr !*/
+// void writePipe (int file) {
+//   FILE *stream;
+//   stream = fdopen (file, "w");
+//   fprintf (stream, "hello, world!\n");
+//   fprintf (stream, "goodbye, world!\n");
+//   fclose (stream);
+// }
 
-/* nur zum Testen gewesen brauchen wir nicht mehr !*/
-/*void writePipe (int file) {
-  FILE *stream;
-  stream = fdopen (file, "w");
-  fprintf (stream, "hello, world!\n");
-  fprintf (stream, "goodbye, world!\n");
-  fclose (stream);
-}*/
-
-
-/*lesen tut der Connector*/
-/*void readPipe (int file) {
-  FILE *stream;
-  int c;
-  stream = fdopen (file, "r");
-  while ((c = fgetc (stream)) != EOF)
-  putchar (c);
-  fclose (stream);
-}*/
-////
+// /*lesen tut der Connector*/
+// void readPipe (int file) {
+//   FILE *stream;
+//   int c;
+//   stream = fdopen (file, "r");
+//   while ((c = fgetc (stream)) != EOF)
+//   putchar (c);
+//   fclose (stream);
+// }

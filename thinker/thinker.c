@@ -40,28 +40,17 @@
 // 	return 0; // todo, implement to return any move (later we make it good) that can legally be played on the board
 // }
 
-void doThink(BOARD_STRUCT *board, int moveTime)
+MOVE doThink(BOARD_STRUCT *board, int moveTime)
 {
 	printf("received doThink command from connector, time to move %d\n", moveTime);
 
 	MOVES allMoves = malloc(64 * sizeof(int));
 	getLegalMovesAllPositions(board->board, switchPlayer(board->sideToMove),
 							  allMoves);
-	close(pd[0]);
-	int *move=malloc(3*sizeof(int));
-	move[0]=allMoves[0];
-	move[1]='\0';
-	printf("dothinker move: %d\n", allMoves[0]);
-	if (write(pd[1],move, sizeof(move)) < 0)
-	{
-		printf("error bei Schreiben in pipe.\n");
-		exit(1);
-	}
-	printf("***pipe in dothinker.***\n");
-	free(move);
-	// todo, implement to return any move (later we make it good) that can legally be played on the board
-}
 
+	printf("dothinker move: %d\n", allMoves[0]);
+	return allMoves[0]; // todo, implement to return any move (later we make it good) that can legally be played on the board
+}
 void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard)
 {
 	printf("Hi I am very good at thinking\n");

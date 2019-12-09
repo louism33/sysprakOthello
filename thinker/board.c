@@ -1032,6 +1032,10 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
 
 int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
+    if (legalPosition == getPassMove()) {
+        switchPlayerStruct(boardStruct);
+        return 0;
+    }
     return makeMoveSide(boardStruct, legalPosition, switchPlayer(boardStruct->sideToMove));
 }
 

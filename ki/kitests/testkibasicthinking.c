@@ -8,7 +8,7 @@
 #include "../alex.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <assert.h>
 
 int testOneTrivialBestMove() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -37,29 +37,6 @@ int testOneTrivialBestMove() {
     board[54] = getBlack();
     board[18] = getWhite();
     b->sideToMove = getWhite();
-
-//    printBoardSide(b);
-//    int www = 0;
-//    int bbb = 0;
-//    printBoardSide(b);
-//    makeMove(b, 63);
-//    makeMove(b, 0);
-//
-//    printBoardSide(b);
-//
-//    for (int i = 0; i < 64; i++) {
-//        if (board[i] == getBlack()){
-//            bbb++;
-//        }else if (board[i] == getWhite()){
-//            www++;
-//        }
-//    }
-//
-//    printf("w: %d, b: %d\n", www, bbb);
-//
-
-
-//    printBoardSide(b);
     // there are two legal moves from this position, 0 and 63. 63 wins, 0 loses
     MOVE correctMove = 63;
     MOVE move = getBestMove(b, moveTime);
@@ -67,7 +44,7 @@ int testOneTrivialBestMove() {
     makeMove(b, move);
 
     if (move != correctMove || getWinner(b) != getWhite()) {
-//        printBoardSide(b);
+        printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
                 correctMove, move);
         freeBoardStruct(b);
@@ -107,28 +84,6 @@ int testOneTrivialBestMoveSwitch() {
     board[18] = getWhite();
     b->sideToMove = getBlack();
 
-    printBoardSide(b);
-    int www = 0;
-    int bbb = 0;
-//    printBoardSide(b);
-//    makeMove(b, 63);
-//    makeMove(b, 0);
-
-//    printBoardSide(b);
-
-//    for (int i = 0; i < 64; i++) {
-//        if (board[i] == getBlack()) {
-//            bbb++;
-//        } else if (board[i] == getWhite()) {
-//            www++;
-//        }
-//    }
-//
-//    printf("w: %d, b: %d\n", www, bbb);
-
-
-
-//    printBoardSide(b);
     // there are two legal moves from this position, 0 and 63. 63 wins, 0 loses
     MOVE correctMove = 63;
     MOVE move = getBestMove(b, moveTime);
@@ -136,7 +91,7 @@ int testOneTrivialBestMoveSwitch() {
     makeMove(b, move);
 
     if (move != correctMove || getWinner(b) != getBlack()) {
-//        printBoardSide(b);
+        printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
                 correctMove, move);
         freeBoardStruct(b);
@@ -279,28 +234,24 @@ int testAvoidLossNextMove() {
 
     b->sideToMove = getBlack();
 
-//    printBoardSide(b);
-
     MOVE incorrectMove1 = 18;
     MOVE incorrectMove2 = 22;
     MOVE move = getBestMove(b, moveTime);
     makeMove(b, move);
-//    printBoardSide(b);
     MOVE move2 = getBestMove(b, moveTime);
 
     makeMove(b, move2);
-//    printBoardSide(b);
 
 //
-//    if (move == incorrectMove1 || move == incorrectMove2) {
-//        printBoardSide(b);
-//        makeMove(b, move);
-//        printBoardSide(b);
-//        fprintf(stderr, "*** FAILED AN AI TEST! You will lose game next turn. Received move:'%d'!\n",
-//                move);
-//        freeBoardStruct(b);
-//        exit(1);
-//    }
+    if (move == incorrectMove1 || move == incorrectMove2) {
+        printBoardSide(b);
+        makeMove(b, move);
+        printBoardSide(b);
+        fprintf(stderr, "*** FAILED AN AI TEST! You will lose game next turn. Received move:'%d'!\n",
+                move);
+        freeBoardStruct(b);
+        exit(1);
+    }
 
     freeBoardStruct(b);
     return 0; // success
@@ -345,12 +296,49 @@ int testPickDrawOverLoss() {
     makeMove(b, move2);
 
     if (move != correctMove || getWinner(b) != getDraw()) {
-//        printBoardSide(b);
+        printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
                 correctMove, move);
         freeBoardStruct(b);
         exit(1);
     }
+
+    freeBoardStruct(b);
+    return 0; // success
+}
+
+
+int testDontCrashOnPassMoveNextMove() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+    int *board = b->board;
+    int moveTime = 1000;
+
+    board[5] = getWhite();
+    board[8] = getBlack();
+    board[9] = board[11] = board[12] = getWhite();
+
+    board[24] = getBlack();
+    board[25] = getWhite();
+
+    b->sideToMove = getBlack();
+
+    MOVE move1 = getBestMove(b, moveTime);
+    makeMove(b, 26); // both moves are equivalent, we are only testing if alex crashes when there are passes
+
+    MOVE move2 = getBestMove(b, moveTime);
+    assert(move2 == getPassMove());
+    makeMove(b, move2);
+
+
+    MOVE move3 = getBestMove(b, moveTime);
+    makeMove(b, move3);
+
+    MOVE move4 = getBestMove(b, moveTime);
+    assert(move4 == getPassMove());
+    makeMove(b, move4);
+
+    MOVE move5 = getBestMove(b, moveTime);
 
     freeBoardStruct(b);
     return 0; // success
@@ -368,6 +356,7 @@ int kiTestsBasicThinking() {
     testAvoidLossNextMove();
 
     testPickDrawOverLoss();
+    testDontCrashOnPassMoveNextMove();
 
     return 0;
 }

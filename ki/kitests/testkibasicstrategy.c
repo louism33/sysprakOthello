@@ -13,7 +13,7 @@ int testPickUpCorner() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(b);
     int *board = b->board;
-    int moveTime = 1000;
+    int moveTime = 2000;
 
     board[2] = board[8] = getBlack();
     board[16] = board[1] = getWhite();
@@ -26,9 +26,9 @@ int testPickUpCorner() {
     MOVE move = getBestMove(b, moveTime);
 
     if (move != bestMove) {
-        printBoardSide(b);
-        makeMove(b, move);
-        printBoardSide(b);
+//        printBoardSide(b);
+//        makeMove(b, move);
+//        printBoardSide(b);
         fprintf(stderr, "*** FAILED AN AI TEST! Did not move to corner. Received move:'%d'!\n",
                 move);
         freeBoardStruct(b);

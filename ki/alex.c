@@ -12,13 +12,10 @@
 #include <assert.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/time.h>
 /*
  * Uses monte carlo tree search
  */
-
-#define AIWIN (1)
-#define AIDRAW (0)
-#define AILOSS (-1)
 
 #define GAME_NOT_OVER (69)
 
@@ -498,20 +495,20 @@ void freeKids(Node *node) {
 int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     srand(time(NULL)); // todo move out ?
 
-//    printBoardSide(boardStruct);
-
     BOARD board = boardStruct->board;
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     if (totalMoves == 0) {
         free(moves);
+        printf("Alex returns pass move\n");
         return getPassMove();
     }
 
     if (totalMoves == 1) {
         MOVE move = moves[0];
         free(moves);
+        printf("Alex returns only move: %d\n", move);
         return move;
     }
 
@@ -533,7 +530,20 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     free(moves);
 
     int magic = 0;
-    while (magic < 100000) {
+
+    struct timeval  tv;
+    gettimeofday(&tv, NULL);
+
+    double original_time_in_mill =
+            (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 ;
+
+//    printf("%lf\n", original_time_in_mill);
+
+//    while (magic < 0) {
+    while ((tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 - original_time_in_mill < moveTime) {
+
+//        printf("%lf, num games completed: %d\n",  (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 - original_time_in_mill, magic);
+
 //        printf("/////////// magic: %d\n", magic);
 
         copyBoardStruct(boardStruct, copy, getBoardSize());
@@ -561,6 +571,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //        printf("backprop done\n");
 
         magic++;
+        gettimeofday(&tv, NULL);
     }
 
 //    printNode(root);

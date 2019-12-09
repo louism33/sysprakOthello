@@ -20,37 +20,7 @@ int createPipe(int pd[])
 }
 
 
-// void changeMsg(char *antwort, int flag)
-// {
 
-//     switch (flag)
-//     {
-//     case 1:
-//         strcpy(antwort, "1");
-
-//         break;
-//     case 2:
-//         strcpy(antwort, "2");
-
-//         break;
-//     case 3:
-//         strcpy(antwort, "3");
-
-//         break;
-//     case 4:
-//         strcpy(antwort, "4");
-//         break;
-//     case 5:
-//         strcpy(antwort, "5");
-
-//         break;
-
-//     default:
-//         antwort = NULL;
-//         break;
-//     }
-//    // return antwort;
-// }
 void changeMsg(char* antwort){
     int random=rand()%63;
     getPrettyMove(random,antwort);

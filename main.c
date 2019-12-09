@@ -32,24 +32,11 @@
 // including learning
 void mysighandler(int sig)
 {
-    //char *antwort=malloc(256*sizeof(char));
+
     if (sig == SIGUSR1)
     {
-        printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n");
-        //  for (int i = 1; i < 5; i++)
-        // {
-        //     sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
-
-        //     changeMsg(antwort);
-        //     printf("Thinker(Elternprozess) schreibt am %i.Mal Nachricht in pipe.\n",i);
-        //     if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
-        //     { // In Schreibseite schreiben
-        //         perror("write");
-        //         exit(EXIT_FAILURE);
-        //     }
-        // }
+        printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n\n");
     }
-    // free(antwort);
 }
 
 int main(int argc, char *argv[])
@@ -119,7 +106,7 @@ int main(int argc, char *argv[])
     attachShm();
     createPipe(pd);
 
-  signal(SIGUSR1, mysighandler);
+    //signal(SIGUSR1, mysighandler);
 
     switch (thinker = fork())
     {
@@ -156,9 +143,9 @@ int main(int argc, char *argv[])
                 exit(EXIT_FAILURE);
             }
             else
-            { //sleep(1);
+            {   //sleep(1);
                 printf("Connector(Kindeprozess) bekommt Nachricht von pipe: %s\n\n", buffer);
-                //sleep(1);
+                sleep(1);
             }
         }
         break;
@@ -172,18 +159,24 @@ int main(int argc, char *argv[])
 
         for (int i = 1; i < 5; i++)
         {
-           
+          //printf("in schleife.\n");
+            if (signal(SIGUSR1, mysighandler)==SIG_ERR)
+            {
+                printf("Error beim Empfangen des Signal.\n");
+                exit(1);
+            }
+            else
+            {
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
-                //changeMsg(antwort, i);
                 changeMsg(antwort);
-                printf("Thinker(Elternprozess) schreibt am %i.Mal Nachricht in pipe.\n", i);
+                printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
                 if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
                 { // In Schreibseite schreiben
                     perror("write");
                     exit(EXIT_FAILURE);
                 }
                 bzero(antwort, sizeof(antwort));
-           
+            }
         }
         break;
     }

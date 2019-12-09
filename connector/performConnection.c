@@ -111,9 +111,9 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 }
 
 // todo, handle end state, what do we do once game is over?
-void
-haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           BOARD_STRUCT *thinkerBoard) {
+void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
+                                BOARD_STRUCT *connectorBoard,
+                                BOARD_STRUCT *thinkerBoard) {
     char buff[MAX];    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64]; // example: Game from 2019-11-18 17:42
     char playerNumber[32];
@@ -139,7 +139,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char gameKindNameFromServer[32];
     char playCommandToSend[10];
 
-    SIDE_TO_MOVE  sideToMove;
+    SIDE_TO_MOVE sideToMove;
 
     enum Phase phase = PROLOG; // this can be used to make sure we do not get confused about what stage of the game we are in
 
@@ -157,6 +157,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             printf("--->%s\n", buff);
 
             // todo for louis, error handling
+
+            if ((strncmp("- ", buff, 2)) == 0) {
+                break;
+            }
 
 //            // ERROR HANDLING
 //            if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
@@ -257,7 +261,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
-                char *moveRet=malloc(3*sizeof(char));
+                char *moveRet = malloc(3 * sizeof(char));
 
                 connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
 //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
@@ -299,7 +303,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 //                writeToServer(sockfd, okWait);
             }
 
-            if ((strncmp("+ ENDFIELD", buff, 10)) == 0) { // todo, is this necessary? I don't think this is ever called
+            if ((strncmp("+ ENDFIELD", buff, 10)) ==
+                0) { // todo, is this necessary? I don't think this is ever called
                 printf("endfield received, possibly something is wrong!!!\n");
 
                 writeToServer(sockfd, thinking);

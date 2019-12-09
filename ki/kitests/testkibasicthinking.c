@@ -306,6 +306,56 @@ int testAvoidLossNextMove() {
     return 0; // success
 }
 
+int testPickDrawOverLoss() {
+    BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(b);
+
+    int *board = b->board;
+    int moveTime = 1000;
+
+    for (int i = 0; i < 63; i++) {
+        board[i] = getBlack();
+    }
+
+    for (int i = 0; i < 8; i++) {
+        board[i] = getWhite();
+        board[48 + i] = getWhite();
+        board[i * 8] = getWhite();
+    }
+
+    board[0] = getEmpty();
+    board[2] = getBlack();
+
+    board[41] = getWhite();
+    board[42] = getWhite();
+    board[43] = getWhite();
+
+    board[54] = getBlack();
+    board[18] = getWhite();
+
+    board[7] = getBlack();
+    b->sideToMove = getWhite();
+
+    MOVE correctMove = 63;
+    MOVE move = getBestMove(b, moveTime);
+
+    makeMove(b, move);
+
+    MOVE move2 = getBestMove(b, moveTime);
+    makeMove(b, move2);
+
+    if (move != correctMove || getWinner(b) != getDraw()) {
+//        printBoardSide(b);
+        fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
+                correctMove, move);
+        freeBoardStruct(b);
+        exit(1);
+    }
+
+    freeBoardStruct(b);
+    return 0; // success
+}
+
 int kiTestsBasicThinking() {
     testOneTrivialBestMove();
     testOneTrivialBestMoveSwitch();
@@ -316,6 +366,8 @@ int kiTestsBasicThinking() {
 
     testAvoidLossFromPreviousTest();
     testAvoidLossNextMove();
+
+    testPickDrawOverLoss();
 
     return 0;
 }

@@ -517,8 +517,9 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     }
 
     if (totalMoves == 1) {
+        MOVE move = moves[0];
         free(moves);
-        return moves[0];
+        return move;
     }
 
     BOARD_STRUCT *copy = malloc(sizeof(BOARD_STRUCT));
@@ -537,11 +538,6 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     root->hasJustMoved = switchPlayer(boardStruct->sideToMove);
 
     free(moves);
-
-//    printNode(root);
-//    printf("\n\n\n");
-
-//    printBoardSide(boardStruct);
 
     int magic = 0;
     while (magic < 400) {

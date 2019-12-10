@@ -44,7 +44,7 @@ MOVE getPassMove() {
     return PASS_MOVE;
 }
 
-int getDraw(){
+int getDraw() {
     return DRAW;
 }
 
@@ -140,7 +140,7 @@ void resetBoardToStarter(BOARD board) {
     board[STARTING_BLACK_POSITION_2] = BLACK;
 }
 
-void resetStackStuff(BOARD_STRUCT* boardStruct) {
+void resetStackStuff(BOARD_STRUCT *boardStruct) {
     for (int i = 0; i < getStandardBoardSize(); i++) {
         boardStruct->moveStack[i] = 0;
     }
@@ -276,7 +276,7 @@ static inline int getRow(int i) {
     return i / getColumnSize();
 }
 
-int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER) {
+int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER) {
     int index = 0;
     int MY_PLAYER = switchPlayer(TARGET_PLAYER);
 
@@ -506,7 +506,7 @@ int *getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_
     }
 
     speicher[index] = LAST_MOVE;
-    return speicher;
+    return index;
 }
 
 // todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
@@ -534,13 +534,13 @@ int removeDuplicates(MOVES speicher, int index) {
 }
 
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
-    MOVES speicher = malloc(getBoardSize() * sizeof(int)); // todo can we remove
+    MOVES legalMovesFromHere = malloc(getBoardSize() * sizeof(int)); // todo can we remove
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < getBoardSize(); pos++) {
         if (board[pos] == me) {
-            MOVES legalMovesFromHere = getLegalMovesOnePosition(board, speicher, pos,
-                                                                TARGET_PLAYER); // todo add starting index or something to this
+            getLegalMovesOnePosition(board, legalMovesFromHere, pos, TARGET_PLAYER);
+            // todo add starting index or something to this
             int j = 0;
             while (1) {
                 if (legalMovesFromHere[j] == LAST_MOVE) {
@@ -551,7 +551,7 @@ int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES all
         }
     }
     int numberOfRealMoves = removeDuplicates(allMoves, index);
-    free(speicher);
+    free(legalMovesFromHere);
     return numberOfRealMoves;
 }
 
@@ -768,7 +768,7 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     return 0;
 }
 
-void passMove(BOARD_STRUCT *boardStruct){
+void passMove(BOARD_STRUCT *boardStruct) {
     switchPlayerStruct(boardStruct);
 }
 

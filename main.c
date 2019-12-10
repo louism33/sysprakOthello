@@ -17,7 +17,6 @@
 #include "connector/config.h"
 #include "connector/boardmessageparser.h"
 #include "thinker/thinkertests/boardtests.h"
-#include "thinker/thinkertests/boardtests2.h"
 #include "connector/connectorTests/connectortests.h"
 #include "thinker/thinkertests/unmakemovetests.h"
 #include "thinker/thinkertests/makemovetests.h"
@@ -45,9 +44,6 @@ int main(int argc, char *argv[]) {
 
         printf("Running fullTestSuite\n");
         fail += fullTestSuite();
-
-        printf("Running fullTestSuiteBoard2\n");
-        fail += fullTestSuiteBoard2();
 
         printf("Running convert move test Suite\n");
         fail += testConvertMove();

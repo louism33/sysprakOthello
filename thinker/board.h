@@ -64,8 +64,6 @@ void printMoves(MOVES moves);
 
 void freeBoardStruct(BOARD_STRUCT *boardStruct);
 
-int removeDuplicates(MOVES speicher, int index);
-
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves);
 
 SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove);

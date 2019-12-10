@@ -276,6 +276,7 @@ static inline int getRow(int i) {
     return i / getColumnSize();
 }
 
+#define MOVE_FOUND (-13)
 int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, int position,
                              SIDE_TO_MOVE TARGET_PLAYER) {
     int index = totalMovesIndex;
@@ -315,7 +316,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -339,7 +340,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -362,7 +363,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -386,7 +387,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -414,7 +415,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -423,6 +424,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
             }
         }
     }
+
 
     // for-Schleifer um nach links oben zu prüfen
     if (col != firstCol && col != secondCol && row != firstRow && row != secondRow) {
@@ -443,7 +445,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -470,7 +472,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -496,7 +498,7 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    allMoves[index++] = i;
+                    allMoves[i] = MOVE_FOUND;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -506,59 +508,22 @@ int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, i
         }
     }
 
-    allMoves[index] = LAST_MOVE;
-//    speicher[index] = LAST_MOVE;
     return index;
 }
 
-// todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
-int removeDuplicates(MOVES speicher, int index) {
-    for (int i = 0; i < index - 1; i++) {
-        if (speicher[i] == LAST_MOVE) {
-            break;
-        }
-        for (int j = i + 1; j < index;) {
-            if (speicher[j] == LAST_MOVE) {
-                break;
-            }
-            if (speicher[i] == speicher[j]) {
-                for (int k = j; k < index - 1; k++) {
-                    speicher[k] = speicher[k + 1];
-                }
-                index--;
-            } else {
-                j++;
-            }
+int removeDuplicates(MOVES speicher) {
+    int index = 0;
+    for (int i = 0; i < getBoardSize(); i++) {
+        if (speicher[i] == MOVE_FOUND) {
+            speicher[index++] = i;
         }
     }
     speicher[index] = LAST_MOVE;
     return index;
 }
-//// todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
-//int removeDuplicates(MOVES speicher, int index) {
-//    for (int i = 0; i < index - 1; i++) {
-//        if (speicher[i] == LAST_MOVE) {
-//            break;
-//        }
-//        for (int j = i + 1; j < index;) {
-//            if (speicher[j] == LAST_MOVE) {
-//                break;
-//            }
-//            if (speicher[i] == speicher[j]) {
-//                for (int k = j; k < index - 1; k++) {
-//                    speicher[k] = speicher[k + 1];
-//                }
-//                index--;
-//            } else {
-//                j++;
-//            }
-//        }
-//    }
-//    speicher[index] = LAST_MOVE;
-//    return index;
-//}
 
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
+    memset(allMoves, 0, getBoardSize()*sizeof(MOVE));
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < getBoardSize(); pos++) {
@@ -566,7 +531,7 @@ int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES all
             index = getLegalMovesOnePosition(board, allMoves, index, pos, TARGET_PLAYER);
         }
     }
-    int numberOfRealMoves = removeDuplicates(allMoves, index);
+    int numberOfRealMoves = removeDuplicates(allMoves);
     return numberOfRealMoves;
 }
 
@@ -592,12 +557,8 @@ int countMoves(MOVES allMoves) {
 }
 
 int copyBoardStruct(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBoardStruct, int n) {
-//    printf(" coppy\n");
     copyBoard(destinationBoardStruct->board, sourceBoardStruct->board, n);
-//    printf(" coppyy\n");
     destinationBoardStruct->sideToMove = sourceBoardStruct->sideToMove;
-//    printf(" coppyysf\n");
-    // todo , copy stack?
     return 0;
 }
 
@@ -798,7 +759,6 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     if (board[pos] != EMPTY) {
         printf(" ERROR   ------------> POS %d, board[pos] %d\n", pos, board[pos]);
         printBoardSide(boardStruct);
-//        return 1;
         exit(1);
     }
     pushMove(boardStruct, pos);

@@ -697,8 +697,6 @@ int unmakeMove(BOARD_STRUCT *boardStruct) {
     // 0 means no kills in that dir
     // index should point to first free entry
 
-    // todo consider allowing 4 bits maximum, might make more portable
-
     SIDE_TO_MOVE addToPlayer = boardStruct->sideToMove;
 
     BOARD board = boardStruct->board;
@@ -785,7 +783,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     //Prüfung nach links
     if (column != firstCol && column != secondCol) {
-        if (board[pos - 1] == TARGET_PLAYER) { //TODO these checks look weird
+        if (board[pos - 1] == TARGET_PLAYER) {
             for (int i = 2; i < getColumnSize() && pos - i >= 0; i++) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
@@ -812,7 +810,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
 
     //Prüfung nach rechts
     if (column != preFinalCol && column != finalCol) {
-        if (board[pos + 1] == TARGET_PLAYER) { //TODO these checks look weird
+        if (board[pos + 1] == TARGET_PLAYER) {
             for (int i = 2; i < getColumnSize() && pos + i < getBoardSize(); i++) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
@@ -920,7 +918,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
         if (board[pos - bigDiagonal] == TARGET_PLAYER) {
             for (int i = 2 * bigDiagonal;
                  i < getBoardSize() &&
-                 pos - i >= 0; i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+                 pos - i >= 0; i += bigDiagonal) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -975,7 +973,7 @@ int makeMoveSide(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER)
     if (row != preFinalRow && row != finalRow && column != preFinalCol && column != finalCol) {
         if (board[pos + bigDiagonal] == TARGET_PLAYER) {
             for (int i = 2 * bigDiagonal; i < getBoardSize() && pos + i <
-                                                                getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+                                                                getBoardSize(); i += bigDiagonal) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -1051,7 +1049,7 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
 
     //Prüfung nach links
     if (column != firstCol && column != secondCol) {
-        if (board[pos - 1] == TARGET_PLAYER) { //TODO these checks look weird
+        if (board[pos - 1] == TARGET_PLAYER) {
             for (int i = 2; i < getColumnSize() && pos - i >= 0; i++) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
@@ -1077,7 +1075,7 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
 
     //Prüfung nach rechts
     if (column != preFinalCol && column != finalCol) {
-        if (board[pos + 1] == TARGET_PLAYER) { //TODO these checks look weird
+        if (board[pos + 1] == TARGET_PLAYER) {
             for (int i = 2; i < getColumnSize() && pos + i < getBoardSize(); i++) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
@@ -1181,7 +1179,7 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
         if (board[pos - bigDiagonal] == TARGET_PLAYER) {
             for (int i = 2 * bigDiagonal;
                  i < getBoardSize() &&
-                 pos - i >= 0; i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+                 pos - i >= 0; i += bigDiagonal) {
                 if (board[pos - i] == TARGET_PLAYER) {
                     continue;
                 }
@@ -1234,7 +1232,7 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
     if (row != preFinalRow && row != finalRow && column != preFinalCol && column != finalCol) {
         if (board[pos + bigDiagonal] == TARGET_PLAYER) {
             for (int i = 2 * bigDiagonal; i < getBoardSize() && pos + i <
-                                                                getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+                                                                getBoardSize(); i += bigDiagonal) {
                 if (board[pos + i] == TARGET_PLAYER) {
                     continue;
                 }

@@ -276,7 +276,7 @@ static inline int getRow(int i) {
     return i / getColumnSize();
 }
 
-int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int totalMovesIndex, int position,
+int getLegalMovesOnePosition(BOARD board, MOVES allMoves, int totalMovesIndex, int position,
                              SIDE_TO_MOVE TARGET_PLAYER) {
     int index = totalMovesIndex;
     int MY_PLAYER = switchPlayer(TARGET_PLAYER);
@@ -315,7 +315,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                     continue;
                 }
                 if (board[i] == EMPTY) {
-//                    speicher[index++] = i;
                     allMoves[index++] = i;
                     break;
                 }
@@ -341,7 +340,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                 }
                 if (board[i] == EMPTY) {
                     allMoves[index++] = i;
-//                    speicher[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -364,7 +362,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                     continue;
                 }
                 if (board[i] == EMPTY) {
-//                    speicher[index++] = i;
                     allMoves[index++] = i;
                     break;
                 }
@@ -390,7 +387,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                 }
                 if (board[i] == EMPTY) {
                     allMoves[index++] = i;
-//                    speicher[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -418,7 +414,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                     continue;
                 }
                 if (board[i] == EMPTY) {
-//                    speicher[index++] = i;
                     allMoves[index++] = i;
                     break;
                 }
@@ -449,7 +444,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                 }
                 if (board[i] == EMPTY) {
                     allMoves[index++] = i;
-//                    speicher[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -476,7 +470,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                     continue;
                 }
                 if (board[i] == EMPTY) {
-//                    speicher[index++] = i;
                     allMoves[index++] = i;
                     break;
                 }
@@ -503,7 +496,6 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int tot
                     continue;
                 }
                 if (board[i] == EMPTY) {
-//                    speicher[index++] = i;
                     allMoves[index++] = i;
                     break;
                 }
@@ -544,24 +536,14 @@ int removeDuplicates(MOVES speicher, int index) {
 }
 
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
-    MOVES legalMovesFromHere = malloc(getBoardSize() * sizeof(int)); // todo can we remove
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < getBoardSize(); pos++) {
         if (board[pos] == me) {
-            index = getLegalMovesOnePosition(board, legalMovesFromHere, allMoves, index, pos, TARGET_PLAYER);
-            // todo add starting index or something to this
-//            int j = 0;
-//            while (1) {
-//                if (legalMovesFromHere[j] == LAST_MOVE) {
-//                    break;
-//                }
-//                allMoves[index++] = legalMovesFromHere[j++];
-//            }
+            index = getLegalMovesOnePosition(board, allMoves, index, pos, TARGET_PLAYER);
         }
     }
     int numberOfRealMoves = removeDuplicates(allMoves, index);
-    free(legalMovesFromHere);
     return numberOfRealMoves;
 }
 

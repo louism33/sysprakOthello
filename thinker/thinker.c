@@ -13,10 +13,6 @@
 MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
     printf("received doThink command from connector, time to move %d\n", moveTime);
 
-//    MOVES allMoves = malloc(getBoardSize() * sizeof(int));
-//    getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove),
-//                              allMoves);
-
     moveTime = 2000;
 
     MOVE bestMove = getBestMove(boardStruct, moveTime);

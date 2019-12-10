@@ -534,6 +534,29 @@ int removeDuplicates(MOVES speicher, int index) {
     speicher[index] = LAST_MOVE;
     return index;
 }
+//// todo, optional, currently complexity of O(n^3), can be made to have complexity of O(n)
+//int removeDuplicates(MOVES speicher, int index) {
+//    for (int i = 0; i < index - 1; i++) {
+//        if (speicher[i] == LAST_MOVE) {
+//            break;
+//        }
+//        for (int j = i + 1; j < index;) {
+//            if (speicher[j] == LAST_MOVE) {
+//                break;
+//            }
+//            if (speicher[i] == speicher[j]) {
+//                for (int k = j; k < index - 1; k++) {
+//                    speicher[k] = speicher[k + 1];
+//                }
+//                index--;
+//            } else {
+//                j++;
+//            }
+//        }
+//    }
+//    speicher[index] = LAST_MOVE;
+//    return index;
+//}
 
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
@@ -1029,6 +1052,263 @@ int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
         return 0;
     }
     return makeMoveSide(boardStruct, legalPosition, switchPlayer(boardStruct->sideToMove));
+}
+
+
+int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER) {
+    BOARD board = boardStruct->board;
+
+    if (pos == LAST_MOVE) {
+        printf("  ERROR last move  ------------> POS %d\n", pos);
+        exit(1);
+    }
+
+    if (board[pos] != EMPTY) {
+        printf(" ERROR   ------------> POS %d, board[pos] %d\n", pos, board[pos]);
+        printBoardSide(boardStruct);
+        exit(1);
+    }
+
+    SIDE_TO_MOVE ME = switchPlayer(TARGET_PLAYER);
+
+    STACK_OBJECT stackObject = 0;
+    int numberOfKills = 0;
+    int column = getColumn(pos);
+    int row = getRow(pos);
+
+    int firstRow = 0;
+    int secondRow = 1;
+    int preFinalRow = getRowSize() - 2;
+    int finalRow = getRowSize() - 1;
+
+    int firstCol = 0;
+    int secondCol = 1;
+    int preFinalCol = getColumnSize() - 2;
+    int finalCol = getColumnSize() - 1;
+
+    int smallDiagonal = getRowSize() - 1;
+    int bigDiagonal = getRowSize() + 1;
+
+    //Prüfung nach links
+    if (column != firstCol && column != secondCol) {
+        if (board[pos - 1] == TARGET_PLAYER) { //TODO these checks look weird
+            for (int i = 2; i < getColumnSize() && pos - i >= 0; i++) {
+                if (board[pos - i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos - i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos - i] == ME) {
+                    numberOfKills = 0;
+
+                    for (int j = 1; j < i; j++) {
+                        numberOfKills++;
+                        board[pos - i + j] = ME;
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach rechts
+    if (column != preFinalCol && column != finalCol) {
+        if (board[pos + 1] == TARGET_PLAYER) { //TODO these checks look weird
+            for (int i = 2; i < getColumnSize() && pos + i < getBoardSize(); i++) {
+                if (board[pos + i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos + i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos + i] == ME) {
+                    numberOfKills = 0;
+                    for (int j = 1; j < i; j++) {
+                        numberOfKills++;
+                        board[pos + i - j] = ME;
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach oben
+    if (row != firstRow && row != secondRow) {
+        if (board[pos - getColumnSize()] == TARGET_PLAYER) {
+            for (int i = 2 * getColumnSize(); pos - i >= 0; i += getColumnSize()) {
+                if (board[pos - i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos - i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos - i] == ME) {
+                    numberOfKills = 0;
+                    for (int j = getColumnSize(); j < i; j += getColumnSize()) {
+                        numberOfKills++;
+                        board[pos - i + j] = ME;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    //Prüfung nach unten
+    if (row != preFinalRow && row != finalRow) {
+        if (board[pos + getColumnSize()] == TARGET_PLAYER) {
+            for (int i = 2 * getColumnSize(); pos + i < getBoardSize(); i += getColumnSize()) {
+                if (board[pos + i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos + i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos + i] == ME) {
+                    numberOfKills = 0;
+                    for (int j = getColumnSize(); j < i; j += getColumnSize()) {
+                        numberOfKills++;
+                        board[pos + i - j] = ME;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach rechts oben
+    if (row != firstRow && row != secondRow && column != preFinalCol && column != finalCol) {
+        if (board[pos - smallDiagonal] == TARGET_PLAYER) {
+            for (int i = 2 * smallDiagonal; i < boardSize - 2 * smallDiagonal && pos - i >= 0; i += smallDiagonal) {
+                if (board[pos - i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos - i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos - i] == ME) {
+                    numberOfKills = 0;
+                    for (int j = smallDiagonal; j < i; j += smallDiagonal) {
+                        numberOfKills++;
+                        board[pos - i + j] = ME;
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+
+    //Prüfung nach links oben
+    if (row != firstRow && row != secondRow && column != firstCol && column != secondCol) {
+        if (board[pos - bigDiagonal] == TARGET_PLAYER) {
+            for (int i = 2 * bigDiagonal;
+                 i < getBoardSize() &&
+                 pos - i >= 0; i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+                if (board[pos - i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos - i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos - i] == ME) {
+                    numberOfKills = 0;
+                    for (int j = bigDiagonal; j < i; j += bigDiagonal) {
+                        numberOfKills++;
+                        board[pos - i + j] = ME;
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach links unten
+    if (row != preFinalRow && row != finalRow && column != firstCol && column != secondCol) {
+        if (board[pos + smallDiagonal] == TARGET_PLAYER) {
+            for (int i = 2 * smallDiagonal;
+                 i < getBoardSize() - 2 * smallDiagonal && pos + i < getBoardSize(); i += smallDiagonal) {
+
+                if (board[pos + i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos + i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos + i] == ME) {
+                    numberOfKills = 0;
+                    for (int j = smallDiagonal; j < i; j += smallDiagonal) {
+                        numberOfKills++;
+                        board[pos + i - j] = ME;
+                    }
+                    break;
+                }
+            }
+        }
+
+    }
+
+    //Prüfung nach rechts unten
+    if (row != preFinalRow && row != finalRow && column != preFinalCol && column != finalCol) {
+        if (board[pos + bigDiagonal] == TARGET_PLAYER) {
+            for (int i = 2 * bigDiagonal; i < getBoardSize() && pos + i <
+                                                                getBoardSize(); i += bigDiagonal) { // todo is (i < boardSize) the correct condition?
+                if (board[pos + i] == TARGET_PLAYER) {
+                    continue;
+                }
+
+                if (board[pos + i] == EMPTY) {
+                    break;
+                }
+
+                if (board[pos + i] == ME) {
+                    numberOfKills = 0;
+                    for (int j = bigDiagonal; j < i; j += bigDiagonal) {
+                        numberOfKills++;
+                        board[pos + i - j] = ME;
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
+
+    board[pos] = ME;
+    switchPlayerStruct(boardStruct);
+    return 0;
+}
+
+
+int makeMoveAI(BOARD_STRUCT *boardStruct, int legalPosition) {
+    if (legalPosition == getPassMove()) {
+        switchPlayerStruct(boardStruct);
+        return 0;
+    }
+    return makeMoveSideAI(boardStruct, legalPosition, switchPlayer(boardStruct->sideToMove));
 }
 
 

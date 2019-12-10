@@ -98,11 +98,13 @@ int areBoardStructsDifferent(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT 
 
 int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n);
 
-
 int makeMoveSide(BOARD_STRUCT *boardStruct, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER);
 
 int makeMove(BOARD_STRUCT *boardStruct, int legalPosition);
 
+int makeMoveSideAI(BOARD_STRUCT *boardStruct, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER);
+
+int makeMoveAI(BOARD_STRUCT *boardStruct, int legalPosition);
 
 int pushObject(BOARD_STRUCT *boardStruct, STACK_OBJECT stackObject);
 

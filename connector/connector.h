@@ -6,14 +6,27 @@
 #define ALEXTHEFRIENDLYAI_CONNECTOR_H
 
 #include <sys/types.h>
+#include <stdbool.h>
 #include "boardmessageparser.h"
+
+typedef struct Player{
+    int mitspielerNummer;
+    bool bereit;
+    char mitspielerName[32];
+}Player;
 
 typedef struct infoVonServer
 {
-    char playerNumber[32]; //0 oder 1 welche Spielfarbe wir sind.
-    char myPlayerName[32]; //spielerName
-    char gameId[32];       //13 stellige nummer
+    char gameName[32];
+    char gameID[13];
+    char gameKindName[32];
+    int majorVersionNr;
+    int minorVersionNr;
+    char MitspielerAnzahl[5];
+    struct Player* me;
 } infoVonServer;
+
+
 
 int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector);
 

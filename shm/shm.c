@@ -53,9 +53,9 @@ void deleteShm() {
 void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
-strcpy(shmdata->nGamer,(*g).playerNumber);
-strcpy(shmdata->myGamerId,(*g).gameId);
-strcpy(shmdata->myGamerName,(*g).myPlayerName);
+strcpy(shmdata->nGamer,(*g).MitspielerAnzahl);
+strcpy(shmdata->myGamerId,(*g).gameID);
+strcpy(shmdata->myGamerName,(*g).gameKindName);
 shmdata->thinker = pa;
 shmdata->connector = me;
 printf("ich habe geschrieben.\n");

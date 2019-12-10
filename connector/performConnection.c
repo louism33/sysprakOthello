@@ -142,7 +142,11 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 // todo, handle end state, what do we do once game is over?
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
                                BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector)
-{
+{   
+    
+    
+    strcpy(info->gameID,gameID);
+    strcpy(info->gameKindName,gameKindName);
     char buff[MAX];        // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64];     // example: Game from 2019-11-18 17:42
     char playerNumber[32]; //1
@@ -151,6 +155,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int n = 0, readResponse = 0;
 
     char version[] = "VERSION 2.42\n";
+    info->majorVersionNr=2;
+    info->minorVersionNr=42;
     char okWait[] = "OKWAIT\n";
 
     char gameIdToSend[20];
@@ -263,11 +269,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("  Received YOU info from server, buff is:%s", buff);
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
-                printf("--------save  playerNumber: %s\n", playerNumber); // this often gets weird crap
-                strcpy(info->gameId, gameID);
-                printf("------------------------------------------------gameID: %s\n", info->gameId);
-                strcpy(info->playerNumber, playerNumber);
-                printf("-----------------------------------------playerNumber:%s\n", info->playerNumber);
+                printf("--------save  playerNumber: %s\n", playerNumber);
+                 // this often gets weird crap
+               // info->me->mitspielerNummer= atoi(playerNumber);
+               // strcpy(info->me->mitspielerNummer,playerNumber);
+             //   printf("----save mitspielerNummer:%d\n",info->me->mitspielerNummer);
+                
                 if (playerNumber[0] == '0')
                 {
                     sideToMove = getBlack();
@@ -281,10 +288,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 myPlayerName[l] = '\0';
                 printf("--------save my playerName: %s\n", myPlayerName);
-                strcpy(info->myPlayerName, myPlayerName);
-                printf("------------------------------------myplayerName:%s\n", info->myPlayerName);
+               // strcpy(info->me->mitspielerName,myPlayerName);
+                //printf("---save mitspielerName:%s\n",info->me->mitspielerName);
+               
+                
             }
-
+ 
             /* ----------------------- fertig mit schreiben in struct infoVonServer -------------------------*/
             /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
             //writeShm(info, connector, thinker);  ToDo: übergebe connector und thinker zu haveConversationwithServer()
@@ -293,6 +302,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             if (strncmp("+ TOTAL", buff, 7) == 0)
             {
                 printf("  Received TOTAL info from server, buff is:%s", buff);
+                strncpy(info->MitspielerAnzahl, buff + 8, 1);
+              //  info->MitspielerAnzahl[1] = '\0';
+                printf("--------save  MitspielerAnzahl: %s\n", info->MitspielerAnzahl);
                 phase = SPIELVERLAUF;
             }
 

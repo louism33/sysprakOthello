@@ -276,8 +276,9 @@ static inline int getRow(int i) {
     return i / getColumnSize();
 }
 
-int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_MOVE TARGET_PLAYER) {
-    int index = 0;
+int getLegalMovesOnePosition(BOARD board, int *speicher, MOVES allMoves, int totalMovesIndex, int position,
+                             SIDE_TO_MOVE TARGET_PLAYER) {
+    int index = totalMovesIndex;
     int MY_PLAYER = switchPlayer(TARGET_PLAYER);
 
     int row = getRow(position);
@@ -314,7 +315,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+//                    speicher[index++] = i;
+                    allMoves[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -338,7 +340,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+                    allMoves[index++] = i;
+//                    speicher[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -361,7 +364,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+//                    speicher[index++] = i;
+                    allMoves[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -385,7 +389,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+                    allMoves[index++] = i;
+//                    speicher[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -413,7 +418,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+//                    speicher[index++] = i;
+                    allMoves[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -442,7 +448,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+                    allMoves[index++] = i;
+//                    speicher[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -469,7 +476,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+//                    speicher[index++] = i;
+                    allMoves[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -495,7 +503,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
                     continue;
                 }
                 if (board[i] == EMPTY) {
-                    speicher[index++] = i;
+//                    speicher[index++] = i;
+                    allMoves[index++] = i;
                     break;
                 }
                 if (board[i] == MY_PLAYER) {
@@ -505,7 +514,8 @@ int getLegalMovesOnePosition(BOARD board, int *speicher, int position, SIDE_TO_M
         }
     }
 
-    speicher[index] = LAST_MOVE;
+    allMoves[index] = LAST_MOVE;
+//    speicher[index] = LAST_MOVE;
     return index;
 }
 
@@ -539,15 +549,15 @@ int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES all
     int index = 0;
     for (int pos = 0; pos < getBoardSize(); pos++) {
         if (board[pos] == me) {
-            getLegalMovesOnePosition(board, legalMovesFromHere, pos, TARGET_PLAYER);
+            index = getLegalMovesOnePosition(board, legalMovesFromHere, allMoves, index, pos, TARGET_PLAYER);
             // todo add starting index or something to this
-            int j = 0;
-            while (1) {
-                if (legalMovesFromHere[j] == LAST_MOVE) {
-                    break;
-                }
-                allMoves[index++] = legalMovesFromHere[j++];
-            }
+//            int j = 0;
+//            while (1) {
+//                if (legalMovesFromHere[j] == LAST_MOVE) {
+//                    break;
+//                }
+//                allMoves[index++] = legalMovesFromHere[j++];
+//            }
         }
     }
     int numberOfRealMoves = removeDuplicates(allMoves, index);

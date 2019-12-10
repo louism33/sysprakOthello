@@ -47,7 +47,7 @@ int getDefaultPort() {
     return PORTNUMBER;
 }
 
-char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock creation to here?
+char *lookup_host(const char *host, char *finalAddrstr) { // todo move sock creation to here? YES
     struct addrinfo hints, *res;
     int errcode;
     char addrstr[100];

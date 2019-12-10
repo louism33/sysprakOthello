@@ -14,12 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// todo, probably pass configStruct as argument?
 int readConfigurationFile(char *pathName, configurationStruct * configurationStruct) {
 
     printf("Attempting to read configuration data from %s\n", pathName);
-
-
 
     // todo, careful of malloc here
     configurationStruct->hostname = (char *) malloc(200);

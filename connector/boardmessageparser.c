@@ -168,5 +168,6 @@ void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard,
         }
     }
 
+    // clear up movetime and board
     moveTimeAndBoard->board = boardBoard; // todo, decide if board should be from argument or from here
 }

@@ -115,7 +115,7 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
     return moveRet;
 }
 
-// todo, handle end state, what do we do once game is over?
+// todo, handle end state, what do we do once game is over? -> print something generic
 void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                 BOARD_STRUCT *connectorBoard,
                                 BOARD_STRUCT *thinkerBoard) {

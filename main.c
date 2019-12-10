@@ -42,9 +42,11 @@ void mysighandler(int sig)
 }
 
 int main(int argc, char *argv[])
-{
+{   Player* myPlayer=malloc(sizeof(Player));
+    Player *gegner=malloc(8*sizeof(Player));
     char *antwort = malloc(256 * sizeof(char));
     infoVonServer *info = malloc(sizeof(infoVonServer));
+
     printf("Hello World! I am Alex. This is the main method\n");
     //Test-block
     if (argc > 1 && strcmp(argv[1], "perft") == 0)
@@ -106,8 +108,8 @@ int main(int argc, char *argv[])
 
     createShm();
     attachShm();
-    createPipe(pd);
-
+     createPipe(pd);
+//connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector,myPlayer,gegner);
     //signal(SIGUSR1, mysighandler);
 
     switch (thinker = fork())
@@ -132,7 +134,7 @@ int main(int argc, char *argv[])
         {
             printf("*************Signal1 wird geschickt*************\n");
         }
-          connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector);
+         connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector,myPlayer,gegner);
         // printf("info: %s\n", info->gameId);
         close(pd[1]);    // Schreibseite schließen
         char buffer[50]; // Puffer zum speichern von gelesenen Daten
@@ -190,5 +192,9 @@ int main(int argc, char *argv[])
     freeBoardStruct(thinkerBoard);
     free(info);
     free(antwort);
+    free(myPlayer);
+    //free(info->me);
+    free(gegner);
+
     return 0;
 }

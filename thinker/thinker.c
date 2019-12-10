@@ -56,7 +56,7 @@ void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard)
 	printf("Hi I am very good at thinking\n");
 
 	// /*Lese aus dem shm*/
-	readShm();
+//	readShm();
 }
 /*think() Methode: wartet auf Signal SIGURS1 und ließt anschließend alle benötigten Infos
  aus dem SM und berechnet Spielzug*/

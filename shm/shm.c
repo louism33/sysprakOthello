@@ -14,16 +14,16 @@
 pid_t thinker;
 pid_t connector;
 int shmid;
-gameInfo *shmdata;
+infoVonServer *shmdata;
 
 
 
 void createShm() {
 
-        printf("Ich bin ein Shared Memory\n");
+    printf("Ich bin ein Shared Memory\n");
 
     /*erstelle ein Shm mit getshm() */
-    shmid = shmget(IPC_PRIVATE, sizeof(gameInfo) + sizeof(gamer), IPC_CREAT | SHM_R | SHM_W);
+    shmid = shmget(IPC_PRIVATE, sizeof(infoVonServer)+sizeof(Player), IPC_CREAT | SHM_R | SHM_W);
     printf("Die Shm-ID: %i\n", shmid);
     if (shmid == -1) {
         printf("Fehler bei key %d, mit der Größe %d\n", IPC_PRIVATE, SHMDATASIZE);
@@ -31,8 +31,9 @@ void createShm() {
 }
 
 void attachShm() {
-    /* Shared-Memory-Segment anbinden */
-    shmdata = (gameInfo *) shmat(shmid, NULL, 0);
+    /* Shared-Memory-Segment
+     anbinden */
+    shmdata = (infoVonServer *) shmat(shmid, NULL, 0);
     //printf("Die Anfangsadresse vom Shm ist: %d\n", (int)*shmdata);
     if (shmdata == (void *) -1) {
         printf("Fehler bei der Anbindung mit shmat(): shmid %d\n", shmid);
@@ -53,36 +54,34 @@ void deleteShm() {
 void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
-strcpy(shmdata->nGamer,(*g).MitspielerAnzahl);
-strcpy(shmdata->myGamerId,(*g).gameID);
-strcpy(shmdata->myGamerName,(*g).gameKindName);
-shmdata->thinker = pa;
-shmdata->connector = me;
+strcpy(shmdata->MitspielerAnzahl,(*g).MitspielerAnzahl);
+//  strcpy(shmdata->gameID,(*g).gameID);
+//  strcpy(shmdata->gameKindName,(*g).gameKindName);
+// shmdata->thinker = pa;
+// shmdata->connector = me;
+// strcpy(shmdata->gameName,(*g).gameName);
+// shmdata->majorVersionNr=(*g).majorVersionNr;
+// shmdata->minorVersionNr=(*g).minorVersionNr;
+// shmdata->me->bereit=(*g).me->bereit;
+// strcpy(shmdata->me->mitspielerName,(*g).me->mitspielerName);
+// shmdata->me->mitspielerNummer=(*g).me->mitspielerNummer;
 printf("ich habe geschrieben.\n");
-printf("shmdata.nGamer: %s\n",shmdata->nGamer);
-
+printf("shmdata.MitspielerAnzahl: %s\n",shmdata->MitspielerAnzahl);
+// printf("shmdata.gameID: %s\n",shmdata->gameID);
+// printf("shmdata.gameKindName: %s\n",shmdata->gameKindName);
+// printf("shmdata.thinker: %d\n",shmdata->thinker);
+// printf("shmdata.connector: %d\n",shmdata->connector);
 }
-//void writeShm(gameInfo *g, pid_t me, pid_t pa) {
-    /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
-    //shmdata->nGamer = (*g).nGamer;
-    //shmdata->myGamerId = (*g).myGamerId;
-    //strcpy(shmdata->nGamer, (*g).nGamer);
-    //strcpy(shmdata->myGamerId, (*g).myGamerId);
-    //strcpy(shmdata->myGamerName, (*g).myGamerName);
-    //shmdata->thinker = pa;
-    //shmdata->connector = me;
-
-
-//}
 void readShm() {
 
+
     printf("read\n");
-    printf("Das erste Element im shm ist: %s\n", shmdata->nGamer);
-    printf("Das zweite Element im shm ist: %s\n", shmdata->myGamerId);
-    printf("Das dritte Element im shm ist: %s\n", shmdata->myGamerName);
-    printf("Das vierte Element im shm ist: %i\n", shmdata->thinker);
-    printf("Das fuenfte Element im shm ist: %i\n", shmdata->connector);
+    printf("Das erste Element im shm ist: %i\n", shmdata->connector);
+    printf("Das zweite Element im shm ist: %s\n", shmdata->gameID);
+    printf("Das dritte Element im shm ist: %s\n", shmdata->gameKindName);
+    printf("Das vierte Element im shm ist: %s\n", shmdata->gameName);
+    printf("Das fuenfte Element im shm ist: %i\n", shmdata->thinker);
 
 }
 

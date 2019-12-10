@@ -105,7 +105,6 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
     printf("move is: %d\n", move);
 
     if (move == getPassMove()) {
-
         exit(1);
     }
 

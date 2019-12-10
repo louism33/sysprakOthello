@@ -1802,7 +1802,7 @@ int testWinner() {
     for (int i = 0; i < 32; i++) {
         board[i] = getWhite();
     }
-    for (int j = 32; j < 64; j++) {
+    for (int j = 32; j < getBoardSize(); j++) {
         board[j] = getBlack();
     }
 

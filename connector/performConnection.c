@@ -103,6 +103,12 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
     int move = doThink(thinkerBoard, moveTime);
 
     printf("move is: %d\n", move);
+
+    if (move == getPassMove()) {
+
+        exit(1);
+    }
+
     convertMove(move, moveRet);
 
     printf("converted move is: %s\n", moveRet);
@@ -121,7 +127,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
     char opponent[32];
     int n = 0, readResponse = 0;
 
-    char version[] = "VERSION 2.42\n";
+    char version[] = "VERSION 2.42\n"; // todo, dont just send this , make sure to parse VERSION2.xx from server then sent somthing
     char okWait[] = "OKWAIT\n";
 
     char gameIdToSend[20];

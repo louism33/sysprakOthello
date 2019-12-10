@@ -13,24 +13,17 @@
 MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
     printf("received doThink command from connector, time to move %d\n", moveTime);
 
-    MOVES allMoves = malloc(getBoardSize() * sizeof(int));
-    getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove),
-                              allMoves);
+//    MOVES allMoves = malloc(getBoardSize() * sizeof(int));
+//    getLegalMovesAllPositions(boardStruct->board, switchPlayer(boardStruct->sideToMove),
+//                              allMoves);
 
+    moveTime = 2000;
 
     MOVE bestMove = getBestMove(boardStruct, moveTime);
 
-//    if (allMoves[0] == getLastMove()) {
-//        printf("   +++++++++++++++ COULD NOT FIND  A MOVE FROM THIS POSITION !!!!\n");
-//    }
-    if (bestMove == getLastMove()) {
-        printf("   +++++++++++++++ COULD NOT FIND  A MOVE FROM THIS POSITION !!!!\n");
-    }
-
-//	printf("dothinker move: %d\n", allMoves[0]);
     printf("dothinker move: %d\n", bestMove);
 
-    return allMoves[0];
+    return bestMove;
 }
 
 void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard) {

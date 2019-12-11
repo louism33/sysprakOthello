@@ -30,7 +30,7 @@
 #include <stdbool.h>
 // if thinker is parent, retry logic may be easier to implement
 // including learning
-bool denken=false;
+bool denken = false;
 void mysighandler(int sig)
 {
 
@@ -42,8 +42,9 @@ void mysighandler(int sig)
 }
 
 int main(int argc, char *argv[])
-{   Player* myPlayer=malloc(sizeof(Player));
-    Player *gegner=malloc(8*sizeof(Player));
+{
+    Player *myPlayer = malloc(sizeof(Player));
+    Player *gegner = malloc(8 * sizeof(Player));
     char *antwort = malloc(256 * sizeof(char));
     infoVonServer *info = malloc(sizeof(infoVonServer));
 
@@ -105,13 +106,11 @@ int main(int argc, char *argv[])
 
     BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
-
+    //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
+//int movetime;
     createShm();
     attachShm();
-     createPipe(pd);
-//connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector,myPlayer,gegner);
-    //signal(SIGUSR1, mysighandler);
-
+    createPipe(pd);
     switch (thinker = fork())
     {
         /*Fehlerfall*/
@@ -125,33 +124,33 @@ int main(int argc, char *argv[])
         connector = getpid();
         thinker = getppid();
         printf("ConnectorPID = %i\n", connector);
-        if (kill(thinker, SIGUSR1) == -1)
-        {
-            printf("Fehler beim senden des Signals\n");
-            exit(1);
-        }
-        else
-        {
-            printf("*************Signal1 wird geschickt*************\n");
-        }
-         connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector,myPlayer,gegner);
+        // if (kill(thinker, SIGUSR1) && killready)
+        // {
+        //     printf("Fehler beim senden des Signals\n");
+        //     exit(1);
+        // }
+        // else
+        // {
+        //     printf("*************Signal1 wird geschickt*************\n");
+        // }
+        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector, myPlayer, gegner);
         // printf("info: %s\n", info->gameId);
-        close(pd[1]);    // Schreibseite schließen
-        char buffer[50]; // Puffer zum speichern von gelesenen Daten
-                         //ssize_t nread;
-        for (int i = 1; i < 5; i++)
-        {
-            if (read(pd[0], buffer, sizeof(buffer)) == -1)
-            { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-                perror("read");
-                exit(EXIT_FAILURE);
-            }
-            else
-            { //sleep(1);
-                printf("Connector(Kindeprozess) bekommt Nachricht von pipe: %s\n\n", buffer);
-                //sleep(1);
-            }
-        }
+        // close(pd[1]);    // Schreibseite schließen
+        // char buffer[50]; // Puffer zum speichern von gelesenen Daten
+        //                  //ssize_t nread;
+        // for (int i = 1; i < 5; i++)
+        // {
+        //     if (read(pd[0], buffer, sizeof(buffer)) == -1)
+        //     { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+        //         perror("read");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     else
+        //     { //sleep(1);
+        //         printf("Connector(Kindeprozess) bekommt Nachricht von pipe: %s\n\n", buffer);
+        //         //sleep(1);
+        //     }
+        // }
 
         break;
 
@@ -166,15 +165,17 @@ int main(int argc, char *argv[])
             printf("Error beim Empfangen des Signal.\n");
             exit(1);
         }
-        for (int i = 1; i < 5; i++)
-        {
+        while(1){
             //printf("in schleife.\n");
             while (!denken)
             {
-                sleep(1);//Schreibseite muss warten bis Leseseite fertig ist.
+                sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
-            denken=false;
-            changeMsg(antwort);
+            denken = false;
+            //changeMsg(antwort);
+           // int move = doThink(thinkerBoard);
+           // getPrettyMove(move, antwort);
+            printf("antwort: %s\n", antwort);
             printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
             if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
             { // In Schreibseite schreiben
@@ -193,8 +194,7 @@ int main(int argc, char *argv[])
     free(info);
     free(antwort);
     free(myPlayer);
-    //free(info->me);
     free(gegner);
-
+   // free(movetime);
     return 0;
 }

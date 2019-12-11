@@ -296,7 +296,6 @@ Node *expansion(Node *node, BOARD_STRUCT *boardStruct) {
 
     if (node->gameOver) {
         assert(isGameOver(boardStruct));
-//        int w = getWinner(boardStruct);
         int w = node->gameOverWinner;
 
         if (node->hasJustMoved == w) {
@@ -530,8 +529,6 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
         gettimeofday(&tv, NULL);
     }
 
-//    printNodeLittle(root);
-
     int totalWinsRoot = root->winCount;
     int totalWinsChildren = 0;
 
@@ -551,9 +548,6 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
             mostPlayoutsFromChild =
                     root->childrenNodes[i]->playoutCount > mostPlayoutsFromChild ? root->childrenNodes[i]->playoutCount
                                                                                  : mostPlayoutsFromChild;
-
-//            printNode(root->childrenNodes[i]);
-//            printNodeLittle(root->childrenNodes[i]);
 
             totalWinsChildren += root->childrenNodes[i]->winCount;
 
@@ -582,15 +576,11 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     freeKids(root);
     freeBoardStruct(copy);
 
-//    printf("Alex returns move: %d\n", mostPlayedKid);
-
     return mostPlayedKid;
 }
 
 
 MOVE getMostPlayedKid(Node *root) {
-//    printNodeLittle(root);
-
     int totalWinsChildren = 0;
     int totalPlayoutsFromChildren = 0;
     int mostPlayedKidNumber = 0;
@@ -599,8 +589,6 @@ MOVE getMostPlayedKid(Node *root) {
     for (int i = 0; i < root->numberOfChildren; i++) {
         if (root->childrenNodes[i]) {
             totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
-//            printNode(root->childrenNodes[i]);
-//            printNodeLittle(root->childrenNodes[i]);
 
             totalWinsChildren += root->childrenNodes[i]->winCount;
 
@@ -621,9 +609,6 @@ MOVE getMostPlayedKid(Node *root) {
 
 MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
     Node *baseRoot = contexts->contexts[0]->root;
-
-//    printNodeLittle(baseRoot);
-
     int totalWinsChildren = 0;
     int totalPlayoutsFromChildren = 0;
     int mostPlayedKidNumber = 0;
@@ -638,8 +623,6 @@ MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
         for (int i = 0; i < thisRoot->numberOfChildren; i++) {
             if (thisRoot->childrenNodes[i]) {
 
-//                printNodeLittle(thisRoot->childrenNodes[i]);
-
                 assert(baseRoot->childrenNodes[i]->moveFromParent == thisRoot->childrenNodes[i]->moveFromParent);
 
                 baseRoot->childrenNodes[i]->playoutCount += thisRoot->childrenNodes[i]->playoutCount;
@@ -648,15 +631,10 @@ MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
         }
     }
 
-//    printNodeLittle(baseRoot);
-
     for (int i = 0; i < baseRoot->numberOfChildren; i++) {
 
         if (baseRoot->childrenNodes[i]) {
             totalPlayoutsFromChildren += baseRoot->childrenNodes[i]->playoutCount;
-
-//            printNodeLittle(baseRoot->childrenNodes[i]);
-
             totalWinsChildren += baseRoot->childrenNodes[i]->winCount;
 
             if (mostPlayedKidNumber < baseRoot->childrenNodes[i]->playoutCount) {

@@ -1,33 +1,46 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
 #include "pipe.h"
+#include "../thinker/board.h"
 
-int createPipe(int mypipe, int pd[]) {
-	/*pipe erstellen mit pipe()*/
-	mypipe = pipe(pd);
-	if(mypipe == -1) {
-		printf("Fehler bei der Erstellung der Pipe\n");
-	}
-	printf("Erfolg bei der Erstellung der Pipe\n");
+int createPipe(int pd[])
+{
+    /*pipe erstellen mit pipe()*/
+
+    if (pipe(pd) < 0)
+    {
+        printf("Fehler bei der Erstellung der Pipe\n");
+    }
+    else
+    {
+        printf("Erfolg bei der Erstellung der Pipe\n");
+    }
 }
 
 
-/* nur zum Testen gewesen brauchen wir nicht mehr !*/
-/*void writePipe (int file) {
-  FILE *stream;
-  stream = fdopen (file, "w");
-  fprintf (stream, "hello, world!\n");
-  fprintf (stream, "goodbye, world!\n");
-  fclose (stream);
-}*/
 
+void changeMsg(char* antwort){
+    int random=rand()%63;
+    getPrettyMove(random,antwort);
+}
 
-/*lesen tut der Connector*/
-/*void readPipe (int file) {
-  FILE *stream;
-  int c;
-  stream = fdopen (file, "r");
-  while ((c = fgetc (stream)) != EOF)
-  putchar (c);
-  fclose (stream);
-}*/
+// /* nur zum Testen gewesen brauchen wir nicht mehr !*/
+// void writePipe (int file) {
+//   FILE *stream;
+//   stream = fdopen (file, "w");
+//   fprintf (stream, "hello, world!\n");
+//   fprintf (stream, "goodbye, world!\n");
+//   fclose (stream);
+// }
+
+// /*lesen tut der Connector*/
+// void readPipe (int file) {
+//   FILE *stream;
+//   int c;
+//   stream = fdopen (file, "r");
+//   while ((c = fgetc (stream)) != EOF)
+//   putchar (c);
+//   fclose (stream);
+// }

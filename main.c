@@ -26,31 +26,30 @@
 #include "thinker/thinkertests/biggerboardtest.h"
 #include "shm/shm.h"
 #include "pipe/pipe.h"
-
-pid_t thinker;
-pid_t connector;
+#include "main.h"
+#include <stdbool.h>
 // if thinker is parent, retry logic may be easier to implement
 // including learning
-int shmid;
-gameInfo *shmdata;
+bool denken = false;
+void mysighandler(int sig)
+{
 
-int mypipe;
-/*File-deskriptor für die Pipe*/
-int pd[2];
-
-void mysighandler(int sig) {
     if (sig == SIGUSR1)
     {
-        printf("SIGUSR1 empfangen\n");
+        printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n\n");
+        denken = true;
     }
 }
 
 int main(int argc, char *argv[])
-{    
+{
+    Player *myPlayer = malloc(sizeof(Player));
+    Player *gegner = malloc(8 * sizeof(Player));
+    char *antwort = malloc(256 * sizeof(char));
     infoVonServer *info = malloc(sizeof(infoVonServer));
-   
-    printf("Hello World! I am Alex. This is the main method\n");
 
+    printf("Hello World! I am Alex. This is the main method\n");
+    //Test-block
     if (argc > 1 && strcmp(argv[1], "perft") == 0)
     {
         if (argc == 2)
@@ -107,71 +106,83 @@ int main(int argc, char *argv[])
 
     BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
-
+    //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
+//int movetime;
     createShm();
     attachShm();
-    createPipe(mypipe,pd);
-
-    /*signal empfagen und behandeln -> thinkMasterMethod() aufrufen */
-        if (SIG_ERR == signal(SIGUSR1, mysighandler)) {
-            printf("error bei empfangen des Signals\n");
-        }
-        else {
-            thinkerMasterMethod(thinkerBoard);
-            printf("Ich denke jetzt ------------------------------------\n");
-        }
-
-    //connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv,info);
-    // //printf("main2----------gameID: %s\n", info->gameId);
+    createPipe(pd);
     switch (thinker = fork())
     {
-    /*Fehlerfall*/
-        case -1:
+        /*Fehlerfall*/
+    case -1:
         printf("Fehler bei fork()\n");
         break;
 
-    /*Kindsprozess = Connector*/
-        case 0:
+        /*Kindsprozess = Connector*/
+    case 0:
         printf("Im Kindsprozess\n");
         connector = getpid();
         thinker = getppid();
-        printf("Meine PID = %i\n", connector);
-        
-        /*Connector ließt aus der Pipe den Spielzug aus
-        als schließe die Schreibseite hier*/
-        close (pd[1]);
-        printf("Die Schreibseite der Pipe wurde geschlossen\n");
-        //readPipe(pd[0]);
-
-        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker);
-        printf("info: %s\n",info->gameId);
-        
-        //while (1)
-        //{
-            //sleep(3);
-        //if (kill(thinker, SIGUSR1)==-1){
-          //  printf("Fehler beim senden des Signals\n");
-        //}
-        //}
+        printf("ConnectorPID = %i\n", connector);
+        // if (kill(thinker, SIGUSR1) && killready)
+        // {
+        //     printf("Fehler beim senden des Signals\n");
+        //     exit(1);
+        // }
+        // else
+        // {
+        //     printf("*************Signal1 wird geschickt*************\n");
+        // }
+        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector, myPlayer, gegner);
+        // printf("info: %s\n", info->gameId);
+        // close(pd[1]);    // Schreibseite schließen
+        // char buffer[50]; // Puffer zum speichern von gelesenen Daten
+        //                  //ssize_t nread;
+        // for (int i = 1; i < 5; i++)
+        // {
+        //     if (read(pd[0], buffer, sizeof(buffer)) == -1)
+        //     { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+        //         perror("read");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     else
+        //     { //sleep(1);
+        //         printf("Connector(Kindeprozess) bekommt Nachricht von pipe: %s\n\n", buffer);
+        //         //sleep(1);
+        //     }
+        // }
 
         break;
 
-        /*Elternprozess = Thinker*/
-        default:
-        sleep(5);
+    /*Elternprozess = Thinker*/
+    default:
         printf("Im Elternprozess\n");
         thinker = getpid();
-        printf("Meine PID = %i\n", thinker);
-
-        /*Thinker schreibt in die Pipe rein, also schließe die Leseseite*/
-        close(pd[0]);
-        printf("Die Leseseite der Pipe wurde geschlossen\n");
-        //writePipe(pd[1]);
-
-        
-        
-        while (1) {
-
+        printf("ThinkerPID = %i\n", thinker);
+        close(pd[0]); // Leseseite schließen
+        if (signal(SIGUSR1, mysighandler) == SIG_ERR)
+        {
+            printf("Error beim Empfangen des Signal.\n");
+            exit(1);
+        }
+        while(1){
+            //printf("in schleife.\n");
+            while (!denken)
+            {
+                sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
+            }
+            denken = false;
+            //changeMsg(antwort);
+           // int move = doThink(thinkerBoard);
+           // getPrettyMove(move, antwort);
+            printf("antwort: %s\n", antwort);
+            printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
+            if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
+            { // In Schreibseite schreiben
+                perror("write");
+                exit(EXIT_FAILURE);
+            }
+            bzero(antwort, sizeof(antwort));
         }
 
         break;
@@ -181,5 +192,9 @@ int main(int argc, char *argv[])
     freeBoardStruct(connectorBoard);
     freeBoardStruct(thinkerBoard);
     free(info);
+    free(antwort);
+    free(myPlayer);
+    free(gegner);
+   // free(movetime);
     return 0;
 }

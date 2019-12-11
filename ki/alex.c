@@ -13,11 +13,16 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <sys/time.h>
+#include <stdlib.h>
+#include <unistd.h>  //Header file for sleep(). man 3 sleep for details.
+#include <pthread.h>
 /*
  * Uses monte carlo tree search
  */
 
 #define GAME_NOT_OVER (69)
+#define NUMBER_OF_THREADS (2)
 
 enum NodeType {
     ROOT = 0,
@@ -44,6 +49,20 @@ struct Node {
     SIDE_TO_MOVE sideToMove;
     SIDE_TO_MOVE hasJustMoved;
 };
+
+
+typedef struct Context {
+    BOARD_STRUCT *boardStruct;
+    Node *root;
+    int moveTime;
+} Context;
+
+
+typedef struct Contexts {
+    Context **contexts;
+    int totalThreads;
+} Contexts;
+
 
 void setupNode(Node *node) {
 
@@ -438,6 +457,16 @@ void freeKids(Node *node) {
     free(node);
 }
 
+void freeContexts(Contexts *contexts) {
+    for (int t = 0; t < contexts->totalThreads; t++) {
+        Node *node = contexts->contexts[t]->root;
+        freeKids(node);
+        free(contexts->contexts[t]);
+    }
+    free(contexts->contexts);
+    free(contexts);
+}
+
 // selection expansion simulation backprop
 int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
     srand(time(NULL)); // todo move out ?
@@ -501,7 +530,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
         gettimeofday(&tv, NULL);
     }
 
-    printNodeLittle(root);
+//    printNodeLittle(root);
 
     int totalWinsRoot = root->winCount;
     int totalWinsChildren = 0;
@@ -524,7 +553,7 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
                                                                                  : mostPlayoutsFromChild;
 
 //            printNode(root->childrenNodes[i]);
-            printNodeLittle(root->childrenNodes[i]);
+//            printNodeLittle(root->childrenNodes[i]);
 
             totalWinsChildren += root->childrenNodes[i]->winCount;
 
@@ -556,4 +585,197 @@ int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
 //    printf("Alex returns move: %d\n", mostPlayedKid);
 
     return mostPlayedKid;
+}
+
+
+MOVE getMostPlayedKid(Node *root) {
+//    printNodeLittle(root);
+
+    int totalWinsChildren = 0;
+    int totalPlayoutsFromChildren = 0;
+    int mostPlayedKidNumber = 0;
+    MOVE mostPlayedKid = getPassMove();
+
+    for (int i = 0; i < root->numberOfChildren; i++) {
+        if (root->childrenNodes[i]) {
+            totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
+//            printNode(root->childrenNodes[i]);
+//            printNodeLittle(root->childrenNodes[i]);
+
+            totalWinsChildren += root->childrenNodes[i]->winCount;
+
+            if (mostPlayedKidNumber < root->childrenNodes[i]->playoutCount) {
+                mostPlayedKidNumber = root->childrenNodes[i]->playoutCount;
+                mostPlayedKid = root->childrenNodes[i]->moveFromParent;
+            }
+        }
+    }
+
+    int totalWinsRoot = root->winCount;
+    assert(root->playoutCount - totalWinsRoot == totalWinsChildren);
+    int totalPlayoutsFromRoot = root->playoutCount;
+    assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
+    return mostPlayedKid;
+}
+
+
+MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
+    Node *baseRoot = contexts->contexts[0]->root;
+
+//    printNodeLittle(baseRoot);
+
+    int totalWinsChildren = 0;
+    int totalPlayoutsFromChildren = 0;
+    int mostPlayedKidNumber = 0;
+    MOVE mostPlayedKid = getPassMove();
+
+    // add other thread numbers into root thread
+    for (int t = 1; t < contexts->totalThreads; t++) {
+        Node *thisRoot = contexts->contexts[t]->root;
+        baseRoot->playoutCount += thisRoot->playoutCount;
+        baseRoot->winCount += thisRoot->winCount;
+
+        for (int i = 0; i < thisRoot->numberOfChildren; i++) {
+            if (thisRoot->childrenNodes[i]) {
+
+//                printNodeLittle(thisRoot->childrenNodes[i]);
+
+                assert(baseRoot->childrenNodes[i]->moveFromParent == thisRoot->childrenNodes[i]->moveFromParent);
+
+                baseRoot->childrenNodes[i]->playoutCount += thisRoot->childrenNodes[i]->playoutCount;
+                baseRoot->childrenNodes[i]->winCount += thisRoot->childrenNodes[i]->winCount;
+            }
+        }
+    }
+
+//    printNodeLittle(baseRoot);
+
+    for (int i = 0; i < baseRoot->numberOfChildren; i++) {
+
+        if (baseRoot->childrenNodes[i]) {
+            totalPlayoutsFromChildren += baseRoot->childrenNodes[i]->playoutCount;
+
+//            printNodeLittle(baseRoot->childrenNodes[i]);
+
+            totalWinsChildren += baseRoot->childrenNodes[i]->winCount;
+
+            if (mostPlayedKidNumber < baseRoot->childrenNodes[i]->playoutCount) {
+                mostPlayedKidNumber = baseRoot->childrenNodes[i]->playoutCount;
+                mostPlayedKid = baseRoot->childrenNodes[i]->moveFromParent;
+            }
+        }
+    }
+
+    int totalWinsRoot = baseRoot->winCount;
+    assert(baseRoot->playoutCount - totalWinsRoot == totalWinsChildren);
+    printNodeLittle(baseRoot);
+    int totalPlayoutsFromRoot = baseRoot->playoutCount;
+    assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
+    return mostPlayedKid;
+}
+
+void *getBestMoveMultiThreadedHelper(void *vargp) {
+    Context *context = (Context *) vargp;
+    BOARD_STRUCT *bS = context->boardStruct;
+    int moveTime = context->moveTime;
+    Node *root = context->root;
+
+    BOARD_STRUCT *boardStruct = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToZero(boardStruct);
+    copyBoardStruct(boardStruct, bS, getBoardSize());
+
+    BOARD_STRUCT *copy = malloc(sizeof(BOARD_STRUCT));
+
+    initialiseBoardStructToZero(copy);
+    copyBoardStruct(copy, boardStruct, getBoardSize());
+    int simulationsDone = 0;
+
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+
+    double original_time_in_mill = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+
+    while ((tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 - original_time_in_mill < moveTime) {
+        copyBoardStruct(boardStruct, copy, getBoardSize());
+
+        Node *fromSelection = selection(root, boardStruct); // pick a node with no children
+
+        Node *expandedChild = expansion(fromSelection, boardStruct); // reserve memory for children and pick one
+
+        if (expandedChild == fromSelection) {
+            assert(isGameOver(boardStruct));
+        }
+
+        int outcome = simulation(expandedChild, boardStruct); // run a game, return result
+
+        backprop(expandedChild, outcome);
+
+        simulationsDone++;
+        gettimeofday(&tv, NULL);
+    }
+
+    copyBoardStruct(boardStruct, copy, getBoardSize());
+
+    freeBoardStruct(copy); // todo consider passing copy as part of context
+    freeBoardStruct(boardStruct);
+
+    return NULL;
+}
+
+// selection expansion simulation backprop
+int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
+    srand(time(NULL)); // todo move out ?
+
+    BOARD board = boardStruct->board;
+    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
+    int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
+
+    if (totalMoves == 0) {
+        free(moves);
+        printf("Alex returns pass move\n");
+        return getPassMove();
+    }
+
+    if (totalMoves == 1) {
+        MOVE move = moves[0];
+        free(moves);
+        printf("Alex returns only move: %d\n", move);
+        return move;
+    }
+    free(moves);
+
+    int totalThreads = NUMBER_OF_THREADS;
+    Contexts *contexts = malloc(sizeof(Contexts));
+    contexts->contexts = malloc(totalThreads * sizeof(Context));
+
+    contexts->totalThreads = totalThreads;
+    pthread_t thread_id[totalThreads];
+
+    for (int t = 0; t < totalThreads; t++) {
+        struct Context *context = malloc(sizeof(Context));
+        contexts->contexts[t] = context;
+
+        context->boardStruct = boardStruct;
+        context->moveTime = moveTime;
+
+        Node *root = malloc(sizeof(Node));
+        setupNode(root);
+        root->nodeType = ROOT;
+        root->parentNode = NULL;
+        root->sideToMove = boardStruct->sideToMove;
+        root->hasJustMoved = switchPlayer(boardStruct->sideToMove);
+
+        context->root = root;
+
+        pthread_create(&thread_id[t], NULL, getBestMoveMultiThreadedHelper, context);
+    }
+
+    for (int t = 0; t < totalThreads; t++) {
+        pthread_join(thread_id[t], NULL);
+    }
+    MOVE move = getMostPlayedKidMultiThread(contexts);
+
+    freeContexts(contexts);
+
+    return move;
 }

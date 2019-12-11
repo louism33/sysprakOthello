@@ -562,10 +562,11 @@ int copyBoardStruct(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBo
     return 0;
 }
 
-int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n) {
+int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n) { //todo optimise
     for (int i = 0; i < n; i++) {
         destinationBoard[i] = sourceBoard[i];
     }
+//    memcpy(destinationBoard, sourceBoard, n * sizeof(int));
     return 0;
 }
 
@@ -1012,7 +1013,7 @@ int makeMove(BOARD_STRUCT *boardStruct, int legalPosition) {
     return makeMoveSide(boardStruct, legalPosition, switchPlayer(boardStruct->sideToMove));
 }
 
-
+// this method is the same as regular, but does not store information on the stack
 int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYER) {
     BOARD board = boardStruct->board;
 
@@ -1029,7 +1030,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
 
     SIDE_TO_MOVE ME = switchPlayer(TARGET_PLAYER);
 
-    STACK_OBJECT stackObject = 0;
     int numberOfKills = 0;
     int column = getColumn(pos);
     int row = getRow(pos);
@@ -1254,7 +1254,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
         }
     }
 
-
     board[pos] = ME;
     switchPlayerStruct(boardStruct);
     return 0;
@@ -1281,7 +1280,6 @@ int getWinner(BOARD_STRUCT *boardStruct) { // todo, new method combining getWinn
             anzahlWhite++;
         }
     }
-//    printf("b %d   w %d \n", anzahlBlack, anzahlWhite);
 
     if (anzahlBlack > anzahlWhite) {
         return getBlack();
@@ -1297,7 +1295,6 @@ int isGameOver(BOARD_STRUCT *boardStruct) {
     int anzahlWhite = 0;
     BOARD board = boardStruct->board;
 
-    //Wenn es nur WHITE oder nur BLACK in Board gibt.
     for (int i = 0; i < getBoardSize(); i++) {
         if (board[i] == getBlack()) {
             anzahlBlack++;
@@ -1318,4 +1315,6 @@ int isGameOver(BOARD_STRUCT *boardStruct) {
     }
     return GAMENOTOVER;
 }
+
+
 

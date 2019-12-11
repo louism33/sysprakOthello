@@ -23,7 +23,8 @@ int testPickUpCorner() {
     printBoardSide(b);
 
     MOVE bestMove = 0;
-    MOVE move = getBestMove(b, moveTime);
+//    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != bestMove) {
 //        printBoardSide(b);

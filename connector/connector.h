@@ -11,6 +11,8 @@ typedef struct infoVonServer{
     char playerNumber[32];//0 oder 1 welche Spielfarbe wir sind.
     char myPlayerName[32];//spielerName 
     char gameId[32];//13 stellige nummer
+    /*Flag benoetigt, damit nur der Connector ein SIGURS1 schicken kann* -----Idee 0 & 1 verwenden*/
+    int controlFlag;
 }infoVonServer;
 
 int connectorMasterMethod(BOARD_STRUCT * connectorBoard, BOARD_STRUCT * thinkerBoard, int argc, char *argv[],infoVonServer *info, pid_t thinker);

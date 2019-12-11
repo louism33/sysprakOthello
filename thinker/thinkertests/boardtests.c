@@ -1773,6 +1773,7 @@ int testLinks3() {
     board[20] = getWhite();
     board[19] = board[18] = board[17] = getBlack();
 
+
     SIDE_TO_MOVE player = getWhite();
     //printBoardLouisSide(b, player);
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);

@@ -75,16 +75,16 @@ char *lookup_host(const char *host, char *finalAddrstr)
 
         switch (res->ai_family)
         { // todo put sock in here
-        case AF_INET:
+            case AF_INET:
             ptr = &((struct sockaddr_in *)res->ai_addr)->sin_addr;
             break;
-        case AF_INET6:
+            case AF_INET6:
             ptr = &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr;
             break;
         }
         inet_ntop(res->ai_family, ptr, addrstr, 100);
         printf("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
-               addrstr, res->ai_canonname);
+           addrstr, res->ai_canonname);
 
         if (res->ai_family != PF_INET6)
         {
@@ -98,8 +98,8 @@ char *lookup_host(const char *host, char *finalAddrstr)
 }
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
-                        int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-                        BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector,Player *myPlayer,Player *gegener)
+    int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
+    BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector,Player *myPlayer,Player *gegener)
 {
 
     printf("Attempting to connect to game server.\n");
@@ -142,7 +142,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         char *local = "127.0.0.1";
         server.sin_addr.s_addr = inet_addr(local);
         printf("Attempting to connect to host %s on port %d\n", local,
-               PORTNUMBER);
+           PORTNUMBER);
         configurationStruct->gamekindname = "REVERSI";
     }
     else
@@ -188,7 +188,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         }
 
         printf("Attempting to connect to host %s on port %d\n", host,
-               configurationStruct->portnumber);
+           configurationStruct->portnumber);
         server.sin_addr.s_addr = inet_addr(host);
     }
 
@@ -198,7 +198,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     if (connect(sock, (struct sockaddr *)&server, sizeof(server)) != 0)
     {
         printf("connection with the server failed... error is %s\n",
-               strerror(errno));
+           strerror(errno));
         return 0;
     }
     else
@@ -207,7 +207,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     }
 
     performConnectionLouis(sock, gameID, player,
-                           configurationStruct->gamekindname, connectorBoard, thinkerBoard, info, thinker, connector,myPlayer,gegener);
+       configurationStruct->gamekindname, connectorBoard, thinkerBoard, info, thinker, connector,myPlayer,gegener);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -231,20 +231,20 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     {
         switch (ret)
         {
-        case 'g':
+            case 'g':
             gameID = optarg;
             break;
-        case 'p':
+            case 'p':
             player = optarg;
             break;
-        case 'm':
+            case 'm':
             mockGame = 1;
             break;
-        case 'C':
+            case 'C':
             configPath = optarg;
             usingCustomConfigFile = 1;
             break;
-        default:
+            default:
             printf("Could not read provided option %c\n", ret);
             perror("Could not read provided option.\n");
             return 1;
@@ -274,22 +274,18 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
         if (pid == 0)
         { /* child process */
             createMockGameServer();
-            return 0;
+        return 0;
         }
+
 
         int sleepMicroSeconds = 2000000;
         printf("sleeping for %d microseconds to give the mock server time to get ready\n",
-               sleepMicroSeconds);
+           sleepMicroSeconds);
         usleep(sleepMicroSeconds);
     }
 
-    connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-                        configPath, connectorBoard, thinkerBoard, info, thinker, connector,myPlayer,gegener);
+connectToGameServer(mockGame, gameID, player, usingCustomConfigFile, configPath, connectorBoard, thinkerBoard, info, thinker, connector,myPlayer,gegener);
     //printf("----------------################################connectormasterMethod:%s\n",info.myPlayerName);
 
-    return 0;
-}
-
-void performConnection()
-{
+return 0;
 }

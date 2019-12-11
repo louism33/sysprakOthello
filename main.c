@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
-            //changeMsg(antwort);
+            changeMsg(antwort);
            // int move = doThink(thinkerBoard);
            // getPrettyMove(move, antwort);
             printf("antwort: %s\n", antwort);

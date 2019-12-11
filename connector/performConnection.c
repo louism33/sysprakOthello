@@ -283,7 +283,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
             /* ----------------------- fertig mit schreiben in struct infoVonServer -------------------------*/
             /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
-            //writeShm(info, connector, thinker);  //ToDo: übergebe connector und thinker zu haveConversationwithServer()
+            writeShm(info, connector, thinker);  //ToDo: übergebe connector und thinker zu haveConversationwithServer()
 
             // step six, read board information and time to move from server.
             // todo, extract timeToMove info
@@ -301,6 +301,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
+
+
+
+
 
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1)
@@ -338,7 +342,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 // moveReceivedFromThinker[2] = '\0';
 
                 // free(moveRet);
-                close(pd[1]);    // Schreibseite schließen
+               /* close(pd[1]);    // Schreibseite schließen
                 char buffer[50]; // Puffer zum speichern von gelesenen Daten
                                  //ssize_t nread;
                                  // for (int i = 1; i < 5; i++)
@@ -366,7 +370,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;
                 playCommandToSend[0] = '\0';
-            }
+            }*/
 
             if ((strncmp("+ WAIT", buff, 6)) == 0)
             {

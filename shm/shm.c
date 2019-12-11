@@ -55,22 +55,23 @@ void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
 strcpy(shmdata->MitspielerAnzahl,(*g).MitspielerAnzahl);
-//  strcpy(shmdata->gameID,(*g).gameID);
-//  strcpy(shmdata->gameKindName,(*g).gameKindName);
-// shmdata->thinker = pa;
-// shmdata->connector = me;
-// strcpy(shmdata->gameName,(*g).gameName);
-// shmdata->majorVersionNr=(*g).majorVersionNr;
-// shmdata->minorVersionNr=(*g).minorVersionNr;
-// shmdata->me->bereit=(*g).me->bereit;
-// strcpy(shmdata->me->mitspielerName,(*g).me->mitspielerName);
-// shmdata->me->mitspielerNummer=(*g).me->mitspielerNummer;
+
+strcpy(shmdata->gameID,(*g).gameID);
+strcpy(shmdata->gameKindName,(*g).gameKindName);
+shmdata->thinker = pa;
+shmdata->connector = me;
+strcpy(shmdata->gameName,(*g).gameName);
+shmdata->majorVersionNr=(*g).majorVersionNr;
+shmdata->minorVersionNr=(*g).minorVersionNr;
+shmdata->me->bereit=(*g).me->bereit;
+strcpy(shmdata->me->mitspielerName,(*g).me->mitspielerName);
+shmdata->me->mitspielerNummer=(*g).me->mitspielerNummer;
 printf("ich habe geschrieben.\n");
 printf("shmdata.MitspielerAnzahl: %s\n",shmdata->MitspielerAnzahl);
-// printf("shmdata.gameID: %s\n",shmdata->gameID);
-// printf("shmdata.gameKindName: %s\n",shmdata->gameKindName);
-// printf("shmdata.thinker: %d\n",shmdata->thinker);
-// printf("shmdata.connector: %d\n",shmdata->connector);
+printf("shmdata.gameID: %s\n",shmdata->gameID);
+printf("shmdata.gameKindName: %s\n",shmdata->gameKindName);
+printf("shmdata.thinker: %d\n",shmdata->thinker);
+printf("shmdata.connector: %d\n",shmdata->connector);
 }
 
 void readShm() {

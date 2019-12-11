@@ -172,9 +172,8 @@ int main(int argc, char *argv[])
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
-            changeMsg(antwort);
-           // int move = doThink(thinkerBoard);
-           // getPrettyMove(move, antwort);
+           // changeMsg(antwort);
+           
             printf("antwort: %s\n", antwort);
             printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
             if (write(pd[1], antwort, strlen(antwort) + 1) < 0)

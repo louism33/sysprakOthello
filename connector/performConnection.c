@@ -323,7 +323,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("sending relevant info to thinker\n");
                 // char *moveRet = malloc(3 * sizeof(char));
-                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
+               // connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
                 //                                          //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
                 // moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
@@ -342,25 +342,25 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 // moveReceivedFromThinker[2] = '\0';
 
                 // free(moveRet);
-               /* close(pd[1]);    // Schreibseite schließen
-                char buffer[50]; // Puffer zum speichern von gelesenen Daten
-                                 //ssize_t nread;
-                                 // for (int i = 1; i < 5; i++)
-                                 // {
-                if (read(pd[0], buffer, sizeof(buffer)) == -1)
-                { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-                    perror("read");
-                    exit(EXIT_FAILURE);
-                }
-                else
-                { //sleep(1);
-                    printf("Connector(Kindeprozess) bekommt Nachricht von pipe: %s,length of buffer:%li\n\n", buffer, strlen(buffer));
-                    //sleep(1);
-                    // }
-                }
-                moveReceivedFromThinker[0] = buffer[0];
-                moveReceivedFromThinker[1] = buffer[1];
-                moveReceivedFromThinker[2] = '\0';
+                // close(pd[1]);    // Schreibseite schließen
+                // char buffer[50]; // Puffer zum speichern von gelesenen Daten
+                //                  //ssize_t nread;
+                //                  // for (int i = 1; i < 5; i++)
+                //                  // {
+                // if (read(pd[0], buffer, sizeof(buffer)) == -1)
+                // { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                //     perror("read");
+                //     exit(EXIT_FAILURE);
+                // }
+                // else
+                // { //sleep(1);
+                //     printf("Connector(Kindeprozess) bekommt Nachricht von pipe: %s,length of buffer:%li\n\n", buffer, strlen(buffer));
+                //     //sleep(1);
+                //     // }
+                // }
+                // moveReceivedFromThinker[0] = buffer[0];
+                // moveReceivedFromThinker[1] = buffer[1];
+                // moveReceivedFromThinker[2] = '\0';
                 //Speilzug senden.
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
@@ -370,7 +370,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;
                 playCommandToSend[0] = '\0';
-            }*/
+            }
 
             if ((strncmp("+ WAIT", buff, 6)) == 0)
             {

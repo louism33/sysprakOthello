@@ -98,8 +98,8 @@ char *lookup_host(const char *host, char *finalAddrstr)
 }
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
-    int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-    BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector,Player *myPlayer,Player *gegener)
+                        int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
+                        BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegener)
 {
 
     printf("Attempting to connect to game server.\n");
@@ -207,7 +207,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     }
 
     performConnectionLouis(sock, gameID, player,
-       configurationStruct->gamekindname, connectorBoard, thinkerBoard, info, thinker, connector,myPlayer,gegener);
+                           configurationStruct->gamekindname, connectorBoard, thinkerBoard, info, thinker, connector, myPlayer, gegener);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -218,7 +218,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     return 0;
 }
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector,Player *myPlayer,Player *gegener)
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegener)
 {
     char *gameID;
     char *player = 0;
@@ -276,16 +276,16 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
             createMockGameServer();
         return 0;
         }
+    
 
-
-        int sleepMicroSeconds = 2000000;
-        printf("sleeping for %d microseconds to give the mock server time to get ready\n",
+    int sleepMicroSeconds = 2000000;
+    printf("sleeping for %d microseconds to give the mock server time to get ready\n",
            sleepMicroSeconds);
-        usleep(sleepMicroSeconds);
+    usleep(sleepMicroSeconds);
     }
-
-connectToGameServer(mockGame, gameID, player, usingCustomConfigFile, configPath, connectorBoard, thinkerBoard, info, thinker, connector,myPlayer,gegener);
+    connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
+                        configPath, connectorBoard, thinkerBoard, info, thinker, connector, myPlayer, gegener);
     //printf("----------------################################connectormasterMethod:%s\n",info.myPlayerName);
-
-return 0;
+    
+    return 0;
 }

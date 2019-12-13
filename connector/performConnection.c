@@ -51,6 +51,8 @@
 #define MAX 240 // todo make better
 #define PLAYER  // todo, still necessary?
 
+bool schreiben = false;
+
 enum Phase
 {
     PROLOG = 0,
@@ -283,8 +285,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
             /* ----------------------- fertig mit schreiben in struct infoVonServer -------------------------*/
             /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
-            writeShm(info, connector, thinker);  //ToDo: übergebe connector und thinker zu haveConversationwithServer()
-
+            
+             
             // step six, read board information and time to move from server.
             // todo, extract timeToMove info
             // todo, extract board size
@@ -301,8 +303,13 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
-
-
+                //writeShm(info, connector, thinker);
+                printf("+++++++++++++++++++++++++++++\n");
+                writeShmEasy("Hello World");
+                writeShm(info,thinker,connector);
+                printf("++++++\n");
+                schreiben = true;
+            
 
 
 

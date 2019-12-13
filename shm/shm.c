@@ -30,7 +30,7 @@ void createShm() {
     }
 }
 
-void attachShm() {
+infoVonServer *attachShm() {
     /* Shared-Memory-Segment
      anbinden */
     shmdata = (infoVonServer *) shmat(shmid, NULL, 0);
@@ -39,7 +39,7 @@ void attachShm() {
         printf("Fehler bei der Anbindung mit shmat(): shmid %d\n", shmid);
     }
     
-    
+    return shmdata;
 }
 
 void deleteShm() {
@@ -50,13 +50,17 @@ void deleteShm() {
     }
 }
 
+void writeShmEasy(char *x){
+    strcpy(shmdata->gameName,x);
+    printf("ich habe geschrieben:%s \n",shmdata->gameName );
+}
 
 void writeShm(infoVonServer *g, pid_t me, pid_t pa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
 strcpy(shmdata->MitspielerAnzahl,(*g).MitspielerAnzahl);
 
-strcpy(shmdata->gameID,(*g).gameID);
+/*strcpy(shmdata->gameID,(*g).gameID);
 strcpy(shmdata->gameKindName,(*g).gameKindName);
 shmdata->thinker = pa;
 shmdata->connector = me;
@@ -65,25 +69,18 @@ shmdata->majorVersionNr=(*g).majorVersionNr;
 shmdata->minorVersionNr=(*g).minorVersionNr;
 shmdata->me->bereit=(*g).me->bereit;
 strcpy(shmdata->me->mitspielerName,(*g).me->mitspielerName);
-shmdata->me->mitspielerNummer=(*g).me->mitspielerNummer;
+shmdata->me->mitspielerNummer=(*g).me->mitspielerNummer;*/
 printf("ich habe geschrieben.\n");
 printf("shmdata.MitspielerAnzahl: %s\n",shmdata->MitspielerAnzahl);
-printf("shmdata.gameID: %s\n",shmdata->gameID);
+/*printf("shmdata.gameID: %s\n",shmdata->gameID);
 printf("shmdata.gameKindName: %s\n",shmdata->gameKindName);
 printf("shmdata.thinker: %d\n",shmdata->thinker);
-printf("shmdata.connector: %d\n",shmdata->connector);
+printf("shmdata.connector: %d\n",shmdata->connector);*/
 }
 
-void readShm() {
+infoVonServer *readShm() {
 
-
-    printf("read\n");
-    printf("Das erste Element im shm ist: %i\n", shmdata->connector);
-    printf("Das zweite Element im shm ist: %s\n", shmdata->gameID);
-    printf("Das dritte Element im shm ist: %s\n", shmdata->gameKindName);
-    printf("Das vierte Element im shm ist: %s\n", shmdata->gameName);
-    printf("Das fuenfte Element im shm ist: %i\n", shmdata->thinker);
-
+    return shmdata;
 }
 
 void waitForChild() {

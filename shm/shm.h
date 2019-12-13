@@ -3,16 +3,20 @@
 
 #include <sys/types.h>
 #include <stdbool.h>
+#include "../thinker/board.h"
+#include "../connector/connector.h"
 
 void createShm();
 
 int createProcesses();
 
-void attachShm();
+infoVonServer *attachShm();
 
 void writeShm();
 
-void readShm();
+void writeShmEasy(char *x);
+
+infoVonServer *readShm();
 
 void deleteShm();
 

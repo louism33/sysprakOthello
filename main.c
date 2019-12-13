@@ -31,12 +31,15 @@
 // if thinker is parent, retry logic may be easier to implement
 // including learning
 bool denken = false;
+infoVonServer *shmInfo; 
 void mysighandler(int sig)
 {
 
     if (sig == SIGUSR1)
     {
         printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n\n");
+        printf("%s\n",shmInfo->gameName);
+        printf("%s\n",shmInfo->MitspielerAnzahl);
         denken = true;
     }
 }
@@ -47,6 +50,7 @@ int main(int argc, char *argv[])
     Player *gegner = malloc(8 * sizeof(Player));
     char *antwort = malloc(256 * sizeof(char));
     infoVonServer *info = malloc(sizeof(infoVonServer));
+    shmInfo =info;
 
     printf("Hello World! I am Alex. This is the main method\n");
     //Test-block
@@ -109,7 +113,7 @@ int main(int argc, char *argv[])
     //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
 //int movetime;
     createShm();
-    attachShm();
+    shmInfo = attachShm();
     createPipe(pd);
     switch (thinker = fork())
     {
@@ -172,9 +176,9 @@ int main(int argc, char *argv[])
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
+
            // changeMsg(antwort);
-           
-            printf("antwort: %s\n", antwort);
+           //printf("antwort: %s\n", antwort);
             printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
             if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
             { // In Schreibseite schreiben

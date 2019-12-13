@@ -60,6 +60,10 @@ enum Phase
     SPIELZUG = 2
 };
 
+BOARD_STRUCT *getAktuellesBoard(BOARD_STRUCT *thinkerBoard) {
+    return thinkerBoard;
+}
+
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
 // todo, be careful of people trolling you by calling game "game over", implement PHASE int/enum
@@ -102,21 +106,23 @@ Nach QUIT beendet der Server die Verbindung
     return 0; // todo, implement
 }
 
-// char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet)
-// {
-//     memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
+/*char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet)
+{
+     memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
+     thinkerBoard->sideToMove = connectorBoard->sideToMove;
 
-//     thinkerBoard->sideToMove = connectorBoard->sideToMove;
 
-//     int move = doThink(thinkerBoard, moveTime);
+     //getAktuellesBoard(thinkerBoard);
 
-//     printf("move is: %d\n", move);
-//     convertMove(move, moveRet);
+     int move = doThink(thinkerBoard, moveTime);
 
-//     printf("converted move is: %s\n", moveRet);
+     printf("move is: %d\n", move);
+     convertMove(move, moveRet);
 
-//     return moveRet;
-// }
+     printf("converted move is: %s\n", moveRet);
+
+     return moveRet;
+ }*/
 
 // todo, handle end state, what do we do once game is over?
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
@@ -124,9 +130,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 {
     //bool killReady=false;
     info->me = myPlayer; //myPlayer ist schon in main definiert.Weist Player Struct myPlayer den InfoVonServer Struct zu.
-    info->me->bereit = true;
+    myPlayer->bereit = true;
     info->connector = connector;
     info->thinker = thinker;
+    info->thinkerBoard = thinkerBoard;
 
     strcpy(info->gameID, gameID);
     strcpy(info->gameKindName, gameKindName);
@@ -228,6 +235,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     ; // todo, possibly stick to only one central read?
                 printf("%s\n", buff);
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
+                strcpy(info->gameName,gameName);
                 printf("-----------save gameName: %s\n", gameName);
                 if (player == NULL || strlen(player) != 1)
                 {
@@ -283,10 +291,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("--------save  MitspielerAnzahl: %s\n", info->MitspielerAnzahl);
                 phase = SPIELVERLAUF;
             }
-            /* ----------------------- fertig mit schreiben in struct infoVonServer -------------------------*/
-            /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
+           
             
-             
+            
             // step six, read board information and time to move from server.
             // todo, extract timeToMove info
             // todo, extract board size
@@ -303,15 +310,19 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
-                //writeShm(info, connector, thinker);
+
+                memcpy(info->thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
+                thinkerBoard->sideToMove = connectorBoard->sideToMove;
+            
                 printf("+++++++++++++++++++++++++++++\n");
                 writeShmEasy("Hello World");
                 writeShm(info,thinker,connector);
                 printf("++++++\n");
                 schreiben = true;
             
-
-
+                 /* ----------------------- fertig mit schreiben des struct infoVonServer und schreiben in SHM ---*/
+                 /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
+            
 
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1)
@@ -327,7 +338,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
-
                 printf("sending relevant info to thinker\n");
                 // char *moveRet = malloc(3 * sizeof(char));
                // connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
@@ -349,25 +359,25 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 // moveReceivedFromThinker[2] = '\0';
 
                 // free(moveRet);
-                // close(pd[1]);    // Schreibseite schließen
-                // char buffer[50]; // Puffer zum speichern von gelesenen Daten
-                //                  //ssize_t nread;
-                //                  // for (int i = 1; i < 5; i++)
-                //                  // {
-                // if (read(pd[0], buffer, sizeof(buffer)) == -1)
-                // { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-                //     perror("read");
-                //     exit(EXIT_FAILURE);
-                // }
-                // else
-                // { //sleep(1);
-                //     printf("Connector(Kindeprozess) bekommt Nachricht von pipe: %s,length of buffer:%li\n\n", buffer, strlen(buffer));
-                //     //sleep(1);
-                //     // }
-                // }
-                // moveReceivedFromThinker[0] = buffer[0];
-                // moveReceivedFromThinker[1] = buffer[1];
-                // moveReceivedFromThinker[2] = '\0';
+                close(pd[1]);    // Schreibseite schließen
+                char buffer[50]; // Puffer zum speichern von gelesenen Daten
+                                  //ssize_t nread;
+                                  // for (int i = 1; i < 5; i++)
+                                  // {
+                 if (read(pd[0], buffer, sizeof(buffer)) == -1)
+                 { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                     perror("read");
+                     exit(EXIT_FAILURE);
+                 }
+                 else
+                { //sleep(1);
+                     printf("Connector(Kindsprozess) bekommt Nachricht von pipe: %s,length of buffer:%li\n\n", buffer, strlen(buffer));
+                 //sleep(1);
+                     // }
+                 }
+                 moveReceivedFromThinker[0] = buffer[0];
+                 moveReceivedFromThinker[1] = buffer[1];
+                 moveReceivedFromThinker[2] = '\0';
                 //Speilzug senden.
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);

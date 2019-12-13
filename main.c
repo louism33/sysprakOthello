@@ -37,20 +37,34 @@ void mysighandler(int sig)
 
     if (sig == SIGUSR1)
     {
+        sleep(1);
         printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n\n");
-        printf("%s\n",shmInfo->gameName);
-        printf("%s\n",shmInfo->MitspielerAnzahl);
+        printf("ich habe geschrieben.\n");
+        printf("shmInfo.MitspielerAnzahl: %s\n",shmInfo->MitspielerAnzahl);
+        printf("shmInfo.gameID: %s\n",shmInfo->gameID);
+        printf("shmInfo.gameKindName: %s\n",shmInfo->gameKindName);
+        printf("shmInfo.thinker: %d\n",shmInfo->thinker);
+        printf("shmInfo.connector: %d\n",shmInfo->connector);
+        printf("shmInfo->majorVersionNr: %d\n", shmInfo->majorVersionNr);
+        printf("shmInfo->gameName: %s\n",shmInfo->gameName);
+        printf("shmInfo->minorVersionNr: %d\n", shmInfo->minorVersionNr);
+        //printf("shmInfo->me->bereit: %d\n",shmInfo->me->bereit);
+        printf("shmInfo->me->mitspielerName: %s\n",shmInfo->me->mitspielerName);
+        //printf("shmInfo->me->mitspielerNummer: %d\n",shmInfo->me->mitspielerNummer);
         denken = true;
+
     }
 }
 
 int main(int argc, char *argv[])
 {
-    Player *myPlayer = malloc(sizeof(Player));
-    Player *gegner = malloc(8 * sizeof(Player));
+    
     char *antwort = malloc(256 * sizeof(char));
     infoVonServer *info = malloc(sizeof(infoVonServer));
+    Player *myPlayer = malloc(sizeof(Player));
+    Player *gegner = malloc(8 * sizeof(Player));
     shmInfo =info;
+    shmInfo->me=myPlayer;
 
     printf("Hello World! I am Alex. This is the main method\n");
     //Test-block
@@ -176,9 +190,10 @@ int main(int argc, char *argv[])
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
-
-           // changeMsg(antwort);
-           //printf("antwort: %s\n", antwort);
+            /*denke jetzt*/
+            MOVE move = doThink(info->thinkerBoard);
+            getPrettyMove(move,antwort);
+            printf("antwort: %s\n", antwort);
             printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
             if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
             { // In Schreibseite schreiben

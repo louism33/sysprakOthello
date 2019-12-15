@@ -133,8 +133,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     gameID[13]='\0'; 
     strcpy(info->gameID, gameID);
     printf("info.gameId %s\n",info->gameID);
-    info->me = myPlayer;
-    info->thinkerBoard=thinkerBoard; //myPlayer ist schon in main definiert.Weist Player Struct myPlayer den InfoVonServer Struct zu.
+    info->me = myPlayer; //myPlayer ist schon in main definiert.Weist Player Struct myPlayer den InfoVonServer Struct zu.
     myPlayer->bereit = true;
     info->connector = connector;
     info->thinker = thinker;
@@ -314,15 +313,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
-                parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
-            
-                printf("+++++++++++++++++++++++++++++\n");
-                printf("++++++\n");
+                parseBoardMessage(connectorBoard, moveTimeAndBoard, buff); //parst das Board vom Server zu unserer Art von Board, welches wir zum denken brauchen
                 schreiben = true;
             
                  /* ----------------------- fertig mit schreiben des struct infoVonServer und schreiben in SHM ---*/
                  /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
-            
+                thinkerBoard->board = connectorBoard->board;
+                thinkerBoard->sideToMove = connectorBoard->sideToMove;
+                printf("thinkerBoard*************************************\n");
+                printBoardLouis(thinkerBoard);
 
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1)
@@ -340,8 +339,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
 
-                memcpy(info->thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt. wenn der server uns ein Board
-                info->thinkerBoard->sideToMove = connectorBoard->sideToMove;
+                //memcpy(info->thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt. wenn der server uns ein Board
+                //info->thinkerBoard->sideToMove = connectorBoard->sideToMove;
                 // char *moveRet = malloc(3 * sizeof(char));
                // connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
                 //                                          //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care

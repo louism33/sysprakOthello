@@ -36,6 +36,8 @@ Player *myPlayer;
 BOARD_STRUCT *thinkerBoard;
 BOARD_STRUCT *connectorBoard;
 void *shmInfo; 
+int move;
+
 void mysighandler(int sig)
 {
 
@@ -55,7 +57,7 @@ void mysighandler(int sig)
         printf("shmInfo->me->bereit: %d\n",myPlayer->bereit);
         printf("shmInfo->me->mitspielerName: %s\n",myPlayer->mitspielerName);
         printf("shmInfo->me->mitspielerNummer: %d\n",myPlayer->mitspielerNummer);
-        //printBoard(thinkerBoard->board);
+        printf("Wir haben ein board\n");
         printBoardLouis(thinkerBoard);
         denken = true;
 
@@ -136,7 +138,7 @@ int main(int argc, char *argv[])
     initialiseBoardStructToStarter(connectorBoard);
 
     thinkerBoard = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToStarter(thinkerBoard);
+    //initialiseBoardStructToStarter(thinkerBoard);
     //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
 //int movetime;
 
@@ -204,10 +206,10 @@ int main(int argc, char *argv[])
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
-            /*denke jetzt*/
-            //MOVE move = doThink(info->thinkerBoard);
-            //getPrettyMove(move,antwort);
-            //printf("antwort: %s\n", antwort);
+            move = doThink(thinkerBoard,3000);
+            printf("Der Erste Zug geht zu %d\n",move);
+            getPrettyMove(move,antwort);
+            printf("antwort: %s\n", antwort);
             printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
             if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
             { // In Schreibseite schreiben

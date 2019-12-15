@@ -33,6 +33,8 @@
 bool denken = false;
 infoVonServer *info;
 Player *myPlayer;
+BOARD_STRUCT *thinkerBoard;
+BOARD_STRUCT *connectorBoard;
 void *shmInfo; 
 void mysighandler(int sig)
 {
@@ -51,8 +53,10 @@ void mysighandler(int sig)
         printf("shmInfo->gameName: %s\n",info->gameName);
         printf("shmInfo->minorVersionNr: %d\n", info->minorVersionNr);
         printf("shmInfo->me->bereit: %d\n",myPlayer->bereit);
-        //printf("shmInfo->me->mitspielerName: %s\n",shmInfo->me->mitspielerName);
-        //printf("shmInfo->me->mitspielerNummer: %d\n",shmInfo->me->mitspielerNummer);*/
+        printf("shmInfo->me->mitspielerName: %s\n",myPlayer->mitspielerName);
+        printf("shmInfo->me->mitspielerNummer: %d\n",myPlayer->mitspielerNummer);
+        //printBoard(thinkerBoard->board);
+        printBoardLouis(thinkerBoard);
         denken = true;
 
     }
@@ -63,7 +67,7 @@ int main(int argc, char *argv[])
     
     char *antwort = malloc(256 * sizeof(char));
     info = malloc(sizeof(infoVonServer));
-    Player *myPlayer = malloc(sizeof(Player));
+    myPlayer = malloc(sizeof(Player));
     Player *gegner = malloc(8 * sizeof(Player));
 
     createShm();
@@ -128,10 +132,10 @@ int main(int argc, char *argv[])
     // we will use two separate boards. One for connector that we will update with info from server
     // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
 
-    BOARD_STRUCT *connectorBoard = malloc(sizeof(BOARD_STRUCT));
+    connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
-    BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
+    thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
     //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
 //int movetime;

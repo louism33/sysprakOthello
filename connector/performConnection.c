@@ -126,14 +126,15 @@ Nach QUIT beendet der Server die Verbindung
 
 // todo, handle end state, what do we do once game is over?
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                               BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegener)
+                               BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegner)
 {
     //bool killReady=false;
     printf("+++++++++++++++++++++++++++%s\n",gameID);
     gameID[13]='\0'; 
     strcpy(info->gameID, gameID);
     printf("info.gameId %s\n",info->gameID);
-    info->me = myPlayer; //myPlayer ist schon in main definiert.Weist Player Struct myPlayer den InfoVonServer Struct zu.
+    info->me = myPlayer;
+    info->thinkerBoard=thinkerBoard; //myPlayer ist schon in main definiert.Weist Player Struct myPlayer den InfoVonServer Struct zu.
     myPlayer->bereit = true;
     info->connector = connector;
     info->thinker = thinker;
@@ -314,9 +315,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
-
-                //memcpy(info->thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
-                //thinkerBoard->sideToMove = connectorBoard->sideToMove;
             
                 printf("+++++++++++++++++++++++++++++\n");
                 printf("++++++\n");
@@ -341,6 +339,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
+
+                memcpy(info->thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt. wenn der server uns ein Board
+                info->thinkerBoard->sideToMove = connectorBoard->sideToMove;
                 // char *moveRet = malloc(3 * sizeof(char));
                // connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
                 //                                          //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
@@ -425,10 +426,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegener)
+                           BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegner)
 {
 
-    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard, info, thinker, connector, myPlayer, gegener);
+    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard, info, thinker, connector, myPlayer, gegner);
     //printf("###############################################################louis:%s\n", info->myPlayerName);
     printf("performConnection %d\n", sock);
 

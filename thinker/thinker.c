@@ -24,9 +24,9 @@
 // 	printf("dothinker move: %d\n", allMoves[0]);
 // 	return allMoves[0]; // todo, implement to return any move (later we make it good) that can legally be played on the board
 // }
-MOVE doThink(BOARD_STRUCT *board)
+MOVE doThink(BOARD_STRUCT *board, int moveTime)
 {
-	//printf("received doThink command from connector, time to move %d\n", moveTime);
+	printf("received doThink command from connector, time to move %d\n", moveTime);
 
 	MOVES allMoves = malloc(64 * sizeof(int));
 	getLegalMovesAllPositions(board->board, switchPlayer(board->sideToMove),

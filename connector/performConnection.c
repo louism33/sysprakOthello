@@ -129,13 +129,17 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                                BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegener)
 {
     //bool killReady=false;
+    printf("+++++++++++++++++++++++++++%s\n",gameID);
+    gameID[13]='\0'; 
+    strcpy(info->gameID, gameID);
+    printf("info.gameId %s\n",info->gameID);
     info->me = myPlayer; //myPlayer ist schon in main definiert.Weist Player Struct myPlayer den InfoVonServer Struct zu.
     myPlayer->bereit = true;
     info->connector = connector;
     info->thinker = thinker;
-    info->thinkerBoard = thinkerBoard;
+    //info->thinkerBoard = thinkerBoard;
 
-    strcpy(info->gameID, gameID);
+   
     strcpy(info->gameKindName, gameKindName);
     char buff[MAX];        // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64];     // example: Game from 2019-11-18 17:42
@@ -311,12 +315,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 phase = SPIELZUG;
                 parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
 
-                memcpy(info->thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
-                thinkerBoard->sideToMove = connectorBoard->sideToMove;
+                //memcpy(info->thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
+                //thinkerBoard->sideToMove = connectorBoard->sideToMove;
             
                 printf("+++++++++++++++++++++++++++++\n");
-                writeShmEasy("Hello World");
-                writeShm(info,thinker,connector);
                 printf("++++++\n");
                 schreiben = true;
             
@@ -388,6 +390,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 phase = SPIELVERLAUF;
                 playCommandToSend[0] = '\0';
             }
+
+            deleteShm();
 
             if ((strncmp("+ WAIT", buff, 6)) == 0)
             {

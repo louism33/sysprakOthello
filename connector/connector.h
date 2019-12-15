@@ -26,7 +26,7 @@ typedef struct infoVonServer
     struct Player* me;
     pid_t thinker;
     pid_t connector;
-    BOARD_STRUCT *thinkerBoard;
+    //BOARD_STRUCT *thinkerBoard;
 } infoVonServer;
 
 

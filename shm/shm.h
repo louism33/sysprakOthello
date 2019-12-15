@@ -10,13 +10,13 @@ void createShm();
 
 int createProcesses();
 
-infoVonServer *attachShm();
+void *attachShm();
 
 void writeShm();
 
 void writeShmEasy(char *x);
 
-infoVonServer *readShm();
+void *readShm();
 
 void deleteShm();
 

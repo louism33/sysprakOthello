@@ -31,7 +31,9 @@
 // if thinker is parent, retry logic may be easier to implement
 // including learning
 bool denken = false;
-infoVonServer *shmInfo; 
+infoVonServer *info;
+Player *myPlayer;
+void *shmInfo; 
 void mysighandler(int sig)
 {
 
@@ -40,17 +42,17 @@ void mysighandler(int sig)
         sleep(1);
         printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n\n");
         printf("ich habe geschrieben.\n");
-        printf("shmInfo.MitspielerAnzahl: %s\n",shmInfo->MitspielerAnzahl);
-        printf("shmInfo.gameID: %s\n",shmInfo->gameID);
-        printf("shmInfo.gameKindName: %s\n",shmInfo->gameKindName);
-        printf("shmInfo.thinker: %d\n",shmInfo->thinker);
-        printf("shmInfo.connector: %d\n",shmInfo->connector);
-        printf("shmInfo->majorVersionNr: %d\n", shmInfo->majorVersionNr);
-        printf("shmInfo->gameName: %s\n",shmInfo->gameName);
-        printf("shmInfo->minorVersionNr: %d\n", shmInfo->minorVersionNr);
-        //printf("shmInfo->me->bereit: %d\n",shmInfo->me->bereit);
-        printf("shmInfo->me->mitspielerName: %s\n",shmInfo->me->mitspielerName);
-        //printf("shmInfo->me->mitspielerNummer: %d\n",shmInfo->me->mitspielerNummer);
+        printf("shmInfo.MitspielerAnzahl: %s\n",info->MitspielerAnzahl);
+        printf("shmInfo.gameID: %s\n",info->gameID);
+        printf("shmInfo.gameKindName: %s\n",info->gameKindName);
+        printf("shmInfo.thinker: %d\n",info->thinker);
+        printf("shmInfo.connector: %d\n",info->connector);
+        printf("shmInfo->majorVersionNr: %d\n", info->majorVersionNr);
+        printf("shmInfo->gameName: %s\n",info->gameName);
+        printf("shmInfo->minorVersionNr: %d\n", info->minorVersionNr);
+        printf("shmInfo->me->bereit: %d\n",myPlayer->bereit);
+        //printf("shmInfo->me->mitspielerName: %s\n",shmInfo->me->mitspielerName);
+        //printf("shmInfo->me->mitspielerNummer: %d\n",shmInfo->me->mitspielerNummer);*/
         denken = true;
 
     }
@@ -60,11 +62,18 @@ int main(int argc, char *argv[])
 {
     
     char *antwort = malloc(256 * sizeof(char));
-    infoVonServer *info = malloc(sizeof(infoVonServer));
+    info = malloc(sizeof(infoVonServer));
     Player *myPlayer = malloc(sizeof(Player));
     Player *gegner = malloc(8 * sizeof(Player));
-    shmInfo =info;
-    shmInfo->me=myPlayer;
+
+    createShm();
+    shmInfo = attachShm();
+    info = shmInfo;
+    myPlayer = shmInfo + sizeof(infoVonServer);
+
+
+    //shmInfo =info;
+    //shmInfo->me=myPlayer;
 
     printf("Hello World! I am Alex. This is the main method\n");
     //Test-block
@@ -126,8 +135,9 @@ int main(int argc, char *argv[])
     initialiseBoardStructToStarter(thinkerBoard);
     //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
 //int movetime;
-    createShm();
-    shmInfo = attachShm();
+
+    thinkerBoard = shmInfo + sizeof(infoVonServer) + sizeof(Player);
+
     createPipe(pd);
     switch (thinker = fork())
     {
@@ -191,9 +201,9 @@ int main(int argc, char *argv[])
             }
             denken = false;
             /*denke jetzt*/
-            MOVE move = doThink(info->thinkerBoard);
-            getPrettyMove(move,antwort);
-            printf("antwort: %s\n", antwort);
+            //MOVE move = doThink(info->thinkerBoard);
+            //getPrettyMove(move,antwort);
+            //printf("antwort: %s\n", antwort);
             printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
             if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
             { // In Schreibseite schreiben

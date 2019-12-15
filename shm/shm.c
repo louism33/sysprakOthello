@@ -16,7 +16,7 @@
 pid_t thinker;
 pid_t connector;
 int shmid;
-infoVonServer *shmdata;
+void *shmdata;
 
 
 
@@ -32,9 +32,9 @@ void createShm() {
     }
 }
 
-infoVonServer *attachShm() {
+void *attachShm() {
     /* Shared-Memory-Segment anbinden */
-    shmdata = (infoVonServer *) shmat(shmid, NULL, 0);
+    shmdata = shmat(shmid, NULL, 0);
     //printf("Die Anfangsadresse vom Shm ist: %d\n", (int)*shmdata);
     if (shmdata == (void *) -1) {
         printf("Fehler bei der Anbindung mit shmat(): shmid %d\n", shmid);
@@ -51,35 +51,17 @@ void deleteShm() {
     }
 }
 
-void writeShmEasy(char *x){
+/*void writeShmEasy(char *x){
     strcpy(shmdata->gameName,x);
     printf("ich habe geschrieben:%s \n",shmdata->gameName );
-}
+}*/
 
 void writeShm(infoVonServer *g, pid_t pidme, pid_t pidpa) {
     /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
 
-//printf("(*g).me->mitspielerName): %s\n",(*g).me->mitspielerName);
-strcpy(shmdata->MitspielerAnzahl,(*g).MitspielerAnzahl);
-strcpy(shmdata->gameID,(*g).gameID);
-strcpy(shmdata->gameKindName,(*g).gameKindName);
-shmdata->thinker = pidpa;
-shmdata->connector = pidme;
-strcpy(shmdata->gameName,(*g).gameName);
-shmdata->majorVersionNr=(*g).majorVersionNr;
-shmdata->minorVersionNr=(*g).minorVersionNr;
-//printf("------------------%s\n",shmdata->me->mitspielerName);
-/*ToDo: funktioniert nicht !*/
-//shmdata->me->bereit=(*g).me->bereit;
-//strcpy(shmdata->me->mitspielerName,g->me->mitspielerName);
-//shmdata->me->mitspielerNummer=g->me->mitspielerNummer;
-//memcpy(shmdata->thinkerBoard->board, g->thinkerBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
-//shmdata->thinkerBoard->sideToMove = g->thinkerBoard->sideToMove;
-//printBoard(shmdata->thinkerBoard->board);
-
 }
 
-infoVonServer *readShm() {
+void *readShm() {
 
     return shmdata;
 }

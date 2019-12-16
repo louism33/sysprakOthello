@@ -293,6 +293,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(info->MitspielerAnzahl, buff + 8, 1);
                 info->MitspielerAnzahl[1] = '\0';
                 printf("--------save  MitspielerAnzahl: %s\n", info->MitspielerAnzahl);
+                
                 phase = SPIELVERLAUF;
             }
            

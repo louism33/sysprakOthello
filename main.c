@@ -33,7 +33,7 @@
 bool denken = false;
 infoVonServer *info;
 Player *myPlayer;
-BOARD_STRUCT *thinkerBoard;
+BOARD_STRUCT *infoBoard;
 BOARD_STRUCT *connectorBoard;
 void *shmInfo; 
 int move;
@@ -46,7 +46,7 @@ void mysighandler(int sig)
         sleep(1);
         printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n\n");
         printf("ich habe geschrieben.\n");
-        printf("shmInfo.MitspielerAnzahl: %s\n",info->MitspielerAnzahl);
+        printf("shmInfo.MitspielerAnzahl: %d\n",info->MitspielerAnzahl);
         printf("shmInfo.gameID: %s\n",info->gameID);
         printf("shmInfo.gameKindName: %s\n",info->gameKindName);
         printf("shmInfo.thinker: %d\n",info->thinker);
@@ -54,11 +54,11 @@ void mysighandler(int sig)
         printf("shmInfo->majorVersionNr: %d\n", info->majorVersionNr);
         printf("shmInfo->gameName: %s\n",info->gameName);
         printf("shmInfo->minorVersionNr: %d\n", info->minorVersionNr);
-        printf("shmInfo->me->bereit: %d\n",myPlayer->bereit);
-        printf("shmInfo->me->mitspielerName: %s\n",myPlayer->mitspielerName);
-        printf("shmInfo->me->mitspielerNummer: %d\n",myPlayer->mitspielerNummer);
+        printf("shmInfo->me->mitspielerNummer: %d\n",info->players[0].mitspielerNummer); // ToDo 0 stimmt nicht in jedem Fall -> überdenke die Schreibweise
+        printf("shmInfo->me->bereit: %d\n",info->players[0].bereit);
+        printf("shmInfo->me->mitspielerName: %s\n",info->players[0].mitspielerName);
         printf("Wir haben ein board\n");
-        printBoardLouis(thinkerBoard);
+        printBoard(info->infoBoard->board);
         denken = true;
 
     }
@@ -68,14 +68,15 @@ int main(int argc, char *argv[])
 {
     
     char *antwort = malloc(256 * sizeof(char));
-    info = malloc(sizeof(infoVonServer));
-    myPlayer = malloc(sizeof(Player));
-    Player *gegner = malloc(8 * sizeof(Player));
+    //info = malloc(sizeof(infoVonServer));
+    //myPlayer = malloc(sizeof(Player));
+    //Player *gegner = malloc(8 * sizeof(Player));
 
     createShm();
     shmInfo = attachShm();
     info = shmInfo;
-    myPlayer = shmInfo + sizeof(infoVonServer);
+    info->players = shmInfo + sizeof(infoVonServer); 
+    //myPlayer = shmInfo + sizeof(infoVonServer);
 
 
     //shmInfo =info;
@@ -137,12 +138,12 @@ int main(int argc, char *argv[])
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
-    thinkerBoard = malloc(sizeof(BOARD_STRUCT));
+    //thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     //initialiseBoardStructToStarter(thinkerBoard);
     //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
-//int movetime;
+    //int movetime;
 
-    thinkerBoard = shmInfo + sizeof(infoVonServer) + sizeof(Player);
+    infoBoard = shmInfo + sizeof(infoVonServer) + sizeof(Player);
 
     createPipe(pd);
     switch (thinker = fork())
@@ -167,7 +168,7 @@ int main(int argc, char *argv[])
         // {
         //     printf("*************Signal1 wird geschickt*************\n");
         // }
-        connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv, info, thinker, connector, myPlayer, gegner);
+        connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector);
         // printf("info: %s\n", info->gameId);
         // close(pd[1]);    // Schreibseite schließen
         // char buffer[50]; // Puffer zum speichern von gelesenen Daten
@@ -207,7 +208,7 @@ int main(int argc, char *argv[])
             }
             denken = false;
             
-            move = doThink(info->thinkerBoard,3000);
+            move = doThinks(info->infoBoard,3000);
             printf("Der Erste Zug geht zu %d\n",move);
             getPrettyMove(move,antwort);
             printf("antwort: %s\n", antwort);
@@ -225,11 +226,9 @@ int main(int argc, char *argv[])
 
     deleteShm();
     freeBoardStruct(connectorBoard);
-    freeBoardStruct(thinkerBoard);
+    //freeBoardStruct(thinkerBoard);
     free(info);
     free(antwort);
-    free(myPlayer);
-    free(gegner);
    // free(movetime);
     return 0;
 }

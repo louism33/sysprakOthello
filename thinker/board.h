@@ -21,6 +21,13 @@ typedef int STACK_INDEX;
 
 typedef int *BOARD;
 
+typedef struct {
+    int breite;
+    int hoehe;
+    BOARD board;
+    SIDE_TO_MOVE currentPlayerId; 
+} boardShm;
+
 typedef struct BOARD_STRUCT {
     // BOARD has our board array, a side to move to determine the current player, and a stack to enable unmakeMove()
     BOARD board;

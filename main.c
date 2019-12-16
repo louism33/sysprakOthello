@@ -206,7 +206,8 @@ int main(int argc, char *argv[])
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
-            move = doThink(thinkerBoard,3000);
+            
+            move = doThink(info->thinkerBoard,3000);
             printf("Der Erste Zug geht zu %d\n",move);
             getPrettyMove(move,antwort);
             printf("antwort: %s\n", antwort);

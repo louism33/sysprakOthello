@@ -60,9 +60,6 @@ enum Phase
     SPIELZUG = 2
 };
 
-BOARD_STRUCT *getAktuellesBoard(BOARD_STRUCT *thinkerBoard) {
-    return thinkerBoard;
-}
 
 //Die Prolog-Phase der Kommunikation
 // todo, reconnect logic
@@ -126,18 +123,15 @@ Nach QUIT beendet der Server die Verbindung
 
 // todo, handle end state, what do we do once game is over?
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                               BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegner)
+                                infoVonServer *info, pid_t thinker, pid_t connector)
 {
     //bool killReady=false;
     printf("+++++++++++++++++++++++++++%s\n",gameID);
     gameID[13]='\0'; 
     strcpy(info->gameID, gameID);
     printf("info.gameId %s\n",info->gameID);
-    info->me = myPlayer; //myPlayer ist schon in main definiert.Weist Player Struct myPlayer den InfoVonServer Struct zu.
-    myPlayer->bereit = true;
     info->connector = connector;
     info->thinker = thinker;
-    //info->thinkerBoard = thinkerBoard;
 
    
     strcpy(info->gameKindName, gameKindName);
@@ -146,6 +140,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char playerNumber[32]; //1
     char myPlayerName[32]; //2
     char opponent[32];
+    char mitspieleranzahl[32];
     int n = 0, readResponse = 0;
 
     char version[] = "VERSION 2.42\n";
@@ -239,6 +234,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     ; // todo, possibly stick to only one central read?
                 printf("%s\n", buff);
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
+                gameName[strlen(buff) - strlen("+ ")]='\0'; 
                 strcpy(info->gameName,gameName);
                 printf("-----------save gameName: %s\n", gameName);
                 if (player == NULL || strlen(player) != 1)
@@ -266,8 +262,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 playerNumber[2] = '\0';
                 printf("--------save  playerNumber: %s\n", playerNumber);
                 // this often gets weird crap
-                info->me->mitspielerNummer = atoi(playerNumber);
-                printf("----save mitspielerNummer:%d\n", info->me->mitspielerNummer);
+                info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber);
+                printf("----save mitspielerNummer:%d\n",info->players[atoi(playerNumber)].mitspielerNummer);
+                info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0')
                 {
@@ -282,21 +279,30 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 myPlayerName[l] = '\0';
                 printf("--------save my playerName: %s\n", myPlayerName);
-                strcpy(info->me->mitspielerName, myPlayerName);
-                printf("---save mitspielerName:%s\n", info->me->mitspielerName);
+                strcpy(info->players[atoi(playerNumber)].mitspielerName, myPlayerName);
+                printf("---save mitspielerName:%s\n",info->players[atoi(playerNumber)].mitspielerName);
             }
 
             // step five, read TOTAL
             if (strncmp("+ TOTAL", buff, 7) == 0)
             {
+                strncpy(mitspieleranzahl,buff+8,1);
+                mitspieleranzahl[1] = '\0';
                 //printf("  Received TOTAL info from server, buff is:%s", buff);
+<<<<<<< HEAD
                 strncpy(info->MitspielerAnzahl, buff + 8, 1);
                 info->MitspielerAnzahl[1] = '\0';
                 printf("--------save  MitspielerAnzahl: %s\n", info->MitspielerAnzahl);
                 
+=======
+                info->MitspielerAnzahl = atoi(mitspieleranzahl);
+                printf("--------save  MitspielerAnzahl: %d\n", info->MitspielerAnzahl);
+>>>>>>> b825a458be603cb3bb88ca27aa6b522540c4b134
                 phase = SPIELVERLAUF;
             }
            
+                info->infoBoard =(boardShm*) &(info->players[info->MitspielerAnzahl]); //ToDo
+            //info->infoBoard = info + sizeof(infoVonServer) + sizeof(Players);
             
             
             // step six, read board information and time to move from server.
@@ -322,10 +328,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                  /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
                 //memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); //wenn Server eine Board von uns schickt.
                 //thinkerBoard->sideToMove = connectorBoard->sideToMove;
-                *thinkerBoard=*connectorBoard;
-                info->thinkerBoard = thinkerBoard;
-                printf("thinkerBoard*************************************\n");
-                printBoardLouis(thinkerBoard);
+                //*thinkerBoard=*connectorBoard;
+                info->infoBoard->board = connectorBoard->board;
+
 
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1)
@@ -340,6 +345,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
+                printBoard(info->infoBoard->board);
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
 
@@ -426,10 +432,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           BOARD_STRUCT *thinkerBoard, infoVonServer *info, pid_t thinker, pid_t connector, Player *myPlayer, Player *gegner)
+                            infoVonServer *info, pid_t thinker, pid_t connector)
 {
 
-    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard, info, thinker, connector, myPlayer, gegner);
+    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard,info, thinker, connector);
     //printf("###############################################################louis:%s\n", info->myPlayerName);
     printf("performConnection %d\n", sock);
 

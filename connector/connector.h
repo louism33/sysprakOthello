@@ -22,16 +22,17 @@ typedef struct infoVonServer
     char gameKindName[32];
     int majorVersionNr;
     int minorVersionNr;
-    char MitspielerAnzahl[5];
+    int MitspielerAnzahl;
     struct Player* me;
+    Player *players;
     pid_t thinker;
     pid_t connector;
-    struct BOARD_STRUCT *thinkerBoard;
+    boardShm *infoBoard;
 } infoVonServer;
 
 
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector,Player *myPlayer,Player *gegener);
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector);
 
 void performConnection();
 

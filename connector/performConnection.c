@@ -116,10 +116,12 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 }
 
 // todo, handle end state, what do we do once game is over? -> print something generic
-void haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
+int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                 BOARD_STRUCT *connectorBoard,
                                 BOARD_STRUCT *thinkerBoard) {
-    char buff[MAX];    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char buff[MAX];
+    bzero(buff, MAX);
     char gameName[64]; // example: Game from 2019-11-18 17:42
     char playerNumber[32];
     char myPlayerName[32];
@@ -154,7 +156,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
 
     if (!gameKindName) {
         printf("game kind name not provided, exiting");
-        exit(1);
+        return 1;
     }
 
     for (;;) {
@@ -190,6 +192,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
             // step two, send game ID
             if ((strncmp("+ Client version accepted", buff, 25)) == 0) {
                 writeToServer(sockfd, gameIdToSend);
+                break; // todo, just testing stuff
             }
 
             // step three, read PLAYING, wait for another read, then send PLAYER info
@@ -300,6 +303,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
 
             if ((strncmp("+ WAIT", buff, 6)) == 0) {
                 writeToServer(sockfd, okWait);
+
             }
 
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
@@ -329,7 +333,7 @@ void haveConversationWithServer(int sockfd, char *gameID, char *player, char *ga
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
                            BOARD_STRUCT *thinkerBoard) {
 
-    haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard);
+    int conversation = haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard);
 
     printf("performConnection %d\n", sock);
 

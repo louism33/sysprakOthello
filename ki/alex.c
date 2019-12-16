@@ -58,7 +58,7 @@ typedef struct Context {
 } Context;
 
 
-typedef struct Contexts {
+typedef struct Contexts { // todo, consider putting MOVES[] into here to avoid so much allocing
     Context **contexts;
     int totalThreads;
 } Contexts;

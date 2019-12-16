@@ -59,10 +59,11 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     struct sockaddr_in server;
     server.sin_family = PF_INET;
 
-    char  addrstr[100];
+    char addrstr[100];
+    bzero(addrstr, 100);
     void *ptr;
 
-    int sock = 0, errcode;
+    int sock = 0, errcode, connectionStatus = 0;
 
     if (usingCustomConfigFile) {
         printf("Using custom configuration file: %s\n", filePath);
@@ -79,7 +80,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
 
     errcode = getaddrinfo(configStruct->hostname, NULL, &hints, &res);
 
-    while (errcode != 0 && res) {
+    while (res) {
         switch (res->ai_family) {
             case AF_INET:
                 ptr = &((struct sockaddr_in *) res->ai_addr)->sin_addr;
@@ -103,36 +104,26 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         printf("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
                addrstr, res->ai_canonname);
 
-        if (res->ai_family != PF_INET6) {
-            if (strlen(addrstr) == 0) {
-                printf("ERROR, no host found\n");
+        if (strlen(addrstr) == 0) {
+            printf("ERROR, no host found\n");
+            close(sock);
+            break;
+        }
 
-                freeaddrinfo(res);
-                free(configStruct->gamekindname);
-                free(configStruct->hostname);
-                free(configStruct);
-                return 1;
-            }
+        printf("Attempting to connect to host %s on port %d\n", addrstr,
+               configStruct->portnumber);
+        server.sin_addr.s_addr = inet_addr(addrstr);
 
-            printf("Attempting to connect to host %s on port %d\n", addrstr,
-                   configStruct->portnumber);
-            server.sin_addr.s_addr = inet_addr(addrstr);
+        server.sin_port = htons(PORTNUMBER);
 
-            server.sin_port = htons(PORTNUMBER);
-
-            // connect the client socket to the server socket
-            if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
-                printf("connection with the server failed... error is %s\n",
-                       strerror(errno));
-                continue;
-            } else {
-                printf("success!!!! connected to the server..\n");
-            }
-
-//            performConnectionLouis(sock, gameID, player,
-//                                   configStruct->gamekindname, connectorBoard, thinkerBoard);
-
-
+        // connect the client socket to the server socket
+        if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
+            printf("connection with the server failed... error is %s\n",
+                   strerror(errno));
+        } else {
+            printf("success!!!! connected to the server..\n");
+            connectionStatus = performConnectionLouis(sock, gameID, player,
+                                                      configStruct->gamekindname, connectorBoard, thinkerBoard);
             break;
         }
 
@@ -140,17 +131,13 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
         res = res->ai_next;
     }
 
-
-    close(sock);
-
     freeaddrinfo(res);
 
     free(configStruct->gamekindname);
     free(configStruct->hostname);
     free(configStruct);
 
-    printf("i guess we are done\n");
-    return 0;
+    return connectionStatus;
 }
 
 int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
@@ -187,13 +174,13 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     if (!gameID || strlen(gameID) < 13) {
         perror("Das Game-ID ist kleiner als 13-stellige.\n");
         gameID = NULL;
-        exit(1);
+        return 1;
     }
 
     if (strlen(gameID) > 13) {
         perror("Das Game-ID ist grosser als 13-stellige.\n");
         gameID = NULL;
-        exit(0);
+        return 1;
     }
     // todo, what if player is blank?
 
@@ -211,17 +198,13 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
         usleep(sleepMicroSeconds);
     }
 
+    int con = connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
+                                  configPath, connectorBoard, thinkerBoard);
 
-//    int doConnectResult = doConnect(0, NULL, mockGame, gameID, player,
-//                                    usingCustomConfigFile, configPath, connectorBoard,
-//                                    thinkerBoard);
-
-    connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-                        configPath, connectorBoard, thinkerBoard);
-//
-    return 0;
-}
-
-void performConnection() {
-
+    if (con) {
+        fprintf(stderr, "Error during connection with server\n");
+    } else {
+        printf("Connection with server appears to have gone well\n");
+    }
+    return con;
 }

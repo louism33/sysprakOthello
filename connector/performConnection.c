@@ -47,7 +47,6 @@
 #include "../thinker/thinker.h"
 
 #define MAX 240 // todo make better
-#define PLAYER // todo, still necessary?
 
 enum Phase {
     PROLOG = 0,
@@ -96,6 +95,10 @@ Nach QUIT beendet der Server die Verbindung
 }
 
 char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet) {
+    if (moveTime <= 0) {
+        fprintf(stderr, "A move time below or equal to zero? Bist du verrückt??? '%d'\n", moveTime);
+        return NULL;
+    }
     memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
 
     thinkerBoard->sideToMove = connectorBoard->sideToMove;
@@ -105,7 +108,8 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
     printf("move is: %d\n", move);
 
     if (move == getPassMove()) {
-        exit(1);
+        printf("NO LEGAL MOVES FROM THIS BOARD");
+        return NULL;
     }
 
     convertMove(move, moveRet);
@@ -117,21 +121,23 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 
 // todo, handle end state, what do we do once game is over? -> print something generic
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
-                                BOARD_STRUCT *connectorBoard,
-                                BOARD_STRUCT *thinkerBoard) {
+                               BOARD_STRUCT *connectorBoard,
+                               BOARD_STRUCT *thinkerBoard) {
+
+    int endstate = 0;
     // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-    char buff[MAX];
-    bzero(buff, MAX);
-    char gameName[64]; // example: Game from 2019-11-18 17:42
-    char playerNumber[32];
-    char myPlayerName[32];
-    char opponent[32];
+    char buff[MAX] = {0};
+    char gameName[64] = {0}; // example: Game from 2019-11-18 17:42
+    char playerNumber[32] = {0};
+
+    char myPlayerName[32] = {0};
+    char opponent[32] = {0};
     int n = 0, readResponse = 0;
 
     char version[] = "VERSION 2.42\n"; // todo, dont just send this , make sure to parse VERSION2.xx from server then sent somthing
     char okWait[] = "OKWAIT\n";
 
-    char gameIdToSend[20];
+    char gameIdToSend[20] = {0};
     strcpy(gameIdToSend, "ID ");
     strcat(gameIdToSend, gameID);
     strcat(gameIdToSend, "\n");
@@ -141,47 +147,53 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char thinking[] = "THINKING\n";
     char playf5[] = "PLAY D6\n";
     int lengthOfPlayCommandToSendToKeep = 5;
-    char moveReceivedFromThinker[3];
+    char moveReceivedFromThinker[3] = {0};
     char *moveReceivedFromThinkerTEMP;
-    char gameKindNameFromServer[32];
-    char playCommandToSend[10];
+    char gameKindNameFromServer[32] = {0};
+    char playCommandToSend[10] = {0};
 
     SIDE_TO_MOVE sideToMove;
 
     enum Phase phase = PROLOG; // this can be used to make sure we do not get confused about what stage of the game we are in
 
-    moveTimeAndBoard *moveTimeAndBoard = malloc(sizeof(moveTimeAndBoard));
+    moveTimeAndBoard *mTB = malloc(sizeof(moveTimeAndBoard));
 
-    // todo, + ENDPLAYERS
+    mTB->movetime = 0;
+    mTB->board = NULL;
 
     if (!gameKindName) {
         printf("game kind name not provided, exiting");
-        return 1;
+        endstate = 1;
     }
 
-    for (;;) {
+    for (; endstate == 0;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("--->%s\n", buff);
 
-            // todo for louis, error handling
-
             if ((strncmp("- ", buff, 2)) == 0) {
+                fprintf(stderr, "Unknown Server error response! '%s'\n", buff);
+                endstate = 1;
                 break;
             }
 
-//            // ERROR HANDLING
-//            if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
-            // switch on phase?
-////                writeToServer(sockfd, version);
-//            }
-//
-//            if ((strncmp("- Internal error. Sorry & Bye", buff, 29)) == 0) {
-            // switch on phase?
-////                writeToServer(sockfd, version);
-//            }
-//
+            if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
+                fprintf(stderr, "We were too slow! '%s'\n", buff);
+                endstate = 1;
+                break;
+            }
+
+            if ((strncmp("- Internal error. Sorry & Bye", buff, 29)) == 0) {
+                fprintf(stderr, "Server screwed up (well, probably we did, but now we can blame the server)'%s'\n",
+                        buff);
+                endstate = 1;
+                break;
+            }
+
             if ((strncmp("- No free player", buff, 16)) == 0) {
-                printf("Could not connect to game, the player is already taken, or there are no free players.\n");
+                fprintf(stderr,
+                        "Could not connect to game, the player is already taken, or there are no free players.\n");
+                endstate = 1;
+                break;
             }
 
             // step one, send VERSION 2.xxx
@@ -192,7 +204,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // step two, send game ID
             if ((strncmp("+ Client version accepted", buff, 25)) == 0) {
                 writeToServer(sockfd, gameIdToSend);
-                break; // todo, just testing stuff
             }
 
             // step three, read PLAYING, wait for another read, then send PLAYER info
@@ -202,7 +213,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     printf("##### We play reversi now.#####\n");
                 } else {
                     printf("##### We don't play reversi now.#####\n");
-                    exit(1);
+                    endstate = 1;
+                    break;
                 }
 
                 bzero(buff, sizeof(buff));
@@ -215,7 +227,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
-
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
                     printf("### -------------> connecting with player string:'%s'\n", playerToSend);
@@ -226,8 +237,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // step four, read YOU
             if (strncmp("+ YOU", buff, 5) == 0) {
                 // todo, save information from Server here
-                //finished
-
                 printf("  Received YOU info from server, buff is:%s", buff);
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
@@ -264,7 +273,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
-                parseBoardMessage(connectorBoard, moveTimeAndBoard, buff);
+                parseBoardMessage(connectorBoard, mTB, buff);
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");
@@ -274,17 +283,21 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
 //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
+                mTB->movetime = 3000; // todo get from server
 
                 moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
-                                                                 moveTimeAndBoard->movetime, moveRet);
-                printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);
+                                                                 mTB->movetime, moveRet);
 
-                printf("%s   %d\n", moveRet, (int) strlen(moveRet));
-                if (strlen(moveRet) != 2) {
+                if (moveReceivedFromThinkerTEMP == NULL || strlen(moveRet) != 2) {
                     fprintf(stderr, "move of incorrect length received from thinker: %s\n",
                             moveRet);
-                    exit(1); // todo in future we want to implement retry logic etc to avoid crashing on a single error
+                    endstate = 1;
+                    break;
                 }
+
+                printf("received from thinker: %s\n", moveReceivedFromThinkerTEMP);
+                printf("%s   %d\n", moveRet, (int) strlen(moveRet));
+
                 moveReceivedFromThinker[0] = moveRet[0];
                 moveReceivedFromThinker[1] = moveRet[1];
                 moveReceivedFromThinker[2] = '\0';
@@ -299,43 +312,39 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;
                 playCommandToSend[0] = '\0';
+
+                break;
             }
 
             if ((strncmp("+ WAIT", buff, 6)) == 0) {
                 writeToServer(sockfd, okWait);
-
+//                break;
             }
 
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
                 phase = PROLOG;
                 dealWithGameOverCommand(buff);
                 //                writeToServer(sockfd, okWait);
-            }
-
-            if ((strncmp("+ ENDFIELD", buff, 10)) ==
-                0) { // todo, is this necessary? I don't think this is ever called
-                printf("endfield received, possibly something is wrong!!!\n");
-
-                writeToServer(sockfd, thinking);
+                endstate = 0;
+                break;
             }
 
             if (readResponse == -1) {
                 printf("Could not read from server");
-                exit(0);
+                endstate = 1;
+                break;
             }
             bzero(buff, sizeof(buff));
         }
     }
 
-    free(moveTimeAndBoard);
+    free(mTB);
+
+    return endstate;
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
                            BOARD_STRUCT *thinkerBoard) {
 
-    int conversation = haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard);
-
-    printf("performConnection %d\n", sock);
-
-    return 0;
+    return haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, thinkerBoard);
 }

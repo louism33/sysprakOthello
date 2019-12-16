@@ -69,33 +69,11 @@
 + ENDFIELD
  */
 
-// todo this class is bad at memory
 
 int messageParserReady = 0;
 int couldNotParseRegex = 1;
 
 char sourceCopy[64]; // larger than needed
-char *regexString = "\\+ MOVE ([0-9]+)";
-size_t maxGroups = 2;
-regex_t regexCompiled;
-// todo remove this stupid regex crap
-void setupMessageParser() { // we do this to avoid wasting memory and compute on regex patterns
-    if (messageParserReady) {
-        printf("message parser already set up\n");
-        return;
-    }
-
-    printf("Setting up message parser for first time\n");
-
-    couldNotParseRegex = regcomp(&regexCompiled, regexString, REG_EXTENDED);
-
-    messageParserReady = 1;
-}
-
-void tearDownMessageParser() {
-    regfree(&regexCompiled);
-}
-
 
 void printBoardLouis(BOARD_STRUCT  *board) {
     printBoardLouisSide(board, 0);
@@ -114,7 +92,6 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
             printf("B ");
         } else {
             printf(". ");
-//            printf("%d ", board[i]);
         }
     }
     printf("\n");
@@ -131,20 +108,8 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
     printf("-----------\n");
 }
 
-void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
+int parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
     int *boardBoard = board->board;
-    // setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
-    // regmatch_t groupArray[maxGroups];
-
-    // if (couldNotParseRegex) {
-    //     printf("Could not compile regular expression.\n");
-    //     moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
-    // } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
-    //     strcpy(sourceCopy, message);
-    //     sourceCopy[groupArray[1].rm_eo] = 0;
-    //     char *found = sourceCopy + groupArray[1].rm_so;
-    //     moveTimeAndBoard->movetime = atoi(found);
-    // }
 
     char c;
     int boardIndex = 0;
@@ -168,6 +133,6 @@ void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard,
         }
     }
 
-    // clear up movetime and board
     moveTimeAndBoard->board = boardBoard; // todo, decide if board should be from argument or from here
+    return 0;
 }

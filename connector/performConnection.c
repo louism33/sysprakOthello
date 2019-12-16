@@ -273,7 +273,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
-                parseBoardMessage(connectorBoard, mTB, buff);
+                int parse = parseBoardMessage(connectorBoard, mTB, buff);
+                if (parse) {
+                    fprintf(stderr, "Problem parsing board message\n");
+                }
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
                 printf("finished parse board\n");

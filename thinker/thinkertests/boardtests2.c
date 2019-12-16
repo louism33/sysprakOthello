@@ -8,7 +8,8 @@
 #include "boardtests2.h"
 #include "../thinker.h"
 
-int testRemoveDuplicatesNoDuplicates() {
+int testRemoveDuplicatesNoDuplicates()
+{
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
 
@@ -20,15 +21,20 @@ int testRemoveDuplicatesNoDuplicates() {
 
     removeDuplicates(moves, index);
 
-    for (int i = 0;; i++) {
-        if (moves[i] == getLastMove()) {
+    for (int i = 0;; i++)
+    {
+        if (moves[i] == getLastMove())
+        {
             break;
         }
-        for (int j = i + 1;; j++) {
-            if (moves[j] == getLastMove()) {
+        for (int j = i + 1;; j++)
+        {
+            if (moves[j] == getLastMove())
+            {
                 break;
             }
-            if (moves[i] == moves[j]) {
+            if (moves[i] == moves[j])
+            {
                 fprintf(stderr, "FAILED A BOARD TEST! Found duplicate move\n");
                 free(moves);
                 exit(1);
@@ -40,8 +46,8 @@ int testRemoveDuplicatesNoDuplicates() {
     return 0; // success
 }
 
-
-int testRemoveDuplicatesAllDuplicates() {
+int testRemoveDuplicatesAllDuplicates()
+{
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
 
@@ -53,15 +59,20 @@ int testRemoveDuplicatesAllDuplicates() {
 
     removeDuplicates(moves, index);
 
-    for (int i = 0;; i++) {
-        if (moves[i] == getLastMove()) {
+    for (int i = 0;; i++)
+    {
+        if (moves[i] == getLastMove())
+        {
             break;
         }
-        for (int j = i + 1;; j++) {
-            if (moves[j] == getLastMove()) {
+        for (int j = i + 1;; j++)
+        {
+            if (moves[j] == getLastMove())
+            {
                 break;
             }
-            if (moves[i] == moves[j]) {
+            if (moves[i] == moves[j])
+            {
                 fprintf(stderr, "FAILED A BOARD TEST! Found duplicate move\n");
                 free(moves);
                 exit(1);
@@ -74,8 +85,8 @@ int testRemoveDuplicatesAllDuplicates() {
     return 0; // success
 }
 
-
-int testRemoveDuplicatesManyDuplicates() {
+int testRemoveDuplicatesManyDuplicates()
+{
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
 
@@ -91,15 +102,20 @@ int testRemoveDuplicatesManyDuplicates() {
 
     removeDuplicates(moves, index);
 
-    for (int i = 0;; i++) {
-        if (moves[i] == getLastMove()) {
+    for (int i = 0;; i++)
+    {
+        if (moves[i] == getLastMove())
+        {
             break;
         }
-        for (int j = i + 1;; j++) {
-            if (moves[j] == getLastMove()) {
+        for (int j = i + 1;; j++)
+        {
+            if (moves[j] == getLastMove())
+            {
                 break;
             }
-            if (moves[i] == moves[j]) {
+            if (moves[i] == moves[j])
+            {
                 fprintf(stderr, "FAILED A BOARD TEST! Found duplicate move\n");
                 free(moves);
                 exit(1);
@@ -112,8 +128,8 @@ int testRemoveDuplicatesManyDuplicates() {
     return 0; // success
 }
 
-
-int testRemoveDuplicatesManyDuplicates2() {
+int testRemoveDuplicatesManyDuplicates2()
+{
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
 
@@ -137,15 +153,20 @@ int testRemoveDuplicatesManyDuplicates2() {
 
     removeDuplicates(moves, index);
 
-    for (int i = 0;; i++) {
-        if (moves[i] == getLastMove()) {
+    for (int i = 0;; i++)
+    {
+        if (moves[i] == getLastMove())
+        {
             break;
         }
-        for (int j = i + 1;; j++) {
-            if (moves[j] == getLastMove()) {
+        for (int j = i + 1;; j++)
+        {
+            if (moves[j] == getLastMove())
+            {
                 break;
             }
-            if (moves[i] == moves[j]) {
+            if (moves[i] == moves[j])
+            {
                 fprintf(stderr, "FAILED A BOARD TEST! Found duplicate move\n");
                 free(moves);
                 exit(1);
@@ -157,10 +178,10 @@ int testRemoveDuplicatesManyDuplicates2() {
 
     return 0; // success
 }
-
 
 // tests to make sure our method does not delete moves
-int testRemoveDuplicatesLostMove() {
+int testRemoveDuplicatesLostMove()
+{
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
     MOVES movesTest = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
@@ -174,23 +195,29 @@ int testRemoveDuplicatesLostMove() {
 
     removeDuplicates(moves, index);
 
-    for (int i = 0;; i++) {
-        if (movesTest[i] == getLastMove()) {
+    for (int i = 0;; i++)
+    {
+        if (movesTest[i] == getLastMove())
+        {
             break;
         }
 
         int fail = 1;
-        for (int j = 0;; j++) {
-            if (moves[j] == getLastMove()) {
+        for (int j = 0;; j++)
+        {
+            if (moves[j] == getLastMove())
+            {
                 break;
             }
             // we have found our move, no need to fail
-            if (movesTest[i] == moves[j]) {
+            if (movesTest[i] == moves[j])
+            {
                 fail = 0;
             }
         }
 
-        if(fail) {
+        if (fail)
+        {
             fprintf(stderr, "FAILED A BOARD TEST! findDuplicates deleted a move!!!\n");
             free(moves);
             free(movesTest);
@@ -204,10 +231,9 @@ int testRemoveDuplicatesLostMove() {
     return 0; // success
 }
 
-
-
 // tests to make sure our method does not delete moves
-int testRemoveDuplicatesLostMove2() {
+int testRemoveDuplicatesLostMove2()
+{
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
     MOVES movesTest = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
@@ -226,23 +252,29 @@ int testRemoveDuplicatesLostMove2() {
 
     removeDuplicates(moves, index);
 
-    for (int i = 0;; i++) {
-        if (movesTest[i] == getLastMove()) {
+    for (int i = 0;; i++)
+    {
+        if (movesTest[i] == getLastMove())
+        {
             break;
         }
 
         int fail = 1;
-        for (int j = 0;; j++) {
-            if (moves[j] == getLastMove()) {
+        for (int j = 0;; j++)
+        {
+            if (moves[j] == getLastMove())
+            {
                 break;
             }
             // we have found our move, no need to fail
-            if (movesTest[i] == moves[j]) {
+            if (movesTest[i] == moves[j])
+            {
                 fail = 0;
             }
         }
 
-        if(fail) {
+        if (fail)
+        {
             fprintf(stderr, "FAILED A BOARD TEST! findDuplicates deleted a move!!!\n");
             free(moves);
             free(movesTest);
@@ -256,9 +288,9 @@ int testRemoveDuplicatesLostMove2() {
     return 0; // success
 }
 
-
 // tests to make sure our method does not delete moves
-int testRemoveDuplicatesLostMove3() {
+int testRemoveDuplicatesLostMove3()
+{
     MOVES moves = malloc(getStandardBoardSize() * sizeof(int));
     MOVES movesTest = malloc(getStandardBoardSize() * sizeof(int));
     int index = 0;
@@ -287,23 +319,29 @@ int testRemoveDuplicatesLostMove3() {
 
     removeDuplicates(moves, index);
 
-    for (int i = 0;; i++) {
-        if (movesTest[i] == getLastMove()) {
+    for (int i = 0;; i++)
+    {
+        if (movesTest[i] == getLastMove())
+        {
             break;
         }
 
         int fail = 1;
-        for (int j = 0;; j++) {
-            if (moves[j] == getLastMove()) {
+        for (int j = 0;; j++)
+        {
+            if (moves[j] == getLastMove())
+            {
                 break;
             }
             // we have found our move, no need to fail
-            if (movesTest[i] == moves[j]) {
+            if (movesTest[i] == moves[j])
+            {
                 fail = 0;
             }
         }
 
-        if(fail) {
+        if (fail)
+        {
             fprintf(stderr, "FAILED A BOARD TEST! findDuplicates deleted a move!!!\n");
             free(moves);
             free(movesTest);
@@ -317,8 +355,8 @@ int testRemoveDuplicatesLostMove3() {
     return 0; // success
 }
 
-
-int basicTests2() {
+int basicTests2()
+{
     testRemoveDuplicatesNoDuplicates();
     testRemoveDuplicatesAllDuplicates();
     testRemoveDuplicatesManyDuplicates();
@@ -327,10 +365,11 @@ int basicTests2() {
     testRemoveDuplicatesLostMove();
     testRemoveDuplicatesLostMove2();
     testRemoveDuplicatesLostMove3();
-
+   // dothinktest();
     return 0; // success
 }
 
-int fullTestSuiteBoard2() {
+int fullTestSuiteBoard2()
+{
     return basicTests2();
 }

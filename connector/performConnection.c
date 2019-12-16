@@ -294,7 +294,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 phase = SPIELVERLAUF;
             }
            
-                info->infoBoard =(boardShm*) &(info->players[info->MitspielerAnzahl]); //ToDo
+                info->infoBoard =(BOARD_STRUCT*) &(info->players[info->MitspielerAnzahl]); //ToDo
             //info->infoBoard = info + sizeof(infoVonServer) + sizeof(Players);
             
             

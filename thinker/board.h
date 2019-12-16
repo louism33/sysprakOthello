@@ -22,8 +22,6 @@ typedef int STACK_INDEX;
 typedef int *BOARD;
 
 typedef struct boardShm {
-    int breite;
-    int hoehe;
     BOARD board;
     SIDE_TO_MOVE currentPlayerId; 
 } boardShm;
@@ -58,6 +56,8 @@ void printBoard(BOARD board);
 
 void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct);
 
+void initialiseBoardStructToStarter2(boardShm *boardStruct);
+
 void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct);
 
 void initialiseBoardStructToZeroCustom(BOARD_STRUCT *boardStruct, int rows, int columns);
@@ -66,6 +66,7 @@ void resetBoardToStarter(BOARD board); // todo do we want to export this one?
 void resetBoardToZero(BOARD board); // todo do we want to export this one?
 
 void freeBoardStruct(BOARD_STRUCT *boardStruct);
+void freeBoardShm(boardShm *boardStruct);
 
 int removeDuplicates(MOVES speicher, int index);
 

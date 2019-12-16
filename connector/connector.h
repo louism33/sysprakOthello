@@ -27,9 +27,9 @@ typedef struct infoVonServer
     Player *players;
     pid_t thinker;
     pid_t connector;
-    boardShm *infoBoard;
+    //boardShm *infoBoard;
+    BOARD_STRUCT *infoBoard;
 } infoVonServer;
-
 
 
 int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector);

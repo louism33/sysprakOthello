@@ -150,6 +150,11 @@ void freeBoardStruct(BOARD_STRUCT *boardStruct) {
     free(boardStruct);
 }
 
+void freeBoardShm(boardShm *boardStruct) {
+    free(boardStruct->board);
+    free(boardStruct);
+}
+
 void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct, int boardSize) {
     boardStruct->board = malloc(boardSize * sizeof(int)); //todo careful of magic numbers!
     boardStruct->stack = malloc(boardSize * sizeof(STACK_OBJECT)); //todo careful of magic numbers!
@@ -159,8 +164,17 @@ void initialiseBoardStructMemory(BOARD_STRUCT *boardStruct, int boardSize) {
     boardStruct->stackIndexObject = 0;
 }
 
+
 void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct) {
     initialiseBoardStructMemory(boardStruct, getStandardBoardSize());
+    setBoardToStandardSize();
+    resetBoardToStarter(boardStruct->board);
+}
+void initialiseBoardStructToStarter2(boardShm *boardStruct) {
+    //initialiseBoardStructMemory(boardStruct, getStandardBoardSize());
+    //boardStruct->breite=8;
+    //boardStruct->hoehe=8;
+    boardStruct->currentPlayerId=0;
     setBoardToStandardSize();
     resetBoardToStarter(boardStruct->board);
 }

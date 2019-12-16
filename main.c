@@ -24,10 +24,11 @@
 #include "thinker/thinkertests/makemovetests.h"
 #include "thinker/thinkertests/perft.h"
 #include "thinker/thinkertests/biggerboardtest.h"
+#include "main.h"
 #include "shm/shm.h"
 #include "pipe/pipe.h"
-#include "main.h"
 #include <stdbool.h>
+#include "thinker/thinkertests/dothinktest.h"
 // if thinker is parent, retry logic may be easier to implement
 // including learning
 bool denken = false;
@@ -121,6 +122,9 @@ int main(int argc, char *argv[])
 
         printf("Running perft Suite\n");
         fail += perftSuite();
+        
+        // printf("Runnning dothinktest.\n");
+        // fail +=denkentest();
 
         if (fail)
         { // fail/=0 dann läuft if Bedingung
@@ -208,7 +212,8 @@ int main(int argc, char *argv[])
             }
             denken = false;
             
-            move = doThinks(info->infoBoard,3000);
+            move = doThink(info->infoBoard,3000);
+            //move = doThinks(info->infoBoard,3000);
             printf("Der Erste Zug geht zu %d\n",move);
             getPrettyMove(move,antwort);
             printf("antwort: %s\n", antwort);

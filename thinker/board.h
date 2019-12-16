@@ -21,7 +21,7 @@ typedef int STACK_INDEX;
 
 typedef int *BOARD;
 
-typedef struct {
+typedef struct boardShm {
     int breite;
     int hoehe;
     BOARD board;

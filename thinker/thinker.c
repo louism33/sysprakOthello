@@ -26,6 +26,8 @@
 // }
 MOVE doThink(BOARD_STRUCT *board, int moveTime)
 {
+	printf("in do think:\n");
+	printBoard(board->board);
 	printf("received doThink command from connector, time to move %d\n", moveTime);
 
 	MOVES allMoves = malloc(64 * sizeof(int));

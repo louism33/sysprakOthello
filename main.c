@@ -123,8 +123,8 @@ int main(int argc, char *argv[])
         printf("Running perft Suite\n");
         fail += perftSuite();
         
-        // printf("Runnning dothinktest.\n");
-        // fail +=denkentest();
+        printf("Runnning dothinktest.\n");
+        fail +=denkentest();
 
         if (fail)
         { // fail/=0 dann läuft if Bedingung
@@ -211,8 +211,10 @@ int main(int argc, char *argv[])
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
-            
+
+            printBoard(info->infoBoard->board);
             move = doThink(info->infoBoard,3000);
+            
             //move = doThinks(info->infoBoard,3000);
             printf("Der Erste Zug geht zu %d\n",move);
             getPrettyMove(move,antwort);
@@ -232,7 +234,7 @@ int main(int argc, char *argv[])
     deleteShm();
     freeBoardStruct(connectorBoard);
     //freeBoardStruct(thinkerBoard);
-    free(info);
+ // free(info);
     free(antwort);
    // free(movetime);
     return 0;

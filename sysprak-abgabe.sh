@@ -17,7 +17,8 @@ function usage() {
 	echo "USAGE: $(basename "$0") [BUILD_DIR] [LOG] [ZIP-FILE] [OPTIONS]" >&2
     echo "OPTIONS:"
     echo -e "\t --spectate \t Open default browser to spectate the game"
-	exi
+	exit
+}
 
 
 PUNKTE=0
@@ -62,7 +63,7 @@ unzip -q $FILE -d $BUILD_DIR
 cd $BUILD_DIR
 make -s clean
 
-## Test 2: makeflagsP
+## Test 2: makeflags
 MAKEFLAGS=$(make -n)
 ##echo $MAKEFLAGS
 if [[ $MAKEFLAGS == *"-Wall"* ]] \

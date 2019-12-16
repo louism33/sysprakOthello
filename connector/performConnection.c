@@ -362,6 +362,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 // moveReceivedFromThinker[2] = '\0';
 
                 // free(moveRet);
+                sleep(1);
                 close(pd[1]);    // Schreibseite schließen
                 char buffer[50]; // Puffer zum speichern von gelesenen Daten
                                   //ssize_t nread;

@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <stdbool.h>
 #include "boardmessageparser.h"
+#include "../thinker/board.h"
 
 typedef struct Player{
     int mitspielerNummer;

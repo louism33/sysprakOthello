@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
     //  moveTimeAndBoard *movetime=malloc(sizeof(moveTimeAndBoard));
     //int movetime;
 
-    infoBoard = shmInfo + sizeof(infoVonServer) + sizeof(Player);
+    info->infoBoard = shmInfo + sizeof(infoVonServer) + sizeof(Player);
 
     createPipe(pd);
     switch (thinker = fork())

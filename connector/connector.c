@@ -1,7 +1,6 @@
 #include "../thinker/board.h"
 #include "connector.h"
 #include "performConnection.c"
-#include "mockgameserver.h"
 #include "config.h"
 
 #include <sys/types.h>
@@ -47,7 +46,7 @@ int getDefaultPort() {
     return PORTNUMBER;
 }
 
-int connectToGameServer(int mockGame, char *gameID, char *player,
+int connectToGameServer(char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
                         BOARD_STRUCT *thinkerBoard) {
 
@@ -144,7 +143,6 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     char *gameID;
     char *player = 0;
     int ret;
-    int mockGame = 0;
     int usingCustomConfigFile = 0;
     char *configPath;
 
@@ -155,9 +153,6 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
                 break;
             case 'p':
                 player = optarg;
-                break;
-            case 'm':
-                mockGame = 1;
                 break;
             case 'C':
                 configPath = optarg;
@@ -184,21 +179,7 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
     }
     // todo, what if player is blank?
 
-    if (mockGame) {
-        pid_t pid;
-        pid = fork();
-        if (pid == 0) { /* child process */
-            createMockGameServer();
-            return 0;
-        }
-
-        int sleepMicroSeconds = 2000000;
-        printf("sleeping for %d microseconds to give the mock server time to get ready\n",
-               sleepMicroSeconds);
-        usleep(sleepMicroSeconds);
-    }
-
-    int con = connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
+    int con = connectToGameServer(gameID, player, usingCustomConfigFile,
                                   configPath, connectorBoard, thinkerBoard);
 
     if (con) {

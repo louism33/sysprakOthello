@@ -1,12 +1,12 @@
 CC=gcc
 CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
 #todo remove -g
-DEPS = connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
+DEPS = connector/connector.h thinker/thinker.h connector/config.h \
 	connector/boardmessageparser.h thinker/thinkertests/boardtests.h  thinker/board.h \
 	connector/connectorTests/connectortests.h thinker/thinkertests/unmakemovetests.h thinker/thinkertests/makemovetests.h \
 	thinker/thinkertests/perft.h thinker/thinkertests/biggerboardtest.h ki/alex.h ki/kitests/testkisimple.h \
 	ki/kitests/testkibasicthinking.h ki/kitests/testkibasicstrategy.h
-OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o \
+OBJ = main.o connector/connector.o thinker/thinker.o  \
 	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o  \
 	 connector/connectorTests/connectortests.o thinker/thinkertests/unmakemovetests.o thinker/thinkertests/makemovetests.o \
 	 thinker/thinkertests/perft.o thinker/thinkertests/biggerboardtest.o ki/alex.o ki/kitests/testkisimple.o \

@@ -312,19 +312,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;
                 playCommandToSend[0] = '\0';
-
-                break;
             }
 
             if ((strncmp("+ WAIT", buff, 6)) == 0) {
                 writeToServer(sockfd, okWait);
-//                break;
             }
 
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
                 phase = PROLOG;
                 dealWithGameOverCommand(buff);
-                //                writeToServer(sockfd, okWait);
                 endstate = 0;
                 break;
             }

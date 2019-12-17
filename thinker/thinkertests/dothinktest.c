@@ -4,40 +4,43 @@
 #include "../thinker.h"
 #include "../../connector/connector.h"
 #include "../../connector/boardmessageparser.h"
-
-
+#include <string.h>
+ infoVonServer *info;
 
 
 int dothinktest() {
-//     infoVonServer *info;
-//      BOARD_STRUCT *infoBoard;
-//    // info->infoBoard=b;
-//    info->infoBoard=infoBoard;
+    printf("sizeof board:%ld\n",sizeof(BOARD_STRUCT));
+    BOARD_STRUCT *b=malloc(sizeof(BOARD_STRUCT));
+    BOARD_STRUCT *c=malloc(sizeof(BOARD_STRUCT));
 
-//     for (int i = 0; i < 20; i++) {
-//         info->infoBoard->board[i] = getWhite();
-//     }
-//     for (int i = 20; i < 63; i++) {
-//         info->infoBoard->board[i] = getBlack();
-//     }
+   info->infoBoard=b;
+   initialiseBoardStructToStarter(c);
+   initialiseBoardStructToZero(b);//必须要这一行 否则不能运行
+   printf("vor memcpy,\n");
+   printBoard(b->board);
+    b->board[19] = getWhite();
+    b->board[20] = getBlack();
+   memcpy( b->board, c->board, sizeof(int) * 8 * 8); 
+   //wenn Server eine Board von uns schickt.
+   b->sideToMove =c->sideToMove;
+    //SIDE_TO_MOVE player = getStartingPlayer();//black
+    //SIDE_TO_MOVE targetPlayer = switchPlayer(player);
+   printf("b->board\n");
+   printBoard(b->board);
+    int move=doThink(b,3000);
+    //printBoard(b->board);
+   // int correctNumberOfMoves = 0;
 
-//     SIDE_TO_MOVE player = getStartingPlayer();//black
-//     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
-   
-//     int move=doThink(info->infoBoard,3000);
-//     printBoard(info->infoBoard->board);
-//    // int correctNumberOfMoves = 0;
-
-    if (move != 0 ) {
-        printBoardLouisSide(info->infoBoard, player);
+    if (move != 26 ) {
+       // printBoardLouisSide(b, player);
         fprintf(stderr, "FAILED A BOARD TEST! Expected  moves from this position, but received");
         printf("move: %d",move);
                 
-       // freeBoardStruct(b);
+        freeBoardStruct(b);
         exit(1);
     }
 
-   // freeBoardStruct(b);
+    freeBoardStruct(b);
     return 0; // success
 }
 

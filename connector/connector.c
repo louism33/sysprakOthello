@@ -99,7 +99,7 @@ char *lookup_host(const char *host, char *finalAddrstr)
 
 int connectToGameServer(int mockGame, char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-                     infoVonServer *info, pid_t thinker, pid_t connector)
+                     infoVonServer *info, pid_t thinker, pid_t connector,void *shmInfo)
 {
 
     printf("Attempting to connect to game server.\n");
@@ -207,7 +207,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     }
 
     performConnectionLouis(sock, gameID, player,
-                           configurationStruct->gamekindname, connectorBoard, info, thinker, connector);
+                           configurationStruct->gamekindname, connectorBoard, info, thinker, connector,shmInfo);
 
     free(configurationStruct->gamekindname);
     free(configurationStruct->hostname);
@@ -218,7 +218,7 @@ int connectToGameServer(int mockGame, char *gameID, char *player,
     return 0;
 }
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector) {
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector,void *shmInfo) {
     char *gameID;
     char *player = 0;
     int ret;
@@ -283,7 +283,7 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
     usleep(sleepMicroSeconds);
     }
     connectToGameServer(mockGame, gameID, player, usingCustomConfigFile,
-                        configPath, connectorBoard,info, thinker, connector);
+                        configPath, connectorBoard,info, thinker, connector,shmInfo);
     //printf("----------------################################connectormasterMethod:%s\n",info.myPlayerName);
     
     return 0;

@@ -20,12 +20,6 @@ typedef MOVE *MOVE_STACK;
 typedef int STACK_INDEX;
 
 typedef int *BOARD;
-
-typedef struct boardShm {
-    BOARD board;
-    SIDE_TO_MOVE currentPlayerId; 
-} boardShm;
-
 typedef struct BOARD_STRUCT {
     // BOARD has our board array, a side to move to determine the current player, and a stack to enable unmakeMove()
     BOARD board;
@@ -56,7 +50,6 @@ void printBoard(BOARD board);
 
 void initialiseBoardStructToStarter(BOARD_STRUCT *boardStruct);
 
-void initialiseBoardStructToStarter2(boardShm *boardStruct);
 
 void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct);
 
@@ -66,7 +59,6 @@ void resetBoardToStarter(BOARD board); // todo do we want to export this one?
 void resetBoardToZero(BOARD board); // todo do we want to export this one?
 
 void freeBoardStruct(BOARD_STRUCT *boardStruct);
-void freeBoardShm(boardShm *boardStruct);
 
 int removeDuplicates(MOVES speicher, int index);
 

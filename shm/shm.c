@@ -51,21 +51,6 @@ void deleteShm() {
     }
 }
 
-/*void writeShmEasy(char *x){
-    strcpy(shmdata->gameName,x);
-    printf("ich habe geschrieben:%s \n",shmdata->gameName );
-}*/
-
-void writeShm(infoVonServer *g, pid_t pidme, pid_t pidpa) {
-    /*in Shm schreiben -> im struct infos verwalten und im shm speichern*/
-
-}
-
-void *readShm() {
-
-    return shmdata;
-}
-
 void waitForChild() {
     int wait, status;
     wait = waitpid(connector, &status, WNOHANG);

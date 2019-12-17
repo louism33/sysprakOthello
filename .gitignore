@@ -9,6 +9,8 @@ makefileM
 .DS_store
 .project
 *LOG
+*log
+.vscode/
 
 scripts/sysprakOthello.zip
 scripts/buildDir

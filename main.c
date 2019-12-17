@@ -53,14 +53,6 @@ void mysighandler(int sig)
 
 int main(int argc, char *argv[])
 {
-
-    char *antwort = malloc(256 * sizeof(char));
-    createShm();
-    shmInfo = attachShm();
-    info = shmInfo;
-    info->players = shmInfo + sizeof(infoVonServer);
-
-    printf("Hello World! I am Alex. This is the main method\n");
     if (argc > 1 && strcmp(argv[1], "perft") == 0)
     {
         if (argc == 2)
@@ -115,9 +107,12 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    // todo, this is just an idea, it depends on how we do shm (shared memory)
-    // we will use two separate boards. One for connector that we will update with info from server
-    // one to be used internally by thinker. When connector receives update, we copy connector board into thinker board
+    char *antwort = malloc(256 * sizeof(char));
+    createShm();
+    shmInfo = attachShm();
+    info = shmInfo;
+    info->players = shmInfo + sizeof(infoVonServer);
+    int failState = 0;
 
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
@@ -172,7 +167,8 @@ int main(int argc, char *argv[])
             if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
             { // In Schreibseite schreiben
                 perror("write");
-                exit(EXIT_FAILURE);
+                failState = 1;
+                break;
             }
             bzero(antwort, sizeof(antwort));
         }
@@ -183,5 +179,8 @@ int main(int argc, char *argv[])
     deleteShm();
     free(antwort);
     freeBoardStruct(connectorBoard);
-    return 0;
+    if (failState) {
+        fprintf(stderr, "Error happened\n");
+    }
+    return failState;
 }

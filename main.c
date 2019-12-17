@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
         connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
         break;
 
+
     /*Elternprozess = Thinker*/
     default:
         printf("Im Elternprozess\n");

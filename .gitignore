@@ -8,6 +8,7 @@ language.settings.xml
 makefileM
 .DS_store
 .project
+*LOG
 
 scripts/sysprakOthello.zip
 scripts/buildDir

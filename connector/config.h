@@ -7,8 +7,8 @@
 
 typedef struct configurationStruct {
     char *hostname;
-    int portnumber;
     char *gamekindname;
+    int portnumber;
 } configurationStruct;
 
 

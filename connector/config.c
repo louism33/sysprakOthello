@@ -14,16 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// todo, probably pass configStruct as argument?
 int readConfigurationFile(char *pathName, configurationStruct * configurationStruct) {
 
     printf("Attempting to read configuration data from %s\n", pathName);
-
-
-
-    // todo, careful of malloc here
-    configurationStruct->hostname = (char *) malloc(200);
-    configurationStruct->gamekindname = (char *) malloc(200);
 
     FILE *file = fopen(pathName, "r");
     char str[100];
@@ -31,7 +24,9 @@ int readConfigurationFile(char *pathName, configurationStruct * configurationStr
 
     while (fgets(str, 300, file) && strlen(str) != 0) {
         char attribute[limit];
+        bzero(attribute, limit);
         char value[limit];
+        bzero(value, limit);
 
         int index = 0, i = -1, endIndex = 0, endIndexAtt = 0;
 
@@ -107,11 +102,11 @@ int readConfigurationFile(char *pathName, configurationStruct * configurationStr
         strncpy(value, str + valStartIndex, l);
         value[valEndIndex] = '\0';
 
-        if (strcmp(attribute, "hostname") == 0) {
+        if (strncmp(attribute, "hostname", 8) == 0) {
             strcpy(configurationStruct->hostname, value);
-        } else if (strcmp(attribute, "portnumber") == 0) {
+        } else if (strncmp(attribute, "portnumber", 10) == 0) {
             configurationStruct->portnumber = atoi(value);
-        } else if (strcmp(attribute, "gamekindname") == 0) {
+        } else if (strncmp(attribute, "gamekindname", 12) == 0) {
             strcpy(configurationStruct->gamekindname, value);
         }
 

@@ -13,7 +13,7 @@ typedef unsigned long long int DIRECTION_MASK;
 typedef int MOVE;
 typedef int SIDE_TO_MOVE;
 
-
+// todo, we are not really using stack....
 typedef int64_t STACK_OBJECT;
 typedef STACK_OBJECT *STACK;
 typedef MOVE *MOVE_STACK;
@@ -58,9 +58,11 @@ void initialiseBoardStructToZeroCustom(BOARD_STRUCT *boardStruct, int rows, int 
 void resetBoardToStarter(BOARD board); // todo do we want to export this one?
 void resetBoardToZero(BOARD board); // todo do we want to export this one?
 
-void freeBoardStruct(BOARD_STRUCT *boardStruct);
+void resetStackStuff(BOARD_STRUCT *boardStruct);
 
-int removeDuplicates(MOVES speicher, int index);
+void printMoves(MOVES moves);
+
+void freeBoardStruct(BOARD_STRUCT *boardStruct);
 
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves);
 
@@ -70,13 +72,19 @@ SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct);
 
 SIDE_TO_MOVE getStartingPlayer();
 
+MOVE getPassMove();
+
 MOVE getLastMove();
+
+int getDraw();
 
 SIDE_TO_MOVE getBlack();
 
 SIDE_TO_MOVE getWhite();
 
 SIDE_TO_MOVE getEmpty();
+
+void passMove(BOARD_STRUCT *boardStruct);
 
 int unmakeMove(BOARD_STRUCT *boardStruct);
 
@@ -88,11 +96,13 @@ int areBoardStructsDifferent(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT 
 
 int areBoardsDifferent(BOARD destinationBoard, BOARD sourceBoard, int n);
 
-
 int makeMoveSide(BOARD_STRUCT *boardStruct, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER);
 
 int makeMove(BOARD_STRUCT *boardStruct, int legalPosition);
 
+int makeMoveSideAI(BOARD_STRUCT *boardStruct, int legalPosition, SIDE_TO_MOVE TARGET_PLAYER);
+
+int makeMoveAI(BOARD_STRUCT *boardStruct, int legalPosition);
 
 int pushObject(BOARD_STRUCT *boardStruct, STACK_OBJECT stackObject);
 
@@ -123,10 +133,9 @@ DIRECTION getEast();
 DIRECTION getNorthEast();
 
 
-
 int getWinner(BOARD_STRUCT *boardStruct);
-int isGameOver(BOARD_STRUCT *boardStruct);
 
+int isGameOver(BOARD_STRUCT *boardStruct);
 
 
 int getBoardSize();

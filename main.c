@@ -24,6 +24,9 @@
 #include "thinker/thinkertests/makemovetests.h"
 #include "thinker/thinkertests/perft.h"
 #include "thinker/thinkertests/biggerboardtest.h"
+#include "ki/kitests/testkisimple.h"
+#include "ki/kitests/testkibasicthinking.h"
+#include "ki/kitests/testkibasicstrategy.h"
 #include "main.h"
 #include "shm/shm.h"
 #include "pipe/pipe.h"
@@ -67,6 +70,12 @@ void mysighandler(int sig)
 int main(int argc, char *argv[])
 {
 
+#include "main.h"
+#include "shm/shm.h"
+#include "pipe/pipe.h"
+#include <stdbool.h>
+#include "thinker/thinkertests/dothinktest.h"
+
     char *antwort = malloc(256 * sizeof(char));
     createShm();
     shmInfo = attachShm();
@@ -92,13 +101,12 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    if (argc > 1 && strcmp(argv[1], "TEST") == 0)
-    {
+    if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
         printf("Test begin:.........\n");
-        printf("Running board test Suite\n");
 
         int fail = 0;
 
+        printf("Running fullTestSuite\n");
         fail += fullTestSuite();
 
         fail += fullTestSuiteBoard2();
@@ -121,11 +129,21 @@ int main(int argc, char *argv[])
         printf("Runnning dothinktest.\n");
         fail += denkentest();
 
+        printf("Running basic KI Suite\n");
+        fail += kiTestsSimple();
+
+        printf("Running medium KI Suite\n");
+        fail += kiTestsBasicThinking();
+
+        printf("Running strategy KI Suite\n");
+        fail += kiTestsBasicStrategy();
+
         if (fail)
         { // fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");
             exit(1);
         }
+
         printf("Tested. All good.\n");
         return 0;
     }

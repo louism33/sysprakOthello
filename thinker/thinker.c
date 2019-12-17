@@ -9,27 +9,47 @@
 
 #include "thinkertests/boardtests.h"
 #include "board.h"
-#include <signal.h>
-#include "../pipe/pipe.h"
-#include "../main.h"
+#include "../ki/alex.h"
 
-MOVE doThink(BOARD_STRUCT *board, int moveTime)
-{
-	printf("in do think:\n");
-	printBoard(board->board);
-	printf("received doThink command from connector, time to move %d\n", moveTime);
+MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
+    printf("received doThink command from connector, time to move %d\n", moveTime);
 
-	MOVES allMoves = malloc(64 * sizeof(int));
-	getLegalMovesAllPositions(board->board, switchPlayer(board->sideToMove),
-							  allMoves);
+    moveTime = 2000;
 
-	printf("dothinker move: %d\n", allMoves[0]);
-	return allMoves[0]; // todo, implement to return any move (later we make it good) that can legally be played on the board
+    MOVE bestMove = getBestMove(boardStruct, moveTime);
+
+    printf("dothinker move: %d\n", bestMove);
+
+    return bestMove;
 }
 
+void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard) {
+    printf("Hi I am very good at thinking\n");
 
-void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard)
-{
-	printf("Hi I am very good at thinking\n");
+    //createProcesses();
+
+    /*
+    was wir brauchen für die thinkerMasterMethod
+    - eine printBoard() Funktion
+    -signal Handler mit getSignal(), sendSignal() etc.
+
+    enthält makeTurn()
+    sendTurn()
+    unnamed Pipe erstllen -- bevor fork()!
+    Seiten schließen
+    makeTurn()
+    makeMove()
+    isLegalMove()
+    canPlay()
+    */
 }
 
+/*think() Methode: wartet auf Signal SIGURS1 und ließt anschließend alle benötigten Infos
+ aus dem SM und berechnet Spielzug*/
+void think() {
+    /* readShm()
+    makeMove1()
+    makeMove2()
+    printBoard()
+    writePipe()*/
+}

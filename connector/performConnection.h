@@ -14,4 +14,5 @@ int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindN
                       	 infoVonServer *info,pid_t thinker,pid_t connector,void *shmInfo) ;
 char *convertMove(int move, char *antwort);
 
+
 #endif //SYSPRAKOTHELLO_PERFORMCONNECTION_H

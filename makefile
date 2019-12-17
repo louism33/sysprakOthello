@@ -1,15 +1,18 @@
 CC=gcc
-CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11
+CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
 #todo remove -g
 DEPS = main.h connector/connector.h thinker/thinker.h connector/mockgameserver.h connector/config.h \
 	connector/boardmessageparser.h thinker/thinkertests/boardtests.h thinker/thinkertests/boardtests2.h thinker/board.h \
 	connector/connectorTests/connectortests.h thinker/thinkertests/unmakemovetests.h thinker/thinkertests/makemovetests.h \
-	thinker/thinkertests/perft.h thinker/thinkertests/biggerboardtest.h shm/shm.c pipe/pipe.c  thinker/thinkertests/dothinktest.c
+	thinker/thinkertests/perft.h thinker/thinkertests/biggerboardtest.h  shm/shm.c pipe/pipe.c  thinker/thinkertests/dothinktest.c \
+	ki/alex.h ki/kitests/testkisimple.h \
+    	ki/kitests/testkibasicthinking.h ki/kitests/testkibasicstrategy.h
 OBJ = main.o connector/connector.o thinker/thinker.o connector/mockgameserver.o \
 	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o thinker/thinkertests/boardtests2.o \
 	 connector/connectorTests/connectortests.o thinker/thinkertests/unmakemovetests.o thinker/thinkertests/makemovetests.o \
-	 thinker/thinkertests/perft.o thinker/thinkertests/biggerboardtest.o shm/shm.o pipe/pipe.o thinker/thinkertests/dothinktest.o 
-	
+	 thinker/thinkertests/perft.o thinker/thinkertests/biggerboardtest.o shm/shm.o pipe/pipe.o thinker/thinkertests/dothinktest.o \
+	 ki/alex.o ki/kitests/testkisimple.o \
+     	 ki/kitests/testkibasicthinking.o ki/kitests/testkibasicstrategy.o
 # todo, replace above with discoveries (find c files and replace extensions)
 
 # these are the "legitimate" targets

@@ -48,8 +48,7 @@ int getDefaultPort() {
 }
 
 int connectToGameServer(char *gameID, char *player,
-                        int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
-                        BOARD_STRUCT *thinkerBoard) {
+                        int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard) {
 
     configurationStruct *configStruct = malloc(sizeof(configurationStruct));
     configStruct->hostname = calloc(' ', 200);
@@ -123,7 +122,7 @@ int connectToGameServer(char *gameID, char *player,
         } else {
             printf("success!!!! connected to the server..\n");
             connectionStatus = performConnectionLouis(sock, gameID, player,
-                                                      configStruct->gamekindname, connectorBoard, thinkerBoard);
+                                                      configStruct->gamekindname, connectorBoard);
             break;
         }
 
@@ -140,7 +139,8 @@ int connectToGameServer(char *gameID, char *player,
     return connectionStatus;
 }
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int argc, char *argv[]) {
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker,
+                          pid_t connector, void *shmInfo) {
     char *gameID;
     char *player = 0;
     int ret;
@@ -176,13 +176,13 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoa
 
     if (strlen(gameID) > 13) {
         perror("Das Game-ID ist grosser als 13-stellige.\n");
-        gameID = NULL;7
+        gameID = NULL;
         return 1;
     }
     // todo, what if player is blank?
 
     int con = connectToGameServer(gameID, player, usingCustomConfigFile,
-                                  configPath, connectorBoard, thinkerBoard);
+                                  configPath, connectorBoard, info, thinker, onnector, shmInfo);
 
     if (con) {
         fprintf(stderr, "Error during connection with server\n");

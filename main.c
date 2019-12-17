@@ -18,7 +18,7 @@
 #include "connector/config.h"
 #include "connector/boardmessageparser.h"
 #include "thinker/thinkertests/boardtests.h"
-#include "thinker/thinkertests/boardtests2.h"
+
 #include "connector/connectorTests/connectortests.h"
 #include "thinker/thinkertests/unmakemovetests.h"
 #include "thinker/thinkertests/makemovetests.h"
@@ -31,9 +31,8 @@
 #include "shm/shm.h"
 #include "pipe/pipe.h"
 #include <stdbool.h>
-#include "thinker/thinkertests/dothinktest.h"
-// if thinker is parent, retry logic may be easier to implement
-// including learning
+
+
 bool denken = false;
 infoVonServer *info;
 Player *myPlayer;
@@ -48,33 +47,12 @@ void mysighandler(int sig)
     if (sig == SIGUSR1)
     {
         sleep(1);
-        // printf("****SIGUSR1 empfangen.Thinker kann jetzt Nachricht in pipe schreiben.*****\n\n");
-        // printf("ich habe geschrieben.\n");
-        // printf("shmInfo.MitspielerAnzahl: %d\n", info->MitspielerAnzahl);
-        // printf("shmInfo.gameID: %s\n", info->gameID);
-        // printf("shmInfo.gameKindName: %s\n", info->gameKindName);
-        // printf("shmInfo.thinker: %d\n", info->thinker);
-        // printf("shmInfo.connector: %d\n", info->connector);
-        // printf("shmInfo->majorVersionNr: %d\n", info->majorVersionNr);
-        // printf("shmInfo->gameName: %s\n", info->gameName);
-        // printf("shmInfo->minorVersionNr: %d\n", info->minorVersionNr);
-        // printf("shmInfo->me->mitspielerNummer: %d\n", info->players[0].mitspielerNummer); // ToDo 0 stimmt nicht in jedem Fall -> überdenke die Schreibweise
-        // printf("shmInfo->me->bereit: %d\n", info->players[0].bereit);
-        // printf("shmInfo->me->mitspielerName: %s\n", info->players[0].mitspielerName);
-        // printf("Wir haben ein board in shm.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-        // printBoard(info->infoBoard->board);
         denken = true;
     }
 }
 
 int main(int argc, char *argv[])
 {
-
-#include "main.h"
-#include "shm/shm.h"
-#include "pipe/pipe.h"
-#include <stdbool.h>
-#include "thinker/thinkertests/dothinktest.h"
 
     char *antwort = malloc(256 * sizeof(char));
     createShm();
@@ -109,8 +87,6 @@ int main(int argc, char *argv[])
         printf("Running fullTestSuite\n");
         fail += fullTestSuite();
 
-        fail += fullTestSuiteBoard2();
-
         printf("Running convert move test Suite\n");
         fail += testConvertMove();
 
@@ -125,9 +101,6 @@ int main(int argc, char *argv[])
 
         printf("Running perft Suite\n");
         fail += perftSuite();
-
-        printf("Runnning dothinktest.\n");
-        fail += denkentest();
 
         printf("Running basic KI Suite\n");
         fail += kiTestsSimple();

@@ -52,8 +52,7 @@
 
 bool schreiben = false;
 
-enum Phase
-{
+enum Phase {
     PROLOG = 0,
     SPIELVERLAUF = 1,
     SPIELZUG = 2
@@ -122,7 +121,7 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 }
 
 // todo, handle end state, what do we do once game is over?
-void
+int
 haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
                            infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
 
@@ -134,19 +133,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     strcpy(info->gameKindName, gameKindName);
 
     char buff[MAX];    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-    char gameName[64]; // example: Game from 2019-11-18 17:42
-    char playerNumber[32];
-    char myPlayerName[32];
-    char opponent[32];
+    char gameName[64] = {0}; // example: Game from 2019-11-18 17:42
+    char playerNumber[32] = {0};
+    char myPlayerName[32] = {0};
+    char opponent[32] = {0};
 
-//    int endstate = 0;
-//     todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-//    char buff[MAX] = {0};
-//    char gameName[64] = {0}; // example: Game from 2019-11-18 17:42
-//    char playerNumber[32] = {0};
-//
-//    char myPlayerName[32] = {0};
-//    char opponent[32] = {0};
+    int endstate = 0;
+    char mitspieleranzahl[32];
 
     int n = 0, readResponse = 0;
 
@@ -281,8 +274,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             }
 
             // step five, read TOTAL
-            if (strncmp("+ TOTAL", buff, 7) == 0)
-            {
+            if (strncmp("+ TOTAL", buff, 7) == 0) {
                 strncpy(mitspieleranzahl, buff + 8, 1);
                 mitspieleranzahl[1] = '\0';
                 //printf("  Received TOTAL info from server, buff is:%s", buff);
@@ -292,7 +284,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             }
 
             info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
-            info->infoBoard->board = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT);
+            info->infoBoard->board =
+                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT);
             //moveTimeAndBoard->movetime=shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT)+sizeof(int);
             // printf("sizeof: %p\n",info->infoBoard+40);
 
@@ -324,7 +317,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 
-
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
                 char *moveRet = malloc(3 * sizeof(char));
@@ -333,44 +325,25 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
                 //signal schicken
-                if (kill(thinker, SIGUSR1) == -1)
-                {
+                if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");
                     exit(1);
-                }
-                else
-                {
+                } else {
                     printf("******************************************kill\n");
                 }
                 mTB->movetime = 3000; // todo get from server
 
-
-                /*
-                 *
-
-                moveReceivedFromThinkerTEMP = getMoveFromThinker(connectorBoard, thinkerBoard,
-                                                                 mTB->movetime, moveRet);
-
-                if (moveReceivedFromThinkerTEMP == NULL || strlen(moveRet) != 2) {
-                    fprintf(stderr, "move of incorrect length received from thinker: %s\n",
-                            moveRet);
-                    endstate = 1;
-                    break;
-                }
-                 */
-
                 moveReceivedFromThinker[0] = moveRet[0];
-                // free(moveRet);
-                //sleep(2);
                 close(pd[1]);    // Schreibseite schließen
                 char buffer[50]; // Puffer zum speichern von gelesenen Daten
-                if (read(pd[0], buffer, sizeof(buffer)) == -1)
-                { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                if (read(pd[0], buffer, sizeof(buffer)) ==
+                    -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
                     perror("read");
-                    exit(EXIT_FAILURE);
-                else
-                {
-                    printf("Connector(Kindsprozess) bekommt Nachricht von pipe: %s,length of buffer:%li\n\n", buffer, strlen(buffer));
+                    endstate = 1;
+                    break;
+                } else {
+                    printf("Connector(Kindsprozess) bekommt Nachricht von pipe: %s,length of buffer:%li\n\n",
+                           buffer, strlen(buffer));
                 }
                 moveReceivedFromThinker[0] = buffer[0];
                 moveReceivedFromThinker[1] = buffer[1];
@@ -414,8 +387,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 }
 
 int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo)
-{
+                           infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
 
-    return   haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, info, thinker, connector, shmInfo);
+    return haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, info, thinker, connector,
+                                      shmInfo);
 }

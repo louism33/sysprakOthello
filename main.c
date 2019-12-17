@@ -59,14 +59,8 @@ int main(int argc, char *argv[])
     shmInfo = attachShm();
     info = shmInfo;
     info->players = shmInfo + sizeof(infoVonServer);
-    // printf("shminfo:%p\n",shmInfo);
-    // printf("info->player: %p\n",info->players);
-    // printf("info: %p\n",info);
-    // printf("info+sizeof:%p\n",info+sizeof(infoVonServer));
-    //myPlayer = shmInfo + sizeof(infoVonServer);
 
     printf("Hello World! I am Alex. This is the main method\n");
-    //Test-block
     if (argc > 1 && strcmp(argv[1], "perft") == 0)
     {
         if (argc == 2)

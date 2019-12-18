@@ -79,8 +79,10 @@ char *regexString = "\\+ MOVE ([0-9]+)";
 size_t maxGroups = 2;
 regex_t regexCompiled;
 // todo remove this stupid regex crap
-void setupMessageParser() { // we do this to avoid wasting memory and compute on regex patterns
-    if (messageParserReady) {
+void setupMessageParser()
+{ // we do this to avoid wasting memory and compute on regex patterns
+    if (messageParserReady)
+    {
         printf("message parser already set up\n");
         return;
     }
@@ -92,79 +94,89 @@ void setupMessageParser() { // we do this to avoid wasting memory and compute on
     messageParserReady = 1;
 }
 
-void tearDownMessageParser() {
+void tearDownMessageParser()
+{
     regfree(&regexCompiled);
 }
 
-
-void printBoardLouis(BOARD_STRUCT  *board) {
+void printBoardLouis(BOARD_STRUCT *board)
+{
     printBoardLouisSide(board, 0);
 }
 
-void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
+void printBoardLouisSide(BOARD_STRUCT *b, SIDE_TO_MOVE sideToMove)
+{
     int *board = b->board;
 
-    for (int i = 0; i < getBoardSize(); i++) {
-        if (i % getColumnSize() == 0) {
+    for (int i = 0; i < getBoardSize(); i++)
+    {
+        if (i % getColumnSize() == 0)
+        {
             printf("\n");
         }
-        if (board[i] == getWhite()) {
+        if (board[i] == getWhite())
+        {
             printf("W ");
-        } else if (board[i] == getBlack()) {
+        }
+        else if (board[i] == getBlack())
+        {
             printf("B ");
-        } else {
+        }
+        else
+        {
             printf(". ");
-//            printf("%d ", board[i]);
+            //            printf("%d ", board[i]);
         }
     }
     printf("\n");
-    if (sideToMove) {
+    if (sideToMove)
+    {
         printf("%d to move\n", sideToMove);
-        if (sideToMove == getBlack()) {
+        if (sideToMove == getBlack())
+        {
             printf("Black to move\n");
-        } else {
+        }
+        else
+        {
             printf("White to move\n");
         }
-    } else {
+    }
+    else
+    {
         printf("I don't know whose turn it is\n");
     }
     printf("-----------\n");
 }
 
-void parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, char *message) {
+void parseBoardMessage(BOARD_STRUCT *board, moveTimeAndBoard *moveTimeAndBoard, char *message)
+{
     int *boardBoard = board->board;
-    // setupMessageParser(); // we do this to avoid wasting memory and compute on regex patterns
-    // regmatch_t groupArray[maxGroups];
-
-    // if (couldNotParseRegex) {
-    //     printf("Could not compile regular expression.\n");
-    //     moveTimeAndBoard->movetime = 3000; //hack just in case we cannot parse something, we at least use some kind of value for movetime
-    // } else if (regexec(&regexCompiled, message, maxGroups, groupArray, 0) == 0ul) {
-    //     strcpy(sourceCopy, message);
-    //     sourceCopy[groupArray[1].rm_eo] = 0;
-    //     char *found = sourceCopy + groupArray[1].rm_so;
-    //     moveTimeAndBoard->movetime = atoi(found);
-    // }
+    char *moveTime = malloc(4 * sizeof(char));
+    char *fieldSize = malloc(3 * sizeof(char));
+    int moveTimeNummer = getMovetimeandFieldsize(message, moveTime, fieldSize);
+    printf("xxxxxxxxxxxxxxxbbbbbb %d\n", moveTimeNummer);
 
     char c;
     int boardIndex = 0;
-    for (int i = (int) strlen(message) - 170; i < (int) strlen(message); i++) {
+    for (int i = (int)strlen(message) - 170; i < (int)strlen(message); i++)
+    {
         c = message[i];
-        switch (c) {
-            case 'B':
-                boardBoard[boardIndex] = 2;
-                boardIndex++;
-                continue;
-            case 'W':
-                boardBoard[boardIndex] = 1;
-                boardIndex++;
-                continue;
-            case '*':
-                boardBoard[boardIndex] = 0;
-                boardIndex++;
-                continue;
-            case 'E': // + ENDFIELD is the end of the message
-                break;
+        switch (c)
+        {
+        case 'B':
+            boardBoard[boardIndex] = 2;
+            boardIndex++;
+            continue;
+        case 'W':
+            boardBoard[boardIndex] = 1;
+            boardIndex++;
+            continue;
+        case '*':
+            boardBoard[boardIndex] = 0;
+            boardIndex++;
+            continue;
+        case 'E': // + ENDFIELD is the end of the message
+            break;
         }
     }
 

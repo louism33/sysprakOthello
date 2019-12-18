@@ -9,7 +9,8 @@
 #include "../thinker.h"
 #include "../../connector/boardmessageparser.h"
 
-int flipTurnTest() {
+int flipTurnTest()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -20,7 +21,8 @@ int flipTurnTest() {
 
     switchPlayerStruct(b);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(testBoardStruct);
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: board structs are the same after slipping turn!!\n");
@@ -31,7 +33,8 @@ int flipTurnTest() {
 
     switchPlayerStruct(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(testBoardStruct);
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: board structs are different after two flips!!\n");
@@ -40,10 +43,10 @@ int flipTurnTest() {
         exit(1);
     }
 
-
     switchPlayerStruct(b);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(testBoardStruct);
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: board structs are the same after slipping turn!!\n");
@@ -52,10 +55,10 @@ int flipTurnTest() {
         exit(1);
     }
 
-
     switchPlayerStruct(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(testBoardStruct);
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: board structs are different after two flips!!\n");
@@ -63,14 +66,14 @@ int flipTurnTest() {
         free(testBoardStruct);
         exit(1);
     }
-
 
     free(b);
     free(testBoardStruct);
     return 0; // success
 }
 
-int copyBoardStructTest() {
+int copyBoardStructTest()
+{
     int boardSize = getStandardBoardSize();
 
     // starting board normal
@@ -88,7 +91,8 @@ int copyBoardStructTest() {
 
     copyBoardStruct(testBoardStruct, b, boardSize);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(testBoardStruct);
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: board structs are different after calling copy()!!\n");
@@ -102,8 +106,8 @@ int copyBoardStructTest() {
     return 0; // success
 }
 
-
-int copyBoardStructTest2() {
+int copyBoardStructTest2()
+{
     int boardSize = getStandardBoardSize();
 
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -122,7 +126,8 @@ int copyBoardStructTest2() {
 
     copyBoardStruct(testBoardStruct, b, boardSize);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(testBoardStruct);
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: board structs are different after calling copy()!!\n");
@@ -136,7 +141,8 @@ int copyBoardStructTest2() {
     return 0; // success
 }
 
-int stackpushPopTest() {
+int stackpushPopTest()
+{
     int boardSize = getStandardBoardSize();
 
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -149,7 +155,8 @@ int stackpushPopTest() {
 
     pushObject(b, stackObject);
 
-    if (popObject(b) != stackObject) {
+    if (popObject(b) != stackObject)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
@@ -159,7 +166,8 @@ int stackpushPopTest() {
 
     pushMove(b, moveStackObject);
 
-    if (popMove(b) != moveStackObject) {
+    if (popMove(b) != moveStackObject)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
@@ -169,7 +177,8 @@ int stackpushPopTest() {
     return 0; // success
 }
 
-int stackpushPopManyTest() {
+int stackpushPopManyTest()
+{
     int boardSize = getStandardBoardSize();
 
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -184,23 +193,26 @@ int stackpushPopManyTest() {
     pushObject(b, 22);
     pushObject(b, 3);
 
-
-    if (popObject(b) != 3) {
+    if (popObject(b) != 3)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
     }
-    if (popObject(b) != 22) {
+    if (popObject(b) != 22)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
     }
-    if (popObject(b) != 2) {
+    if (popObject(b) != 2)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
     }
-    if (popObject(b) != 11) {
+    if (popObject(b) != 11)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
@@ -208,19 +220,22 @@ int stackpushPopManyTest() {
 
     pushMove(b, 0);
     pushMove(b, 43);
-    if (popMove(b) != 43) {
+    if (popMove(b) != 43)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
     }
 
-    if (popMove(b) != 0) {
+    if (popMove(b) != 0)
+    {
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
     }
 
-    if (popObject(b) != 1) {
+    if (popObject(b) != 1)
+    {
         fprintf(stderr, "xxxFAILED A UNMAKEMOVE TEST: push and pop are different!!\n");
         free(b);
         exit(1);
@@ -229,10 +244,8 @@ int stackpushPopManyTest() {
     return 0; // success
 }
 
-
-
-
-int manualBabyTest() {
+int manualBabyTest()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -262,7 +275,8 @@ int manualBabyTest() {
 
     addToStackObject(&stackObject, getNorth(), 1);
 
-    if (stackObject == 0) {
+    if (stackObject == 0)
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, stackObject did not seem to get updated\n");
         free(b);
@@ -274,7 +288,8 @@ int manualBabyTest() {
 
     pushMove(b, move);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
         free(b);
@@ -284,7 +299,8 @@ int manualBabyTest() {
 
     unmakeMove(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
         free(b);
@@ -292,15 +308,13 @@ int manualBabyTest() {
         exit(1);
     }
 
-
     free(b);
     free(testBoardStruct);
     return 0; // success
 }
 
-
-
-int manualBaby2Test() {
+int manualBaby2Test()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -330,7 +344,8 @@ int manualBaby2Test() {
 
     addToStackObject(&stackObject, getSouth(), 1);
 
-    if (stackObject == 0) {
+    if (stackObject == 0)
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, stackObject did not seem to get updated\n");
         free(b);
@@ -342,7 +357,8 @@ int manualBaby2Test() {
 
     pushMove(b, move);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
         free(b);
@@ -352,7 +368,8 @@ int manualBaby2Test() {
 
     unmakeMove(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
         free(b);
@@ -360,14 +377,13 @@ int manualBaby2Test() {
         exit(1);
     }
 
-
     free(b);
     free(testBoardStruct);
     return 0; // success
 }
 
-
-int startingBoard1MANUALTest() {
+int startingBoard1MANUALTest()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -394,7 +410,8 @@ int startingBoard1MANUALTest() {
 
     addToStackObject(&stackObject, getEast(), 1);
 
-    if (stackObject == 0) {
+    if (stackObject == 0)
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, stackObject did not seem to get updated\n");
         free(b);
@@ -405,7 +422,8 @@ int startingBoard1MANUALTest() {
     pushObject(b, stackObject);
     pushMove(b, move);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
         free(b);
@@ -415,7 +433,8 @@ int startingBoard1MANUALTest() {
 
     unmakeMove(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
         free(b);
@@ -428,8 +447,8 @@ int startingBoard1MANUALTest() {
     return 0; // success
 }
 
-
-int startingBoard1MANUAL2Test() {
+int startingBoard1MANUAL2Test()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -456,7 +475,8 @@ int startingBoard1MANUAL2Test() {
 
     addToStackObject(&stackObject, getEast(), 1);
 
-    if (stackObject == 0) {
+    if (stackObject == 0)
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, stackObject did not seem to get updated\n");
         free(b);
@@ -468,7 +488,8 @@ int startingBoard1MANUAL2Test() {
 
     pushMove(b, move);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
         free(b);
@@ -492,7 +513,8 @@ int startingBoard1MANUAL2Test() {
     unmakeMove(b);
     unmakeMove(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
         free(b);
@@ -500,15 +522,13 @@ int startingBoard1MANUAL2Test() {
         exit(1);
     }
 
-
     free(b);
     free(testBoardStruct);
     return 0; // success
 }
 
-
-
-int startingBoard1MANUAL3Test() {
+int startingBoard1MANUAL3Test()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -535,7 +555,8 @@ int startingBoard1MANUAL3Test() {
 
     addToStackObject(&stackObject, getEast(), 1);
 
-    if (stackObject == 0) {
+    if (stackObject == 0)
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, stackObject did not seem to get updated\n");
         free(b);
@@ -547,7 +568,8 @@ int startingBoard1MANUAL3Test() {
 
     pushMove(b, move);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
         free(b);
@@ -572,7 +594,7 @@ int startingBoard1MANUAL3Test() {
     pushMove(b, move3);
 
     MOVE move4 = 25;
-    board[move4] = board[26] =board[27]= switchPlayer(player);
+    board[move4] = board[26] = board[27] = switchPlayer(player);
     switchPlayerStruct(b);
     STACK_OBJECT stackObject4 = 0;
     addToStackObject(&stackObject4, getEast(), 2);
@@ -580,7 +602,7 @@ int startingBoard1MANUAL3Test() {
     pushMove(b, move4);
 
     MOVE move5 = 19;
-    board[move5] = board[28] =board[27]= player;
+    board[move5] = board[28] = board[27] = player;
     switchPlayerStruct(b);
     STACK_OBJECT stackObject5 = 0;
     addToStackObject(&stackObject5, getSouth(), 1);
@@ -588,14 +610,14 @@ int startingBoard1MANUAL3Test() {
     pushObject(b, stackObject5);
     pushMove(b, move5);
 
-
     unmakeMove(b);
     unmakeMove(b);
     unmakeMove(b);
     unmakeMove(b);
     unmakeMove(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
         free(b);
@@ -603,15 +625,13 @@ int startingBoard1MANUAL3Test() {
         exit(1);
     }
 
-
     free(b);
     free(testBoardStruct);
     return 0; // success
 }
 
-
-
-int moveunmakeTest() {
+int moveunmakeTest()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -636,7 +656,8 @@ int moveunmakeTest() {
 
     addToStackObject(&stackObject, getEast(), 1);
 
-    if (stackObject == 0) {
+    if (stackObject == 0)
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, stackObject did not seem to get updated\n");
         free(b);
@@ -648,7 +669,8 @@ int moveunmakeTest() {
 
     pushMove(b, move);
 
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
         free(b);
@@ -672,7 +694,8 @@ int moveunmakeTest() {
     unmakeMove(b);
     unmakeMove(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
         free(b);
@@ -680,15 +703,13 @@ int moveunmakeTest() {
         exit(1);
     }
 
-
     free(b);
     free(testBoardStruct);
     return 0; // success
 }
 
-
-
-int moveunmakeStackTest() {
+int moveunmakeStackTest()
+{
     int boardSize = getStandardBoardSize();
     // starting board normal
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
@@ -706,12 +727,12 @@ int moveunmakeStackTest() {
     copyBoardStruct(testBoardStruct, b, boardSize);
 
     MOVE move = 26;
-//    printBoardSide(b);
+    //    printBoardSide(b);
     makeMove(b, move);
-//    printBoardSide(b);
+    //    printBoardSide(b);
 
-
-    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (!areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "FAILED A UNMAKEMOVE TEST, made move but board structs are the same!\n");
         free(b);
@@ -719,23 +740,24 @@ int moveunmakeStackTest() {
         exit(1);
     }
 
-//    MOVE move2 = 20;
-//
-//    board[move2] = board[28] = switchPlayer(player);
-//    switchPlayerStruct(b);
-//
-//    STACK_OBJECT stackObject2 = 0;
-//
-//    addToStackObject(&stackObject2, getSouth(), 1);
-//
-//    pushObject(b, stackObject2);
-//
-//    pushMove(b, move2);
-//
-//    unmakeMove(b);
+    //    MOVE move2 = 20;
+    //
+    //    board[move2] = board[28] = switchPlayer(player);
+    //    switchPlayerStruct(b);
+    //
+    //    STACK_OBJECT stackObject2 = 0;
+    //
+    //    addToStackObject(&stackObject2, getSouth(), 1);
+    //
+    //    pushObject(b, stackObject2);
+    //
+    //    pushMove(b, move2);
+    //
+    //    unmakeMove(b);
     unmakeMove(b);
 
-    if (areBoardStructsDifferent(b, testBoardStruct, boardSize)) {
+    if (areBoardStructsDifferent(b, testBoardStruct, boardSize))
+    {
         printBoardSide(b);
         fprintf(stderr, "xFAILED A UNMAKEMOVE TEST, move() unmakemove() called, but structs different!\n");
         free(b);
@@ -743,13 +765,13 @@ int moveunmakeStackTest() {
         exit(1);
     }
 
-
     free(b);
     free(testBoardStruct);
     return 0; // success
 }
 
-int fullTestSuiteUnmakeMoveTests() {
+int fullTestSuiteUnmakeMoveTests()
+{
     flipTurnTest();
     copyBoardStructTest();
     copyBoardStructTest2();
@@ -765,4 +787,5 @@ int fullTestSuiteUnmakeMoveTests() {
 
     moveunmakeTest();
     moveunmakeStackTest();
+    return 0;
 }

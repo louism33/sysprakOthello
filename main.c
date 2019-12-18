@@ -24,15 +24,16 @@
 #include "thinker/thinkertests/perft.h"
 #include "thinker/thinkertests/biggerboardtest.h"
 
-
 // if thinker is parent, retry logic may be easier to implement
 // including learning
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     printf("Hello World! I am Alex. This is the main method\n");
-
-    if (argc > 1 && strcmp(argv[1], "perft") == 0) {
-        if (argc == 2) {
+    if (argc > 1 && strcmp(argv[1], "perft") == 0)
+    {
+        if (argc == 2)
+        {
             printf("Please specify depth\n");
             exit(1);
         }
@@ -41,14 +42,15 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 
-    if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
+    if (argc > 1 && strcmp(argv[1], "TEST") == 0)
+    {
         printf("Test begin:.........\n");
         printf("Running board test Suite\n");
         int fail = 0;
 
         fail += fullTestSuite(); //board test1
 
-        fail += fullTestSuiteBoard2();//board test2
+        fail += fullTestSuiteBoard2(); //board test2
 
         printf("Running convert move test Suite\n");
         fail += testConvertMove();
@@ -65,15 +67,20 @@ int main(int argc, char *argv[]) {
         printf("Running big board tests Suite\n");
         fail += testSuiteBigBoard();
 
-        if (fail) {// fail/=0 dann läuft if Bedingung
+        printf("Running testgetMovetimeandFieldsize().\n");
+        fail += testgetMovetimeandFieldsize();
+
+        printf("Running testcharInNummer().\n");
+        fail += testcharInNummer();
+
+        if (fail)
+        { // fail/=0 dann läuft if Bedingung
             printf("Some tests failed, please fix them as soon as possible.\n");
             exit(1);
         }
         printf("Tested. All good.\n");
         return 0;
     }
-
-
 
     // todo, this is just an idea, it depends on how we do shm (shared memory)
     // we will use two separate boards. One for connector that we will update with info from server
@@ -85,10 +92,8 @@ int main(int argc, char *argv[]) {
     BOARD_STRUCT *thinkerBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(thinkerBoard);
 
-
     thinkerMasterMethod(thinkerBoard);
     connectorMasterMethod(connectorBoard, thinkerBoard, argc, argv);
-
 
     freeBoardStruct(connectorBoard);
     freeBoardStruct(thinkerBoard);

@@ -9,6 +9,8 @@
 #include "thinkertests/boardtests.h"
 #include "board.h"
 
+getWinner(BOARD board);
+
 MOVE doThink(BOARD_STRUCT *board, int moveTime)
 {
 	printf("received doThink command from connector, time to move %d\n", moveTime);

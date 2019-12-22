@@ -11,6 +11,8 @@ makefileM
 *LOG
 *log
 .vscode/
+*.out
+*.data
 
 scripts/sysprakOthello.zip
 scripts/buildDir

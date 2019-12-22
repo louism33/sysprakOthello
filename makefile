@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
+CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread -pg
 #todo remove -g
 DEPS = main.h connector/connector.h thinker/thinker.h  connector/config.h \
 	connector/boardmessageparser.h thinker/thinkertests/boardtests.h  thinker/board.h \

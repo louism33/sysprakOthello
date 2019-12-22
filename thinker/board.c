@@ -267,12 +267,12 @@ void addColourToSquare(BOARD board, SIDE_TO_MOVE sideToMove, MOVE move) {
     }
 }
 
-static inline int getColumn(int i) {
+static inline int getColumn(int i) { // todo set this up as array
     int col = i % getColumnSize();
     return col < 0 ? col + getColumnSize() : col;
 }
 
-static inline int getRow(int i) {
+static inline int getRow(int i) { // todo set this up as array
     return i / getColumnSize();
 }
 
@@ -523,7 +523,7 @@ int removeDuplicates(MOVES speicher) {
 }
 
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES allMoves) {
-    memset(allMoves, 0, getBoardSize()*sizeof(MOVE));
+    memset(allMoves, 0, getBoardSize()*sizeof(MOVE)); // todo possibly not necessary, due to removeDuplicates?
     SIDE_TO_MOVE me = 3 - TARGET_PLAYER;
     int index = 0;
     for (int pos = 0; pos < getBoardSize(); pos++) {
@@ -534,6 +534,7 @@ int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE TARGET_PLAYER, MOVES all
     int numberOfRealMoves = removeDuplicates(allMoves);
     return numberOfRealMoves;
 }
+
 
 // please don't call this if performance matters
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER) {

@@ -39,7 +39,7 @@ int testOneTrivialBestMove() {
     b->sideToMove = getWhite();
     // there are two legal moves from this position, 0 and 63. 63 wins, 0 loses
     MOVE correctMove = 63;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     makeMove(b, move);
 
@@ -86,7 +86,7 @@ int testOneTrivialBestMoveSwitch() {
 
     // there are two legal moves from this position, 0 and 63. 63 wins, 0 loses
     MOVE correctMove = 63;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     makeMove(b, move);
 
@@ -117,7 +117,7 @@ int testPossibleGameWin() {
     b->sideToMove = getWhite();
 
     MOVE correctMove = 36;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     makeMove(b, move);
 
@@ -146,7 +146,7 @@ int testPossibleGameWin2() {
     b->sideToMove = getWhite();
 
     MOVE correctMove = 44;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     makeMove(b, move);
 
@@ -176,7 +176,7 @@ int testPossibleGameWin3() {
     b->sideToMove = getWhite();
 
     MOVE correctMove = 52;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     makeMove(b, move);
 
@@ -205,7 +205,7 @@ int testAvoidLossFromPreviousTest() {
     b->sideToMove = getBlack();
 
     MOVE incorrectMove = 36;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move == incorrectMove) {
         printBoardSide(b);
@@ -236,9 +236,9 @@ int testAvoidLossNextMove() {
 
     MOVE incorrectMove1 = 18;
     MOVE incorrectMove2 = 22;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
     makeMove(b, move);
-    MOVE move2 = getBestMove(b, moveTime);
+    MOVE move2 = getBestMoveMultiThreaded(b, moveTime);
 
     makeMove(b, move2);
 
@@ -288,11 +288,11 @@ int testPickDrawOverLoss() {
     b->sideToMove = getWhite();
 
     MOVE correctMove = 63;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     makeMove(b, move);
 
-    MOVE move2 = getBestMove(b, moveTime);
+    MOVE move2 = getBestMoveMultiThreaded(b, moveTime);
     makeMove(b, move2);
 
     if (move != correctMove || getWinner(b) != getDraw()) {
@@ -323,22 +323,22 @@ int testDontCrashOnPassMoveNextMove() {
 
     b->sideToMove = getBlack();
 
-    MOVE move1 = getBestMove(b, moveTime);
+    MOVE move1 = getBestMoveMultiThreaded(b, moveTime);
     makeMove(b, 26); // both moves are equivalent, we are only testing if alex crashes when there are passes
 
-    MOVE move2 = getBestMove(b, moveTime);
+    MOVE move2 = getBestMoveMultiThreaded(b, moveTime);
     assert(move2 == getPassMove());
     makeMove(b, move2);
 
 
-    MOVE move3 = getBestMove(b, moveTime);
+    MOVE move3 = getBestMoveMultiThreaded(b, moveTime);
     makeMove(b, move3);
 
-    MOVE move4 = getBestMove(b, moveTime);
+    MOVE move4 = getBestMoveMultiThreaded(b, moveTime);
     assert(move4 == getPassMove());
     makeMove(b, move4);
 
-    MOVE move5 = getBestMove(b, moveTime);
+    MOVE move5 = getBestMoveMultiThreaded(b, moveTime);
 
     freeBoardStruct(b);
     return 0; // success

@@ -467,117 +467,117 @@ void freeContexts(Contexts *contexts) {
 }
 
 // selection expansion simulation backprop
-int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
-    srand(time(NULL)); // todo move out ?
-
-    BOARD board = boardStruct->board;
-    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
-    int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
-
-    if (totalMoves == 0) {
-        free(moves);
-        printf("Alex returns pass move\n");
-        return getPassMove();
-    }
-
-    if (totalMoves == 1) {
-        MOVE move = moves[0];
-        free(moves);
-        printf("Alex returns only move: %d\n", move);
-        return move;
-    }
-
-    BOARD_STRUCT *copy = malloc(sizeof(BOARD_STRUCT));
-
-    initialiseBoardStructToZero(copy);
-    copyBoardStruct(copy, boardStruct, getBoardSize());
-
-    MOVE move = moves[0];
-
-    Node *root = malloc(sizeof(Node));
-    setupNode(root);
-    root->nodeType = ROOT;
-    root->parentNode = NULL;
-    root->sideToMove = boardStruct->sideToMove;
-    root->hasJustMoved = switchPlayer(boardStruct->sideToMove);
-
-    free(moves);
-
-    int simulationsDone = 0;
-
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-
-    double original_time_in_mill = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-
-    while ((tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 - original_time_in_mill < moveTime) {
-        copyBoardStruct(boardStruct, copy, getBoardSize());
-
-        Node *fromSelection = selection(root, boardStruct); // pick a node with no children
-
-        Node *expandedChild = expansion(fromSelection, boardStruct); // reserve memory for children and pick one
-
-        if (expandedChild == fromSelection) {
-            assert(isGameOver(boardStruct));
-        }
-
-        int outcome = simulation(expandedChild, boardStruct); // run a game, return result
-
-        backprop(expandedChild, outcome);
-
-        simulationsDone++;
-        gettimeofday(&tv, NULL);
-    }
-
-    int totalWinsRoot = root->winCount;
-    int totalWinsChildren = 0;
-
-    int totalPlayoutsFromRoot = root->playoutCount;
-    int totalPlayoutsFromChildren = 0;
-    int mostPlayoutsFromChild = 0;
-    double weakestChildScore = 100;
-    MOVE weakestChild = 0;
-    MOVE weakestChildMove = getLastMove();
-
-    int mostPlayedKidNumber = 0;
-    MOVE mostPlayedKid = getPassMove();
-
-    for (int i = 0; i < root->numberOfChildren; i++) {
-        if (root->childrenNodes[i]) {
-            totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
-            mostPlayoutsFromChild =
-                    root->childrenNodes[i]->playoutCount > mostPlayoutsFromChild ? root->childrenNodes[i]->playoutCount
-                                                                                 : mostPlayoutsFromChild;
-
-            totalWinsChildren += root->childrenNodes[i]->winCount;
-
-            if (root->childrenNodes[i]->playoutCount) {
-                double ratio = (double) root->childrenNodes[i]->winCount / root->childrenNodes[i]->playoutCount;
-                if (ratio <= weakestChildScore) {
-                    weakestChildScore = ratio;
-                    weakestChild = i;
-                    weakestChildMove = root->childrenNodes[i]->moveFromParent;
-                }
-            }
-
-            if (mostPlayedKidNumber < root->childrenNodes[i]->playoutCount) {
-                mostPlayedKidNumber = root->childrenNodes[i]->playoutCount;
-                mostPlayedKid = root->childrenNodes[i]->moveFromParent;
-            }
-        }
-    }
-
-    assert(root->playoutCount - totalWinsRoot == totalWinsChildren);
-
-    copyBoardStruct(boardStruct, copy, getBoardSize());
-
-    assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
-
-    freeKids(root);
-    freeBoardStruct(copy);
-
-    return mostPlayedKid;
-}
+//int getBestMove(BOARD_STRUCT *boardStruct, int moveTime) {
+//    srand(time(NULL)); // todo move out ?
+//
+//    BOARD board = boardStruct->board;
+//    MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
+//    int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
+//
+//    if (totalMoves == 0) {
+//        free(moves);
+//        printf("Alex returns pass move\n");
+//        return getPassMove();
+//    }
+//
+//    if (totalMoves == 1) {
+//        MOVE move = moves[0];
+//        free(moves);
+//        printf("Alex returns only move: %d\n", move);
+//        return move;
+//    }
+//
+//    BOARD_STRUCT *copy = malloc(sizeof(BOARD_STRUCT));
+//
+//    initialiseBoardStructToZero(copy);
+//    copyBoardStruct(copy, boardStruct, getBoardSize());
+//
+//    MOVE move = moves[0];
+//
+//    Node *root = malloc(sizeof(Node));
+//    setupNode(root);
+//    root->nodeType = ROOT;
+//    root->parentNode = NULL;
+//    root->sideToMove = boardStruct->sideToMove;
+//    root->hasJustMoved = switchPlayer(boardStruct->sideToMove);
+//
+//    free(moves);
+//
+//    int simulationsDone = 0;
+//
+//    struct timeval tv;
+//    gettimeofday(&tv, NULL);
+//
+//    double original_time_in_mill = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+//
+//    while ((tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 - original_time_in_mill < moveTime) {
+//        copyBoardStruct(boardStruct, copy, getBoardSize());
+//
+//        Node *fromSelection = selection(root, boardStruct); // pick a node with no children
+//
+//        Node *expandedChild = expansion(fromSelection, boardStruct); // reserve memory for children and pick one
+//
+//        if (expandedChild == fromSelection) {
+//            assert(isGameOver(boardStruct));
+//        }
+//
+//        int outcome = simulation(expandedChild, boardStruct); // run a game, return result
+//
+//        backprop(expandedChild, outcome);
+//
+//        simulationsDone++;
+//        gettimeofday(&tv, NULL);
+//    }
+//
+//    int totalWinsRoot = root->winCount;
+//    int totalWinsChildren = 0;
+//
+//    int totalPlayoutsFromRoot = root->playoutCount;
+//    int totalPlayoutsFromChildren = 0;
+//    int mostPlayoutsFromChild = 0;
+//    double weakestChildScore = 100;
+//    MOVE weakestChild = 0;
+//    MOVE weakestChildMove = getLastMove();
+//
+//    int mostPlayedKidNumber = 0;
+//    MOVE mostPlayedKid = getPassMove();
+//
+//    for (int i = 0; i < root->numberOfChildren; i++) {
+//        if (root->childrenNodes[i]) {
+//            totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
+//            mostPlayoutsFromChild =
+//                    root->childrenNodes[i]->playoutCount > mostPlayoutsFromChild ? root->childrenNodes[i]->playoutCount
+//                                                                                 : mostPlayoutsFromChild;
+//
+//            totalWinsChildren += root->childrenNodes[i]->winCount;
+//
+//            if (root->childrenNodes[i]->playoutCount) {
+//                double ratio = (double) root->childrenNodes[i]->winCount / root->childrenNodes[i]->playoutCount;
+//                if (ratio <= weakestChildScore) {
+//                    weakestChildScore = ratio;
+//                    weakestChild = i;
+//                    weakestChildMove = root->childrenNodes[i]->moveFromParent;
+//                }
+//            }
+//
+//            if (mostPlayedKidNumber < root->childrenNodes[i]->playoutCount) {
+//                mostPlayedKidNumber = root->childrenNodes[i]->playoutCount;
+//                mostPlayedKid = root->childrenNodes[i]->moveFromParent;
+//            }
+//        }
+//    }
+//
+//    assert(root->playoutCount - totalWinsRoot == totalWinsChildren);
+//
+//    copyBoardStruct(boardStruct, copy, getBoardSize());
+//
+//    assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
+//
+//    freeKids(root);
+//    freeBoardStruct(copy);
+//
+//    return mostPlayedKid;
+//}
 
 
 MOVE getMostPlayedKid(Node *root) {

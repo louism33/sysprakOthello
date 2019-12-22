@@ -33,8 +33,15 @@ typedef struct BOARD_STRUCT {
 
 } BOARD_STRUCT;
 
-// can't have more than 64 moves (and can't have exactly 64 either)
+
+// can't have more than boardSize moves (and can't have exactly boardSize either)
 typedef int *MOVES;
+
+
+typedef struct BOARD_STRUCT_AND_MOVES {
+    BOARD_STRUCT* boardStruct;
+    MOVES moves;
+} BOARD_STRUCT_AND_MOVES;
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER);
 

@@ -12,5 +12,6 @@ jobs:
     - name: scriptFromLectureIsh
       run: 
         cd scripts/ && 
-        sudo apt install valgrind && 
+        sudo apt-get update &&
+        sudo apt install valgrind &&
         ./testGithubScript.sh

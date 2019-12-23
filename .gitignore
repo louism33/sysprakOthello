@@ -13,6 +13,7 @@ makefileM
 .vscode/
 *.out
 *.data
+*.data.old
 
 scripts/sysprakOthello.zip
 scripts/buildDir

@@ -79,6 +79,8 @@ SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct);
 
 SIDE_TO_MOVE getStartingPlayer();
 
+void freeStatics();
+
 MOVE getPassMove();
 
 MOVE getLastMove();
@@ -147,7 +149,7 @@ int isGameOver(BOARD_STRUCT *boardStruct);
 
 int getBoardSize();
 
-void setBoardSize(int rows, int columns);
+//void setBoardSize(int rows, int columns);
 
 int getRowSize();
 

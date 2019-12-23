@@ -147,24 +147,6 @@ void setupNodeParentMove(Node *node, Node *parent, MOVE move) {
     node->gameOverWinner = GAME_NOT_OVER;
 }
 
-void addTotalMoveInfo(Node *node, int totalMoves) {
-    // todo careful of endgame?
-
-    assert(node->ready);
-
-    // if there are no moves, there is still a pass move
-    if (node->movesReady) {
-        printf("%p is already ready\n", node);
-        return;
-    }
-    if (!totalMoves) {
-        totalMoves = 1;
-    }
-    node->numberOfChildren = totalMoves;
-    node->childrenNodes = calloc(totalMoves, sizeof(Node));
-    node->movesReady = 1;
-}
-
 void addTotalMoveInfoAllocAllChildren(Node *node, int totalMoves, MOVES moves) { // todo careful of passes
     // todo careful of endgame?
     // if there are no moves, there is still a pass move
@@ -179,20 +161,18 @@ void addTotalMoveInfoAllocAllChildren(Node *node, int totalMoves, MOVES moves) {
         totalMoves = 1;
     }
     node->numberOfChildren = totalMoves;
+
     node->childrenNodes = calloc(totalMoves, sizeof(Node));
 
     for (int i = 0; i < totalMoves; i++) {
         node->childrenNodes[i] = calloc(1, sizeof(Node));
-//        printf("b -> ");
         setupNodeParentMove(node->childrenNodes[i], node, moves[i]);
-//        printf("\n");
     }
 
     node->movesReady = 1;
 }
 
 void expandNodeMove(Node *child, Node *parent, int moveIndex, MOVE move) {
-//    setupNodeParentMove(child, parent, move);
     child->parentNode = parent;
     child->moveFromParent = move;
 
@@ -200,13 +180,7 @@ void expandNodeMove(Node *child, Node *parent, int moveIndex, MOVE move) {
     parent->childrenNodes[moveIndex] = child;
     parent->numberOfExpandedChildren++;
 
-    if (parent->numberOfExpandedChildren > parent->numberOfChildren) {
-        printf("too many children, parent has %d expanded, but only %d children\n", parent->numberOfExpandedChildren,
-               parent->numberOfChildren);
-        printf("PARENT: %p\n", parent);
-        printNode(parent);
-        exit(1);
-    }
+    assert(parent->numberOfChildren <= parent->numberOfChildren);
 }
 
 void printNodeBoardStruct(Node *node, BOARD_STRUCT *boardStruct) {
@@ -393,10 +367,6 @@ int simulation(Node *node, BOARD_STRUCT_AND_MOVES *boardStructAndMoves) {
     return getWinner(boardStruct);
 }
 
-int switchOutcome(int outcome) {
-    return -outcome;
-}
-
 int backprop(Node *finalNode, int outcome) {
     Node *temp = finalNode;
     if (!temp->parentNode) {
@@ -432,7 +402,7 @@ void freeKids(Node *node) {
         }
     }
 
-    free(node->childrenNodes); // careful?
+    free(node->childrenNodes);
     free(node);
 }
 
@@ -445,33 +415,6 @@ void freeContexts(Contexts *contexts) {
     free(contexts->contexts);
     free(contexts);
 }
-
-//MOVE getMostPlayedKid(Node *root) {
-//    int totalWinsChildren = 0;
-//    int totalPlayoutsFromChildren = 0;
-//    int mostPlayedKidNumber = 0;
-//    MOVE mostPlayedKid = getPassMove();
-//
-//    for (int i = 0; i < root->numberOfChildren; i++) {
-//        if (root->childrenNodes[i]) {
-//            totalPlayoutsFromChildren += root->childrenNodes[i]->playoutCount;
-//
-//            totalWinsChildren += root->childrenNodes[i]->winCount;
-//
-//            if (mostPlayedKidNumber < root->childrenNodes[i]->playoutCount) {
-//                mostPlayedKidNumber = root->childrenNodes[i]->playoutCount;
-//                mostPlayedKid = root->childrenNodes[i]->moveFromParent;
-//            }
-//        }
-//    }
-//
-//    int totalWinsRoot = root->winCount;
-//    assert(root->playoutCount - totalWinsRoot == totalWinsChildren);
-//    int totalPlayoutsFromRoot = root->playoutCount;
-//    assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
-//    return mostPlayedKid;
-//}
-
 
 MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
     Node *baseRoot = contexts->contexts[0]->root;
@@ -512,7 +455,7 @@ MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
 
     int totalWinsRoot = baseRoot->winCount;
     assert(baseRoot->playoutCount - totalWinsRoot == totalWinsChildren);
-//    printNodeLittle(baseRoot);
+    printNodeLittle(baseRoot);
     int totalPlayoutsFromRoot = baseRoot->playoutCount;
     assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
     return mostPlayedKid;
@@ -611,10 +554,6 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
 
         Node *root = malloc(sizeof(Node));
         setupRootNode(root, boardStruct);
-//        root->nodeType = ROOT;
-//        root->parentNode = NULL;
-//        root->sideToMove = boardStruct->sideToMove;
-//        root->hasJustMoved = switchPlayer(boardStruct->sideToMove);
 
         context->root = root;
 
@@ -630,3 +569,5 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
 
     return move;
 }
+// 30 sec
+//136105/527620 163552/619036, 117904/457150, 139790/535838 137510/529226,

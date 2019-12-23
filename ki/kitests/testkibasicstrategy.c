@@ -13,7 +13,7 @@ int testPickUpCorner() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(b);
     int *board = b->board;
-    int moveTime = 30000;
+    int moveTime = 3000;
 
     board[2] = board[8] = getBlack();
     board[16] = board[1] = getWhite();

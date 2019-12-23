@@ -569,5 +569,3 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
 
     return move;
 }
-// 30 sec
-//136105/527620 163552/619036, 117904/457150, 139790/535838 137510/529226,

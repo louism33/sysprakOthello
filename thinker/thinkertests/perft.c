@@ -206,6 +206,8 @@ int testBasicBoard() {
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 
+//    printBoardSide(b);
+
     if (1) {
         int received = perft(b, 1, 0);
         int correct = 4;
@@ -227,6 +229,8 @@ int testBasicBoard() {
         }
     }
 
+
+
     if (1) {
         int received = perft(b, 2, 0);
         int correct = 12;
@@ -246,6 +250,7 @@ int testBasicBoard() {
             exit(1);
         }
     }
+    printBoardSide(b);
 
     if (1) {
         int received = perft(b, 3, 0);

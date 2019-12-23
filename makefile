@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
+CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread -DNDEBUG
+#todo -DNDEBUG  will disable assserts
 #todo remove -g
 # todo -pg makes callgrind possible but profiling timer expired for valgrind
 DEPS = main.h connector/connector.h thinker/thinker.h  connector/config.h \

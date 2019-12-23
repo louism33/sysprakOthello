@@ -71,23 +71,23 @@ int main(int argc, char *argv[])
 
         int fail = 0;
 
-//        printf("Running fullTestSuite\n");
-//        fail += fullTestSuite();
-//
-//        printf("Running convert move test Suite\n");
-//        fail += testConvertMove();
-//
-//        printf("Running make move test Suite\n");
-//        fail += runMakeMoveTests();
-//
-//        printf("Running unmake move test Suite\n");
-//        fail += fullTestSuiteUnmakeMoveTests();
-//
-//        printf("Running big board tests Suite\n");
-//        fail += testSuiteBigBoard();
-//
-//        printf("Running perft Suite\n");
-//        fail += perftSuite();
+        printf("Running fullTestSuite\n");
+        fail += fullTestSuite();
+
+        printf("Running convert move test Suite\n");
+        fail += testConvertMove();
+
+        printf("Running make move test Suite\n");
+        fail += runMakeMoveTests();
+
+        printf("Running unmake move test Suite\n");
+        fail += fullTestSuiteUnmakeMoveTests();
+
+        printf("Running big board tests Suite\n");
+        fail += testSuiteBigBoard();
+
+        printf("Running perft Suite\n");
+        fail += perftSuite();
 
         printf("Running basic KI Suite\n");
         fail += kiTestsSimple();

@@ -1323,7 +1323,7 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
     BOARD board = boardStruct->board;
 
     assert(pos != LAST_MOVE);
-    assert(board[pos] != EMPTY);
+    assert(board[pos] == EMPTY);
 
     SIDE_TO_MOVE ME = switchPlayer(TARGET_PLAYER);
 
@@ -1363,7 +1363,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
                 }
             }
         }
-
     }
 
     //Prüfung nach rechts
@@ -1386,7 +1385,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
                 }
             }
         }
-
     }
 
     //Prüfung nach oben
@@ -1432,7 +1430,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
                 }
             }
         }
-
     }
 
     //Prüfung nach rechts oben
@@ -1455,7 +1452,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
                 }
             }
         }
-
     }
 
 
@@ -1481,7 +1477,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
                 }
             }
         }
-
     }
 
     //Prüfung nach links unten
@@ -1506,7 +1501,6 @@ int makeMoveSideAI(BOARD_STRUCT *boardStruct, int pos, SIDE_TO_MOVE TARGET_PLAYE
                 }
             }
         }
-
     }
 
     //Prüfung nach rechts unten

@@ -250,7 +250,6 @@ int testBasicBoard() {
             exit(1);
         }
     }
-    printBoardSide(b);
 
     if (1) {
         int received = perft(b, 3, 0);

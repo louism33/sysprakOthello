@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread -DNDEBUG
+#CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread -DNDEBUG
+CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
 #todo -DNDEBUG  will disable assserts
 #todo remove -g
 # todo -pg makes callgrind possible but profiling timer expired for valgrind

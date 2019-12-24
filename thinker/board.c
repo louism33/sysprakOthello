@@ -292,7 +292,6 @@ void printMoves(MOVES moves) {
             break;
         }
         getPrettyMove(move, moveMem);
-//        printf("%s\n", moveMem);
         printf("%d: %s\n", move, moveMem);
     }
     free(moveMem);

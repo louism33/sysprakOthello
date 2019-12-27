@@ -6,5 +6,7 @@
 #define SYSPRAKOTHELLO_CONNECTORTESTS_H
 
 int testConvertMove();
+int testGetMovetimeAndFieldSize();
+int testCharInNummer();
 
 #endif //SYSPRAKOTHELLO_CONNECTORTESTS_H

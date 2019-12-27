@@ -44,6 +44,7 @@
 #include <arpa/inet.h>
 #include "connector.h"
 #include "boardmessageparser.h"
+#include "performConnection.h"
 #include "../thinker/thinker.h"
 #include "../main.h"
 #include "../shm/shm.h"
@@ -73,157 +74,99 @@ char *convertMove(int move, char *antwort) {
     return antwort;
 }
 
-/*  int dealWithGameOverCommand(char *buff)
-{
-
-S: + GAMEOVER
-S: + FIELD hh Anzahl Spalten ii,hh Anzahl Zeilen ii
-Die folgende Zeile wird nun für jede Zeile des Spielfeldes geschickt, beginnend bei der obersten Zeile des Spiel-
-felds:
-S: + hh Y ii hh Stein 1Y ii hh Stein 2Y ii ... hh Stein X max Y ii
-S: + ENDFIELD
-S: + PLAYER0WON hh ’Yes’ oder ’No’ ii
-S: + PLAYER1WON hh ’Yes’ oder ’No’ ii
-S: + QUIT
-hh Abbau der TCP-Verbindung durch Gameserver ii
-Nach einem GAMEOVER stellen die weiteren Zeilen den Spielstand dar, mit dem das Partieende erreicht wurde. Dieser
-wird an alle Mitspieler geschickt. Zudem wird angegeben, welche Mitspieler gewonnen haben. Es ist auch möglich, dass
-eine Partie in einem Unentschieden endet. In dem Fall ist allen Mitspielern der Gewinnstatus der Partie auf Yes gesetzt.
-Nach QUIT beendet der Server die Verbindung
-
-    char gameOver[] = "game is over \n";
-
-    //if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
-    //    writeToServer(sockfd, gameOver);
-    //}
-
-    printf("XXXXXXXXXXXXXXX  game is over!!!!!!!!!! \n");
-    printf("   final thing received from server::::%s\n", buff);
-    return 0; // todo, implement
-} */
-
-int dealWithGameOverCommand(char *buff)
-{
-
-    //printf("XXXXXXXXXXXXXXX  game is over!!!!!!!!!! \n");
-    //printf("XXXXXXXXXXXXXXX  final thing received from server:::: \n%s ", buff);
+int dealWithGameOverCommand(char *buff) {
+    printf("The game is over.\n");
 
     char *black;
     char *white;
     black = strstr(buff, "+ PLAYER0WON Yes");
     white = strstr(buff, "+ PLAYER1WON Yes");
 
-    if (black != 0 && white != 0)
-    {
+    if (black != 0 && white != 0) {
         printf("draw \n");
-    }
-
-    else if (black != 0)
-    {
+    } else if (black != 0) {
         printf("black wins \n");
-    }
-
-    else if (white != 0)
-    {
+    } else if (white != 0) {
         printf("white wins \n");
     }
 
-    return 0; // todo, implement
+    return 0;
 }
 
 
-
-int getMovetimeandFieldsize(char *buff, char *moveTime, char *fieldSize)
-{
-    //printf("   xxxxxxx board xxxxx :::: \n%s", buff);
+int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     char *moveString;
-    //char *moveTime;
-    char move[20];
+    char move[20] = {" "};
     int moveTimeNummer;
     char *fieldString;
-    char field[20];
-    //char *fieldSize;
+    char field[20] = {" "};
     int fieldSizeNummer = 0;
     moveString = strstr(buff, "MOVE");
     fieldString = strstr(buff, "FIELD");
     int i = 0;
-    int IndexOfmove = 0;
-    int IndexOfmoveTime = 0;
+    unsigned int indexOfMove = 0;
+    unsigned int indexOfMoveTime = 0;
     int j = 0;
-    int IndexOffield = 0;
-    int IndexOffieldSize = 0;
+    unsigned int indexOfField = 0;
+    unsigned int indexOfFieldSize = 0;
 
-    while (moveString[i] != '+')
-    {
+    while (moveString[i] != '+') {
         move[i] = moveString[i];
         i++;
     }
 
-    while (IndexOfmove <= strlen(move))
-    {
-        if (move[IndexOfmove] >= '0' && move[IndexOfmove] <= '9')
-        {
-            moveTime[IndexOfmoveTime] = move[IndexOfmove];
-            IndexOfmoveTime++;
+    while (indexOfMove <= strlen(move)) {
+        if (move[indexOfMove] >= '0' && move[indexOfMove] <= '9') {
+            moveTime[indexOfMoveTime] = move[indexOfMove];
+            indexOfMoveTime++;
         }
-        IndexOfmove++;
+        indexOfMove++;
     }
-    moveTime[IndexOfmoveTime] = '\0';
+
+    moveTime[indexOfMoveTime] = '\0';
     moveTimeNummer = atoi(moveTime);
     //printf("%d\n", moveTimeNummer);
 
-    while (fieldString[j] != '+')
-    {
+    while (fieldString[j] != '+') {
         field[j] = fieldString[j];
         j++;
     }
 
-    while (IndexOffield <= strlen(field))
-    {
-        if ((field[IndexOffield] >= '0' && field[IndexOffield] <= '9') || field[IndexOffield] == ',')
-        {
-            fieldSize[IndexOffieldSize] = field[IndexOffield];
-            IndexOffieldSize++;
+    while (indexOfField <= strlen(field)) {
+        if ((field[indexOfField] >= '0' && field[indexOfField] <= '9') || field[indexOfField] == ',') {
+            fieldSize[indexOfFieldSize] = field[indexOfField];
+            indexOfFieldSize++;
         }
-        IndexOffield++;
+        indexOfField++;
     }
-    fieldSize[IndexOffieldSize] = '\0';
+    printf("indexOfFieldSize %d\n", indexOfFieldSize);
+    fieldSize[indexOfFieldSize] = '\0';
 
     return moveTimeNummer;
 }
 
-struct fieldSizeNummer1and2 charInNummer(char *fieldSize)
-{
-    char firstPart[10];
-    char secondPart[10];
+FieldSizeColumnAndRow charInNummer(char *fieldSize) {
+    char firstPart[10] = {" "};
+    char secondPart[10] = {" "};
     int index = 0;
-    int komma = 0; // Index des Kommas
+    unsigned int komma = 0;
     int num1 = 0;
     int num2 = 0;
-    int indexNew = 0;
-    struct fieldSizeNummer1and2 f;
+    unsigned int indexNew = 0;
+    FieldSizeColumnAndRow f;
 
-    //pruefen ob es Komma gibt, wenn ja return 00;
-    //durch fieldSize loop, stop wenn du ',' findest
-    // du bekommst 2 char*
-    // mach 'atoi' mit beide
-    // mit irgendwleche Probleme, return 0,0
-
-    while (1)
-    {
+    while (1) {
         if (fieldSize[index] == ',') // wenn Komma gibt
         {
             //printf("Es gibt Komma.\n");
             komma = index;
-            while (indexNew != komma)
-            {
+            while (indexNew != komma) {
                 firstPart[num1] = fieldSize[indexNew];
                 num1++;
                 indexNew++;
             }
 
-            while (komma < strlen(fieldSize))
-            {
+            while (komma < strlen(fieldSize)) {
                 secondPart[num2] = fieldSize[komma + 1];
                 num2++;
                 komma++;
@@ -231,31 +174,21 @@ struct fieldSizeNummer1and2 charInNummer(char *fieldSize)
             index++;
             if (atoi(firstPart) < 0 || atoi(secondPart) < 0) // pruefen, dass kein Nummer < 0 ist!
             {
-                f.Nummer1 = 0;
-                f.Nummer2 = 0;
-            }
-            else
-            {
+                f.row = 0;
+                f.col = 0;
+            } else {
                 firstPart[num1] = '\0';
                 secondPart[num2] = '\0';
-                //printf("%s\n", firstPart);
-                //printf("%d\n", atoi(firstPart));
-                //printf("%s\n", secondPart);
-                //printf("%d\n", atoi(secondPart));
-                f.Nummer1 = atoi(firstPart);
-                f.Nummer2 = atoi(secondPart);
+                f.row = atoi(firstPart);
+                f.col = atoi(secondPart);
             }
             break;
-        }
-        else if (fieldSize[index] == '\0') // bis Ende kein Komma gibt
+        } else if (fieldSize[index] == '\0') // bis Ende kein Komma gibt
         {
-            //printf("Kein Komma.\n");
-            f.Nummer1 = 0;
-            f.Nummer2 = 0;
+            f.row = 0;
+            f.col = 0;
             break;
-        }
-        else
-        {
+        } else {
             index++;
         }
     }

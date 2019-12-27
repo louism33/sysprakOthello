@@ -51,6 +51,7 @@
 #include <string.h>
 
 #include "boardmessageparser.h"
+//#include "performConnection.h"
 
 /*
 + TOTAL 2
@@ -134,5 +135,8 @@ int parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, 
     }
 
     moveTimeAndBoard->board = boardBoard; // todo, decide if board should be from argument or from here
+//    char *moveTime = malloc(10 * sizeof(char));
+//    char *fieldSize = malloc(10 * sizeof(char));
+//    moveTimeAndBoard->movetime = getMoveTimeAndFieldSize(message, moveTime, fieldSize);
     return 0;
 }

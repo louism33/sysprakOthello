@@ -90,11 +90,11 @@ int main(int argc, char *argv[])
         printf("Running perft Suite\n");
         fail += perftSuite();
 
-        printf("Running testgetMovetimeandFieldsize().\n");
-        fail += testgetMovetimeandFieldsize();
+        printf("Running testgetMoveTimeAndFieldSize().\n");
+        fail += testGetMovetimeAndFieldSize();
 
-        printf("Running testcharInNummer().\n");
-        fail += testcharInNummer();
+        printf("Running testCharInNummer().\n");
+        fail += testCharInNummer();
 
         printf("Running basic KI Suite\n");
         fail += kiTestsSimple();

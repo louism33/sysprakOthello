@@ -16,6 +16,7 @@ makefileM
 *.data.old
 
 scripts/sysprakOthello.zip
+sysprakOthello.zip
 scripts/buildDir
 
 # Prerequisites

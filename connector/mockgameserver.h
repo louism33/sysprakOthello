@@ -1,0 +1,11 @@
+//
+// Created by louis on 11/14/19.
+//
+
+#ifndef SYSPRAKOTHELLO_MOCKGAMESERVER_H
+#define SYSPRAKOTHELLO_MOCKGAMESERVER_H
+
+int createMockGameServer();
+
+
+#endif //SYSPRAKOTHELLO_MOCKGAMESERVER_H

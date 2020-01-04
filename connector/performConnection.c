@@ -301,15 +301,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 break;
             }
 
-            if ((strncmp("- No free", buff, 9)) == 0) {
-                fprintf(stderr,
-                        "Could dd not connect to game, the player is already taken, or there are no free players.\n");
-                endstate = 1;
-                break;
-            }
-
             if ((strncmp("- ", buff, 2)) == 0) {
-                fprintf(stderr, "xxUnknown Server error response! '%s'\n", buff);
+                fprintf(stderr, "Unknown Server error response! '%s'\n", buff);
                 endstate = 1;
                 break;
             }

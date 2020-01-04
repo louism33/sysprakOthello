@@ -313,6 +313,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 break;
             }
 
+            if ((strncmp("- Invalid Move: Invalid position", buff, 32)) == 0) {
+                fprintf(stderr,
+                        "We seem to have made an invalid move :(. Maybe we thought the wrong colour was playing?.\n");
+                endstate = 1;
+                break;
+            }
+
             if ((strncmp("- ", buff, 2)) == 0) {
                 fprintf(stderr, "Unknown Server error response! '%s'\n", buff);
                 endstate = 1;

@@ -14,6 +14,13 @@
 MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
     printf("received doThink command from connector, time to move %d\n", moveTime);
 
+    if (boardStruct->sideToMove == getBlack()) {
+        printf("SIDE TO MOVE IS  BLACCCCK");
+    } else {
+        printf("SIDE TO MOVE IS  BLACCCCK");
+
+    }
+
     MOVE bestMove = getBestMoveMultiThreaded(boardStruct, moveTime);
 
     printf("                                            dothinker move: %d\n", bestMove);

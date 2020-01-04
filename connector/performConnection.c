@@ -264,7 +264,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char playCommandToSend[10] = {0};
 
 
-    if (player != NULL && strlen(player) != 1) {
+    if (player != NULL && strlen(player) == 1) {
         printf("moving player values around\n");
         printf("player: %s\n", player);
         printf("player[0]: %c\n", player[0]);

@@ -264,6 +264,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char playCommandToSend[10] = {0};
 
 
+
     if (player != NULL && strlen(player) == 1) {
         printf("moving player values around\n");
         printf("player: %s\n", player);
@@ -357,19 +358,14 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("-----------save gameName: %s\n", gameName);
 
 
-                // todo THIS IS TOTALLY FUCKED
 
                 if (player == NULL || strlen(player) != 1) {
-                    printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
+//                    printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
-                    // todo THIS IS TOTALLY FUCKED
-                    // todo THIS IS TOTALLY FUCKED
-                    // todo THIS IS TOTALLY FUCKED
-                    // todo THIS IS TOTALLY FUCKED
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
-                    printf("### -------------> connecting with player string:'%s'\n", playerToSend);
+//                    printf("### -------------> connecting with player string:'%s'\n", playerToSend);
                     writeToServer(sockfd, playerToSend);
                 }
             }
@@ -382,7 +378,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 playerNumber[2] = '\0';
                 printf("--------save  playerNumber: %s\n", playerNumber);
                 // this often gets weird crap
-                info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber);
+                // todo!!!!
+                // why is players an array?????
+                info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber); // this line is not useful
+                info->me->mitspielerNummer = atoi(playerNumber);
                 printf("----save mitspielerNummer:%d\n", info->players[atoi(playerNumber)].mitspielerNummer);
                 info->players[atoi(playerNumber)].bereit = true;
 

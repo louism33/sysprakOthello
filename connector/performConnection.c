@@ -430,11 +430,11 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("finished parse board, here is the board I was able to parse:\n");
                 printBoardLouis(connectorBoard);
 
-                schreiben = true;
+                schreiben = true; // todo, what is this global doing???
                 /* ----------------------- fertig mit schreiben des struct infoVonServer und schreiben in SHM ---*/
                 /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
 
-                memcpy(info->infoBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
+                memcpy(info->infoBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); // todo get these params from server
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 
@@ -442,6 +442,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("sending relevant info to thinker\n");
                 char *moveRet = malloc(3 * sizeof(char));
 
+                // is this even relevant???
                 connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
 //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
@@ -454,11 +455,15 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 }
                 mTB->movetime = 500; // todo get from server
 
+
+                // todo, don't block the connector waiting for the thinker...
+                // todo, don't block the connector waiting for the thinker...
+                // todo, don't block the connector waiting for the thinker...
+                // todo, don't block the connector waiting for the thinker...
                 moveReceivedFromThinker[0] = moveRet[0];
                 close(pd[1]);    // Schreibseite schließen
                 char buffer[50]; // Puffer zum speichern von gelesenen Daten
-                if (read(pd[0], buffer, sizeof(buffer)) ==
-                    -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                if (read(pd[0], buffer, sizeof(buffer)) ==   -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
                     perror("read");
                     endstate = 1;
                     break;

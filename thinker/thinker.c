@@ -14,12 +14,9 @@
 MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
     printf("received doThink command from connector, time to move %d\n", moveTime);
 
-    moveTime = 2000;
-
-//    MOVE bestMove = getBestMove(boardStruct, moveTime);
     MOVE bestMove = getBestMoveMultiThreaded(boardStruct, moveTime);
 
-    printf("dothinker move: %d\n", bestMove);
+    printf("                                            dothinker move: %d\n", bestMove);
 
     return bestMove;
 }

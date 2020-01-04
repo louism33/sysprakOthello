@@ -46,7 +46,7 @@ void mysighandler(int sig)
 
     if (sig == SIGUSR1)
     {
-        sleep(1);
+        sleep(1); // todo....
         denken = true;
     }
 }
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 
             //printBoard(info->infoBoard->board);
             printf("jetzt thinking...\n\n");
-            move = doThink(info->infoBoard, 3000);
+            move = doThink(info->infoBoard, 500);
             printf("Der Erste Zug geht zu %d\n", move);
             getPrettyMove(move, antwort);
             printf("antwort: %s\n", antwort);

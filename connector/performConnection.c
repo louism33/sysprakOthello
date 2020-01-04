@@ -388,8 +388,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
+                    printf("         setting player number to B");
                     sideToMove = getBlack();
                 } else {
+                    printf("         setting player number to W");
                     sideToMove = getWhite();
                 }
 

@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h>
 #include <string.h>
 #include "connector/connector.h"
@@ -46,7 +47,6 @@ void mysighandler(int sig)
 
     if (sig == SIGUSR1)
     {
-        sleep(1);
         denken = true;
     }
 }
@@ -124,19 +124,24 @@ int main(int argc, char *argv[])
     case -1:
         printf("Fehler bei fork()\n");
         break;
+        //exit(0);
 
         /*Kindsprozess = Connector*/
     case 0:
+
         printf("Im Kindsprozess\n");
         connector = getpid();
         thinker = getppid();
         printf("ConnectorPID = %i\n", connector);
         connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
         break;
+        //exit(1);
 
 
     /*Elternprozess = Thinker*/
     default:
+    
+        wait(NULL);
         printf("Im Elternprozess\n");
         thinker = getpid();
         printf("ThinkerPID = %i\n", thinker);
@@ -172,15 +177,17 @@ int main(int argc, char *argv[])
             }
             bzero(antwort, sizeof(antwort));
         }
-
         break;
+        //exit(2);
     }
-
+    //printf("Ich muss enden\n");
     deleteShm();
     free(antwort);
     freeBoardStruct(connectorBoard);
     if (failState) {
         fprintf(stderr, "Error happened\n");
     }
+    
     return failState;
+    //return 0;
 }

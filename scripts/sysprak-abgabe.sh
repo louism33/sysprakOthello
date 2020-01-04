@@ -137,5 +137,5 @@ fi
 
 cd ..
 if [ -d "$BUILD_DIR" ]; then
-	rm -r "$BUILD_DIR"
+	#rm -r "$BUILD_DIR"
 fi

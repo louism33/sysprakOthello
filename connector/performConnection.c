@@ -336,7 +336,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
                 printf("-----------save gameName: %s\n", gameName);
-                if (player == NULL || strlen(player) != 1) {
+                if (1 || player == NULL || strlen(player) != 1) {
                     printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {

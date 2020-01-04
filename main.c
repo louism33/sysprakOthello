@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
             //printBoard(info->infoBoard->board);
             printf("jetzt thinking...\n\n");
 
-//            printBoardLouis(info->infoBoard);
+            printBoardLouis(info->infoBoard);
 //            info->infoBoard->sideToMove = info->me->mitspielerNummer;
 
 //            printBoardLouis(info->infoBoard);

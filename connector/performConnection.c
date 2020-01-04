@@ -263,6 +263,15 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char gameKindNameFromServer[32] = {0};
     char playCommandToSend[10] = {0};
 
+
+    if (player != NULL && strlen(player) != 1) {
+        if (player[0] == '1') {
+            player[0] = '0';
+        } else if (player[0] == '2') {
+            player[0] = '1';
+        }
+    }
+
     SIDE_TO_MOVE sideToMove;
 
     enum Phase phase = PROLOG; // this can be used to make sure we do not get confused about what stage of the game we are in
@@ -336,11 +345,18 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
                 printf("-----------save gameName: %s\n", gameName);
-                if (1 || player == NULL || strlen(player) != 1) {
+
+
+                // todo THIS IS TOTALLY FUCKED
+
+                if (player == NULL || strlen(player) != 1) {
                     printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
-
+                    // todo THIS IS TOTALLY FUCKED
+                    // todo THIS IS TOTALLY FUCKED
+                    // todo THIS IS TOTALLY FUCKED
+                    // todo THIS IS TOTALLY FUCKED
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
                     printf("### -------------> connecting with player string:'%s'\n", playerToSend);
@@ -386,7 +402,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
             info->infoBoard->board =
-                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT);
+                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
+                    sizeof(BOARD_STRUCT);
             //moveTimeAndBoard->movetime=shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT)+sizeof(int);
             // printf("sizeof: %p\n",info->infoBoard+40);
 

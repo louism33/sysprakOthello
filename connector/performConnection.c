@@ -381,7 +381,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 // todo!!!!
                 // why is players an array?????
                 info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber); // this line is not useful
-                info->me->mitspielerNummer = atoi(playerNumber);
+
+//                info->me->mitspielerNummer = atoi(playerNumber);
+
                 printf("----save mitspielerNummer:%d\n", info->players[atoi(playerNumber)].mitspielerNummer);
                 info->players[atoi(playerNumber)].bereit = true;
 
@@ -441,7 +443,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
 
                 memcpy(info->infoBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); // todo get these params from server
-                info->infoBoard->sideToMove = connectorBoard->sideToMove;
+//                info->infoBoard->sideToMove = connectorBoard->sideToMove;
+                info->infoBoard->sideToMove = sideToMove;
 
 
                 printf("finished parse board\n");
@@ -449,7 +452,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 char *moveRet = malloc(3 * sizeof(char));
 
                 // is this even relevant???
-                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
+//                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
 //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
                 //signal schicken

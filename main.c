@@ -51,6 +51,15 @@ void mysighandler(int sig)
     }
 }
 
+void mysighandler2(int sig)
+{
+
+    if (sig == SIGUSR2)
+    {
+        denken = true;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     if (argc > 1 && strcmp(argv[1], "perft") == 0)
@@ -123,8 +132,8 @@ int main(int argc, char *argv[])
         /*Fehlerfall*/
     case -1:
         printf("Fehler bei fork()\n");
-        break;
-        //exit(0);
+        //break;
+        exit(0);
 
         /*Kindsprozess = Connector*/
     case 0:
@@ -134,19 +143,26 @@ int main(int argc, char *argv[])
         thinker = getppid();
         printf("ConnectorPID = %i\n", connector);
         connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
-        break;
-        //exit(1);
+        kill(thinker,SIGUSR2);
+        //break;
+        exit(1);
 
 
     /*Elternprozess = Thinker*/
     default:
     
-        wait(NULL);
+        
         printf("Im Elternprozess\n");
         thinker = getpid();
         printf("ThinkerPID = %i\n", thinker);
 
         if (signal(SIGUSR1, mysighandler) == SIG_ERR)
+        {
+            printf("Error beim Empfangen des Signal.\n");
+            exit(1);
+        }
+
+        if (signal(SIGUSR2, mysighandler2) == SIG_ERR)
         {
             printf("Error beim Empfangen des Signal.\n");
             exit(1);
@@ -177,6 +193,7 @@ int main(int argc, char *argv[])
             }
             bzero(antwort, sizeof(antwort));
         }
+        wait(NULL);
         break;
         //exit(2);
     }

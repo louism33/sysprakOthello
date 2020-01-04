@@ -170,10 +170,10 @@ int main(int argc, char *argv[])
             //printBoard(info->infoBoard->board);
             printf("jetzt thinking...\n\n");
 
-            printBoardLouis(info->infoBoard);
-            info->infoBoard->sideToMove = info->me->mitspielerNummer;
+//            printBoardLouis(info->infoBoard);
+//            info->infoBoard->sideToMove = info->me->mitspielerNummer;
 
-            printBoardLouis(info->infoBoard);
+//            printBoardLouis(info->infoBoard);
 
             move = doThink(info->infoBoard, 500);
             printf("Der Erste Zug geht zu %d\n", move);

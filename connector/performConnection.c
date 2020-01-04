@@ -265,6 +265,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
 
     if (player != NULL && strlen(player) != 1) {
+        printf("moving player values around\n");
+        printf("player: %s\n", player);
+        printf("player[0]: %c\n", player[0]);
         if (player[0] == '1') {
             player[0] = '0';
         } else if (player[0] == '2') {

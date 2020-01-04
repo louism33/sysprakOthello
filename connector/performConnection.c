@@ -281,12 +281,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
             printf("--->%s\n", buff);
 
-            if ((strncmp("- ", buff, 2)) == 0) {
-                fprintf(stderr, "Unknown Server error response! '%s'\n", buff);
-                endstate = 1;
-                break;
-            }
-
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
                 fprintf(stderr, "We were too slow! '%s'\n", buff);
                 endstate = 1;
@@ -303,6 +297,19 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             if ((strncmp("- No free player", buff, 16)) == 0) {
                 fprintf(stderr,
                         "Could not connect to game, the player is already taken, or there are no free players.\n");
+                endstate = 1;
+                break;
+            }
+
+            if ((strncmp("- No free", buff, 9)) == 0) {
+                fprintf(stderr,
+                        "Could dd not connect to game, the player is already taken, or there are no free players.\n");
+                endstate = 1;
+                break;
+            }
+
+            if ((strncmp("- ", buff, 2)) == 0) {
+                fprintf(stderr, "xxUnknown Server error response! '%s'\n", buff);
                 endstate = 1;
                 break;
             }

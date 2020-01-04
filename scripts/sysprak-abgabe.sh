@@ -99,13 +99,16 @@ fi
 echo "STARTING PLAYER1"
 
 ## start PLAYER1
-GAME_ID=$ID PLAYER=$PLAYER1 make play &
+GAME_ID=$ID PLAYER=$PLAYER1 make play >> aabbccddeeffgg.txt &
 
 
 echo "STARTING PLAYER2"
 ## check Valgrind for PLAYER2
-rm -f $VALGRIND_LOG
-valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &
+#rm -f $VALGRIND_LOG
+#valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &
+./$EXECNAME -g $ID -p $PLAYER2 >> p2.txt &
+
+
 
 ## launch browser
 if $SPECTATE; then

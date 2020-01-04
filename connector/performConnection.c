@@ -452,7 +452,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 } else {
                     printf("******************************************kill\n");
                 }
-                mTB->movetime = 3000; // todo get from server
+                mTB->movetime = 500; // todo get from server
 
                 moveReceivedFromThinker[0] = moveRet[0];
                 close(pd[1]);    // Schreibseite schließen

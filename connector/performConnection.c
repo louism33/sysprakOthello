@@ -388,10 +388,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
-                    printf("         setting player number to B");
+                    printf("         setting player number to B\n");
                     sideToMove = getBlack();
                 } else {
-                    printf("         setting player number to W");
+                    printf("         setting player number to W\n");
                     sideToMove = getWhite();
                 }
 
@@ -438,6 +438,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                     fprintf(stderr, "Problem parsing board message\n");
                 }
                 printf("finished parse board, here is the board I was able to parse:\n");
+                connectorBoard->sideToMove = sideToMove;
                 printBoardLouis(connectorBoard);
 
                 schreiben = true; // todo, what is this global doing???
@@ -454,6 +455,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 char *moveRet = malloc(3 * sizeof(char));
 
                 // is this even relevant???
+
 //                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
 //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 

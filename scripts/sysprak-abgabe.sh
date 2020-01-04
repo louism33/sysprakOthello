@@ -106,7 +106,8 @@ echo "STARTING PLAYER2"
 ## check Valgrind for PLAYER2
 #rm -f $VALGRIND_LOG
 #valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &
-./$EXECNAME -g $ID -p $PLAYER2 >> p2.txt &
+rm -f p2.txt
+./$EXECNAME -g $ID -p $PLAYER2 2>&1 p2.txt &
 
 
 

@@ -50,6 +50,9 @@
 #include "../shm/shm.h"
 
 #define MAX 240 // todo make better
+#define MOVE_STRING_LENGTH 10
+#define SMALL_STRING 32
+#define BIG_STRING 64
 
 bool schreiben = false;
 
@@ -239,14 +242,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     strcpy(info->gameKindName, gameKindName);
 
     char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-    char gameName[64] = {0}; // example: Game from 2019-11-18 17:42
-    char playerNumber[32] = {0};
-    char myPlayerName[32] = {0};
-    char opponent[32] = {0};
+    char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
+    char playerNumber[SMALL_STRING] = {0};
+    char myPlayerName[SMALL_STRING] = {0};
+    char opponent[SMALL_STRING] = {0};
 
     int endstate = 0;
-    char mitspieleranzahl[32];
-    int smallStringSize = 10;
+    char mitspieleranzahl[SMALL_STRING];
     int n = 0, readResponse = 0;
 
     char version[] = "VERSION 2.42\n";
@@ -254,7 +256,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     info->minorVersionNr = 42;
     char okWait[] = "OKWAIT\n";
 
-    char gameIdToSend[20] = {0};
+    char gameIdToSend[SMALL_STRING] = {0};
     strcpy(gameIdToSend, "ID ");
     strcat(gameIdToSend, gameID);
     strcat(gameIdToSend, "\n");
@@ -265,12 +267,12 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     int lengthOfPlayCommandToSendToKeep = 5;
     char moveReceivedFromThinker[3] = {0};
     char *moveReceivedFromThinkerTEMP;
-    char gameKindNameFromServer[32] = {0};
-    char playCommandToSend[10] = {0};
+    char gameKindNameFromServer[SMALL_STRING] = {0};
+    char playCommandToSend[MOVE_STRING_LENGTH] = {0};
 
 
-    char *moveTime = malloc(smallStringSize * sizeof(char));
-    char *fieldSize = malloc(smallStringSize * sizeof(char));
+    char *moveTime = malloc(MOVE_STRING_LENGTH * sizeof(char));
+    char *fieldSize = malloc(MOVE_STRING_LENGTH * sizeof(char));
 
 
     if (player != NULL && strlen(player) == 1) {
@@ -293,11 +295,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     mTB->movetime = 0;
     mTB->board = NULL;
 
-
     info->infoBoard = NULL;
-//    info->infoBoard->board =
-//            shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
-//            sizeof(BOARD_STRUCT);
 
     if (!gameKindName) {
         printf("game kind name not provided, exiting");
@@ -371,8 +369,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 strcpy(info->gameName, gameName);
                 printf("-----------save gameName: %s\n", gameName);
 
-
-
                 if (player == NULL || strlen(player) != 1) {
 //                    printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
@@ -386,19 +382,15 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             // step four, read YOU
             if (strncmp("+ YOU", buff, 5) == 0) {
-                // todo, save information from Server here
                 printf("  Received YOU info from server, buff is:%s", buff);
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
-                printf("--------save  playerNumber: %s\n", playerNumber);
-                // this often gets weird crap
+//                printf("--------save  playerNumber: %s\n", playerNumber);
                 // todo!!!!
                 // why is players an array?????
                 info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber); // this line is not useful
 
-//                info->me->mitspielerNummer = atoi(playerNumber);
-
-                printf("----save mitspielerNummer:%d\n", info->players[atoi(playerNumber)].mitspielerNummer);
+//                printf("----save mitspielerNummer:%d\n", info->players[atoi(playerNumber)].mitspielerNummer);
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
@@ -421,7 +413,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             if (strncmp("+ TOTAL", buff, 7) == 0) {
                 strncpy(mitspieleranzahl, buff + 8, 1);
                 mitspieleranzahl[1] = '\0';
-                //printf("  Received TOTAL info from server, buff is:%s", buff);
                 info->MitspielerAnzahl = atoi(mitspieleranzahl);
                 printf("--------save  MitspielerAnzahl: %d\n", info->MitspielerAnzahl);
                 phase = SPIELVERLAUF;
@@ -454,20 +445,16 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 writeToServer(sockfd, thinking);
                 printf("sent thinking command\n");
 
-
                 info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
                 info->infoBoard->board =
                         shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
                         sizeof(BOARD_STRUCT);
 
-
                 connectorBoard->sideToMove = sideToMove;
-
 
                 bzero(moveTime, smallStringSize);
                 bzero(fieldSize, smallStringSize);
                 int mvTime = 100;//getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
-
 
 
                 printf("starting parse board, setting phase to spielzug\n");
@@ -543,8 +530,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             if ((strncmp("+ WAIT", buff, 6)) == 0) {
                 writeToServer(sockfd, okWait);
             }
-
-
 
             if (readResponse == -1) {
                 printf("Could not read from server");

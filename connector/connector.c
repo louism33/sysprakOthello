@@ -81,7 +81,7 @@ int connectToGameServer(char *gameID, char *player,
     hints.ai_flags |= AI_CANONNAME;
 
     errcode = getaddrinfo(configStruct->hostname, NULL, &hints, &res);
-    resTemp = res
+    resTemp = res;
     while (resTemp) {
 
         if (!resTemp->ai_family) {

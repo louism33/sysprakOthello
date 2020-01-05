@@ -430,13 +430,29 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 //                printf("     WARNING RECEIVED MOVE TIME COMMAND; \n");
 //            }
 
+            if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
+                phase = PROLOG;
+                dealWithGameOverCommand(buff);
+
+
+                if (kill(thinker, SIGUSR2) == -1) {
+                    printf("Fehler beim senden des Signals für Game over\n");
+                    exit(1);
+                } else {
+                    printf("******************************************kill and stop everything\n");
+                }
+
+                endstate = 0;
+                break;
+            }
+
             // step six, read board information and time to move from server.
             // todo, extract timeToMove info
             // todo, extract board size
             // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
-            if ((strncmp("+ FIELD", buff, 7) == 0) && (strlen(buff) > 75)) { // todo make better (add check for first chars for example)
+            if (strlen(buff) > 75) { // todo make better (add check for first chars for example)
                 printf("sending thinking command\n");
                 writeToServer(sockfd, thinking);
                 printf("sent thinking command\n");
@@ -530,22 +546,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 writeToServer(sockfd, okWait);
             }
 
-            if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
-                phase = PROLOG;
-                dealWithGameOverCommand(buff);
 
-
-                if (kill(thinker, SIGUSR2) == -1) {
-                    printf("Fehler beim senden des Signals für Game over\n");
-                    exit(1);
-                } else {
-                    printf("******************************************kill and stop everything\n");
-                }
-
-
-                endstate = 0;
-                break;
-            }
 
             if (readResponse == -1) {
                 printf("Could not read from server");

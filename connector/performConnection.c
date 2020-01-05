@@ -84,7 +84,7 @@ int getWinnerFromServer(char *buff) {
     white = strstr(buff, "+ PLAYER1WON Yes");
 
     if (black != 0 && white != 0) {
-        printf("Draw!\n");
+        printf("Draw! \n");
         return getDraw();
     } else if (black != 0) {
         printf("BLACK wins!\n");
@@ -158,6 +158,7 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
         }
         indexOfField++;
     }
+//    printf("indexOfFieldSize %d\n", indexOfFieldSize);
     fieldSize[indexOfFieldSize] = '\0';
 
     return moveTimeNummer;
@@ -176,6 +177,7 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     while (1) {
         if (fieldSize[index] == ',') // wenn Komma gibt
         {
+            //printf("Es gibt Komma.\n");
             komma = index;
             while (indexNew != komma) {
                 firstPart[num1] = fieldSize[indexNew];
@@ -238,12 +240,11 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
     return moveRet;
 }
 
-int
-haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
+int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
+                               BOARD_STRUCT *connectorBoard,
+                               infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
 
     strcpy(info->gameID, gameID);
-//    printf("info.gameId %s\n", info->gameID);
     info->connector = connector;
     info->thinker = thinker;
 
@@ -282,7 +283,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char *moveTime = malloc(SMALL_STRING * sizeof(char));
     char *fieldSize = malloc(SMALL_STRING * sizeof(char));
 
-    // server displays player 1 / 2, but uses 0 / 1 internally
+
     if (player != NULL && strlen(player) == 1) {
         if (player[0] == '1') {
             player[0] = '0';
@@ -402,10 +403,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
-//                    printf("         setting player number to B\n");
+                    printf("         setting player number to B\n");
                     sideToMove = getBlack();
                 } else {
-//                    printf("         setting player number to W\n");
+                    printf("         setting player number to W\n");
                     sideToMove = getWhite();
                 }
 
@@ -435,7 +436,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                     printf("Fehler beim senden des Signals für Game over\n");
                     exit(1);
                 } else {
-                    printf("Sending kill command (sigusr2) to parent (thinker)\n");
+                    printf("******************************************kill and stop everything\n");
                 }
 
                 endstate = 0;

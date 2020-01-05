@@ -286,8 +286,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char playCommandToSend[MOVE_STRING_LENGTH] = {0};
 
 
-    char *moveTime = malloc(MOVE_STRING_LENGTH * sizeof(char));
-    char *fieldSize = malloc(MOVE_STRING_LENGTH * sizeof(char));
+    char *moveTime = malloc(SMALL_STRING * sizeof(char));
+    char *fieldSize = malloc(SMALL_STRING * sizeof(char));
 
 
     if (player != NULL && strlen(player) == 1) {

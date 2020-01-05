@@ -291,7 +291,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         }
     }
 
-    char *moveRet = malloc(3 * sizeof(char));
+//    char *moveRet = malloc(3 * sizeof(char));
 
     SIDE_TO_MOVE sideToMove;
 
@@ -492,9 +492,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
-//                char *moveRet = malloc(3 * sizeof(char));
+                char *moveRet = malloc(3 * sizeof(char));
 
-                bzero(moveRet, 3);
+//                bzero(moveRet, 3);
 
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1) {
@@ -529,7 +529,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 moveReceivedFromThinker[1] = buffer[1];
                 moveReceivedFromThinker[2] = '\0';
 
-
+                free(moveRet);
 
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
@@ -554,7 +554,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         }
     }
 
-    free(moveRet);
+//    free(moveRet);
     free(mTB);
     free(moveTime);
     free(fieldSize);

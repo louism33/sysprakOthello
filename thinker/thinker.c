@@ -12,12 +12,12 @@
 #include "../ki/alex.h"
 
 MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
-    printf("received doThink command from connector, time to move %d\n", moveTime);
+    printf(" XXXXXXXXXXXX received doThink command from connector, time to move %d\n", moveTime);
 
     if (boardStruct->sideToMove == getBlack()) {
         printf("SIDE TO MOVE IS  BLACCCCK\n");
     } else {
-        printf("SIDE TO MOVE IS  BLACCCCK\n");
+        printf("SIDE TO MOVE IS  WHITTTTTTTTTTTE\n");
 
     }
 

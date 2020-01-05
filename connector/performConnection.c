@@ -426,7 +426,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             // step six, read MOVETIME
             if (strncmp("+ MOVE", buff, 6) == 0) {
-                // todo
+                // todo, is this ever called??
+                printf("     WARNING RECEIVED MOVE TIME COMMAND; ");
             }
 
             // this should not be here

@@ -479,7 +479,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
 
 
-                info->moveTime = mvTime - 200;
+                info->moveTime = mvTime - 500;
 
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");

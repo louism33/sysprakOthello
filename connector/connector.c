@@ -42,6 +42,7 @@
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
+#define ADDR_STR_LEN 100
 
 int getDefaultPort() {
     return PORTNUMBER;
@@ -60,8 +61,8 @@ int connectToGameServer(char *gameID, char *player,
     struct sockaddr_in server;
     server.sin_family = PF_INET;
 
-    char addrstr[100];
-    bzero(addrstr, 100);
+    char addrstr[ADDR_STR_LEN];
+    bzero(addrstr, ADDR_STR_LEN);
     void *ptr;
 
     int sock = 0, errcode, connectionStatus = 0;
@@ -93,8 +94,6 @@ int connectToGameServer(char *gameID, char *player,
                 sock = socket(AF_INET, SOCK_STREAM, 0);
                 break;
             case AF_INET6:
-//                res = res->ai_next;
-//                continue;
                 sock = socket(AF_INET6, SOCK_STREAM, 0);
                 ptr = &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr;
                 break;
@@ -108,7 +107,7 @@ int connectToGameServer(char *gameID, char *player,
             printf("created Socket\n");
         }
 
-        inet_ntop(res->ai_family, ptr, addrstr, 100);
+        inet_ntop(res->ai_family, ptr, addrstr, ADDR_STR_LEN);
         printf("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
                addrstr, res->ai_canonname);
 
@@ -129,8 +128,8 @@ int connectToGameServer(char *gameID, char *player,
             printf("connection with the server failed... error is %s\n",
                    strerror(errno));
         } else {
-            printf("success!!!! connected to the server..\n");
-            connectionStatus = performConnectionLouis(sock, gameID, player,
+            printf("Success, connected to the server.\n");
+            connectionStatus = haveConversationWithServer(sock, gameID, player,
                                                       configStruct->gamekindname, connectorBoard, info, thinker,
                                                       connector, shmInfo);
             break;
@@ -189,15 +188,13 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
         gameID = NULL;
         return 1;
     }
-    // todo, what if player is blank?
-
     int con = connectToGameServer(gameID, player, usingCustomConfigFile,
                                   configPath, connectorBoard, info, thinker, connector, shmInfo);
 
     if (con) {
         fprintf(stderr, "Error during connection with server\n");
     } else {
-        printf("Connection with server appears to have gone well\n");
+//        printf("Connection with server appears to have gone well\n");
     }
     return con;
 }

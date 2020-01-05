@@ -250,7 +250,7 @@ int testAvoidLossNextMove() {
         fprintf(stderr, "*** FAILED AN AI TEST! You will lose game next turn. Received move:'%d'!\n",
                 move);
         freeBoardStruct(b);
-        exit(1);
+        return 1;
     }
 
     freeBoardStruct(b);
@@ -300,7 +300,7 @@ int testPickDrawOverLoss() {
         fprintf(stderr, "*** FAILED AN AI TEST! Expected move: '%d' from this position, but received move:'%d'!\n",
                 correctMove, move);
         freeBoardStruct(b);
-        exit(1);
+        return 1;
     }
 
     freeBoardStruct(b);

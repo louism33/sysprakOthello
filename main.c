@@ -42,28 +42,22 @@ BOARD_STRUCT *connectorBoard;
 void *shmInfo;
 int move;
 
-void mysighandler(int sig)
-{
+void mysighandler(int sig) {
 
-    if (sig == SIGUSR1)
-    {
+    if (sig == SIGUSR1) {
         sleep(1); // todo....
         denken = true;
     }
 
-    if (sig == SIGUSR2)
-    {
+    if (sig == SIGUSR2) {
         sleep(10); // todo....
         everythingIsFinished = true;
     }
 }
 
-int main(int argc, char *argv[])
-{
-    if (argc > 1 && strcmp(argv[1], "perft") == 0)
-    {
-        if (argc == 2)
-        {
+int main(int argc, char *argv[]) {
+    if (argc > 1 && strcmp(argv[1], "perft") == 0) {
+        if (argc == 2) {
             printf("Please specify depth\n");
             exit(1);
         }
@@ -95,25 +89,24 @@ int main(int argc, char *argv[])
         fail += testSuiteBigBoard();
 
         printf("Running perft Suite\n");
-//        fail += perftSuite();
+        fail += perftSuite();
 
-//        printf("Running testgetMoveTimeAndFieldSize().\n");
-//        fail += testGetMovetimeAndFieldSize();
-//
-//        printf("Running testCharInNummer().\n");
-//        fail += testCharInNummer();
-//
-//        printf("Running basic KI Suite\n");
-//        fail += kiTestsSimple();
-//
-//        printf("Running medium KI Suite\n");
-//        fail += kiTestsBasicThinking();
-//
-//        printf("Running strategy KI Suite\n");
-//        fail += kiTestsBasicStrategy();
+        printf("Running testgetMoveTimeAndFieldSize().\n");
+        fail += testGetMovetimeAndFieldSize();
 
-        if (fail)
-        {
+        printf("Running testCharInNummer().\n");
+        fail += testCharInNummer();
+
+        printf("Running basic KI Suite\n");
+        fail += kiTestsSimple();
+
+        printf("Running medium KI Suite\n");
+        fail += kiTestsBasicThinking();
+
+        printf("Running strategy KI Suite\n");
+        fail += kiTestsBasicStrategy();
+
+        if (fail) {
             printf("Some tests failed, please fix them as soon as possible.\n");
             freeStatics();
             exit(1);
@@ -124,7 +117,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    char *antwort = malloc(256 * sizeof(char));
+    char *antwort = malloc(10 * sizeof(char));
     createShm();
     shmInfo = attachShm();
     info = shmInfo;
@@ -135,79 +128,72 @@ int main(int argc, char *argv[])
     initialiseBoardStructToStarter(connectorBoard);
 
     createPipe(pd);
-    switch (thinker = fork())
-    {
+    switch (thinker = fork()) {
         /*Fehlerfall*/
-    case -1:
-        printf("Fehler bei fork()\n");
-        break;
+        case -1:
+            printf("Fehler bei fork()\n");
+            break;
 
-        /*Kindsprozess = Connector*/
-    case 0:
-        printf("Im Kindsprozess\n");
-        connector = getpid();
-        thinker = getppid();
-        printf("ConnectorPID = %i\n", connector);
-        connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
-        break;
+            /*Kindsprozess = Connector*/
+        case 0:
+            printf("Im Kindsprozess\n");
+            connector = getpid();
+            thinker = getppid();
+            printf("ConnectorPID = %i\n", connector);
+            connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
+            break;
 
+            /*Elternprozess = Thinker*/
+        default:
+            printf("Im Elternprozess\n");
+            thinker = getpid();
+            printf("ThinkerPID = %i\n", thinker);
 
-    /*Elternprozess = Thinker*/
-    default:
-        printf("Im Elternprozess\n");
-        thinker = getpid();
-        printf("ThinkerPID = %i\n", thinker);
-
-        if (signal(SIGUSR1, mysighandler) == SIG_ERR)
-        {
-            printf("Error beim Empfangen des Signal.\n");
-            exit(1);
-        }
-
-        close(pd[0]); // Leseseite schließen
-        while (1)
-        {
-            //printf("in schleife.\n");
-            while (!denken)
-            {
-                sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
+            if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
+                printf("Error beim Empfangen des Signal.\n");
+                exit(1);
             }
-            denken = false;
 
-            printf("jetzt thinking...\n");
-            printBoardLouis(info->infoBoard);
+            close(pd[0]); // Leseseite schließen
+            while (1) {
+                while (!denken) {
+                    sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
+                }
+                denken = false;
 
-            move = doThink(info->infoBoard, info->moveTime);
-            getPrettyMove(move, antwort);
-            printf("antwort: %s\n", antwort);
-            printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
-            if (write(pd[1], antwort, strlen(antwort) + 1) < 0)
-            { // In Schreibseite schreiben
-                perror("write");
-                failState = 1;
-                break;
+//                printf("jetzt thinking...\n");
+                printBoardLouis(info->infoBoard);
+
+                move = doThink(info->infoBoard, info->moveTime);
+                getPrettyMove(move, antwort);
+//                printf("antwort: %s\n", antwort);
+//                printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
+                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
+                    perror("write");
+                    failState = 1;
+                    break;
+                }
+                bzero(antwort, sizeof(antwort));
+
+                if (everythingIsFinished) {
+                    printf("Received SIGUSR2, time to quit everything!\n");
+                    break;
+                }
             }
-            bzero(antwort, sizeof(antwort));
 
-            if (everythingIsFinished) {
-                printf("received everything is finished!\n");
-                break;
-            }
-        }
-
-        break;
+            break;
     }
 
     deleteShm();
     free(antwort);
     freeBoardStruct(connectorBoard);
     if (failState) {
-        fprintf(stderr, "Error happened\n");
+        fprintf(stderr, "Error happened somewhere\n");
     }
 
     freeStatics();
 
-    printf("end of main method, returning %d\n", failState);
+//    printf("End of main method, returning %d\n", failState);
 
     return failState;
 }

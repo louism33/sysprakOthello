@@ -561,10 +561,3 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
     return endstate;
 }
-
-int performConnectionLouis(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
-
-    return haveConversationWithServer(sock, gameID, player, gameKindName, connectorBoard, info, thinker, connector,
-                                      shmInfo);
-}

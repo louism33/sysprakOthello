@@ -291,10 +291,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     mTB->board = NULL;
 
 
-    info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
-    info->infoBoard->board =
-            shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
-            sizeof(BOARD_STRUCT);
+//    info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
+//    info->infoBoard->board =
+//            shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
+//            sizeof(BOARD_STRUCT);
 
     if (!gameKindName) {
         printf("game kind name not provided, exiting");
@@ -430,10 +430,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             }
 
             // this should not be here
-//            info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
-//            info->infoBoard->board =
-//                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
-//                    sizeof(BOARD_STRUCT);
+            info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
+            info->infoBoard->board =
+                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
+                    sizeof(BOARD_STRUCT);
 
             //moveTimeAndBoard->movetime=shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT)+sizeof(int);
             // printf("sizeof: %p\n",info->infoBoard+40);

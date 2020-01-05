@@ -458,8 +458,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 connectorBoard->sideToMove = sideToMove;
 
-                bzero(moveTime, smallStringSize);
-                bzero(fieldSize, smallStringSize);
+                bzero(moveTime, SMALL_STRING);
+                bzero(fieldSize, SMALL_STRING);
                 int mvTime = 100;//getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
 
 

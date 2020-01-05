@@ -77,7 +77,7 @@ int couldNotParseRegex = 1;
 char sourceCopy[64]; // larger than needed
 
 void printBoardLouis(BOARD_STRUCT  *board) {
-    printBoardLouisSide(board, 0);
+    printBoardLouisSide(board, board->sideToMove);
 }
 
 void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {

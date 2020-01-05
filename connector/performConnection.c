@@ -77,6 +77,8 @@ char *convertMove(int move, char *antwort) {
 int dealWithGameOverCommand(char *buff) {
     printf("The game is over.\n");
 
+    int fail = 0;
+
     char *black;
     char *white;
     black = strstr(buff, "+ PLAYER0WON Yes");
@@ -88,9 +90,12 @@ int dealWithGameOverCommand(char *buff) {
         printf("black wins \n");
     } else if (white != 0) {
         printf("white wins \n");
+    } else {
+        fprintf(stderr, "Failed to meaningfully parse gameover string, no idea who won \n");
+        fail = 1;
     }
 
-    return 0;
+    return fail;
 }
 
 

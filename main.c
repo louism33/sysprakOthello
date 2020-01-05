@@ -95,22 +95,22 @@ int main(int argc, char *argv[])
         fail += testSuiteBigBoard();
 
         printf("Running perft Suite\n");
-        fail += perftSuite();
+//        fail += perftSuite();
 
-        printf("Running testgetMoveTimeAndFieldSize().\n");
-        fail += testGetMovetimeAndFieldSize();
-
-        printf("Running testCharInNummer().\n");
-        fail += testCharInNummer();
-
-        printf("Running basic KI Suite\n");
-        fail += kiTestsSimple();
-
-        printf("Running medium KI Suite\n");
-        fail += kiTestsBasicThinking();
-
-        printf("Running strategy KI Suite\n");
-        fail += kiTestsBasicStrategy();
+//        printf("Running testgetMoveTimeAndFieldSize().\n");
+//        fail += testGetMovetimeAndFieldSize();
+//
+//        printf("Running testCharInNummer().\n");
+//        fail += testCharInNummer();
+//
+//        printf("Running basic KI Suite\n");
+//        fail += kiTestsSimple();
+//
+//        printf("Running medium KI Suite\n");
+//        fail += kiTestsBasicThinking();
+//
+//        printf("Running strategy KI Suite\n");
+//        fail += kiTestsBasicStrategy();
 
         if (fail)
         {

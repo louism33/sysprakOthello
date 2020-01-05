@@ -83,18 +83,14 @@ int getWinnerFromServer(char* buff){
     black = strstr(buff, "+ PLAYER0WON Yes");
     white = strstr(buff, "+ PLAYER1WON Yes");
 
-//    printf("\n\n\n");
-//    printf("w: %s\n", white);
-//    printf("b: %s\n", black);
-
     if (black != 0 && white != 0) {
-        printf("draw \n");
+        printf("Draw!\n");
         return getDraw();
     } else if (black != 0) {
-        printf("black wins \n");
+        printf("BLACK wins!\n");
         return getBlack();
     } else if (white != 0) {
-        printf("white wins \n");
+        printf("WHITE wins!\n");
         return getWhite();
     } else {
         fprintf(stderr, "Failed to meaningfully parse gameover string, no idea who won \n");
@@ -303,7 +299,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
     SIDE_TO_MOVE sideToMove;
 
-    enum Phase phase = PROLOG; // this can be used to make sure we do not get confused about what stage of the game we are in
+    // this can be used to make sure we do not get confused about what stage of the game we are in
+    enum Phase phase = PROLOG;
 
     moveTimeAndBoard *mTB = malloc(sizeof(moveTimeAndBoard));
 

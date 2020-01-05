@@ -18,6 +18,8 @@ int readConfigurationFile(char *pathName, configurationStruct * configurationStr
 
     printf("Attempting to read configuration data from %s\n", pathName);
 
+    // todo remove magic nums
+
     FILE *file = fopen(pathName, "r");
     char str[100];
     int limit = 150;

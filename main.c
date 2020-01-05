@@ -167,15 +167,10 @@ int main(int argc, char *argv[])
             }
             denken = false;
 
-            //printBoard(info->infoBoard->board);
             printf("jetzt thinking...\n\n");
-
             printBoardLouis(info->infoBoard);
-//            info->infoBoard->sideToMove = info->me->mitspielerNummer;
 
-//            printBoardLouis(info->infoBoard);
-
-            move = doThink(info->infoBoard, 500);
+            move = doThink(info->infoBoard, info->moveTime);
             printf("Der Erste Zug geht zu %d\n", move);
             getPrettyMove(move, antwort);
             printf("antwort: %s\n", antwort);
@@ -200,6 +195,8 @@ int main(int argc, char *argv[])
     }
 
     freeStatics();
+
+    printf("end of main method, returning %d\n", failState);
 
     return failState;
 }

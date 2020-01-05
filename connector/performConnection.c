@@ -436,6 +436,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 writeToServer(sockfd, thinking);
                 printf("sent thinking command\n");
 
+                connectorBoard->sideToMove = sideToMove;
+
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);
@@ -443,7 +445,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                     fprintf(stderr, "Problem parsing board message\n");
                 }
                 printf("finished parse board, here is the board I was able to parse:\n");
-                connectorBoard->sideToMove = sideToMove;
                 printBoardLouis(connectorBoard);
 
                 schreiben = true; // todo, what is this global doing???
@@ -452,17 +453,12 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 memcpy(info->infoBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); // todo get these params from server
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
-//                info->infoBoard->sideToMove = sideToMove;
 
+                info->moveTime = 500;
 
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
                 char *moveRet = malloc(3 * sizeof(char));
-
-                // is this even relevant???
-
-//                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
-//                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1) {
@@ -471,7 +467,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 } else {
                     printf("******************************************kill\n");
                 }
-                mTB->movetime = 500; // todo get from server
+//                mTB->movetime = 500; // todo get from server
 
 
                 // todo, don't block the connector waiting for the thinker...

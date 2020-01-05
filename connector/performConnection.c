@@ -77,7 +77,7 @@ char *convertMove(int move, char *antwort) {
     return antwort;
 }
 
-int getWinnerFromServer(char* buff){
+int getWinnerFromServer(char *buff) {
     char *black;
     char *white;
     black = strstr(buff, "+ PLAYER0WON Yes");
@@ -158,15 +158,14 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
         }
         indexOfField++;
     }
-//    printf("indexOfFieldSize %d\n", indexOfFieldSize);
     fieldSize[indexOfFieldSize] = '\0';
 
     return moveTimeNummer;
 }
 
 FieldSizeColumnAndRow charInNummer(char *fieldSize) {
-    char firstPart[10] = {" "};
-    char secondPart[10] = {" "};
+    char firstPart[MOVE_STRING_LENGTH] = {" "};
+    char secondPart[MOVE_STRING_LENGTH] = {" "};
     int index = 0;
     unsigned int komma = 0;
     int num1 = 0;
@@ -177,7 +176,6 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     while (1) {
         if (fieldSize[index] == ',') // wenn Komma gibt
         {
-            //printf("Es gibt Komma.\n");
             komma = index;
             while (indexNew != komma) {
                 firstPart[num1] = fieldSize[indexNew];
@@ -226,7 +224,7 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 
     int move = doThink(thinkerBoard, moveTime);
 
-    printf("move is: %d\n", move);
+//    printf("move is: %d\n", move);
 
     if (move == getPassMove()) {
         printf("NO LEGAL MOVES FROM THIS BOARD");
@@ -235,12 +233,11 @@ char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoar
 
     convertMove(move, moveRet);
 
-    printf("converted move is: %s\n", moveRet);
+//    printf("converted move is: %s\n", moveRet);
 
     return moveRet;
 }
 
-// todo, handle end state, what do we do once game is over?
 int
 haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
                            infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
@@ -285,17 +282,16 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char *moveTime = malloc(SMALL_STRING * sizeof(char));
     char *fieldSize = malloc(SMALL_STRING * sizeof(char));
 
-
+    // server displays player 1 / 2, but uses 0 / 1 internally
     if (player != NULL && strlen(player) == 1) {
-        printf("moving player values around\n");
-        printf("player: %s\n", player);
-        printf("player[0]: %c\n", player[0]);
         if (player[0] == '1') {
             player[0] = '0';
         } else if (player[0] == '2') {
             player[0] = '1';
         }
     }
+
+    char *moveRet = malloc(3 * sizeof(char));
 
     SIDE_TO_MOVE sideToMove;
 
@@ -408,10 +404,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
-                    printf("         setting player number to B\n");
+//                    printf("         setting player number to B\n");
                     sideToMove = getBlack();
                 } else {
-                    printf("         setting player number to W\n");
+//                    printf("         setting player number to W\n");
                     sideToMove = getWhite();
                 }
 
@@ -441,7 +437,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                     printf("Fehler beim senden des Signals für Game over\n");
                     exit(1);
                 } else {
-                    printf("******************************************kill and stop everything\n");
+                    printf("Sending kill command (sigusr2) to parent (thinker), to stop everything\n");
                 }
 
                 endstate = 0;
@@ -484,7 +480,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 /* ----------------------- fertig mit schreiben des struct infoVonServer und schreiben in SHM ---*/
                 /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
 
-                memcpy(info->infoBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); // todo get these params from server
+                memcpy(info->infoBoard->board, connectorBoard->board,
+                       sizeof(int) * 8 * 8); // todo get these params from server
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 
@@ -495,14 +492,16 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
-                char *moveRet = malloc(3 * sizeof(char));
+//                char *moveRet = malloc(3 * sizeof(char));
+
+                bzero(moveRet, 3);
 
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");
                     exit(1);
                 } else {
-                    printf("******************************************kill\n");
+                    printf("Sending kill command (sigusr1) to parent (thinker), to start thinking\n");
                 }
 
 
@@ -517,7 +516,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 moveReceivedFromThinker[0] = moveRet[0];
                 close(pd[1]);    // Schreibseite schließen
                 char buffer[50]; // Puffer zum speichern von gelesenen Daten
-                if (read(pd[0], buffer, sizeof(buffer)) ==   -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                if (read(pd[0], buffer, sizeof(buffer)) ==
+                    -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
                     perror("read");
                     endstate = 1;
                     break;
@@ -529,7 +529,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 moveReceivedFromThinker[1] = buffer[1];
                 moveReceivedFromThinker[2] = '\0';
 
-                free(moveRet);
+
 
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
@@ -554,6 +554,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         }
     }
 
+    free(moveRet);
     free(mTB);
     free(moveTime);
     free(fieldSize);

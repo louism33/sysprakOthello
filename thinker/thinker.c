@@ -23,6 +23,11 @@ MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
 
     MOVE bestMove = getBestMoveMultiThreaded(boardStruct, moveTime);
 
+    if (bestMove == getPassMove()) {
+        printf("no move from this position !\n");
+
+    }
+
     printf("                                            dothinker move: %d\n", bestMove);
 
     return bestMove;

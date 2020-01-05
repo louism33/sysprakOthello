@@ -246,7 +246,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
     int endstate = 0;
     char mitspieleranzahl[32];
-
+    int smallStringSize = 10;
     int n = 0, readResponse = 0;
 
     char version[] = "VERSION 2.42\n";
@@ -266,8 +266,11 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char moveReceivedFromThinker[3] = {0};
     char *moveReceivedFromThinkerTEMP;
     char gameKindNameFromServer[32] = {0};
-    char playCommandToSend[10] = {0};
+    char playCommandToSend[smallStringSize] = {0};
 
+
+    char *moveTime = malloc(smallStringSize * sizeof(char));
+    char *fieldSize = malloc(smallStringSize * sizeof(char));
 
 
     if (player != NULL && strlen(player) == 1) {
@@ -460,8 +463,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 connectorBoard->sideToMove = sideToMove;
 
-                char *moveTime = malloc(10 * sizeof(char));
-                char *fieldSize = malloc(10 * sizeof(char));
+
+                bzero(moveTime, smallStringSize);
+                bzero(fieldSize, smallStringSize);
                 int mvTime = 100;//getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
 
 
@@ -552,6 +556,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     }
 
     free(mTB);
+    free(moveTime);
+    free(fieldSize);
 
     return endstate;
 }

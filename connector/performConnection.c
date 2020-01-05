@@ -436,7 +436,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
-            if ((strncmp("+ FIELD", buff, 7) == 0) && (strlen(buff) > 75) { // todo make better (add check for first chars for example)
+            if ((strncmp("+ FIELD", buff, 7) == 0) && (strlen(buff) > 75)) { // todo make better (add check for first chars for example)
                 printf("sending thinking command\n");
                 writeToServer(sockfd, thinking);
                 printf("sent thinking command\n");

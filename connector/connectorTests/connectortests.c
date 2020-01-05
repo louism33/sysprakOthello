@@ -330,6 +330,95 @@ int testCharInNummer8() {
     return fail;
 }
 
+
+
+int testParseGameover1() {
+    int fail = 0;
+    char *board1 = "+ GAMEOVER\n"
+                   "+ FIELD 8,8\n"
+                   "+ 8 B B B B B B B B\n"
+                   "+ 7 B B B B B B B B\n"
+                   "+ 6 B B B W B B B B\n"
+                   "+ 5 B B B B W B B B\n"
+                   "+ 4 B B B B B W B B\n"
+                   "+ 3 B B W B B W B B\n"
+                   "+ 2 B B B B B B W W\n"
+                   "+ 1 W W W W W W W W\n"
+                   "+ ENDFIELD\n"
+                   "+ PLAYER0WON Yes\n"
+                   "+ PLAYER1WON No\n"
+                   "+ QUIT";
+
+    int winner = getWinnerFromServer(board1);
+
+    if (winner != getBlack()) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
+
+int testParseGameover2() {
+    int fail = 0;
+    char *board1 = "+ GAMEOVER\n"
+                   "+ FIELD 8,8\n"
+                   "+ 8 B B B B B B B B\n"
+                   "+ 7 B B B B B B B B\n"
+                   "+ 6 B B B W B B B B\n"
+                   "+ 5 B B B B W B B B\n"
+                   "+ 4 B B B B B W B B\n"
+                   "+ 3 B B W B B W B B\n"
+                   "+ 2 B B B B B B W W\n"
+                   "+ 1 W W W W W W W W\n"
+                   "+ ENDFIELD\n"
+                   "+ PLAYER0WON No\n"
+                   "+ PLAYER1WON Yes\n"
+                   "+ QUIT";
+
+    int winner = getWinnerFromServer(board1);
+
+    if (winner != getWhite()) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
+int testParseGameover3() {
+    int fail = 0;
+    char *board1 = "+ GAMEOVER\n"
+                   "+ FIELD 8,8\n"
+                   "+ 8 B B B B B B B B\n"
+                   "+ 7 B B B B B B B B\n"
+                   "+ 6 B B B W B B B B\n"
+                   "+ 5 B B B B W B B B\n"
+                   "+ 4 B B B B B W B B\n"
+                   "+ 3 B B W B B W B B\n"
+                   "+ 2 B B B B B B W W\n"
+                   "+ 1 W W W W W W W W\n"
+                   "+ ENDFIELD\n"
+                   "+ PLAYER0WON Yes\n"
+                   "+ PLAYER1WON Yes\n"
+                   "+ QUIT";
+
+    int winner = getWinnerFromServer(board1);
+
+    if (winner != getDraw()) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
+int testParseGameover() {
+    int fail = 0;
+    fail += testParseGameover1();
+    fail += testParseGameover2();
+    fail += testParseGameover3();
+    return fail;
+}
+
 int testGetMovetimeAndFieldSize() {
     int fail = 0;
     fail += testgetMoveTimeAndFieldSize1();

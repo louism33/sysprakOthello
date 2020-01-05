@@ -23,4 +23,6 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize);
 
 struct FieldSizeColumnAndRow charInNummer(char *fieldSize);
 
+int getWinnerFromServer(char* buff);
+
 #endif //SYSPRAKOTHELLO_PERFORMCONNECTION_H

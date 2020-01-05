@@ -64,8 +64,6 @@ enum Phase {
     SPIELZUG = 2
 };
 
-// todo, be careful of people trolling you by calling game "game over", implement PHASE int/enum
-
 int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));
     printf("Sending to server-> %s\n", message);
@@ -79,24 +77,40 @@ char *convertMove(int move, char *antwort) {
     return antwort;
 }
 
-int dealWithGameOverCommand(char *buff) {
-    printf("The game is over.\n");
-
-    int fail = 0;
-
+int getWinnerFromServer(char* buff){
     char *black;
     char *white;
     black = strstr(buff, "+ PLAYER0WON Yes");
     white = strstr(buff, "+ PLAYER1WON Yes");
 
+//    printf("\n\n\n");
+//    printf("w: %s\n", white);
+//    printf("b: %s\n", black);
+
     if (black != 0 && white != 0) {
         printf("draw \n");
+        return getDraw();
     } else if (black != 0) {
         printf("black wins \n");
+        return getBlack();
     } else if (white != 0) {
         printf("white wins \n");
+        return getWhite();
     } else {
         fprintf(stderr, "Failed to meaningfully parse gameover string, no idea who won \n");
+        return -1;
+    }
+}
+
+// return 1 if fail, 0 if success
+int dealWithGameOverCommand(char *buff) {
+    printf("The game is over.\n");
+
+    int fail = 0;
+
+    int winner = getWinnerFromServer(buff);
+
+    if (winner == -1) {
         fail = 1;
     }
 
@@ -135,7 +149,6 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
 
     moveTime[indexOfMoveTime] = '\0';
     moveTimeNummer = atoi(moveTime);
-    //printf("%d\n", moveTimeNummer);
 
     while (fieldString[j] != '+') {
         field[j] = fieldString[j];
@@ -149,7 +162,7 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
         }
         indexOfField++;
     }
-    printf("indexOfFieldSize %d\n", indexOfFieldSize);
+//    printf("indexOfFieldSize %d\n", indexOfFieldSize);
     fieldSize[indexOfFieldSize] = '\0';
 
     return moveTimeNummer;
@@ -237,7 +250,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                            infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
 
     strcpy(info->gameID, gameID);
-    printf("info.gameId %s\n", info->gameID);
+//    printf("info.gameId %s\n", info->gameID);
     info->connector = connector;
     info->thinker = thinker;
 
@@ -253,7 +266,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char mitspieleranzahl[SMALL_STRING];
     int n = 0, readResponse = 0;
 
-    char version[] = "VERSION 1.42\n";
+    char version[] = "VERSION 0.42\n";
     info->majorVersionNr = 2;
     info->minorVersionNr = 42;
     char okWait[] = "OKWAIT\n";
@@ -263,8 +276,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     strcat(gameIdToSend, gameID);
     strcat(gameIdToSend, "\n");
 
-    char blankPlayerToSend[] = "PLAYER\n"; // todo get from argument. need extra whitespace if there is a player provided
-    char playerToSend[] = "PLAYER 1\n"; // todo get from argument. need extra whitespace if there is a player provided
+    char blankPlayerToSend[] = "PLAYER\n";
+    char playerToSend[] = "PLAYER 1\n";
     char thinking[] = "THINKING\n";
     int lengthOfPlayCommandToSendToKeep = 5;
     char moveReceivedFromThinker[3] = {0};
@@ -345,12 +358,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
                 printf("Gameserver major version is: %c\n", buff[MAJOR_VERSION_INDEX_SERVER]);
                 version[MAJOR_VERSION_INDEX_LOCAL] = buff[MAJOR_VERSION_INDEX_SERVER];
-                // todo, parseeeee
                 writeToServer(sockfd, version);
-                if (1){
-                    endstate = 1;
-                    break;
-                }
             }
 
             // step two, send game ID
@@ -429,7 +437,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
                 phase = PROLOG;
-                dealWithGameOverCommand(buff);
+                endstate += dealWithGameOverCommand(buff);
 
 
                 if (kill(thinker, SIGUSR2) == -1) {

@@ -424,11 +424,11 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 phase = SPIELVERLAUF;
             }
 
-            // step six, read MOVETIME
-            if (strncmp("+ MOVE", buff, 6) == 0) {
-                // todo, is this ever called??
-                printf("     WARNING RECEIVED MOVE TIME COMMAND; ");
-            }
+//            // step six, read MOVETIME
+//            if (strncmp("+ MOVE", buff, 6) == 0) { // careful of moveok
+//                // todo, is this ever called??
+//                printf("     WARNING RECEIVED MOVE TIME COMMAND; \n");
+//            }
 
             // this should not be here
             info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
@@ -476,7 +476,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
 
                 printf("move time from server: %d\n", mvTime);
-                info->moveTime = mvTime - 2500;
+//                info->moveTime = mvTime - 2500;
+                info->moveTime = 500;
                 printf("move time for us: %d\n", info->moveTime);
 
                 printf("finished parse board\n");

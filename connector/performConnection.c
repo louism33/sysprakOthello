@@ -438,7 +438,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                     fprintf(stderr, "Problem parsing board message\n");
                 }
                 printf("finished parse board, here is the board I was able to parse:\n");
-//                connectorBoard->sideToMove = sideToMove;
+                connectorBoard->sideToMove = sideToMove;
                 printBoardLouis(connectorBoard);
 
                 schreiben = true; // todo, what is this global doing???
@@ -456,7 +456,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 // is this even relevant???
 
-                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
+//                connectorBoard->sideToMove = getBlack(); // todo todo todo!!! get from player or from response or from past response I dont't care
 //                connectorBoard->sideToMove = getWhite(); // todo todo todo!!! get from player or from response or from past response I dont't care
 
                 //signal schicken

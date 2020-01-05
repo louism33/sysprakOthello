@@ -57,7 +57,7 @@ int connectToGameServer(char *gameID, char *player,
     configStruct->hostname = calloc(' ', 200);
     configStruct->gamekindname = calloc(' ', 200);
 
-    struct addrinfo hints, *res;
+    struct addrinfo hints, *res, *resTemp;
     struct sockaddr_in server;
     server.sin_family = PF_INET;
 
@@ -81,21 +81,21 @@ int connectToGameServer(char *gameID, char *player,
     hints.ai_flags |= AI_CANONNAME;
 
     errcode = getaddrinfo(configStruct->hostname, NULL, &hints, &res);
+    resTemp = res
+    while (resTemp) {
 
-    while (res) {
-
-        if (!res->ai_family) {
+        if (!resTemp->ai_family) {
             break;
         }
 
-        switch (res->ai_family) {
+        switch (resTemp->ai_family) {
             case AF_INET:
-                ptr = &((struct sockaddr_in *) res->ai_addr)->sin_addr;
+                ptr = &((struct sockaddr_in *) resTemp->ai_addr)->sin_addr;
                 sock = socket(AF_INET, SOCK_STREAM, 0);
                 break;
             case AF_INET6:
                 sock = socket(AF_INET6, SOCK_STREAM, 0);
-                ptr = &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr;
+                ptr = &((struct sockaddr_in6 *) resTemp->ai_addr)->sin6_addr;
                 break;
         }
 
@@ -107,9 +107,9 @@ int connectToGameServer(char *gameID, char *player,
             printf("created Socket\n");
         }
 
-        inet_ntop(res->ai_family, ptr, addrstr, ADDR_STR_LEN);
-        printf("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
-               addrstr, res->ai_canonname);
+        inet_ntop(resTemp->ai_family, ptr, addrstr, ADDR_STR_LEN);
+        printf("IPv%d address: %s (%s)\n", resTemp->ai_family == PF_INET6 ? 6 : 4,
+               addrstr, resTemp->ai_canonname);
 
         if (strlen(addrstr) == 0) {
             printf("ERROR, no host found\n");
@@ -136,7 +136,7 @@ int connectToGameServer(char *gameID, char *player,
         }
 
         close(sock);
-        res = res->ai_next;
+        resTemp = resTemp->ai_next;
     }
 
     printf("res: %p\n", res);

@@ -93,9 +93,10 @@ int connectToGameServer(char *gameID, char *player,
                 sock = socket(AF_INET, SOCK_STREAM, 0);
                 break;
             case AF_INET6:
-                sock = socket(AF_INET6, SOCK_STREAM, 0);
-                ptr = &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr;
-                break;
+                continue;
+//                sock = socket(AF_INET6, SOCK_STREAM, 0);
+//                ptr = &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr;
+//                break;
         }
 
         // error handling for socket

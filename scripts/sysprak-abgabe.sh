@@ -139,5 +139,6 @@ fi
 
 cd ..
 if [ -d "$BUILD_DIR" ]; then
+	echo "removing build dir"
 	#rm -r "$BUILD_DIR"
 fi

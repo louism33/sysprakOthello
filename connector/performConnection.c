@@ -238,7 +238,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
     strcpy(info->gameKindName, gameKindName);
 
-    char buff[MAX];    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char gameName[64] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[32] = {0};
     char myPlayerName[32] = {0};
@@ -291,7 +291,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     mTB->board = NULL;
 
 
-//    info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
+    info->infoBoard = NULL;
 //    info->infoBoard->board =
 //            shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
 //            sizeof(BOARD_STRUCT);
@@ -423,12 +423,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("--------save  MitspielerAnzahl: %d\n", info->MitspielerAnzahl);
                 phase = SPIELVERLAUF;
             }
-
-//            // step six, read MOVETIME
-//            if (strncmp("+ MOVE", buff, 6) == 0) { // careful of moveok
-//                // todo, is this ever called??
-//                printf("     WARNING RECEIVED MOVE TIME COMMAND; \n");
-//            }
 
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
                 phase = PROLOG;

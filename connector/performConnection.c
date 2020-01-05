@@ -341,12 +341,14 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
-                printf("--->%s\n", buff);
+                printf("Gameserver major version is: %c\n", buff[19]);
+                version[9] = buff[19];
                 // todo, parseeeee
                 writeToServer(sockfd, version);
 
                 if (1){
-                    exit(1);
+                    endstate = 1;
+                    break;
                 }
             }
 

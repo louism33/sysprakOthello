@@ -253,7 +253,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char mitspieleranzahl[SMALL_STRING];
     int n = 0, readResponse = 0;
 
-    char version[] = "VERSION 2.42\n";
+    char version[] = "VERSION 1.42\n";
     info->majorVersionNr = 2;
     info->minorVersionNr = 42;
     char okWait[] = "OKWAIT\n";

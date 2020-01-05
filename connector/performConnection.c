@@ -291,8 +291,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         }
     }
 
-//    char *moveRet = malloc(3 * sizeof(char));
-
     SIDE_TO_MOVE sideToMove;
 
     // this can be used to make sure we do not get confused about what stage of the game we are in
@@ -352,11 +350,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("Gameserver major version is: %c\n", buff[MAJOR_VERSION_INDEX_SERVER]);
                 version[MAJOR_VERSION_INDEX_LOCAL] = buff[MAJOR_VERSION_INDEX_SERVER];
                 writeToServer(sockfd, version);
-
-                if (1) {
-                    endstate = 1;
-                    break;
-                }
             }
 
             // step two, send game ID
@@ -442,7 +435,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                     printf("Fehler beim senden des Signals für Game over\n");
                     exit(1);
                 } else {
-                    printf("Sending kill command (sigusr2) to parent (thinker), to stop everything\n");
+                    printf("Sending kill command (sigusr2) to parent (thinker)\n");
                 }
 
                 endstate = 0;
@@ -499,14 +492,12 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 printf("sending relevant info to thinker\n");
                 char *moveRet = malloc(3 * sizeof(char));
 
-//                bzero(moveRet, 3);
-
                 //signal schicken
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");
                     exit(1);
                 } else {
-                    printf("Sending kill command (sigusr1) to parent (thinker), to start thinking\n");
+                    printf("******************************************kill\n");
                 }
 
 
@@ -559,7 +550,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
         }
     }
 
-//    free(moveRet);
     free(mTB);
     free(moveTime);
     free(fieldSize);

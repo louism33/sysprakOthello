@@ -50,6 +50,7 @@
 #include "../shm/shm.h"
 
 #define MAX 240 // todo make better
+#define MAJOR_VERSION_INDEX 18
 #define MOVE_STRING_LENGTH 10
 #define SMALL_STRING 32
 #define BIG_STRING 64
@@ -341,8 +342,8 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
-                printf("Gameserver major version is: %c\n", buff[18]);
-                version[9] = buff[18];
+                printf("Gameserver major version is: %c\n", buff[MAJOR_VERSION_INDEX]);
+                version[9] = buff[MAJOR_VERSION_INDEX];
                 // todo, parseeeee
                 writeToServer(sockfd, version);
                 if (1){

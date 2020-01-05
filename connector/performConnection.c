@@ -266,7 +266,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     char moveReceivedFromThinker[3] = {0};
     char *moveReceivedFromThinkerTEMP;
     char gameKindNameFromServer[32] = {0};
-    char playCommandToSend[smallStringSize] = {0};
+    char playCommandToSend[10] = {0};
 
 
     char *moveTime = malloc(smallStringSize * sizeof(char));

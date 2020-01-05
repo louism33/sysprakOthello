@@ -290,6 +290,12 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
     mTB->movetime = 0;
     mTB->board = NULL;
 
+
+    info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
+    info->infoBoard->board =
+            shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
+            sizeof(BOARD_STRUCT);
+
     if (!gameKindName) {
         printf("game kind name not provided, exiting");
         endstate = 1;
@@ -418,10 +424,17 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 phase = SPIELVERLAUF;
             }
 
-            info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
-            info->infoBoard->board =
-                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
-                    sizeof(BOARD_STRUCT);
+            // step six, read MOVETIME
+            if (strncmp("+ MOVE", buff, 6) == 0) {
+                // todo
+            }
+
+            // this should not be here
+//            info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
+//            info->infoBoard->board =
+//                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
+//                    sizeof(BOARD_STRUCT);
+
             //moveTimeAndBoard->movetime=shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT)+sizeof(int);
             // printf("sizeof: %p\n",info->infoBoard+40);
 
@@ -467,7 +480,6 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 } else {
                     printf("******************************************kill\n");
                 }
-//                mTB->movetime = 500; // todo get from server
 
 
                 // todo, don't block the connector waiting for the thinker...

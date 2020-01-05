@@ -475,11 +475,9 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 
-
-
-
-
-                info->moveTime = mvTime - 500;
+                printf("move time from server: %d\n", mvTime);
+                info->moveTime = mvTime - 2500;
+                printf("move time for us: %d\n", info->moveTime);
 
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");
@@ -494,6 +492,10 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 }
 
 
+                // todo, don't block the connector waiting for the thinker...
+                // todo, don't block the connector waiting for the thinker...
+                // todo, don't block the connector waiting for the thinker...
+                // todo, don't block the connector waiting for the thinker...
                 // todo, don't block the connector waiting for the thinker...
                 // todo, don't block the connector waiting for the thinker...
                 // todo, don't block the connector waiting for the thinker...

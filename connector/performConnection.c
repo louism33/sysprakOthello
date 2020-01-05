@@ -461,7 +461,7 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 char *moveTime = malloc(10 * sizeof(char));
                 char *fieldSize = malloc(10 * sizeof(char));
-                int mvTime = 500;//getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+                int mvTime = 100;//getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
 
 
 

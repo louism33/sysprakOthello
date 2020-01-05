@@ -352,10 +352,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 version[MAJOR_VERSION_INDEX_LOCAL] = buff[MAJOR_VERSION_INDEX_SERVER];
                 writeToServer(sockfd, version);
 
-                if (1) {
-                    endstate = 1;
-                    break;
-                }
+//                if (1) {
+//                    endstate = 1;
+//                    break;
+//                }
             }
 
             // step two, send game ID

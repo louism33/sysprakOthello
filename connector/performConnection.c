@@ -341,7 +341,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
+                printf("--->%s\n", buff);
+                // todo, parseeeee
                 writeToServer(sockfd, version);
+
+                if (1){
+                    exit(1);
+                }
             }
 
             // step two, send game ID

@@ -53,7 +53,7 @@ void mysighandler(int sig)
 
     if (sig == SIGUSR2)
     {
-        sleep(1); // todo....
+        sleep(10); // todo....
         everythingIsFinished = true;
     }
 }
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
             }
             denken = false;
 
-            printf("jetzt thinking...\n\n");
+            printf("jetzt thinking...\n");
             printBoardLouis(info->infoBoard);
 
             move = doThink(info->infoBoard, info->moveTime);
@@ -191,6 +191,7 @@ int main(int argc, char *argv[])
             bzero(antwort, sizeof(antwort));
 
             if (everythingIsFinished) {
+                printf("received everything is finished!\n");
                 break;
             }
         }

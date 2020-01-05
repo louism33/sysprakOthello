@@ -430,22 +430,13 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 //                printf("     WARNING RECEIVED MOVE TIME COMMAND; \n");
 //            }
 
-            // this should not be here
-//            info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
-//            info->infoBoard->board =
-//                    shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
-//                    sizeof(BOARD_STRUCT);
-
-            //moveTimeAndBoard->movetime=shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) + sizeof(BOARD_STRUCT)+sizeof(int);
-            // printf("sizeof: %p\n",info->infoBoard+40);
-
             // step six, read board information and time to move from server.
             // todo, extract timeToMove info
             // todo, extract board size
             // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
-            if (strlen(buff) > 75) { // todo make better (add check for first chars for example)
+            if ((strncmp("+ FIELD", buff, 7) == 0) && (strlen(buff) > 75) { // todo make better (add check for first chars for example)
                 printf("sending thinking command\n");
                 writeToServer(sockfd, thinking);
                 printf("sent thinking command\n");

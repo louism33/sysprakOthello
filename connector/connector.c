@@ -82,6 +82,11 @@ int connectToGameServer(char *gameID, char *player,
     errcode = getaddrinfo(configStruct->hostname, NULL, &hints, &res);
 
     while (res) {
+
+        if (!res->ai_family) {
+            break;
+        }
+
         switch (res->ai_family) {
             case AF_INET:
                 ptr = &((struct sockaddr_in *) res->ai_addr)->sin_addr;

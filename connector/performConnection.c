@@ -542,6 +542,16 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
                 phase = PROLOG;
                 dealWithGameOverCommand(buff);
+
+
+                if (kill(thinker, SIGUSR2) == -1) {
+                    printf("Fehler beim senden des Signals für Game over\n");
+                    exit(1);
+                } else {
+                    printf("******************************************kill and stop everything\n");
+                }
+
+
                 endstate = 0;
                 break;
             }

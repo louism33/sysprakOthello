@@ -34,6 +34,7 @@
 
 
 bool denken = false;
+bool everythingIsFinished = false;
 infoVonServer *info;
 Player *myPlayer;
 BOARD_STRUCT *infoBoard;
@@ -48,6 +49,12 @@ void mysighandler(int sig)
     {
         sleep(1); // todo....
         denken = true;
+    }
+
+    if (sig == SIGUSR2)
+    {
+        sleep(1); // todo....
+        everythingIsFinished = true;
     }
 }
 
@@ -182,6 +189,10 @@ int main(int argc, char *argv[])
                 break;
             }
             bzero(antwort, sizeof(antwort));
+
+            if (everythingIsFinished) {
+                break;
+            }
         }
 
         break;

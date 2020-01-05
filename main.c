@@ -178,7 +178,6 @@ int main(int argc, char *argv[])
             printBoardLouis(info->infoBoard);
 
             move = doThink(info->infoBoard, info->moveTime);
-            printf("Der Erste Zug geht zu %d\n", move);
             getPrettyMove(move, antwort);
             printf("antwort: %s\n", antwort);
             printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");

@@ -452,6 +452,12 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
 
                 connectorBoard->sideToMove = sideToMove;
 
+                char *moveTime = malloc(10 * sizeof(char));
+                char *fieldSize = malloc(10 * sizeof(char));
+                int mvTime = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+
+
+
                 printf("starting parse board, setting phase to spielzug\n");
                 phase = SPIELZUG;
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);
@@ -468,7 +474,12 @@ haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKin
                 memcpy(info->infoBoard->board, connectorBoard->board, sizeof(int) * 8 * 8); // todo get these params from server
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
-                info->moveTime = 500;
+
+
+
+
+
+                info->moveTime = mvTime - 200;
 
                 printf("finished parse board\n");
                 printf("sending relevant info to thinker\n");

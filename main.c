@@ -163,11 +163,11 @@ int main(int argc, char *argv[]) {
                 break;
             }
 
-            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
-                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
-                failState = 1;
-                break;
-            }
+//            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
+//                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
+//                failState = 1;
+//                break;
+//            }
 
             printf("### Starting Thinker Main Loop\n");
 

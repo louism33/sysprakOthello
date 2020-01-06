@@ -178,6 +178,7 @@ int main(int argc, char *argv[]) {
             while (1) {
                 while (!denken && !everythingIsFinished) {
                     sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
+                    printf("d: %d, e: %d\n", denken, everythingIsFinished);
                 }
 
                 if (everythingIsFinished) {

@@ -66,7 +66,7 @@ enum Phase {
 
 int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));
-    printf("<------US:\n%s", message);
+//    printf("<------US:\n%s", message);
     return 0;
 }
 
@@ -292,8 +292,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     for (; endstate == 0;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
 
-            printf("------>SERVER:\n%s", buff);
-            fflush( stdout );
+//            printf("------>SERVER:\n%s", buff);
+//            fflush( stdout );
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
                 fprintf(stderr, "### We were too slow!\n");

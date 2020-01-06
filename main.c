@@ -176,25 +176,9 @@ int main(int argc, char *argv[]) {
 
             close(pd[0]); // Leseseite schließen
             while (1) {
-                while (!denken) {
+                while (!denken && !everythingIsFinished) {
                     sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
                 }
-                denken = false;
-
-//                printf("### Currently thinking...\n");
-//                fflush(stdout);
-//                printBoardLouis(info->infoBoard);
-
-                move = doThink(info->infoBoard, info->moveTime);
-                getPrettyMove(move, antwort);
-
-                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
-                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
-                    perror("### write");
-                    failState = 1;
-                    break;
-                }
-                bzero(antwort, sizeof(antwort));
 
                 if (everythingIsFinished) {
                     printf("### Received SIGUSR2, time to quit everything!\n");
@@ -217,6 +201,25 @@ int main(int argc, char *argv[]) {
 
                     break;
                 }
+
+                denken = false;
+
+//                printf("### Currently thinking...\n");
+//                fflush(stdout);
+//                printBoardLouis(info->infoBoard);
+
+                move = doThink(info->infoBoard, info->moveTime);
+                getPrettyMove(move, antwort);
+
+                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
+                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
+                    perror("### write");
+                    failState = 1;
+                    break;
+                }
+                bzero(antwort, sizeof(antwort));
+
+
             }
             fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
             fflush(stdout);

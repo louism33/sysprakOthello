@@ -82,7 +82,7 @@ int testgetMoveTimeAndFieldSizeNEW1() {
     char *fieldSize = malloc(10 * sizeof(char));
     int test8 = getMoveTimeAndFieldSize(board1, moveTime, fieldSize);
 
-    if (test8 != 3000) {
+    if (test8 != 0) {
         fail = 1;
     }
 
@@ -99,6 +99,40 @@ int testgetMoveTimeAndFieldSizeNEW1() {
     return fail;
 }
 
+
+int testgetMoveTimeAndFieldSizeNEW2() {
+    int fail = 0;
+    char *board1 = "+ FIELD 9,7\n"
+                   "+ 8 * * * * * * * *\n"
+                   "+ 7 * * * * * * * *\n"
+                   "+ 6 * * B * * * * *\n"
+                   "+ 5 * * B B W W * *\n"
+                   "+ 4 * * * B B * * *\n"
+                   "+ 3 * * W W W B W *\n"
+                   "+ 2 * * * * * * B *\n"
+                   "+ 1 * * * * * * W B\n"
+                   "+ ENDFIELD";
+
+    char *moveTime = malloc(10 * sizeof(char));
+    char *fieldSize = malloc(10 * sizeof(char));
+    int test8 = getMoveTimeAndFieldSize(board1, moveTime, fieldSize);
+
+    if (test8 != 0) {
+        fail = 1;
+    }
+
+    if (strcmp(fieldSize, "9,7") != 0) {
+        fail = 1;
+    }
+
+    if (fail) {
+        printf("Problem beim getMoveTimeAndFieldSize 1.\n");
+    }
+
+    free(moveTime);
+    free(fieldSize);
+    return fail;
+}
 
 int testgetMoveTimeAndFieldSize1() {
     int fail = 0;
@@ -125,12 +159,12 @@ int testgetMoveTimeAndFieldSize1() {
         fail = 1;
     }
 
-    if (strcmp(fieldSize, "8,8") != 0) {
+    if (strncmp(fieldSize, "8,8", 3) != 0) {
         fail = 1;
     }
 
     if (fail) {
-        printf("Problem beim getMoveTimeAndFieldSize 1.\n");
+        printf("Problem beim getMoveTimeAndFieldSize 1 %s, %d .\n", fieldSize, test8);
     }
 
     free(moveTime);
@@ -528,7 +562,9 @@ int testGetMovetimeAndFieldSize() {
     fail += testgetMoveTimeAndFieldSize2();
     fail += testgetMoveTimeAndFieldSize3();
 
-//    fail += testgetMoveTimeAndFieldSizeNEW1();
+    fail += testgetMoveTimeAndFieldSizeNEW1();
+    fail += testgetMoveTimeAndFieldSizeNEW2();
+
     fail += testGetMoveTime1();
     fail += testGetMoveTime2();
     fail += testGetMoveTime3();

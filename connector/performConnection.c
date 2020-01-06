@@ -113,6 +113,23 @@ int dealWithGameOverCommand(char *buff) {
     return fail;
 }
 
+int getMoveTime(char *buff) {
+    char move[10] = {" "};
+    int len = strlen(buff);
+
+    int i = 7, j = 0;
+//        printf("buff '%s' \n", buff);
+//        printf("buff[7] '%c' \n", buff[i]);
+    while (i < len && (buff[i] >= '0' && buff[i] <= '9')) {
+//        printf("buff[i] %c \n", buff[i]);
+        move[j++] = buff[i++];
+    }
+
+//    printf("### Move time will be: %s\n", move);
+
+    return atoi(move);
+}
+
 
 int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     char *moveString;
@@ -121,7 +138,7 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     char *fieldString;
     char field[20] = {" "};
     int fieldSizeNummer = 0;
-    moveString = strstr(buff, "MOVE");
+    moveString = strstr(buff, "+ MOVE");
     fieldString = strstr(buff, "FIELD");
     int i = 0;
     unsigned int indexOfMove = 0;
@@ -130,21 +147,21 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     unsigned int indexOfField = 0;
     unsigned int indexOfFieldSize = 0;
 
-    while (moveString[i] != '+') {
-        move[i] = moveString[i];
-        i++;
+    int moveTimeRet = 0;
+    if (moveString != NULL) {
+        moveTimeRet = getMoveTime(moveString);
     }
 
-    while (indexOfMove <= strlen(move)) {
-        if (move[indexOfMove] >= '0' && move[indexOfMove] <= '9') {
-            moveTime[indexOfMoveTime] = move[indexOfMove];
-            indexOfMoveTime++;
-        }
-        indexOfMove++;
-    }
-
-    moveTime[indexOfMoveTime] = '\0';
-    moveTimeNummer = atoi(moveTime);
+//    while (indexOfMove <= strlen(move)) {
+//        if (move[indexOfMove] >= '0' && move[indexOfMove] <= '9') {
+//            moveTime[indexOfMoveTime] = move[indexOfMove];
+//            indexOfMoveTime++;
+//        }
+//        indexOfMove++;
+//    }
+//
+//    moveTime[indexOfMoveTime] = '\0';
+//    moveTimeNummer = atoi(moveTime);
 
     while (fieldString[j] != '+') {
         field[j] = fieldString[j];
@@ -160,21 +177,7 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     }
     fieldSize[indexOfFieldSize] = '\0';
 
-    return moveTimeNummer;
-}
-
-int getMoveTime(char *buff) {
-    char move[10] = {" "};
-    int len = strlen(buff);
-
-    int i = 7, j = 0;
-    while (i < len) {
-        move[j++] = buff[i++];
-    }
-
-//    printf("### Move time will be: %s\n", move);
-
-    return atoi(move);
+    return moveTimeRet;
 }
 
 
@@ -384,7 +387,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             if (strncmp("+ YOU", buff, 5) == 0) {
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
-                printf("### Saving playerNumber: %s", playerNumber);
+                printf("### Saving playerNumber: %s\n", playerNumber);
                 // todo!!!!
                 // why is players an array?????
                 info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber); // this line is not useful
@@ -450,7 +453,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
-            if (strstr(buff, "+ FIELD ")){//strlen(buff) > 75) { // todo make better (add check for first chars for example)
+            if (strstr(buff,
+                       "+ FIELD ")) {//strlen(buff) > 75) { // todo make better (add check for first chars for example)
                 writeToServer(sockfd, thinking);
 
                 while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
@@ -481,12 +485,11 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 if (parse) {
                     fprintf(stderr, "### Problem parsing board message\n");
                 }
+
 //                printf("### finished parse board, here is the board I was able to parse:\n");
 //                printBoardLouis(connectorBoard);
 
                 schreiben = true; // todo, what is this global doing???
-                /* ----------------------- fertig mit schreiben des struct infoVonServer und schreiben in SHM ---*/
-                /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
 
                 memcpy(info->infoBoard->board, connectorBoard->board,
                        sizeof(int) * fieldsize.row * fieldsize.col);

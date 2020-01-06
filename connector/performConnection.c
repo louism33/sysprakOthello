@@ -282,6 +282,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         endstate = 1;
     }
 
+    char buffer[50]; // Puffer zum speichern von gelesenen Daten
+
     for (; endstate == 0;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
 
@@ -476,14 +478,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
                 close(pd[1]);    // Schreibseite schließen
-                char buffer[50]; // Puffer zum speichern von gelesenen Daten
+
+                bzero(buffer, 64);
                 if (read(pd[0], buffer, sizeof(buffer)) ==
                     -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
                     perror("read");
                     endstate = 1;
                     break;
                 } else {
-                    printf("### Sending SIGUSR1 to thinker to signal to start thinking\n");
+                    printf("### Read from Pipe: %s\n", buffer);
                 }
                 moveReceivedFromThinker[0] = buffer[0];
                 moveReceivedFromThinker[1] = buffer[1];

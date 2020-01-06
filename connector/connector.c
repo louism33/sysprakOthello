@@ -139,8 +139,6 @@ int connectToGameServer(char *gameID, char *player,
         resTemp = resTemp->ai_next;
     }
 
-    printf("res: %p\n", res);
-
     freeaddrinfo(res);
 
     free(configStruct->gamekindname);

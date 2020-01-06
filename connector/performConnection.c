@@ -167,6 +167,7 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
 
 
 FieldSizeColumnAndRow charInNummer(char *fieldSize) {
+    printf("### Parsing field size message: %s\n", fieldSize);
     char firstPart[MOVE_STRING_LENGTH] = {" "};
     char secondPart[MOVE_STRING_LENGTH] = {" "};
     int index = 0;
@@ -457,19 +458,16 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                moveTime[0] = '\0';
 //                fieldSize[0] = '\0';
                 int mvt = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
-                printf("field size str: %s\n", fieldSize);
-                printf("parsed message, got movetime: %d\n", mvt);
+//                printf("### Parsed message, got movetime: %d\n", mvt);
                 if (mvt != 0) {
-                    printf("setting move time to : %d\n", mvt);
+//                    printf("### Setting move time to : %d\n", mvt);
                     mvTime = mvt;
                 }else {
-                    printf("not changing movetime, it stays at : %d\n", mvTime);
+//                    printf("### Not changing movetime, it stays at : %d\n", mvTime);
                 }
 
-//                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
-                FieldSizeColumnAndRow fieldsize = {8, 8};
-
-                mvTime = 3000;
+                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
+//                FieldSizeColumnAndRow fieldsize = {8, 8};
 
 //                printf("### Starting parse board, setting phase to spielzug\n");
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);

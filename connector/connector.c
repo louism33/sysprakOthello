@@ -128,7 +128,7 @@ int connectToGameServer(char *gameID, char *player,
             printf("### connection with the server failed... error is %s\n",
                    strerror(errno));
         } else {
-            printf("Success, connected to the server.\n");
+            printf("### Success, connected to the server.\n");
             connectionStatus = haveConversationWithServer(sock, gameID, player,
                                                       configStruct->gamekindname, connectorBoard, info, thinker,
                                                       connector, shmInfo);

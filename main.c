@@ -43,7 +43,6 @@ void *shmInfo;
 int move;
 
 void mysighandler(int sig) {
-
     if (sig == SIGUSR1) {
         printf("### received SIGUSR1\n");
         sleep(1); // todo....
@@ -151,7 +150,13 @@ int main(int argc, char *argv[]) {
             thinker = getpid();
 
             if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
-                fprintf(stderr, "### Error beim Empfangen des Signal.\n");
+                fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
+                failState = 1;
+                break;
+            }
+
+            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
+                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
                 failState = 1;
                 break;
             }

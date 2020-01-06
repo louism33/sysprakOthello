@@ -66,7 +66,9 @@ enum Phase {
 
 int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));
-//    printf("<------US:\n%s", message);
+    if (printMore) {
+        printf("<------US:\n%s", message);
+    }
     return 0;
 }
 
@@ -220,6 +222,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                                BOARD_STRUCT *connectorBoard,
                                infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
 
+    int printMore = 1;
+
     strcpy(info->gameID, gameID);
     info->connector = connector;
     info->thinker = thinker;
@@ -292,8 +296,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     for (; endstate == 0;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
 
-//            printf("------>SERVER:\n%s", buff);
-//            fflush( stdout );
+            if (printMore) {
+                printf("------>SERVER:\n%s", buff);
+                fflush(stdout);
+            }
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
                 fprintf(stderr, "### We were too slow!\n");
@@ -352,24 +358,28 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
-                       strlen(buff) < 1); // todo, possibly stick to only one central read?
-//                printf("------>Server:\n%s", buff);
-//                fflush( stdout );
+                       strlen(buff) < 1);
+                if (printMore) {
+                    printf("------>Server:\n%s", buff);
+                    fflush(stdout);
+                }
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
-//                printf("### Saving gameName: %s", gameName);
-//                fflush( stdout );
+                if (printMore) {
+                    printf("### Saving gameName: %s", gameName);
+                    fflush(stdout);
+                }
 
                 if (player == NULL || strlen(player) != 1) {
                     printf("### Connecting with blank player string: %s", blankPlayerToSend);
-                    fflush( stdout );
+                    fflush(stdout);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
                     printf("### Connecting with player string: %s", playerToSend);
-                    fflush( stdout );
+                    fflush(stdout);
                     writeToServer(sockfd, playerToSend);
                 }
             }
@@ -397,10 +407,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 myPlayerName[l] = '\0';
                 printf("### Saving my playerName: %s", myPlayerName);
-                fflush( stdout );
+                fflush(stdout);
                 strcpy(info->players[atoi(playerNumber)].mitspielerName, myPlayerName);
                 printf("### Saving my MitspielerName: %s", info->players[atoi(playerNumber)].mitspielerName);
-                fflush( stdout );
+                fflush(stdout);
             }
 
             // step five, read TOTAL
@@ -423,7 +433,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                            strlen(buff) < 1);
                     printf("### final full string:\n%s", buff);
-                    fflush( stdout );
+                    fflush(stdout);
                     printf("### parsing then exiting\n");
                     endstate += dealWithGameOverCommand(buff);
                 }
@@ -441,7 +451,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
             if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
-//                printf("### We made a legal move\n");
+                if (printMore) {
+                    printf("### We made a legal move\n");
+                }
             }
 
             if ((strncmp("+ MOVE ", buff, 7)) == 0) {
@@ -459,16 +471,19 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 writeToServer(sockfd, thinking);
 
                 while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
-                       strlen(buff) < 1); // todo, possibly stick to only one central read?
-//                printf("------>Server:\n%s", okthinkbuff);
-//                fflush( stdout );
+                       strlen(buff) < 1);
+
+                if (printMore) {
+                    printf("------>Server:\n%s", okthinkbuff);
+                    fflush(stdout);
+                }
 
                 phase = SPIELZUG;
 
                 info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
                 info->infoBoard->board = shmInfo + sizeof(infoVonServer)
-                        + info->MitspielerAnzahl * sizeof(Player) +
-                        sizeof(BOARD_STRUCT);
+                                         + info->MitspielerAnzahl * sizeof(Player) +
+                                         sizeof(BOARD_STRUCT);
 
                 connectorBoard->sideToMove = sideToMove;
 
@@ -522,8 +537,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 close(pd[1]);    // Schreibseite schließen
 
                 bzero(buffer, 64);
-                if (read(pd[0], buffer, sizeof(buffer)) ==
-                    -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
                     perror("read");
                     endstate = 1;
                     break;
@@ -538,7 +553,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strcat(playCommandToSend, moveReceivedFromThinker);
                 strcat(playCommandToSend, "\n");
                 printf("### Play Command To Send: %s", playCommandToSend);
-                fflush( stdout );
+                fflush(stdout);
 
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;

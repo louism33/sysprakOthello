@@ -52,7 +52,7 @@ void mysighandler(int sig) {
     }
 
     if (sig == SIGUSR2) {
-        printf("### received SIGUSR2\n");
+        printf("### received SIGUSR2, setting finished flag to true\n");
         sleep(1000); // todo....
         everythingIsFinished = true;
     }

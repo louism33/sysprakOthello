@@ -116,11 +116,10 @@ int readConfigurationFile(char *pathName, configurationStruct * configurationStr
     }
     fclose(file);
 
-    printf("hostname: %s\n", configurationStruct->hostname);
-    printf("portnumber: %d\n", configurationStruct->portnumber);
-    printf("gamekindname: %s\n", configurationStruct->gamekindname);
+    printf("### hostname: %s\n", configurationStruct->hostname);
+    printf("### portnumber: %d\n", configurationStruct->portnumber);
+    printf("### gamekindname: %s\n", configurationStruct->gamekindname);
 
-    printf("Successfully read data from %s\n", pathName);
-//    return configurationStruct;
+    printf("### Successfully read data from %s\n", pathName);
     return 0;
 }

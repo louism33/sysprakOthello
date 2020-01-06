@@ -68,10 +68,10 @@ int connectToGameServer(char *gameID, char *player,
     int sock = 0, errcode, connectionStatus = 0;
 
     if (usingCustomConfigFile) {
-        printf("Using custom configuration file: %s\n", filePath);
+        printf("### Using custom configuration file: %s\n", filePath);
         readConfigurationFile(filePath, configStruct);
     } else {
-        printf("Using default configuration file: %s\n", DEFAULT_FILE_PATH);
+        printf("### Using default configuration file: %s\n", DEFAULT_FILE_PATH);
         readConfigurationFile(DEFAULT_FILE_PATH, configStruct);
     }
 

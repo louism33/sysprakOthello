@@ -116,18 +116,14 @@ int dealWithGameOverCommand(char *buff) {
 int getMoveTime(char *buff) {
     char move[10] = {" "};
     int len = strlen(buff);
-
     int i = 7, j = 0;
-//        printf("buff '%s' \n", buff);
-//        printf("buff[7] '%c' \n", buff[i]);
     while (i < len && (buff[i] >= '0' && buff[i] <= '9')) {
-//        printf("buff[i] %c \n", buff[i]);
         move[j++] = buff[i++];
     }
 
-//    printf("### Move time will be: %s\n", move);
-
-    return atoi(move);
+    int mvTime = atoi(move);
+    printf("### Parsed move time of %d\n", mvTime);
+    return mvTime;
 }
 
 
@@ -359,7 +355,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
-                printf("### Saving gameName: %s\n", gameName);
+                printf("### Saving gameName: %s", gameName);
 
                 if (player == NULL || strlen(player) != 1) {
                     printf("### Connecting with blank player string: %s", blankPlayerToSend);
@@ -430,7 +426,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if ((strncmp("+ MOVE ", buff, 7)) == 0) {
                 mvTime = getMoveTime(buff);
-                printf("### Parsed move time of %d\n", mvTime);
             }
 
 

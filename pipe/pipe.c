@@ -7,16 +7,14 @@
 
 int createPipe(int pd[])
 {
-    /*pipe erstellen mit pipe()*/
-
     if (pipe(pd) < 0)
     {
-        printf("Fehler bei der Erstellung der Pipe\n");
+        fprintf(stderr, "### Fehler bei der Erstellung der Pipe\n");
         return 1;
     }
     else
     {
-        printf("Erfolg bei der Erstellung der Pipe\n");
+        printf("### Erfolg bei der Erstellung der Pipe\n");
     }
 
     return 0;

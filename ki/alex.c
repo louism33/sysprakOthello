@@ -15,7 +15,6 @@
 #include <sys/time.h>
 #include <sys/time.h>
 #include <stdlib.h>
-#include <unistd.h>  //Header file for sleep(). man 3 sleep for details.
 #include <pthread.h>
 /*
  * Uses monte carlo tree search
@@ -344,8 +343,8 @@ int simulation(Node *node, BOARD_STRUCT_AND_MOVES *boardStructAndMoves) {
     int pass = 0;
     for (int i = 0; i < 100; i++) {
         if (i > 80) {
-            printf("80 moves in one game?????;");
-            printBoardSide(boardStruct);
+//            printf("80 moves in one game?????;");
+//            printBoardSide(boardStruct);
         }
         if (pass == 2) {
             break;
@@ -455,7 +454,9 @@ MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
 
     int totalWinsRoot = baseRoot->winCount;
     assert(baseRoot->playoutCount - totalWinsRoot == totalWinsChildren);
-    printNodeLittle(baseRoot);
+
+    //    printNodeLittle(baseRoot);
+
     int totalPlayoutsFromRoot = baseRoot->playoutCount;
     assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);
     return mostPlayedKid;
@@ -526,14 +527,14 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
 
     if (totalMoves == 0) {
         free(moves);
-        printf("Alex returns pass move\n");
+//        printf("Alex returns pass move\n");
         return getPassMove();
     }
 
     if (totalMoves == 1) {
         MOVE move = moves[0];
         free(moves);
-        printf("Alex returns only move: %d\n", move);
+//        printf("Alex returns only move: %d\n", move);
         return move;
     }
     free(moves);

@@ -66,7 +66,7 @@ enum Phase {
 
 int writeToServer(int sockfd, char message[]) {
     write(sockfd, message, strlen(message));
-    printf("Sending to server-> %s\n", message);
+    printf("<------US:\n%s", message);
     return 0;
 }
 
@@ -215,30 +215,31 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 }
 
 
-char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet) {
-    if (moveTime <= 0) {
-        fprintf(stderr, "A move time below or equal to zero? Bist du verrückt??? '%d'\n", moveTime);
-        return NULL;
-    }
-    memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * 8 * 8);
-
-    thinkerBoard->sideToMove = connectorBoard->sideToMove;
-
-    int move = doThink(thinkerBoard, moveTime);
-
-//    printf("move is: %d\n", move);
-
-    if (move == getPassMove()) {
-        printf("NO LEGAL MOVES FROM THIS BOARD");
-        return NULL;
-    }
-
-    convertMove(move, moveRet);
-
-//    printf("converted move is: %s\n", moveRet);
-
-    return moveRet;
-}
+//char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet,
+//                         FieldSizeColumnAndRow fieldsize) {
+//    if (moveTime <= 0) {
+//        fprintf(stderr, "A move time below or equal to zero? Bist du verrückt??? '%d'\n", moveTime);
+//        return NULL;
+//    }
+//    memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * fieldsize.row * fieldsize.col);
+//
+//    thinkerBoard->sideToMove = connectorBoard->sideToMove;
+//
+//    int move = doThink(thinkerBoard, moveTime);
+//
+////    printf("move is: %d\n", move);
+//
+//    if (move == getPassMove()) {
+//        printf("NO LEGAL MOVES FROM THIS BOARD");
+//        return NULL;
+//    }
+//
+//    convertMove(move, moveRet);
+//
+////    printf("converted move is: %s\n", moveRet);
+//
+//    return moveRet;
+//}
 
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                BOARD_STRUCT *connectorBoard,
@@ -312,17 +313,17 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     for (; endstate == 0;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-            printf("--->%s\n", buff);
+
+            printf("------>SERVER:\n%s", buff);
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
-                fprintf(stderr, "We were too slow! '%s'\n", buff);
+                fprintf(stderr, "We were too slow!\n");
                 endstate = 1;
                 break;
             }
 
             if ((strncmp("- Internal error. Sorry & Bye", buff, 29)) == 0) {
-                fprintf(stderr, "Server screwed up (well, probably we did, but now we can blame the server)'%s'\n",
-                        buff);
+                fprintf(stderr, "Server screwed up (well, probably we did, but now we can blame the server)\n");
                 endstate = 1;
                 break;
             }
@@ -368,9 +369,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             if (strncmp("+ PLAYING ", buff, 10) == 0) {
                 strncpy(gameKindNameFromServer, buff + 10, strlen(buff) - strlen("+ PLAYING "));
                 if (strncmp(gameKindName, gameKindNameFromServer, 7) == 0) {
-                    printf("##### We play reversi now.#####\n");
+                    printf("### The server will play Reversi\n");
                 } else {
-                    printf("##### We don't play reversi now.#####\n");
+                    printf("### The server is not set up to play Reversi, exiting...");
                     endstate = 1;
                     break;
                 }
@@ -378,50 +379,48 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                        strlen(buff) < 1); // todo, possibly stick to only one central read?
-                printf("%s\n", buff);
+                printf("------>Server:\n%s", buff);
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
-                printf("-----------save gameName: %s\n", gameName);
+                printf("### Saving gameName '%s'\n", gameName);
 
                 if (player == NULL || strlen(player) != 1) {
-//                    printf("### -------------> connecting with blank player string:'%s'\n", blankPlayerToSend);
+                    printf("### Connecting with blank player string:%s", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
-//                    printf("### -------------> connecting with player string:'%s'\n", playerToSend);
+                    printf("### Connecting with player string:%s", playerToSend);
                     writeToServer(sockfd, playerToSend);
                 }
             }
 
             // step four, read YOU
             if (strncmp("+ YOU", buff, 5) == 0) {
-                printf("  Received YOU info from server, buff is:%s", buff);
                 strncpy(playerNumber, buff + 6, 1);
                 playerNumber[2] = '\0';
-//                printf("--------save  playerNumber: %s\n", playerNumber);
+                printf("### Saving playerNumber: %s", playerNumber);
                 // todo!!!!
                 // why is players an array?????
                 info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber); // this line is not useful
 
-//                printf("----save mitspielerNummer:%d\n", info->players[atoi(playerNumber)].mitspielerNummer);
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
-                    printf("         setting player number to B\n");
+//                    printf("         setting player number to B\n");
                     sideToMove = getBlack();
                 } else {
-                    printf("         setting player number to W\n");
+//                    printf("         setting player number to W\n");
                     sideToMove = getWhite();
                 }
 
                 int l = strlen(buff) - strlen("+ YOU 0 ");
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 myPlayerName[l] = '\0';
-                printf("--------save my playerName: %s\n", myPlayerName);
+                printf("### Saving my playerName: %s", myPlayerName);
                 strcpy(info->players[atoi(playerNumber)].mitspielerName, myPlayerName);
-                printf("---save mitspielerName:%s\n", info->players[atoi(playerNumber)].mitspielerName);
+                printf("### Saving my MitspielerName: %s", info->players[atoi(playerNumber)].mitspielerName);
             }
 
             // step five, read TOTAL
@@ -429,7 +428,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(mitspieleranzahl, buff + 8, 1);
                 mitspieleranzahl[1] = '\0';
                 info->MitspielerAnzahl = atoi(mitspieleranzahl);
-                printf("--------save  MitspielerAnzahl: %d\n", info->MitspielerAnzahl);
+                printf("### Saving MitspielerAnzahl: '%d'\n", info->MitspielerAnzahl);
                 phase = SPIELVERLAUF;
             }
 
@@ -437,12 +436,11 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 phase = PROLOG;
                 endstate += dealWithGameOverCommand(buff);
 
-
                 if (kill(thinker, SIGUSR2) == -1) {
-                    printf("Fehler beim senden des Signals für Game over\n");
+                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
                     exit(1);
                 } else {
-                    printf("******************************************kill and stop everything\n");
+                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
                 }
 
                 endstate = 0;
@@ -473,63 +471,42 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 bzero(moveTime, SMALL_STRING);
                 bzero(fieldSize, SMALL_STRING);
-                int mvTime = 100;//getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+                int mvTime = 3000; // getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+//                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
+                FieldSizeColumnAndRow fieldsize = {8, 8};
 
 
                 printf("starting parse board, setting phase to spielzug\n");
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);
                 if (parse) {
-                    fprintf(stderr, "Problem parsing board message\n");
+                    fprintf(stderr, "### Problem parsing board message\n");
                 }
-                printf("finished parse board, here is the board I was able to parse:\n");
-                printBoardLouis(connectorBoard);
+//                printf("### finished parse board, here is the board I was able to parse:\n");
+//                printBoardLouis(connectorBoard);
 
                 schreiben = true; // todo, what is this global doing???
                 /* ----------------------- fertig mit schreiben des struct infoVonServer und schreiben in SHM ---*/
                 /*---------- schreibe in das Shm das gefüllte Struct aus connectorMasterMethod ------------------*/
 
                 memcpy(info->infoBoard->board, connectorBoard->board,
-                       sizeof(int) * 8 * 8); // todo get these params from server
+                       sizeof(int) * fieldsize.row * fieldsize.col);
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 
-                printf("move time from server: %d\n", mvTime);
+                printf("### Move time from server: %d\n", mvTime);
 //                info->moveTime = mvTime - 2500;
-                info->moveTime = 100;
-                printf("move time for us: %d\n", info->moveTime);
+                info->moveTime = 500;
+                printf("### Move time for us: %d\n", info->moveTime);
 
-                printf("finished parse board\n");
-                printf("sending relevant info to thinker\n");
-                char *moveRet = malloc(3 * sizeof(char));
+//                printf("### Finished parse board\n");
+//                printf("### Sending relevant info to thinker\n");
 
-                //signal schicken
                 if (kill(thinker, SIGUSR1) == -1) {
-                    printf("Fehler beim senden des Signals\n");
-                    exit(1);
-                } else {
-                    printf("******************************************kill\n");
-                }
-
-
-                // todo, don't block the connector waiting for the thinker...
-                // todo, don't block the connector waiting for the thinker...
-                // todo, don't block the connector waiting for the thinker...
-                // todo, don't block the connector waiting for the thinker...
-                // todo, don't block the connector waiting for the thinker...
-                // todo, don't block the connector waiting for the thinker...
-                // todo, don't block the connector waiting for the thinker...
-                // todo, don't block the connector waiting for the thinker...
-                moveReceivedFromThinker[0] = moveRet[0];
-                close(pd[1]);    // Schreibseite schließen
-                char buffer[50]; // Puffer zum speichern von gelesenen Daten
-                if (read(pd[0], buffer, sizeof(buffer)) ==
-                    -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-                    perror("read");
+                    fprintf(stderr, "### Fehler beim senden des Signals\n");
                     endstate = 1;
                     break;
                 } else {
-                    printf("Connector(Kindsprozess) bekommt Nachricht von pipe: %s,length of buffer:%li\n\n",
-                           buffer, strlen(buffer));
+                    printf("### Sending SIGUSR1 to thinker to signal to start thinking\n");
                 }
                 moveReceivedFromThinker[0] = buffer[0];
                 moveReceivedFromThinker[1] = buffer[1];

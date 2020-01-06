@@ -134,27 +134,24 @@ int main(int argc, char *argv[]) {
     switch (thinker = fork()) {
         /*Fehlerfall*/
         case -1:
-            printf("Fehler bei fork()\n");
+            fprintf(stderr, "### Fehler bei fork()\n");
             break;
 
             /*Kindsprozess = Connector*/
         case 0:
-            printf("Im Kindsprozess\n");
             connector = getpid();
             thinker = getppid();
-            printf("ConnectorPID = %i\n", connector);
             connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
             break;
 
             /*Elternprozess = Thinker*/
         default:
-            printf("Im Elternprozess\n");
             thinker = getpid();
-            printf("ThinkerPID = %i\n", thinker);
 
             if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
-                printf("Error beim Empfangen des Signal.\n");
-                exit(1);
+                fprintf(stderr, "### Error beim Empfangen des Signal.\n");
+                failState = 1;
+                break;
             }
 
             close(pd[0]); // Leseseite schließen
@@ -164,22 +161,22 @@ int main(int argc, char *argv[]) {
                 }
                 denken = false;
 
-//                printf("jetzt thinking...\n");
-                printBoardLouis(info->infoBoard);
+//                printf("### Currently thinking...\n");
+//                printBoardLouis(info->infoBoard);
 
                 move = doThink(info->infoBoard, info->moveTime);
                 getPrettyMove(move, antwort);
-//                printf("antwort: %s\n", antwort);
-//                printf("Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
+
+                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
                 if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
-                    perror("write");
+                    perror("### write");
                     failState = 1;
                     break;
                 }
                 bzero(antwort, sizeof(antwort));
 
                 if (everythingIsFinished) {
-                    printf("Received SIGUSR2, time to quit everything!\n");
+                    printf("### Received SIGUSR2, time to quit everything!\n");
                     break;
                 }
             }
@@ -191,12 +188,10 @@ int main(int argc, char *argv[]) {
     free(antwort);
     freeBoardStruct(connectorBoard);
     if (failState) {
-        fprintf(stderr, "Error happened somewhere\n");
+        fprintf(stderr, "### Error happened somewhere\n");
     }
 
     freeStatics();
-
-//    printf("End of main method, returning %d\n", failState);
 
     return failState;
 }

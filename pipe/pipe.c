@@ -12,11 +12,14 @@ int createPipe(int pd[])
     if (pipe(pd) < 0)
     {
         printf("Fehler bei der Erstellung der Pipe\n");
+        return 1;
     }
     else
     {
         printf("Erfolg bei der Erstellung der Pipe\n");
     }
+
+    return 0;
 }
 
 

@@ -84,16 +84,16 @@ int getWinnerFromServer(char *buff) {
     white = strstr(buff, "+ PLAYER1WON Yes");
 
     if (black != 0 && white != 0) {
-        printf("Draw! \n");
+        printf("### Draw! \n");
         return getDraw();
     } else if (black != 0) {
-        printf("BLACK wins!\n");
+        printf("### BLACK wins!\n");
         return getBlack();
     } else if (white != 0) {
-        printf("WHITE wins!\n");
+        printf("### WHITE wins!\n");
         return getWhite();
     } else {
-        fprintf(stderr, "Failed to meaningfully parse gameover string, no idea who won \n");
+        fprintf(stderr, "### Failed to meaningfully parse gameover string, no idea who won \n");
         return -1;
     }
 }

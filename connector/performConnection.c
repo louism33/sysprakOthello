@@ -456,7 +456,17 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 bzero(fieldSize, SMALL_STRING);
 //                moveTime[0] = '\0';
 //                fieldSize[0] = '\0';
-                //getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+                int mvt = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+                printf("field size row: %d\n", fieldSize.row);
+                printf("field size col: %d\n", fieldSize.col);
+                printf("parsed message, got movetime: %d\n", mvt);
+                if (mvt != 0) {
+                    printf("setting move time to : %d\n", mvt);
+                    mvTime = mvt;
+                }else {
+                    printf("not changing movetime, it stays at : %d\n", mvTime);
+                }
+
 //                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
                 FieldSizeColumnAndRow fieldsize = {8, 8};
 
@@ -478,7 +488,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 
-                printf("### Move time from server: %d\n", mvTime);
+//                printf("### Move time from server: %d\n", mvTime);
 //                info->moveTime = mvTime - 2500;
                 info->moveTime = 500;
                 printf("### Move time for us: %d\n", info->moveTime);
@@ -512,7 +522,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
                 strcat(playCommandToSend, "\n");
-                printf("### Play Command To Send: %s\n", playCommandToSend);
+                printf("### Play Command To Send: %s", playCommandToSend);
 
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;

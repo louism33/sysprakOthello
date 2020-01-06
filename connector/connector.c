@@ -125,7 +125,7 @@ int connectToGameServer(char *gameID, char *player,
 
         // connect the client socket to the server socket
         if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
-            printf("connection with the server failed... error is %s\n",
+            printf("### connection with the server failed... error is %s\n",
                    strerror(errno));
         } else {
             printf("Success, connected to the server.\n");

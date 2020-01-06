@@ -142,12 +142,16 @@ int main(int argc, char *argv[]) {
         case 0:
             connector = getpid();
             thinker = getppid();
-            connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
+            printf("### Starting Connector Master Method\n");
+            int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
+            printf("### Connector Master Method has ended, with value: %d\n", c);
             break;
 
             /*Elternprozess = Thinker*/
         default:
             thinker = getpid();
+
+            int thinkerReturnValue = 0;
 
             if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
                 fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
@@ -160,6 +164,8 @@ int main(int argc, char *argv[]) {
                 failState = 1;
                 break;
             }
+
+            printf("### Starting Thinker main loop\n");
 
             close(pd[0]); // Leseseite schließen
             while (1) {
@@ -195,6 +201,7 @@ int main(int argc, char *argv[]) {
 
                     if (returnStatus == 1)
                     {
+                        thinkerReturnValue = 1;
                         printf("### The child process terminated with an error!. \n");
                     }
 
@@ -202,6 +209,7 @@ int main(int argc, char *argv[]) {
                     break;
                 }
             }
+            printf("### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
 
             break;
     }

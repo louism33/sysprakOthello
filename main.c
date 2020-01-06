@@ -53,7 +53,7 @@ void mysighandler(int sig) {
 
     if (sig == SIGUSR2) {
         printf("### received SIGUSR2\n");
-        sleep(100); // todo....
+        sleep(1000); // todo....
         everythingIsFinished = true;
     }
 }
@@ -193,19 +193,19 @@ int main(int argc, char *argv[]) {
                 if (everythingIsFinished) {
                     printf("### Received SIGUSR2, time to quit everything!\n");
 
-                    int returnStatus;
-                    waitpid(connector, &returnStatus, 0);  // Parent process waits here for child to terminate.
-
-                    if (returnStatus == 0)  // Verify child process terminated without error.
-                    {
-                        printf("### The child process terminated normally. \n");
-                    }
-
-                    if (returnStatus == 1)
-                    {
-                        thinkerReturnValue = 1;
-                        printf("### The child process terminated with an error!. \n");
-                    }
+//                    int returnStatus;
+//                    waitpid(connector, &returnStatus, 0);  // Parent process waits here for child to terminate.
+//
+//                    if (returnStatus == 0)  // Verify child process terminated without error.
+//                    {
+//                        printf("### The child process terminated normally. \n");
+//                    }
+//
+//                    if (returnStatus == 1)
+//                    {
+//                        thinkerReturnValue = 1;
+//                        printf("### The child process terminated with an error!. \n");
+//                    }
 
 
                     break;

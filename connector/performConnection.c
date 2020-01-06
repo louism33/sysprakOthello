@@ -432,16 +432,16 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
 
-//            if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
-////                writeToServer(sockfd, okWait);
-//                printf("### We made a legal move\n");
-//            } else if ((strncmp("+ MOVE ", buff, 7)) == 0) {
-//                printf("buff is ::: %s\n", buff);
-////                mvTime = getMoveTime(buff);;
+            if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
+                printf("### We made a legal move\n");
+            }
+
+            if ((strncmp("+ MOVE ", buff, 7)) == 0) {
+                printf("buff is ::: %s\n", buff);
+                mvTime = getMoveTime(buff);
 //                mvTime = 3000;
-//                printf("### Parsed move time of %d\n", mvTime);
-//                break;
-//            }
+                printf("### Parsed move time of %d\n", mvTime);
+            }
 
 
             // step six, read board information and time to move from server.
@@ -450,7 +450,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
-            if (strlen(buff) > 75) { // todo make better (add check for first chars for example)
+            if (strstr("+ FIELD "){//strlen(buff) > 75) { // todo make better (add check for first chars for example)
                 writeToServer(sockfd, thinking);
 
                 while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&

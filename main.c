@@ -53,7 +53,9 @@ void mysighandler(int sig) {
 
     if (sig == SIGUSR2) {
         printf("### received SIGUSR2, setting finished flag to true\n");
+        printf("     d: %d, e: %d\n", denken, everythingIsFinished);
         sleep(1000); // todo....
+        printf("          d: %d, e: %d\n", denken, everythingIsFinished);
         everythingIsFinished = true;
     }
 }

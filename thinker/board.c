@@ -1,10 +1,10 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
-#include "board.h"
 #include <stdbool.h>
-#include <assert.h>
+#include "board.h"
 
 #define DIRECTION_SIZE 8
 #define ZEILE 8

@@ -353,13 +353,13 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                        strlen(buff) < 1); // todo, possibly stick to only one central read?
-                printf("------>Server:\n%s", buff);
-                fflush( stdout );
+//                printf("------>Server:\n%s", buff);
+//                fflush( stdout );
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
-                printf("### Saving gameName: %s", gameName);
-                fflush( stdout );
+//                printf("### Saving gameName: %s", gameName);
+//                fflush( stdout );
 
                 if (player == NULL || strlen(player) != 1) {
                     printf("### Connecting with blank player string: %s", blankPlayerToSend);
@@ -441,7 +441,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
             if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
-                printf("### We made a legal move\n");
+//                printf("### We made a legal move\n");
             }
 
             if ((strncmp("+ MOVE ", buff, 7)) == 0) {
@@ -460,8 +460,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
                        strlen(buff) < 1); // todo, possibly stick to only one central read?
-                printf("------>Server:\n%s", okthinkbuff);
-                fflush( stdout );
+//                printf("------>Server:\n%s", okthinkbuff);
+//                fflush( stdout );
 
                 phase = SPIELZUG;
 
@@ -506,7 +506,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                printf("### Move time from server: %d\n", mvTime);
 //                info->moveTime = mvTime - 2500;
                 info->moveTime = 100;
-                printf("### Move time for us: %d\n", info->moveTime);
+//                printf("### Move time for us: %d\n", info->moveTime);
 
 //                printf("### Finished parse board\n");
 //                printf("### Sending relevant info to thinker\n");

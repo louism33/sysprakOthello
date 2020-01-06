@@ -12,7 +12,7 @@
 #include "../ki/alex.h"
 
 MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
-    printf("### Received doThink command from connector, time to move %d\n", moveTime);
+//    printf("### Received doThink command from connector, time to move %d\n", moveTime);
 
     MOVE bestMove = getBestMoveMultiThreaded(boardStruct, moveTime);
 

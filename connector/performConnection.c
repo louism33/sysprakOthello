@@ -407,7 +407,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
                 phase = PROLOG;
-                endstate += dealWithGameOverCommand(buff);
+                if (strlen(buff) > 20) {
+                    printf("### received gameover and full string, parsing then exiting");
+                    endstate += dealWithGameOverCommand(buff);
+                } else {
+                    printf("### received only gameover, waiting for final board");
+
+                    while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
+                           strlen(buff) < 1);
+                }
 
                 if (kill(thinker, SIGUSR2) == -1) {
                     fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
@@ -462,7 +470,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 if (mvt != 0) {
 //                    printf("### Setting move time to : %d\n", mvt);
                     mvTime = mvt;
-                }else {
+                } else {
 //                    printf("### Not changing movetime, it stays at : %d\n", mvTime);
                 }
 

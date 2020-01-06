@@ -50,7 +50,7 @@ void mysighandler(int sig) {
     }
 
     if (sig == SIGUSR2) {
-        sleep(10); // todo....
+        sleep(100); // todo....
         everythingIsFinished = true;
     }
 }

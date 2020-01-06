@@ -100,7 +100,7 @@ int getWinnerFromServer(char *buff) {
 
 // return 1 if fail, 0 if success
 int dealWithGameOverCommand(char *buff) {
-    printf("The game is over.\n");
+    printf("### The game is over.\n");
 
     int fail = 0;
 
@@ -158,7 +158,6 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
         }
         indexOfField++;
     }
-//    printf("indexOfFieldSize %d\n", indexOfFieldSize);
     fieldSize[indexOfFieldSize] = '\0';
 
     return moveTimeNummer;
@@ -177,7 +176,6 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     while (1) {
         if (fieldSize[index] == ',') // wenn Komma gibt
         {
-            //printf("Es gibt Komma.\n");
             komma = index;
             while (indexNew != komma) {
                 firstPart[num1] = fieldSize[indexNew];
@@ -280,7 +278,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     info->infoBoard = NULL;
 
     if (!gameKindName) {
-        printf("game kind name not provided, exiting");
+        fprintf(stderr, "### Game kind name not provided, exiting");
         endstate = 1;
     }
 
@@ -290,7 +288,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             printf("------>SERVER:\n%s", buff);
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
-                fprintf(stderr, "We were too slow!\n");
+                fprintf(stderr, "### We were too slow!\n");
                 endstate = 1;
                 break;
             }
@@ -303,34 +301,29 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if ((strncmp("- No free player", buff, 16)) == 0) {
                 fprintf(stderr,
-                        "Could not connect to game, the player is already taken, or there are no free players.\n");
+                        "### Could not connect to game, the player is already taken, or there are no free players.\n");
                 endstate = 1;
                 break;
             }
 
             if ((strncmp("- Invalid Move: Invalid position", buff, 32)) == 0) {
                 fprintf(stderr,
-                        "We seem to have made an invalid move :(. Maybe we thought the wrong colour was playing?.\n");
+                        "### We seem to have made an invalid move :(. Maybe we thought the wrong colour was playing?.\n");
                 endstate = 1;
                 break;
             }
 
             if ((strncmp("- ", buff, 2)) == 0) {
-                fprintf(stderr, "Unknown Server error response! '%s'\n", buff);
+                fprintf(stderr, "### Unknown Server error response! '%s'\n", buff);
                 endstate = 1;
                 break;
             }
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
-                printf("Gameserver major version is: %c\n", buff[MAJOR_VERSION_INDEX_SERVER]);
+                printf("### Gameserver major version is: %c\n", buff[MAJOR_VERSION_INDEX_SERVER]);
                 version[MAJOR_VERSION_INDEX_LOCAL] = buff[MAJOR_VERSION_INDEX_SERVER];
                 writeToServer(sockfd, version);
-
-//                if (1) {
-//                    endstate = 1;
-//                    break;
-//                }
             }
 
             // step two, send game ID
@@ -381,10 +374,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
-//                    printf("         setting player number to B\n");
+//                    printf("### Setting player colour to B\n");
                     sideToMove = getBlack();
                 } else {
-//                    printf("         setting player number to W\n");
+//                    printf("### Setting player colour to W\n");
                     sideToMove = getWhite();
                 }
 
@@ -449,7 +442,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 FieldSizeColumnAndRow fieldsize = {8, 8};
 
 
-                printf("starting parse board, setting phase to spielzug\n");
+//                printf("### Starting parse board, setting phase to spielzug\n");
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);
                 if (parse) {
                     fprintf(stderr, "### Problem parsing board message\n");
@@ -478,7 +471,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     printf("Fehler beim senden des Signals\n");
                     exit(1);
                 } else {
-                    printf("******************************************kill\n");
+                    printf("### Sending SIGUSR1 to thinker to start thinking\n");
                 }
 
 
@@ -499,7 +492,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
                 strcat(playCommandToSend, "\n");
-                printf("playCommandToSend: %s\n", playCommandToSend);
+//                printf("### Play Command To Send: %s\n", playCommandToSend);
 
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;
@@ -511,7 +504,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
             if (readResponse == -1) {
-                printf("Could not read from server");
+                fprintf(stderr, "### Could not read from server");
                 endstate = 1;
                 break;
             }

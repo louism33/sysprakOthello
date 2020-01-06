@@ -432,16 +432,16 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
 
-            if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
-//                writeToServer(sockfd, okWait);
-                printf("### We made a legal move\n");
-            } else if ((strncmp("+ MOVE ", buff, 7)) == 0) {
-                printf("buff is ::: %s\n", buff);
-//                mvTime = getMoveTime(buff);;
-                mvTime = 3000;
-                printf("### Parsed move time of %d\n", mvTime);
-                break;
-            }
+//            if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
+////                writeToServer(sockfd, okWait);
+//                printf("### We made a legal move\n");
+//            } else if ((strncmp("+ MOVE ", buff, 7)) == 0) {
+//                printf("buff is ::: %s\n", buff);
+////                mvTime = getMoveTime(buff);;
+//                mvTime = 3000;
+//                printf("### Parsed move time of %d\n", mvTime);
+//                break;
+//            }
 
 
             // step six, read board information and time to move from server.
@@ -527,7 +527,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
                 strcat(playCommandToSend, "\n");
-//                printf("### Play Command To Send: %s\n", playCommandToSend);
+                printf("### Play Command To Send: %s\n", playCommandToSend);
 
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;

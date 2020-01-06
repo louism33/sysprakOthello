@@ -512,7 +512,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                printf("### Sending relevant info to thinker\n");
 
                 if (kill(thinker, SIGUSR1) == -1) {
-                    printf("Fehler beim senden des Signals\n");""
+                    printf("Fehler beim senden des Signals\n");
                     exit(1);
                 } else {
                     printf("### Sending SIGUSR1 to thinker to start thinking\n");

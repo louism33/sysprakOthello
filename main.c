@@ -53,9 +53,7 @@ void mysighandler(int sig) {
 
     if (sig == SIGUSR2) {
         printf("### received SIGUSR2, setting finished flag to true\n");
-        printf("     d: %d, e: %d\n", denken, everythingIsFinished);
-        sleep(5); // todo....
-        printf("          d: %d, e: %d\n", denken, everythingIsFinished);
+        sleep(3); // todo....
         everythingIsFinished = true;
     }
 }
@@ -78,23 +76,23 @@ int main(int argc, char *argv[]) {
 
         int fail = 0;
 
-//        printf("Running fullTestSuite\n");
-//        fail += fullTestSuite();
-//
-//        printf("Running convert move test Suite\n");
-//        fail += testConvertMove();
-//
-//        printf("Running make move test Suite\n");
-//        fail += runMakeMoveTests();
-//
-//        printf("Running unmake move test Suite\n");
-//        fail += fullTestSuiteUnmakeMoveTests();
-//
-//        printf("Running big board tests Suite\n");
-//        fail += testSuiteBigBoard();
-//
-//        printf("Running perft Suite\n");
-//        fail += perftSuite();
+        printf("Running fullTestSuite\n");
+        fail += fullTestSuite();
+
+        printf("Running convert move test Suite\n");
+        fail += testConvertMove();
+
+        printf("Running make move test Suite\n");
+        fail += runMakeMoveTests();
+
+        printf("Running unmake move test Suite\n");
+        fail += fullTestSuiteUnmakeMoveTests();
+
+        printf("Running big board tests Suite\n");
+        fail += testSuiteBigBoard();
+
+        printf("Running perft Suite\n");
+        fail += perftSuite();
 
         printf("Running testgetMoveTimeAndFieldSize().\n");
         fail += testGetMovetimeAndFieldSize();
@@ -105,14 +103,14 @@ int main(int argc, char *argv[]) {
         printf("Running parse game over\n");
         fail += testParseGameover();
 
-//        printf("Running basic KI Suite\n");
-//        fail += kiTestsSimple();
-//
-//        printf("Running medium KI Suite\n");
-//        fail += kiTestsBasicThinking();
-//
-//        printf("Running strategy KI Suite\n");
-//        fail += kiTestsBasicStrategy();
+        printf("Running basic KI Suite\n");
+        fail += kiTestsSimple();
+
+        printf("Running medium KI Suite\n");
+        fail += kiTestsBasicThinking();
+
+        printf("Running strategy KI Suite\n");
+        fail += kiTestsBasicStrategy();
 
         if (fail) {
             printf("Some tests failed, please fix them as soon as possible.\n");
@@ -178,30 +176,14 @@ int main(int argc, char *argv[]) {
 
             close(pd[0]); // Leseseite schließen
             while (1) {
+                //Schreibseite muss warten bis Leseseite fertig ist.
                 while (!denken && !everythingIsFinished) {
-                    sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
-                    printf("d: %d, e: %d\n", denken, everythingIsFinished);
+                    sleep(1);
                 }
 
                 if (everythingIsFinished) {
                     printf("### Received SIGUSR2, time to quit everything!\n");
                     fflush(stdout);
-
-//                    int returnStatus;
-//                    waitpid(connector, &returnStatus, 0);  // Parent process waits here for child to terminate.
-//
-//                    if (returnStatus == 0)  // Verify child process terminated without error.
-//                    {
-//                        printf("### The child process terminated normally. \n");
-//                    }
-//
-//                    if (returnStatus == 1)
-//                    {
-//                        thinkerReturnValue = 1;
-//                        printf("### The child process terminated with an error!. \n");
-//                    }
-
-
                     break;
                 }
 

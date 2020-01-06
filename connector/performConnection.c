@@ -167,7 +167,7 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
 
 
 FieldSizeColumnAndRow charInNummer(char *fieldSize) {
-    printf("### Parsing field size message: %s\n", fieldSize);
+//    printf("### Parsing field size message: %s\n", fieldSize);
     char firstPart[MOVE_STRING_LENGTH] = {" "};
     char secondPart[MOVE_STRING_LENGTH] = {" "};
     int index = 0;

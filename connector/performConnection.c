@@ -473,6 +473,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
                 FieldSizeColumnAndRow fieldsize = {8, 8};
 
+                mvTime = 3000;
 
 //                printf("### Starting parse board, setting phase to spielzug\n");
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);

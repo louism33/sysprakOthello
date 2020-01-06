@@ -428,7 +428,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 }
 
                 endstate = 0;
-                break;
+//                break;
             }
 
 

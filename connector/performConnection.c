@@ -214,33 +214,6 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     return f;
 }
 
-
-//char *getMoveFromThinker(BOARD_STRUCT *connectorBoard, BOARD_STRUCT *thinkerBoard, int moveTime, char *moveRet,
-//                         FieldSizeColumnAndRow fieldsize) {
-//    if (moveTime <= 0) {
-//        fprintf(stderr, "A move time below or equal to zero? Bist du verrückt??? '%d'\n", moveTime);
-//        return NULL;
-//    }
-//    memcpy(thinkerBoard->board, connectorBoard->board, sizeof(int) * fieldsize.row * fieldsize.col);
-//
-//    thinkerBoard->sideToMove = connectorBoard->sideToMove;
-//
-//    int move = doThink(thinkerBoard, moveTime);
-//
-////    printf("move is: %d\n", move);
-//
-//    if (move == getPassMove()) {
-//        printf("NO LEGAL MOVES FROM THIS BOARD");
-//        return NULL;
-//    }
-//
-//    convertMove(move, moveRet);
-//
-////    printf("converted move is: %s\n", moveRet);
-//
-//    return moveRet;
-//}
-
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                BOARD_STRUCT *connectorBoard,
                                infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
@@ -502,7 +475,18 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                printf("### Sending relevant info to thinker\n");
 
                 if (kill(thinker, SIGUSR1) == -1) {
-                    fprintf(stderr, "### Fehler beim senden des Signals\n");
+                    printf("Fehler beim senden des Signals\n");
+                    exit(1);
+                } else {
+                    printf("******************************************kill\n");
+                }
+
+
+                close(pd[1]);    // Schreibseite schließen
+                char buffer[50]; // Puffer zum speichern von gelesenen Daten
+                if (read(pd[0], buffer, sizeof(buffer)) ==
+                    -1) { // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                    perror("read");
                     endstate = 1;
                     break;
                 } else {

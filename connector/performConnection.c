@@ -163,6 +163,21 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     return moveTimeNummer;
 }
 
+int getMoveTime(char *buff) {
+    char move[10] = {" "};
+    int len = strlen(buff);
+
+    int i = 7, j = 0;
+    while (i < len) {
+        move[j++] = buff[i++];
+    }
+
+//    printf("### Move time will be: %s\n", move);
+
+    return atoi(move);
+}
+
+
 FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     char firstPart[MOVE_STRING_LENGTH] = {" "};
     char secondPart[MOVE_STRING_LENGTH] = {" "};
@@ -283,6 +298,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     }
 
     char buffer[50]; // Puffer zum speichern von gelesenen Daten
+    int mvTime = 0;
 
     for (; endstate == 0;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
@@ -414,6 +430,18 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 endstate = 0;
                 break;
             }
+
+
+            if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
+//                writeToServer(sockfd, okWait);
+                printf("### We made a legal move\n");
+            } else if ((strncmp("+ MOVE ", buff, 7)) == 0) {
+                mvTime = getMoveTime(buff);;
+
+                printf("### Parsed move time of %d\n", mvTime);
+                break;
+            }
+
 
             // step six, read board information and time to move from server.
             // todo, extract timeToMove info

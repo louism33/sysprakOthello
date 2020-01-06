@@ -65,6 +65,41 @@ int testConvertMove() {
 }
 
 
+int testgetMoveTimeAndFieldSizeNEW1() {
+    int fail = 0;
+    char *board1 = "+ FIELD 8,8\n"
+                   "+ 8 * * * * * * * *\n"
+                   "+ 7 * * * * * * * *\n"
+                   "+ 6 * * B * * * * *\n"
+                   "+ 5 * * B B W W * *\n"
+                   "+ 4 * * * B B * * *\n"
+                   "+ 3 * * W W W B W *\n"
+                   "+ 2 * * * * * * B *\n"
+                   "+ 1 * * * * * * W B\n"
+                   "+ ENDFIELD";
+
+    char *moveTime = malloc(10 * sizeof(char));
+    char *fieldSize = malloc(10 * sizeof(char));
+    int test8 = getMoveTimeAndFieldSize(board1, moveTime, fieldSize);
+
+    if (test8 != 3000) {
+        fail = 1;
+    }
+
+    if (strcmp(fieldSize, "8,8") != 0) {
+        fail = 1;
+    }
+
+    if (fail) {
+        printf("Problem beim getMoveTimeAndFieldSize 1.\n");
+    }
+
+    free(moveTime);
+    free(fieldSize);
+    return fail;
+}
+
+
 int testgetMoveTimeAndFieldSize1() {
     int fail = 0;
     char *board1 = "TOTAL 2\n"
@@ -419,11 +454,86 @@ int testParseGameover() {
     return fail;
 }
 
+
+
+int testGetMoveTime1() {
+    int fail = 0;
+    char *str = "+ MOVE 3000\n";
+
+    int moveTime = getMoveTime(str);
+
+    if (moveTime != 3000) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
+int testGetMoveTime2() {
+    int fail = 0;
+    char *str = "+ MOVE 4000\n";
+
+    int moveTime = getMoveTime(str);
+
+    if (moveTime != 4000) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
+int testGetMoveTime3() {
+    int fail = 0;
+    char *str = "+ MOVE 666\n";
+
+    int moveTime = getMoveTime(str);
+
+    if (moveTime != 666) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
+int testGetMoveTime4() {
+    int fail = 0;
+    char *str = "+ MOVE 1234\n";
+
+    int moveTime = getMoveTime(str);
+
+    if (moveTime != 1234) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
+
+int testGetMoveTime5() {
+    int fail = 0;
+    char *str = "+ MOVE 12345\n";
+
+    int moveTime = getMoveTime(str);
+
+    if (moveTime != 12345) {
+        fail = 1;
+    }
+
+    return fail;
+}
+
 int testGetMovetimeAndFieldSize() {
     int fail = 0;
     fail += testgetMoveTimeAndFieldSize1();
     fail += testgetMoveTimeAndFieldSize2();
     fail += testgetMoveTimeAndFieldSize3();
+
+//    fail += testgetMoveTimeAndFieldSizeNEW1();
+    fail += testGetMoveTime1();
+    fail += testGetMoveTime2();
+    fail += testGetMoveTime3();
+    fail += testGetMoveTime4();
+    fail += testGetMoveTime5();
     return fail;
 }
 

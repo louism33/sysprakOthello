@@ -19,29 +19,3 @@ int createPipe(int pd[])
 
     return 0;
 }
-
-
-
-void changeMsg(char* antwort){
-    int random=rand()%63;
-    getPrettyMove(random,antwort);
-}
-
-// /* nur zum Testen gewesen brauchen wir nicht mehr !*/
-// void writePipe (int file) {
-//   FILE *stream;
-//   stream = fdopen (file, "w");
-//   fprintf (stream, "hello, world!\n");
-//   fprintf (stream, "goodbye, world!\n");
-//   fclose (stream);
-// }
-
-// /*lesen tut der Connector*/
-// void readPipe (int file) {
-//   FILE *stream;
-//   int c;
-//   stream = fdopen (file, "r");
-//   while ((c = fgetc (stream)) != EOF)
-//   putchar (c);
-//   fclose (stream);
-// }

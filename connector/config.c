@@ -13,7 +13,7 @@
 #define LIMIT (150)
 #define STR_SIZE (300)
 
-int readConfigurationFile(char *pathName, configurationStruct * configurationStruct) {
+int readConfigurationFile(char *pathName, configurationStruct *configurationStruct) {
 
     printf("### Attempting to read configuration data from %s\n", pathName);
 
@@ -83,7 +83,6 @@ int readConfigurationFile(char *pathName, configurationStruct * configurationStr
 
             if (i > limit) {
                 fprintf(stderr, "### Problem reading config file, entry too long\n");
-//                printf("### %d %d %d\n", foundAtt, foundEq, foundVal);
                 exit(1);
             }
         }

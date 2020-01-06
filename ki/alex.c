@@ -3,19 +3,17 @@
 //
 
 #include "alex.h"
+#include <assert.h>
 #include <math.h>
+#include <time.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stddef.h>
-#include <time.h>
-#include <assert.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <pthread.h>
 /*
  * Uses monte carlo tree search
  */
@@ -31,7 +29,6 @@ enum NodeType {
 
 typedef struct Node Node;
 struct Node {
-    // add unique ID? (moves made)
     enum NodeType nodeType;
     int playoutCount; // we add two each time because we want to work with ints
     int ready;
@@ -49,19 +46,16 @@ struct Node {
     SIDE_TO_MOVE hasJustMoved;
 };
 
-
 typedef struct Context {
     BOARD_STRUCT *boardStruct;
     Node *root;
     int moveTime;
 } Context;
 
-
 typedef struct Contexts {
     Context **contexts;
     int totalThreads;
 } Contexts;
-
 
 void printNode(Node *node) {
     printf("*****\n");
@@ -146,8 +140,7 @@ void setupNodeParentMove(Node *node, Node *parent, MOVE move) {
     node->gameOverWinner = GAME_NOT_OVER;
 }
 
-void addTotalMoveInfoAllocAllChildren(Node *node, int totalMoves, MOVES moves) { // todo careful of passes
-    // todo careful of endgame?
+void addTotalMoveInfoAllocAllChildren(Node *node, int totalMoves, MOVES moves) {
     // if there are no moves, there is still a pass move
 
     assert(node->ready);
@@ -342,10 +335,6 @@ int simulation(Node *node, BOARD_STRUCT_AND_MOVES *boardStructAndMoves) {
 
     int pass = 0;
     for (int i = 0; i < 100; i++) {
-        if (i > 80) {
-//            printf("80 moves in one game?????;");
-//            printBoardSide(boardStruct);
-        }
         if (pass == 2) {
             break;
         }

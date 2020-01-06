@@ -1,41 +1,25 @@
 #include "../thinker/board.h"
+
 #include "connector.h"
 #include "performConnection.c"
 #include "config.h"
 
-#include <sys/types.h>
-#include <stdio.h>
-#include <unistd.h>
-
+#include <arpa/inet.h>
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <getopt.h>
-#include <string.h>
-#include <stdio.h>
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
-
 #include <netdb.h>
+#include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
+#include <unistd.h>
+
 #include "boardmessageparser.h"
 
 #define GAMEKINDNAME "Reversi"

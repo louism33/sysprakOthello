@@ -47,7 +47,7 @@ int move;
 void mysighandler(int sig) {
     if (sig == SIGUSR1) {
         printf("### received SIGUSR1\n");
-        sleep(1); // todo....
+//        sleep(1); // todo....
         denken = true;
     }
 
@@ -178,7 +178,7 @@ int main(int argc, char *argv[]) {
             while (1) {
                 //Schreibseite muss warten bis Leseseite fertig ist.
                 while (!denken && !everythingIsFinished) {
-                    sleep(1);
+//                    sleep(1);
                 }
 
                 if (everythingIsFinished) {

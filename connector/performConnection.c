@@ -335,6 +335,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
+                info->majorVersionNr = buff[MAJOR_VERSION_INDEX_SERVER];
                 printf("### Gameserver major version is: %c\n", buff[MAJOR_VERSION_INDEX_SERVER]);
                 version[MAJOR_VERSION_INDEX_LOCAL] = buff[MAJOR_VERSION_INDEX_SERVER];
                 writeToServer(sockfd, version);

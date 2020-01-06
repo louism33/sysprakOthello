@@ -115,7 +115,8 @@ valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$E
 
 ## launch browser
 if $SPECTATE; then
-    xdg-open http://sysprak.priv.lab.nm.ifi.lmu.de/$GAME_TYPE_URL/\#$ID &>/dev/null &
+  echo "spectating"
+#    xdg-open http://sysprak.priv.lab.nm.ifi.lmu.de/$GAME_TYPE_URL/\#$ID &>/dev/null &
 fi
 
 wait

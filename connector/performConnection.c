@@ -457,7 +457,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                moveTime[0] = '\0';
 //                fieldSize[0] = '\0';
                 int mvt = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
-                printf("field size str: %d\n", fieldSize);
+                printf("field size str: %s\n", fieldSize);
                 printf("parsed message, got movetime: %d\n", mvt);
                 if (mvt != 0) {
                     printf("setting move time to : %d\n", mvt);

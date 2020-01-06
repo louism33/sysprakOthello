@@ -152,17 +152,6 @@ int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
         moveTimeRet = getMoveTime(moveString);
     }
 
-//    while (indexOfMove <= strlen(move)) {
-//        if (move[indexOfMove] >= '0' && move[indexOfMove] <= '9') {
-//            moveTime[indexOfMoveTime] = move[indexOfMove];
-//            indexOfMoveTime++;
-//        }
-//        indexOfMove++;
-//    }
-//
-//    moveTime[indexOfMoveTime] = '\0';
-//    moveTimeNummer = atoi(moveTime);
-
     while (fieldString[j] != '+') {
         field[j] = fieldString[j];
         j++;

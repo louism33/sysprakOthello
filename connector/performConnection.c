@@ -440,8 +440,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 bzero(moveTime, SMALL_STRING);
                 bzero(fieldSize, SMALL_STRING);
                 int mvTime = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
-                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
-//                FieldSizeColumnAndRow fieldsize = {8, 8};
+//                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
+                FieldSizeColumnAndRow fieldsize = {8, 8};
 
 
 //                printf("### Starting parse board, setting phase to spielzug\n");

@@ -8,4 +8,4 @@ echo "zipping"
 
 echo "zipping done "
 
-rm -rf buildDir/ && "$my_dir/sysprak-abgabe.sh" buildDir valgrindlog.txt sysprakOthello.zip --spectate
+rm -rf buildDir/ && "$my_dir/sysprak-abgabe.sh" buildDir valgrindlogXXX.txt sysprakOthello.zip --spectate

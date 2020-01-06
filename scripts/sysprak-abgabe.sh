@@ -88,6 +88,7 @@ ID=$(curl http://sysprak.priv.lab.nm.ifi.lmu.de/api/v1/matches \
 -H "Content-Type: application/json" \
 -X POST \
 -d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":3000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
+#-d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":3000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
 
 if [[ $ID != "" ]]; then
   echo "Generated new game with ID \"$ID\"."
@@ -102,6 +103,8 @@ echo "STARTING PLAYER1"
 #GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
 GAME_ID=$ID PLAYER=$PLAYER1 make play &
 
+# trying to get perf info
+#./$EXECNAME -g $ID -p $PLAYER1 &
 
 echo "STARTING PLAYER2"
 ## check Valgrind for PLAYER2

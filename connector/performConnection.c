@@ -1,47 +1,22 @@
 #include "../thinker/board.h"
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
-#include <stdio.h>
+#include <arpa/inet.h>
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <getopt.h>
-#include <string.h>
-#include <stdio.h>
-#include <signal.h>
+#include <netinet/in.h>
+#include <netdb.h>
 
-#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-
-#include <netdb.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <stdbool.h>
-#include <arpa/inet.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <unistd.h>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
 #include "connector.h"
 #include "boardmessageparser.h"
 #include "performConnection.h"
@@ -290,7 +265,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         endstate = 1;
     }
 
-    char buffer[50]; // Puffer zum speichern von gelesenen Daten
+    char buffer[BIG_STRING]; // Puffer zum speichern von gelesenen Daten
     int mvTime = 0;
 
     for (; endstate == 0;) {
@@ -461,13 +436,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 mvTime = getMoveTime(buff);
             }
 
-
             // step six, read board information and time to move from server.
-            // todo, extract timeToMove info
-            // todo, extract board size
             // todo, replace all magic numbers
             // todo, read name of opponent
-            // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
             if (strstr(buff, "+ FIELD ")) {//strlen(buff) > 75) {
                 writeToServer(sockfd, thinking);
 
@@ -537,7 +508,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 close(pd[1]);    // Schreibseite schließen
 
-                bzero(buffer, 64);
+                bzero(buffer, BIG_STRING);
                 // Leseseite auslesen (blockiert hier bis Daten vorhanden)
                 if (read(pd[0], buffer, sizeof(buffer)) == -1) {
                     perror("read");

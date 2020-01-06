@@ -58,6 +58,8 @@
 
 bool schreiben = false;
 
+int printMore = 1;
+
 enum Phase {
     PROLOG = 0,
     SPIELVERLAUF = 1,
@@ -221,8 +223,6 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                BOARD_STRUCT *connectorBoard,
                                infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
-
-    int printMore = 1;
 
     strcpy(info->gameID, gameID);
     info->connector = connector;

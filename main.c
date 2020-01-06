@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
-    fflush(NULL);
+    fflush(stdout);
     createPipe(pd);
     switch (thinker = fork()) {
         /*Fehlerfall*/
@@ -157,6 +157,7 @@ int main(int argc, char *argv[]) {
             int thinkerReturnValue = 0;
 
             printf("### Setting up Signals\n");
+            fflush(stdout);
 
             if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
                 fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
@@ -171,6 +172,7 @@ int main(int argc, char *argv[]) {
 //            }
 
             printf("### Starting Thinker Main Loop\n");
+            fflush(stdout);
 
             close(pd[0]); // Leseseite schließen
             while (1) {

@@ -45,11 +45,13 @@ int move;
 void mysighandler(int sig) {
 
     if (sig == SIGUSR1) {
+        printf("### received SIGUSR1\n");
         sleep(1); // todo....
         denken = true;
     }
 
     if (sig == SIGUSR2) {
+        printf("### received SIGUSR2\n");
         sleep(100); // todo....
         everythingIsFinished = true;
     }

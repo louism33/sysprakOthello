@@ -469,7 +469,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 bzero(fieldSize, SMALL_STRING);
                 moveTime[0] = '\0';
                 fieldSize[0] = '\0';
-                int mvTime = 3000;//getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+                //getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
 //                FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
                 FieldSizeColumnAndRow fieldsize = {8, 8};
 

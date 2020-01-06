@@ -16,7 +16,7 @@
 
 int readConfigurationFile(char *pathName, configurationStruct * configurationStruct) {
 
-    printf("Attempting to read configuration data from %s\n", pathName);
+    printf("### Attempting to read configuration data from %s\n", pathName);
 
     // todo remove magic nums
 

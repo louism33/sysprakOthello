@@ -359,15 +359,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
-                printf("### Saving gameName '%s'\n", gameName);
+                printf("### Saving gameName: %s\n", gameName);
 
                 if (player == NULL || strlen(player) != 1) {
-                    printf("### Connecting with blank player string:%s", blankPlayerToSend);
+                    printf("### Connecting with blank player string: %s", blankPlayerToSend);
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
-                    printf("### Connecting with player string:%s", playerToSend);
+                    printf("### Connecting with player string: %s", playerToSend);
                     writeToServer(sockfd, playerToSend);
                 }
             }
@@ -429,9 +429,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
             if ((strncmp("+ MOVE ", buff, 7)) == 0) {
-                printf("buff is ::: %s\n", buff);
                 mvTime = getMoveTime(buff);
-//                mvTime = 3000;
                 printf("### Parsed move time of %d\n", mvTime);
             }
 

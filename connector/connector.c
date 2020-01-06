@@ -101,23 +101,23 @@ int connectToGameServer(char *gameID, char *player,
 
         // error handling for socket
         if (sock == -1) {
-            printf("Could not create Socket\n");
+            printf("### Could not create Socket\n");
             continue;
         } else {
-            printf("created Socket\n");
+            printf("### Created Socket\n");
         }
 
         inet_ntop(resTemp->ai_family, ptr, addrstr, ADDR_STR_LEN);
-        printf("IPv%d address: %s (%s)\n", resTemp->ai_family == PF_INET6 ? 6 : 4,
+        printf("### IPv%d address: %s (%s)\n", resTemp->ai_family == PF_INET6 ? 6 : 4,
                addrstr, resTemp->ai_canonname);
 
         if (strlen(addrstr) == 0) {
-            printf("ERROR, no host found\n");
+            fprintf(stderr, "### ERROR, no host found\n");
             close(sock);
             break;
         }
 
-        printf("Attempting to connect to host %s on port %d\n", addrstr,
+        printf("### Attempting to connect to host %s on port %d\n", addrstr,
                configStruct->portnumber);
         server.sin_addr.s_addr = inet_addr(addrstr);
 

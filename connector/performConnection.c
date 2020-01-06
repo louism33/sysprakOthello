@@ -415,6 +415,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                     while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                            strlen(buff) < 1);
+                    printf("### final full string\n%s", buff);
+                    printf("### parsing then exiting");
+                    endstate += dealWithGameOverCommand(buff);
                 }
 
                 if (kill(thinker, SIGUSR2) == -1) {

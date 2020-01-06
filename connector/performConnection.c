@@ -251,6 +251,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     strcpy(info->gameKindName, gameKindName);
 
     char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char okthinkbuff[SMALL_STRING] = {" "};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};
     char myPlayerName[SMALL_STRING] = {0};
@@ -455,9 +456,13 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
             if (strlen(buff) > 75) { // todo make better (add check for first chars for example)
-                printf("sending thinking command\n");
                 writeToServer(sockfd, thinking);
-                printf("sent thinking command\n");
+
+                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
+                       strlen(buff) < 1); // todo, possibly stick to only one central read?
+                printf("------>Server:\n%s", okthinkbuff);
+
+                phase = SPIELZUG;
 
                 info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
                 info->infoBoard->board =
@@ -472,7 +477,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
                 printf("starting parse board, setting phase to spielzug\n");
-                phase = SPIELZUG;
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);
                 if (parse) {
                     fprintf(stderr, "Problem parsing board message\n");

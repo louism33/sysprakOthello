@@ -512,8 +512,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 moveReceivedFromThinker[1] = buffer[1];
                 moveReceivedFromThinker[2] = '\0';
 
-                free(moveRet);
-
                 strcpy(playCommandToSend, "PLAY ");
                 strcat(playCommandToSend, moveReceivedFromThinker);
                 strcat(playCommandToSend, "\n");

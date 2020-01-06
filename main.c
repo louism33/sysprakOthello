@@ -133,6 +133,7 @@ int main(int argc, char *argv[]) {
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
+    fflush(NULL);
     createPipe(pd);
     switch (thinker = fork()) {
         /*Fehlerfall*/

@@ -293,6 +293,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
 
             printf("------>SERVER:\n%s", buff);
+            fflush( stdout );
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
                 fprintf(stderr, "### We were too slow!\n");
@@ -344,7 +345,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 if (strncmp(gameKindName, gameKindNameFromServer, 7) == 0) {
                     printf("### The server will play Reversi\n");
                 } else {
-                    printf("### The server is not set up to play Reversi, exiting...");
+                    printf("### The server is not set up to play Reversi, exiting...\n");
                     endstate = 1;
                     break;
                 }
@@ -353,18 +354,22 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                        strlen(buff) < 1); // todo, possibly stick to only one central read?
                 printf("------>Server:\n%s", buff);
+                fflush( stdout );
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
                 printf("### Saving gameName: %s", gameName);
+                fflush( stdout );
 
                 if (player == NULL || strlen(player) != 1) {
                     printf("### Connecting with blank player string: %s", blankPlayerToSend);
+                    fflush( stdout );
                     writeToServer(sockfd, blankPlayerToSend);
                 } else {
                     strcpy(playerToSend, "PLAYER ");
                     playerToSend[7] = player[0];
                     printf("### Connecting with player string: %s", playerToSend);
+                    fflush( stdout );
                     writeToServer(sockfd, playerToSend);
                 }
             }
@@ -392,8 +397,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(myPlayerName, buff + 8, strlen(buff) - strlen("+ YOU 0 "));
                 myPlayerName[l] = '\0';
                 printf("### Saving my playerName: %s", myPlayerName);
+                fflush( stdout );
                 strcpy(info->players[atoi(playerNumber)].mitspielerName, myPlayerName);
                 printf("### Saving my MitspielerName: %s", info->players[atoi(playerNumber)].mitspielerName);
+                fflush( stdout );
             }
 
             // step five, read TOTAL
@@ -416,6 +423,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                            strlen(buff) < 1);
                     printf("### final full string:\n%s", buff);
+                    fflush( stdout );
                     printf("### parsing then exiting\n");
                     endstate += dealWithGameOverCommand(buff);
                 }
@@ -447,19 +455,19 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // todo, replace all magic numbers
             // todo, read name of opponent
             // todo, read Breit 0 or 1 and save Breit. If 0, print "Spieler 1 (Uli) ist noch nicht bereit"
-            if (strstr(buff,
-                       "+ FIELD ")) {//strlen(buff) > 75) { // todo make better (add check for first chars for example)
+            if (strstr(buff, "+ FIELD ")) {//strlen(buff) > 75) {
                 writeToServer(sockfd, thinking);
 
                 while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
                        strlen(buff) < 1); // todo, possibly stick to only one central read?
                 printf("------>Server:\n%s", okthinkbuff);
+                fflush( stdout );
 
                 phase = SPIELZUG;
 
                 info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
-                info->infoBoard->board =
-                        shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player) +
+                info->infoBoard->board = shmInfo + sizeof(infoVonServer)
+                        + info->MitspielerAnzahl * sizeof(Player) +
                         sizeof(BOARD_STRUCT);
 
                 connectorBoard->sideToMove = sideToMove;
@@ -478,7 +486,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 }
 
                 FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
-//                FieldSizeColumnAndRow fieldsize = {8, 8};
 
 //                printf("### Starting parse board, setting phase to spielzug\n");
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);
@@ -505,7 +512,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                printf("### Sending relevant info to thinker\n");
 
                 if (kill(thinker, SIGUSR1) == -1) {
-                    printf("Fehler beim senden des Signals\n");
+                    printf("Fehler beim senden des Signals\n");""
                     exit(1);
                 } else {
                     printf("### Sending SIGUSR1 to thinker to start thinking\n");
@@ -531,6 +538,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strcat(playCommandToSend, moveReceivedFromThinker);
                 strcat(playCommandToSend, "\n");
                 printf("### Play Command To Send: %s", playCommandToSend);
+                fflush( stdout );
 
                 writeToServer(sockfd, playCommandToSend);
                 phase = SPIELVERLAUF;
@@ -542,7 +550,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
             if (readResponse == -1) {
-                fprintf(stderr, "### Could not read from server");
+                fprintf(stderr, "### Could not read from server\n");
                 endstate = 1;
                 break;
             }

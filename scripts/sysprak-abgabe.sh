@@ -99,7 +99,8 @@ fi
 echo "STARTING PLAYER1"
 
 ## start PLAYER1
-GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
+#GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
+GAME_ID=$ID PLAYER=$PLAYER1 make play &
 
 
 echo "STARTING PLAYER2"

@@ -155,6 +155,8 @@ int main(int argc, char *argv[]) {
 
             int thinkerReturnValue = 0;
 
+            printf("### Setting up Signals\n");
+
             if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
                 fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
                 failState = 1;
@@ -167,7 +169,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
 
-            printf("### Starting Thinker main loop\n");
+            printf("### Starting Thinker Main Loop\n");
 
             close(pd[0]); // Leseseite schließen
             while (1) {
@@ -176,7 +178,7 @@ int main(int argc, char *argv[]) {
                 }
                 denken = false;
 
-//                printf("### Currently thinking...\n");
+                printf("### Currently thinking...\n");
 //                printBoardLouis(info->infoBoard);
 
                 move = doThink(info->infoBoard, info->moveTime);

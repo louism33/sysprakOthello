@@ -531,7 +531,33 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
         return getPassMove();
     }
 
-    if (totalMoves == 1) {
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    //todo
+    if (1 || totalMoves == 1) {
         MOVE move = moves[0];
         free(moves);
 //        printf("Alex returns only move: %d\n", move);

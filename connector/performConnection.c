@@ -408,15 +408,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
                 phase = PROLOG;
                 if (strlen(buff) > 20) {
-                    printf("### received gameover and full string, parsing then exiting");
+                    printf("### received gameover and full string, parsing then exiting\n");
                     endstate += dealWithGameOverCommand(buff);
                 } else {
-                    printf("### received only gameover, waiting for final board");
+                    printf("### received only gameover, waiting for final board\n");
 
                     while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                            strlen(buff) < 1);
-                    printf("### final full string\n%s", buff);
-                    printf("### parsing then exiting");
+                    printf("### final full string:\n%s", buff);
+                    printf("### parsing then exiting\n");
                     endstate += dealWithGameOverCommand(buff);
                 }
 

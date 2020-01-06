@@ -165,11 +165,11 @@ int main(int argc, char *argv[]) {
                 break;
             }
 
-//            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
-//                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
-//                failState = 1;
-//                break;
-//            }
+            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
+                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
+                failState = 1;
+                break;
+            }
 
             printf("### Starting Thinker Main Loop\n");
             fflush(stdout);
@@ -181,7 +181,8 @@ int main(int argc, char *argv[]) {
                 }
                 denken = false;
 
-                printf("### Currently thinking...\n");
+//                printf("### Currently thinking...\n");
+//                fflush(stdout);
 //                printBoardLouis(info->infoBoard);
 
                 move = doThink(info->infoBoard, info->moveTime);
@@ -197,6 +198,7 @@ int main(int argc, char *argv[]) {
 
                 if (everythingIsFinished) {
                     printf("### Received SIGUSR2, time to quit everything!\n");
+                    fflush(stdout);
 
 //                    int returnStatus;
 //                    waitpid(connector, &returnStatus, 0);  // Parent process waits here for child to terminate.
@@ -216,7 +218,8 @@ int main(int argc, char *argv[]) {
                     break;
                 }
             }
-            printf("### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
+            fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
+            fflush(stdout);
 
             break;
     }

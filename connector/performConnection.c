@@ -499,7 +499,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
 //                printf("### Move time from server: %d\n", mvTime);
+
+
+                // mvTime - 500 seems best
                 info->moveTime = mvTime - 500;
+                info->moveTime = mvTime - 1000;
+                // mvTime - 500 seems best
+
+
+
 //                printf("### Move time for us: %d\n", info->moveTime);
 
 //                printf("### Finished parse board\n");

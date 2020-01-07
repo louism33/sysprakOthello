@@ -101,6 +101,7 @@ echo "STARTING PLAYER1"
 
 ## start PLAYER1
 #GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
+#GAME_ID=$ID PLAYER=$PLAYER1 CONFIG_FILE=test-client.conf make play &
 GAME_ID=$ID PLAYER=$PLAYER1 make play &
 
 # trying to get perf info

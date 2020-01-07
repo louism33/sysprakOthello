@@ -176,7 +176,7 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
                                   configPath, connectorBoard, info, thinker, connector, shmInfo);
 
     if (con) {
-        fprintf(stderr, "Error during connection with server\n");
+        fprintf(stderr, "### Error during connection with server\n");
     } else {
 //        printf("Connection with server appears to have gone well\n");
     }

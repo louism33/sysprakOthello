@@ -212,6 +212,8 @@ int main(int argc, char *argv[]) {
             break;
     }
 
+    printf("### Cleaning up SHM\n");
+    fflush(stdout);
     deleteShm();
     free(antwort);
     freeBoardStruct(connectorBoard);

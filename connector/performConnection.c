@@ -283,7 +283,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
                     exit(1);
                 } else {
-                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
+                    printf("### Sending SIGUSR2 to thinker to signal the game is over, due to timeout\n");
                 }
 
                 endstate = 1;

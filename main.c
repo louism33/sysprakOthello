@@ -148,6 +148,7 @@ int main(int argc, char *argv[]) {
             printf("### Starting Connector Master Method\n");
             int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
             printf("### Connector Master Method has ended, with value: %d\n", c);
+            failState += c;
             break;
 
             /*Elternprozess = Thinker*/

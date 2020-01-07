@@ -29,6 +29,7 @@ typedef struct infoVonServer
     pid_t thinker;
     pid_t connector;
     BOARD_STRUCT *infoBoard;
+    int moveTime;
 } infoVonServer;
 
 

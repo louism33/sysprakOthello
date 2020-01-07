@@ -21,14 +21,11 @@ void *shmdata;
 
 
 void createShm() {
-
-    printf("Ich bin ein Shared Memory\n");
-
     /*erstelle ein Shm mit getshm() */
     shmid = shmget(IPC_PRIVATE, sizeof(infoVonServer)+sizeof(Player)+sizeof(BOARD_STRUCT), IPC_CREAT | SHM_R | SHM_W);
-    printf("Die Shm-ID: %i\n", shmid);
+//    printf("### Die Shm-ID: %i\n", shmid);
     if (shmid == -1) {
-        printf("Fehler bei key %d, mit der Größe %d\n", IPC_PRIVATE, SHMDATASIZE);
+        fprintf(stderr, "### Fehler bei key %d, mit der Größe %d\n", IPC_PRIVATE, SHMDATASIZE);
     }
 }
 

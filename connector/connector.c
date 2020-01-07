@@ -1,47 +1,32 @@
 #include "../thinker/board.h"
+
 #include "connector.h"
 #include "performConnection.c"
 #include "config.h"
 
-#include <sys/types.h>
-#include <stdio.h>
-#include <unistd.h>
-
+#include <arpa/inet.h>
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <getopt.h>
-#include <string.h>
-#include <stdio.h>
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
-
 #include <netdb.h>
+#include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
+#include <unistd.h>
+
 #include "boardmessageparser.h"
 
 #define GAMEKINDNAME "Reversi"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define DEFAULT_FILE_PATH "client.conf"
+#define ADDR_STR_LEN 100
 
 int getDefaultPort() {
     return PORTNUMBER;
@@ -56,21 +41,21 @@ int connectToGameServer(char *gameID, char *player,
     configStruct->hostname = calloc(' ', 200);
     configStruct->gamekindname = calloc(' ', 200);
 
-    struct addrinfo hints, *res;
+    struct addrinfo hints, *res, *resTemp;
     struct sockaddr_in server;
     server.sin_family = PF_INET;
 
-    char addrstr[100];
-    bzero(addrstr, 100);
+    char addrstr[ADDR_STR_LEN];
+    bzero(addrstr, ADDR_STR_LEN);
     void *ptr;
 
     int sock = 0, errcode, connectionStatus = 0;
 
     if (usingCustomConfigFile) {
-        printf("Using custom configuration file: %s\n", filePath);
+        printf("### Using custom configuration file: %s\n", filePath);
         readConfigurationFile(filePath, configStruct);
     } else {
-        printf("Using default configuration file: %s\n", DEFAULT_FILE_PATH);
+        printf("### Using default configuration file: %s\n", DEFAULT_FILE_PATH);
         readConfigurationFile(DEFAULT_FILE_PATH, configStruct);
     }
 
@@ -80,38 +65,43 @@ int connectToGameServer(char *gameID, char *player,
     hints.ai_flags |= AI_CANONNAME;
 
     errcode = getaddrinfo(configStruct->hostname, NULL, &hints, &res);
+    resTemp = res;
+    while (resTemp) {
 
-    while (res) {
-        switch (res->ai_family) {
+        if (!resTemp->ai_family) {
+            break;
+        }
+
+        switch (resTemp->ai_family) {
             case AF_INET:
-                ptr = &((struct sockaddr_in *) res->ai_addr)->sin_addr;
+                ptr = &((struct sockaddr_in *) resTemp->ai_addr)->sin_addr;
                 sock = socket(AF_INET, SOCK_STREAM, 0);
                 break;
             case AF_INET6:
                 sock = socket(AF_INET6, SOCK_STREAM, 0);
-                ptr = &((struct sockaddr_in6 *) res->ai_addr)->sin6_addr;
+                ptr = &((struct sockaddr_in6 *) resTemp->ai_addr)->sin6_addr;
                 break;
         }
 
         // error handling for socket
         if (sock == -1) {
-            printf("Could not create Socket\n");
+            printf("### Could not create Socket\n");
             continue;
         } else {
-            printf("created Socket\n");
+            printf("### Created Socket\n");
         }
 
-        inet_ntop(res->ai_family, ptr, addrstr, 100);
-        printf("IPv%d address: %s (%s)\n", res->ai_family == PF_INET6 ? 6 : 4,
-               addrstr, res->ai_canonname);
+        inet_ntop(resTemp->ai_family, ptr, addrstr, ADDR_STR_LEN);
+        printf("### IPv%d address: %s (%s)\n", resTemp->ai_family == PF_INET6 ? 6 : 4,
+               addrstr, resTemp->ai_canonname);
 
         if (strlen(addrstr) == 0) {
-            printf("ERROR, no host found\n");
+            fprintf(stderr, "### ERROR, no host found\n");
             close(sock);
             break;
         }
 
-        printf("Attempting to connect to host %s on port %d\n", addrstr,
+        printf("### Attempting to connect to host %s on port %d\n", addrstr,
                configStruct->portnumber);
         server.sin_addr.s_addr = inet_addr(addrstr);
 
@@ -119,18 +109,18 @@ int connectToGameServer(char *gameID, char *player,
 
         // connect the client socket to the server socket
         if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {
-            printf("connection with the server failed... error is %s\n",
+            printf("### connection with the server failed... error is %s\n",
                    strerror(errno));
         } else {
-            printf("success!!!! connected to the server..\n");
-            connectionStatus = performConnectionLouis(sock, gameID, player,
+            printf("### Success, connected to the server.\n");
+            connectionStatus = haveConversationWithServer(sock, gameID, player,
                                                       configStruct->gamekindname, connectorBoard, info, thinker,
                                                       connector, shmInfo);
             break;
         }
 
         close(sock);
-        res = res->ai_next;
+        resTemp = resTemp->ai_next;
     }
 
     freeaddrinfo(res);
@@ -182,15 +172,13 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
         gameID = NULL;
         return 1;
     }
-    // todo, what if player is blank?
-
     int con = connectToGameServer(gameID, player, usingCustomConfigFile,
                                   configPath, connectorBoard, info, thinker, connector, shmInfo);
 
     if (con) {
-        fprintf(stderr, "Error during connection with server\n");
+        fprintf(stderr, "### Error during connection with server\n");
     } else {
-        printf("Connection with server appears to have gone well\n");
+//        printf("Connection with server appears to have gone well\n");
     }
     return con;
 }

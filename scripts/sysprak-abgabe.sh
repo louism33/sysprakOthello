@@ -88,6 +88,7 @@ ID=$(curl http://sysprak.priv.lab.nm.ifi.lmu.de/api/v1/matches \
 -H "Content-Type: application/json" \
 -X POST \
 -d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":3000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
+#-d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":10000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
 
 if [[ $ID != "" ]]; then
   echo "Generated new game with ID \"$ID\"."
@@ -99,17 +100,26 @@ fi
 echo "STARTING PLAYER1"
 
 ## start PLAYER1
+#GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
 GAME_ID=$ID PLAYER=$PLAYER1 make play &
 
+# trying to get perf info
+#perf record ./$EXECNAME -g $ID -p $PLAYER1 &
 
 echo "STARTING PLAYER2"
-## check Valgrind for PLAYER2
+# check Valgrind for PLAYER2
 rm -f $VALGRIND_LOG
 valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &
 
+#rm -f p2.txt
+#./$EXECNAME -g $ID -p $PLAYER2 &>> p2.txt &
+
+
+
 ## launch browser
 if $SPECTATE; then
-    xdg-open http://sysprak.priv.lab.nm.ifi.lmu.de/$GAME_TYPE_URL/\#$ID &>/dev/null &
+  echo "spectating"
+#    xdg-open http://sysprak.priv.lab.nm.ifi.lmu.de/$GAME_TYPE_URL/\#$ID &>/dev/null &
 fi
 
 wait
@@ -134,5 +144,6 @@ fi
 
 cd ..
 if [ -d "$BUILD_DIR" ]; then
-	rm -r "$BUILD_DIR"
+	echo "removing build dir"
+	#rm -r "$BUILD_DIR"
 fi

@@ -4,7 +4,11 @@
 
 #include "perft.h"
 #include <stdlib.h>
-
+#include <sys/time.h>
+#include <time.h>
+#include <assert.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <stdio.h>
 #include "makemovetests.h"
 #include "../board.h"
@@ -47,65 +51,65 @@ int perftFunction(BOARD_STRUCT *boardStruct, int depth, int passed, int debug) {
                 break;
             }
 
-            BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
-            initialiseBoardStructToZero(b);
-            copyBoardStruct(b, boardStruct, getStandardBoardSize());
+//            BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
+//            initialiseBoardStructToZero(b);
+//            copyBoardStruct(b, boardStruct, getStandardBoardSize());
 
             SIDE_TO_MOVE s1 = boardStruct->sideToMove;
 
-            if (debug) {
-                printf("\n\n\n\n");
-                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
-                printf("   MAKING move %d\n", move);
-                printf("   index move %d\n", boardStruct->stackIndexMove);
-                printf("   ->  stack move-1 %d\n", boardStruct->moveStack[boardStruct->stackIndexMove - 1]);
-                printf("   index object %d\n", boardStruct->stackIndexObject);
-                printf("   -> stack object-1 %lu\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
-            }
+//            if (debug) {
+//                printf("\n\n\n\n");
+//                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
+//                printf("   MAKING move %d\n", move);
+//                printf("   index move %d\n", boardStruct->stackIndexMove);
+//                printf("   ->  stack move-1 %d\n", boardStruct->moveStack[boardStruct->stackIndexMove - 1]);
+//                printf("   index object %d\n", boardStruct->stackIndexObject);
+//                printf("   -> stack object-1 %lu\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
+//            }
 
             makeMove(boardStruct, move);
-            if (debug) {
-                printf("made\n");
-                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
-            }
+//            if (debug) {
+//                printf("made\n");
+//                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
+//            }
 
-            SIDE_TO_MOVE s2 = boardStruct->sideToMove;
+//            SIDE_TO_MOVE s2 = boardStruct->sideToMove;
 
-            if (s1 == s2) {
-                fprintf(stderr, "side to move not flipped!!!\n");
-                exit(1);
-            }
+//            if (s1 == s2) {
+//                fprintf(stderr, "side to move not flipped!!!\n");
+//                exit(1);
+//            }
 
             ans += perftFunction(boardStruct, depth - 1, 0, debug);
 
-            if (debug) {
-                printf("after perft with depth %d\n", (depth - 1));
-                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
-                printf("     UNnNNNNNNnNNMAKING move %d\n", move);
-                printf("   index move %d\n", boardStruct->stackIndexMove);
-                printf("   ->  stack move-1 %d\n", boardStruct->moveStack[boardStruct->stackIndexMove - 1]);
-                printf("   index object %d\n", boardStruct->stackIndexObject);
-                printf("   -> stack object-1 %lu\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
-            }
+//            if (debug) {
+//                printf("after perft with depth %d\n", (depth - 1));
+//                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
+//                printf("     UNnNNNNNNnNNMAKING move %d\n", move);
+//                printf("   index move %d\n", boardStruct->stackIndexMove);
+//                printf("   ->  stack move-1 %d\n", boardStruct->moveStack[boardStruct->stackIndexMove - 1]);
+//                printf("   index object %d\n", boardStruct->stackIndexObject);
+//                printf("   -> stack object-1 %lu\n", boardStruct->stack[boardStruct->stackIndexObject - 1]);
+//            }
 
             unmakeMove(boardStruct);
 
-            if (debug) {
-                printf("unmade\n");
-                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
-                printf("\n\n\n\n\n");
-            }
+//            if (debug) {
+//                printf("unmade\n");
+//                printBoardLouisSide(boardStruct, boardStruct->sideToMove);
+//                printf("\n\n\n\n\n");
+//            }
 
-            if (areBoardStructsDifferent(b, boardStruct, getStandardBoardSize())) {
-                printf("My struct:\n");
-                printBoardSide(boardStruct);
-                printf("correct:\n");
-                printBoardSide(b);
-                fprintf(stderr, "issue in move() or unmake()!!!\n");
-                exit(1);
-            }
+//            if (areBoardStructsDifferent(b, boardStruct, getStandardBoardSize())) {
+//                printf("My struct:\n");
+//                printBoardSide(boardStruct);
+//                printf("correct:\n");
+//                printBoardSide(b);
+//                fprintf(stderr, "issue in move() or unmake()!!!\n");
+//                exit(1);
+//            }
 
-            freeBoardStruct(b);
+//            freeBoardStruct(b);
         }
     }
 
@@ -155,7 +159,7 @@ int perftDivide(BOARD_STRUCT *boardStruct, int depth) {
     free(moves);
     free(m);
 
-    return 0;
+    return totalNodes;
 }
 
 int fromCommandLine(int depth) {
@@ -167,9 +171,18 @@ int fromCommandLine(int depth) {
 
     resetBoardToStarter(board);
 
-    perftDivide(b, depth);
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    double original_time_in_mill = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+    printf("original time: %f\n", original_time_in_mill);
 
-    printf("finished from command line\n");
+    int totalNodes = perftDivide(b, depth);
+
+    gettimeofday(&tv, NULL);
+    double millis = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 - original_time_in_mill;
+    printf("millis: %f\n", millis);
+    printf("seconds: %f\n", millis / 1000);
+    printf("nps: %d\n", (int) (1000 * (totalNodes / millis)));
 
     freeBoardStruct(b);
 
@@ -193,6 +206,8 @@ int testBasicBoard() {
     SIDE_TO_MOVE player = getStartingPlayer();
     SIDE_TO_MOVE targetPlayer = switchPlayer(player);
 
+//    printBoardSide(b);
+
     if (1) {
         int received = perft(b, 1, 0);
         int correct = 4;
@@ -213,6 +228,8 @@ int testBasicBoard() {
             exit(1);
         }
     }
+
+
 
     if (1) {
         int received = perft(b, 2, 0);

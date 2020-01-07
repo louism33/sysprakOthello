@@ -11,8 +11,12 @@ makefileM
 *LOG
 *log
 .vscode/
+*.out
+*.data
+*.data.old
 
 scripts/sysprakOthello.zip
+sysprakOthello.zip
 scripts/buildDir
 
 # Prerequisites

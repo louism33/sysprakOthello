@@ -22,7 +22,7 @@ int testKINoLegalMoves() {
     b->sideToMove = getBlack();
 
     MOVE correctMove = getPassMove();
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != correctMove) {
         printBoardSide(b);
@@ -49,7 +49,7 @@ int testKINoLegalMoves2() {
     b->sideToMove = getBlack();
 
     MOVE correctMove = getPassMove();
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != correctMove) {
         printBoardSide(b);
@@ -79,7 +79,7 @@ int testKINoLegalMovesBecauseGameOver() {
     b->sideToMove = getBlack();
 
     MOVE correctMove = getPassMove();
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != correctMove) {
         printBoardSide(b);
@@ -109,7 +109,7 @@ int testKIOneLegalMovesBecauseAlmostGameOver() {
     b->sideToMove = getWhite();
 
     MOVE correctMove = 63;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != correctMove) {
         printBoardSide(b);
@@ -136,7 +136,7 @@ int testKIOneLegalMove() {
     b->sideToMove = getBlack();
 
     MOVE correctMove = 22;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != correctMove) {
         printBoardSide(b);
@@ -163,7 +163,7 @@ int testKIOneLegalMove2() {
     b->sideToMove = getWhite();
 
     MOVE correctMove = 19;
-    MOVE move = getBestMove(b, moveTime);
+    MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != correctMove) {
         printBoardSide(b);

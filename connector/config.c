@@ -10,19 +10,20 @@
 #include <getopt.h>
 #include <string.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#define LIMIT (150)
+#define STR_SIZE (300)
 
-int readConfigurationFile(char *pathName, configurationStruct * configurationStruct) {
+int readConfigurationFile(char *pathName, configurationStruct *configurationStruct) {
 
-    printf("Attempting to read configuration data from %s\n", pathName);
+    printf("### Attempting to read configuration data from %s\n", pathName);
+
+    // todo remove magic nums
 
     FILE *file = fopen(pathName, "r");
-    char str[100];
-    int limit = 150;
+    char str[STR_SIZE];
+    int limit = LIMIT;
 
-    while (fgets(str, 300, file) && strlen(str) != 0) {
+    while (fgets(str, STR_SIZE, file) && strlen(str) != 0) {
         char attribute[limit];
         bzero(attribute, limit);
         char value[limit];
@@ -81,14 +82,13 @@ int readConfigurationFile(char *pathName, configurationStruct * configurationStr
             }
 
             if (i > limit) {
-                printf("problem reading config file, entry too long\n");
-                printf("%d %d %d\n", foundAtt, foundEq, foundVal);
+                fprintf(stderr, "### Problem reading config file, entry too long\n");
                 exit(1);
             }
         }
 
         if (i == -1) {
-            printf("problem reading config file\n");
+            fprintf(stderr, "### Problem reading config file\n");
             exit(1);
         }
 
@@ -114,11 +114,11 @@ int readConfigurationFile(char *pathName, configurationStruct * configurationStr
     }
     fclose(file);
 
-    printf("hostname: %s\n", configurationStruct->hostname);
-    printf("portnumber: %d\n", configurationStruct->portnumber);
-    printf("gamekindname: %s\n", configurationStruct->gamekindname);
+    printf("### hostname: %s\n", configurationStruct->hostname);
+    printf("### portnumber: %d\n", configurationStruct->portnumber);
+    printf("### gamekindname: %s\n", configurationStruct->gamekindname);
 
-    printf("Successfully read data from %s\n", pathName);
-//    return configurationStruct;
+    printf("### Successfully read data from %s\n", pathName);
+
     return 0;
 }

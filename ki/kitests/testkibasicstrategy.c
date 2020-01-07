@@ -13,17 +13,14 @@ int testPickUpCorner() {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(b);
     int *board = b->board;
-    int moveTime = 2000;
+    int moveTime = 4000;
 
     board[2] = board[8] = getBlack();
     board[16] = board[1] = getWhite();
 
     b->sideToMove = getBlack();
 
-    printBoardSide(b);
-
     MOVE bestMove = 0;
-//    MOVE move = getBestMove(b, moveTime);
     MOVE move = getBestMoveMultiThreaded(b, moveTime);
 
     if (move != bestMove) {

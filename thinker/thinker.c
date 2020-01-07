@@ -12,44 +12,14 @@
 #include "../ki/alex.h"
 
 MOVE doThink(BOARD_STRUCT *boardStruct, int moveTime) {
-    printf("received doThink command from connector, time to move %d\n", moveTime);
+    printf("### Received doThink command from connector, time to move %d\n", moveTime);
 
-    moveTime = 2000;
+    MOVE bestMove = getBestMoveMultiThreaded(boardStruct, moveTime);
 
-    MOVE bestMove = getBestMove(boardStruct, moveTime);
-
-    printf("dothinker move: %d\n", bestMove);
+    if (bestMove == getPassMove()) {
+        fprintf(stderr, "### No moves from this position!!!\n");
+        return getPassMove();
+    }
 
     return bestMove;
-}
-
-void thinkerMasterMethod(BOARD_STRUCT *thinkerBoard) {
-    printf("Hi I am very good at thinking\n");
-
-    //createProcesses();
-
-    /*
-    was wir brauchen für die thinkerMasterMethod
-    - eine printBoard() Funktion
-    -signal Handler mit getSignal(), sendSignal() etc.
-
-    enthält makeTurn()
-    sendTurn()
-    unnamed Pipe erstllen -- bevor fork()!
-    Seiten schließen
-    makeTurn()
-    makeMove()
-    isLegalMove()
-    canPlay()
-    */
-}
-
-/*think() Methode: wartet auf Signal SIGURS1 und ließt anschließend alle benötigten Infos
- aus dem SM und berechnet Spielzug*/
-void think() {
-    /* readShm()
-    makeMove1()
-    makeMove2()
-    printBoard()
-    writePipe()*/
 }

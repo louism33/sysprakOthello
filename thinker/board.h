@@ -33,8 +33,15 @@ typedef struct BOARD_STRUCT {
 
 } BOARD_STRUCT;
 
-// can't have more than 64 moves (and can't have exactly 64 either)
+
+// can't have more than boardSize moves (and can't have exactly boardSize either)
 typedef int *MOVES;
+
+
+typedef struct BOARD_STRUCT_AND_MOVES {
+    BOARD_STRUCT* boardStruct;
+    MOVES moves;
+} BOARD_STRUCT_AND_MOVES;
 
 int getTotalNumberOfLegalMoves(BOARD board, SIDE_TO_MOVE TARGET_PLAYER);
 
@@ -71,6 +78,8 @@ SIDE_TO_MOVE switchPlayer(SIDE_TO_MOVE sideToMove);
 SIDE_TO_MOVE switchPlayerStruct(BOARD_STRUCT *boardStruct);
 
 SIDE_TO_MOVE getStartingPlayer();
+
+void freeStatics();
 
 MOVE getPassMove();
 
@@ -140,7 +149,7 @@ int isGameOver(BOARD_STRUCT *boardStruct);
 
 int getBoardSize();
 
-void setBoardSize(int rows, int columns);
+//void setBoardSize(int rows, int columns);
 
 int getRowSize();
 

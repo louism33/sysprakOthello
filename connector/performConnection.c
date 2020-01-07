@@ -278,6 +278,14 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
                 fprintf(stderr, "### We were too slow!\n");
+                // todo make sure we are actually ending everything (sigusr2)
+                if (kill(thinker, SIGUSR2) == -1) {
+                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
+                    exit(1);
+                } else {
+                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
+                }
+
                 endstate = 1;
                 break;
             }
@@ -492,7 +500,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 //                printf("### Move time from server: %d\n", mvTime);
                 info->moveTime = mvTime - 500;
-//                info->moveTime = 100;
+                info->moveTime = mvTime; // todo
 //                printf("### Move time for us: %d\n", info->moveTime);
 
 //                printf("### Finished parse board\n");

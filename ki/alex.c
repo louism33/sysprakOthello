@@ -444,7 +444,7 @@ MOVE getMostPlayedKidMultiThread(Contexts *contexts) {
     int totalWinsRoot = baseRoot->winCount;
     assert(baseRoot->playoutCount - totalWinsRoot == totalWinsChildren);
 
-        printNodeLittle(baseRoot);
+//        printNodeLittle(baseRoot);
 
     int totalPlayoutsFromRoot = baseRoot->playoutCount;
     assert(totalPlayoutsFromRoot == totalPlayoutsFromChildren);

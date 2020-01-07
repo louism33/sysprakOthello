@@ -31,8 +31,8 @@
 #include "shm/shm.h"
 #include "pipe/pipe.h"
 #include <stdbool.h>
-
-
+#include <sys/wait.h>
+#include <sys/resource.h>
 bool denken = false;
 infoVonServer *info;
 Player *myPlayer;
@@ -40,17 +40,44 @@ BOARD_STRUCT *infoBoard;
 BOARD_STRUCT *connectorBoard;
 void *shmInfo;
 int move;
+//int isgameover=true;
 
 void mysighandler(int sig)
 {
 
     if (sig == SIGUSR1)
     {
-        sleep(1);
+        //printf("++++++++++++++++++++++++++++++++++++++++++++++++gameover: %d\n",info->isgameover[0]);
+        // printf("++++++++++++++++++++++++++++++++++++++++++++++++gameover: %d\n",info->isgameover[1]);
+
         denken = true;
     }
+    
+    if (sig == SIGUSR2)
+    {
+    //printf("++++++++++++++++++++++++++++++++++++++++++++++++gameove\n");
+        // printf("++++++++++++++++++++++++++++++++++++++++++++++++gameover: %d\n",info->isgameover[1]);
+
+       // isgameover=false;
+    }
+    
 }
 
+
+
+
+void sigchldhandler()
+{                //
+    int wstatus; // In diesen Integer werden Informationen über den Kindprozess codiert.
+    pid_t child_id;
+
+    if ((child_id = wait(&wstatus)) < 0)
+    {
+        perror("wait\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("Kindprozess mit ID: %i beendet mit exit Status: %i\n", child_id, WEXITSTATUS(wstatus));
+}
 int main(int argc, char *argv[])
 {
     if (argc > 1 && strcmp(argv[1], "perft") == 0)
@@ -65,7 +92,8 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
+    if (argc > 1 && strcmp(argv[1], "TEST") == 0)
+    {
         printf("Test begin:.........\n");
 
         int fail = 0;
@@ -116,7 +144,11 @@ int main(int argc, char *argv[])
 
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
-
+    if (signal(SIGCHLD, sigchldhandler) == SIG_ERR)
+    {
+        printf("Error beim Empfangen des SIGCHILD.\n");
+        exit(1);
+    }
     createPipe(pd);
     switch (thinker = fork())
     {
@@ -131,9 +163,9 @@ int main(int argc, char *argv[])
         connector = getpid();
         thinker = getppid();
         printf("ConnectorPID = %i\n", connector);
-        connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
+          connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
+        // waitForChild();
         break;
-
 
     /*Elternprozess = Thinker*/
     default:
@@ -146,20 +178,27 @@ int main(int argc, char *argv[])
             printf("Error beim Empfangen des Signal.\n");
             exit(1);
         }
-
+        if (signal(SIGUSR2, mysighandler) == SIG_ERR)
+        {
+            printf("Error beim Empfangen des Signal.\n");
+            exit(1);
+        }
         close(pd[0]); // Leseseite schließen
         while (1)
         {
             //printf("in schleife.\n");
             while (!denken)
             {
+
                 sleep(1); //Schreibseite muss warten bis Leseseite fertig ist.
             }
             denken = false;
 
             //printBoard(info->infoBoard->board);
             printf("jetzt thinking...\n\n");
-            move = doThink(info->infoBoard, 3000);
+            //  printf("++++++++++++++++++++++++++++++++++++++++++++++++gameover: %d\n", info->isgameover[0]);
+
+            move = doThink(info->infoBoard, 1000);
             printf("Der Erste Zug geht zu %d\n", move);
             getPrettyMove(move, antwort);
             printf("antwort: %s\n", antwort);
@@ -172,14 +211,18 @@ int main(int argc, char *argv[])
             }
             bzero(antwort, sizeof(antwort));
         }
-
+        // if (!isgameover)//wenn es beendet
+        // {
+          //  printf("..........schluss..\n");
+         //}
         break;
     }
 
     deleteShm();
     free(antwort);
     freeBoardStruct(connectorBoard);
-    if (failState) {
+    if (failState)
+    {
         fprintf(stderr, "Error happened\n");
     }
     return failState;

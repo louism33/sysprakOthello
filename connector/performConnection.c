@@ -502,7 +502,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
                 // mvTime - 500 seems best
-                info->moveTime = mvTime - 500;
+                info->moveTime = mvTime - 700;
 //                info->moveTime = mvTime - 1000;
                 // mvTime - 500 seems best
 

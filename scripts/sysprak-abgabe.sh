@@ -87,8 +87,8 @@ fi
 ID=$(curl http://sysprak.priv.lab.nm.ifi.lmu.de/api/v1/matches \
 -H "Content-Type: application/json" \
 -X POST \
--d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":10000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
-#-d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":3000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
+-d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":3000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
+#-d '{"type":"'$GAME_TYPE_NAME'","gameGeneric":{"name":"","timeout":10000},"gameSpecific":{},"players":[{"name":"White Player","type":"COMPUTER"},{"name":"Black Player","type":"COMPUTER"}]}' | grep -Eow '([a-z0-9]{13})')
 
 if [[ $ID != "" ]]; then
   echo "Generated new game with ID \"$ID\"."

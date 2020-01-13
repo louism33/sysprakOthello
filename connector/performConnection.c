@@ -207,6 +207,7 @@ int hasLineBreak(char *str, int len, int startIndex) {
 char myInternalBuffer[1024];
 
 // select? epoll?
+// get next message?
 int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
     int readResponse;
@@ -220,16 +221,16 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
     while (1) {
 
-        printf("i: %d\n", i);
-        if (i > 0) {
+//        printf("i: %d\n", i);
+//        if (i > 0) {
 //            printf("                       in the loop again %d\n", i);
 //            if (i > 10) {
 //                exit(19);
 //            }
-        }
-        i++;
+//        }
+//        i++;
 
-        if (readResponse = read(socket, myInternalBuffer + bytesRead, sizeOfBuff-bytesRead)) {
+        if (readResponse = read(socket, myInternalBuffer + bytesRead, sizeOfBuff)) {
 
             printf("           readResponse is %d, so bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBuffer, bytesRead+readResponse, bytesRead)) == -1) {

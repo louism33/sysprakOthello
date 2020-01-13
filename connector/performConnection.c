@@ -230,6 +230,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
         if (readResponse = read(socket, myInternalBuffer + bytesRead, sizeOfBuff-bytesRead)) {
             bytesRead += readResponse;
+            printf("           readResponse is %d, so bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBuffer, readResponse+bytesRead, bytesRead)) == -1) {
                 printf("            no line break found!! internal buff:  '%s' \n", myInternalBuffer);
                 continue;

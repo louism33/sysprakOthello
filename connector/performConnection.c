@@ -340,10 +340,11 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
         if ((readResponse = readNextLine(sockfd, buff, sizeof(buff)))) {
 
+            printf("WE HAVE READ SOMETHING#######################\n");
 
             // todo dont print the stuff for server, make everything pretty
             if (printMore) {
-                printf("------>SERVER:\n%s", buff);
+                printf("------>1SERVER:\n%s", buff);
                 fflush(stdout);
             }
 
@@ -415,7 +416,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                        strlen(buff) < 1);
                 if (printMore) {
-                    printf("------>Server:\n%s", buff);
+                    printf("------>2Server:\n%s", buff);
                     fflush(stdout);
                 }
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
@@ -525,7 +526,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                        strlen(buff) < 1);
 
                 if (printMore) {
-                    printf("------>Server:\n%s", okthinkbuff);
+                    printf("------>3Server:\n%s", okthinkbuff);
                     fflush(stdout);
                 }
 

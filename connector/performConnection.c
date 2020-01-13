@@ -302,6 +302,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
         if (readResponse < 1) {
             printf("ohno\n");
+            return -1;
         }
 
         bytesRead += result;

@@ -274,11 +274,11 @@ char myInternalBuffer[1024];
 
 
 // select? epoll?
-int readNextLine(int socket, char **buffer) {
+int readNextLine(int socket, char *buffer) {
 
     int readResponse;
 
-    printf("size of buffer is %ld\n", sizeof(buffer));
+    printf("size of buffer is %ld\n", sizeof(*buffer));
 
     if (readResponse = read(socket, buffer, 2014)) {
         return readResponse;
@@ -366,7 +366,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     for (; endstate == 0;) {
 //        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-        if ((readResponse = readNextLine(sockfd, &buff))) {
+        if ((readResponse = readNextLine(sockfd, buff))) {
 
 
             // todo dont print the stuff for server, make everything pretty

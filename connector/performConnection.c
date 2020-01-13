@@ -241,7 +241,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
             strncpy(buffer, myInternalBuffer, sizeOfBuff); // change to bytesRead maybe
             bzero(myInternalBuffer, sizeOfBuff);
-            return readResponse;
+            return bytesRead;
         }
 
     }

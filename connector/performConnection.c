@@ -229,11 +229,11 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
         i++;
 
         if (readResponse = read(socket, myInternalBuffer + bytesRead, sizeOfBuff)) {
-            if ((lineBreak = hasLineBreak(myInternalBuffer, readResponse, bytesRead)) == -1) {
+            if ((lineBreak = hasLineBreak(myInternalBuffer, readResponse+bytesRead, bytesRead)) == -1) {
                 printf("            no line break found!! internal buff:  %s \n", myInternalBuffer);
                 continue;
             }
-            printf("           LINE BREAK FOUND!! internal buff:  %s \n", myInternalBuffer);
+            printf("           LINE BREAK FOUND, index: %d!! internal buff:  %s \n", lineBreak, myInternalBuffer);
 
             bytesRead += readResponse;
 
@@ -243,7 +243,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
         }
 
     }
-
+    exit(20);
     strncpy(buffer, myInternalBuffer, x);
 
     printf("//////          buffer: %s", buffer);

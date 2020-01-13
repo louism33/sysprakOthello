@@ -246,7 +246,8 @@ int readNextLine(int socket, char *buffer) {
 
     bzero(myInternalBuffer, x);
 
-    return bytesRead;
+//    return bytesRead;
+    return result;
 }
 
 

@@ -265,7 +265,7 @@ int readNextLine(int socket, char *buffer) {
 //    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
 
 //    return bytesRead;
-    return result;
+    return readResponse;
 }
 
 

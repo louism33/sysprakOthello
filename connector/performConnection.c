@@ -289,6 +289,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
         if (i > 0) {
             printf("                                                         in the loop again %d\n", i);
+            if (i > 10) {
+                exit(19);
+            }
         }
         i++;
 

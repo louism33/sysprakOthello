@@ -220,6 +220,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
     while (1) {
 
+        printf("i: %d\n", i);
         if (i > 0) {
 //            printf("                       in the loop again %d\n", i);
 //            if (i > 10) {

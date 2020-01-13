@@ -221,21 +221,19 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
     while (1) {
 
         if (i > 0) {
-            printf("                                                         in the loop again %d\n", i);
-            if (i > 10) {
-                exit(19);
-            }
+            printf("                       in the loop again %d\n", i);
+//            if (i > 10) {
+//                exit(19);
+//            }
         }
         i++;
 
-//        if (readResponse = read(socket, buffer, sizeOfBuff)) {
-//            return readResponse;
-//        }
         if (readResponse = read(socket, myInternalBuffer + bytesRead, sizeOfBuff)) {
             if ((lineBreak = hasLineBreak(myInternalBuffer, readResponse, bytesRead)) == -1) {
                 printf("            no line break found!! internal buff:  %s \n", myInternalBuffer);
                 continue;
             }
+            printf("           LINE BREAK FOUND!! internal buff:  %s \n", myInternalBuffer);
 
             bytesRead += readResponse;
 

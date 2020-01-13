@@ -249,18 +249,6 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
         }
 
     }
-    exit(20);
-    strncpy(buffer, myInternalBuffer, x);
-
-    printf("//////          buffer: %s", buffer);
-    printf("////// myInternalBuffer: %s", myInternalBuffer);
-    printf("////// bytesRead: %d\n", bytesRead);
-
-    bzero(myInternalBuffer, x);
-
-    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
-
-    return bytesRead;
 }
 
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,

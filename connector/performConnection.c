@@ -228,7 +228,14 @@ int readNextLine(int socket, char *buffer) {
 //        i++;
 
 
-        result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
+//        result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
+
+        int readResponse = read(socket, buffer, sizeof(buffer));
+
+        if (1) {
+            return readResponse;
+        }
+
 //        if (result < 1) {
 //            // Throw your error.
 //            printf("ohno\n");

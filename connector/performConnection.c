@@ -285,7 +285,6 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
     printf("size of buffer is %d\n", sizeOfBuff);
 
-
     while (1) {
 
         if (i > 0) {
@@ -293,7 +292,11 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
         }
         i++;
 
-        if (readResponse = read(socket, buffer, sizeOfBuff)) {
+//        if (readResponse = read(socket, buffer, sizeOfBuff)) {
+//            return readResponse;
+//        }
+        if (readResponse = read(socket, myInternalBuffer, sizeOfBuff)) {
+            strncpy(buffer, myInternalBuffer, x);
             return readResponse;
         }
 

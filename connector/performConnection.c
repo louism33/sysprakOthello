@@ -205,72 +205,85 @@ int hasLineBreak(char *str, int len, int startIndex) {
 }
 
 char myInternalBuffer[1024];
+//
+//// select? epoll?
+//int readNextLine(int socket, char *buffer) {
+//
+//    // read next line until there is nothing in buff, then read sock?
+//
+////    int bytesRead = 0;
+////    int result = 0;
+////
+////    int x = sizeof(myInternalBuffer);
+////    int lineBreak = 0;
+////    printf("---------------------------  x: %d\n", x);
+////
+////    int i = 0;
+////
+////    while (1) {
+//
+////        if (i > 0){
+////            printf("                                                         in the loop again %d\n", i);
+////        }
+////        i++;
+//
+//
+////        result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
+//    int readResponse;
+//
+//    if (readResponse = read(socket, buffer, sizeof(buffer))) {
+//        return readResponse;
+//    }
+//
+//    if (1) {
+//        return readResponse;
+//    }
+//
+////        if (result < 1) {
+////            // Throw your error.
+////            printf("ohno\n");
+////        }
+//
+////        bytesRead += result;
+//
+////        printf("/// myInternalBuffer: %s", myInternalBuffer);
+////        printf("/// result: %d\n", result);
+//
+////        if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
+////            printf("             /*******************************// result: %d\n", result);
+//////            break;
+////        }
+//
+////        break;
+////    }
+//
+////    strncpy(buffer, myInternalBuffer, x);
+//
+////    printf("//////          buffer: %s", buffer);
+////    printf("////// myInternalBuffer: %s", myInternalBuffer);
+////    printf("////// bytesRead: %d\n", bytesRead);
+//
+////    bzero(myInternalBuffer, x);
+//
+////    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
+//
+////    return bytesRead;
+//    return readResponse;
+//}
+
+
 
 // select? epoll?
 int readNextLine(int socket, char *buffer) {
 
-    // read next line until there is nothing in buff, then read sock?
-
-//    int bytesRead = 0;
-//    int result = 0;
-//
-//    int x = sizeof(myInternalBuffer);
-//    int lineBreak = 0;
-//    printf("---------------------------  x: %d\n", x);
-//
-//    int i = 0;
-//
-//    while (1) {
-
-//        if (i > 0){
-//            printf("                                                         in the loop again %d\n", i);
-//        }
-//        i++;
-
-
-//        result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
     int readResponse;
 
     if (readResponse = read(socket, buffer, sizeof(buffer))) {
         return readResponse;
     }
 
-    if (1) {
-        return readResponse;
-    }
-
-//        if (result < 1) {
-//            // Throw your error.
-//            printf("ohno\n");
-//        }
-
-//        bytesRead += result;
-
-//        printf("/// myInternalBuffer: %s", myInternalBuffer);
-//        printf("/// result: %d\n", result);
-
-//        if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
-//            printf("             /*******************************// result: %d\n", result);
-////            break;
-//        }
-
-//        break;
-//    }
-
-//    strncpy(buffer, myInternalBuffer, x);
-
-//    printf("//////          buffer: %s", buffer);
-//    printf("////// myInternalBuffer: %s", myInternalBuffer);
-//    printf("////// bytesRead: %d\n", bytesRead);
-
-//    bzero(myInternalBuffer, x);
-
-//    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
-
-//    return bytesRead;
     return readResponse;
 }
-
 
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                BOARD_STRUCT *connectorBoard,

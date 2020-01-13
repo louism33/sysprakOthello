@@ -222,27 +222,27 @@ int readNextLine(int socket, char *buffer) {
 
     while (1) {
 
-        if (i > 0){
-            printf("                                                         in the loop again %d\n", i);
-        }
-        i++;
+//        if (i > 0){
+//            printf("                                                         in the loop again %d\n", i);
+//        }
+//        i++;
 
 
         result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
-        if (result < 1) {
-            // Throw your error.
-            printf("ohno\n");
-        }
+//        if (result < 1) {
+//            // Throw your error.
+//            printf("ohno\n");
+//        }
 
 //        bytesRead += result;
 
 //        printf("/// myInternalBuffer: %s", myInternalBuffer);
 //        printf("/// result: %d\n", result);
 
-        if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
-            printf("             /*******************************// result: %d\n", result);
-//            break;
-        }
+//        if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
+//            printf("             /*******************************// result: %d\n", result);
+////            break;
+//        }
 
         break;
     }

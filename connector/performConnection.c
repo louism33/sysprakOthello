@@ -278,7 +278,7 @@ int readNextLine(int socket, char *buffer) {
 
     int readResponse;
 
-    if (readResponse = read(socket, buffer, sizeof(buffer))) {
+    if (readResponse = read(socket, buffer, 2014)) {
         return readResponse;
     }
 

@@ -274,18 +274,61 @@ char myInternalBuffer[1024];
 
 
 // select? epoll?
-int readNextLine(int socket, char *buffer) {
+int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
     int readResponse;
+    int bytesRead = 0;
+    int result = 0;
+    int x = sizeof(myInternalBuffer);
+    int lineBreak = 0;
+    int i = 0;
 
-    printf("size of buffer is %ld\n", sizeof(*buffer));
+    printf("size of buffer is %ld\n", sizeOfBuff);
 
-    if (readResponse = read(socket, buffer, 2014)) {
-        return readResponse;
+
+    while (1) {
+
+        if (i > 0) {
+            printf("                                                         in the loop again %d\n", i);
+        }
+        i++;
+
+//        result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
+//        if (readResponse = read(socket, buffer, sizeOfBuff)) {
+//            return readResponse;
+//        }
+
+        readResponse = read(socket, buffer, sizeOfBuff));
+
+        if (readResponse < 1) {
+            printf("ohno\n");
+        }
+
+        bytesRead += result;
+
+        printf("/// myInternalBuffer: %s", myInternalBuffer);
+        printf("/// result: %d\n", result);
+
+        if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
+            printf("             /*******************************// result: %d\n", result);
+//            break;
+        }
+
+        break;
     }
 
-    exit(19);
-//    return readResponse;
+    strncpy(buffer, myInternalBuffer, x);
+
+    printf("//////          buffer: %s", buffer);
+    printf("////// myInternalBuffer: %s", myInternalBuffer);
+    printf("////// bytesRead: %d\n", bytesRead);
+
+    bzero(myInternalBuffer, x);
+
+    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
+
+    return bytesRead;
+    return readResponse;
 }
 
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
@@ -366,7 +409,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     for (; endstate == 0;) {
 //        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-        if ((readResponse = readNextLine(sockfd, buff))) {
+        if ((readResponse = readNextLine(sockfd, buff, sizeof(buff)))) {
 
 
             // todo dont print the stuff for server, make everything pretty

@@ -212,7 +212,7 @@ int readNextLine(int socket, char *buffer) {
     // read next line until there is nothing in buff, then read sock?
 
     int bytesRead = 0;
-    int result;
+    int result = 0;
 
     int x = sizeof(myInternalBuffer);
     int lineBreak = 0;
@@ -255,7 +255,7 @@ int readNextLine(int socket, char *buffer) {
 
     bzero(myInternalBuffer, x);
 
-    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
+//    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
 
 //    return bytesRead;
     return result;

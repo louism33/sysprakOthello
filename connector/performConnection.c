@@ -213,11 +213,12 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
     int readResponse;
     int bytesRead = 0;
     int result = 0;
-    int x = sizeof(myInternalBuffer);
+    int internalBufferSize = sizeof(myInternalBuffer);
     int lineBreak = 0;
     int i = 0;
 
     printf("size of buffer is %d\n", sizeOfBuff);
+    printf("size of internalBufferSize is %d\n", internalBufferSize);
 
     while (1) {
 
@@ -230,9 +231,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //        }
 //        i++;
 
-        if (readResponse = read(socket, myInternalBuffer + bytesRead, sizeOfBuff)) {
+        if (readResponse = read(socket, myInternalBuffer + bytesRead, internalBufferSize)) {
 
-            printf("           readResponse is %d, so bytesRead is %d \n", readResponse, bytesRead);
+            printf("           readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBuffer, bytesRead+readResponse, bytesRead)) == -1) {
                 printf("       no line break found!! internal buff:  '%s' \n", myInternalBuffer);
                 bytesRead += readResponse;
@@ -242,8 +243,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
             bytesRead += readResponse;
 
-            strncpy(buffer, myInternalBuffer, sizeOfBuff); // change to bytesRead maybe
-            bzero(myInternalBuffer, sizeOfBuff);
+            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
+            bzero(myInternalBuffer, internalBufferSize);
             return bytesRead;
         }
 
@@ -272,8 +273,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     strcpy(info->gameKindName, gameKindName);
 
-//    char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-    char buff[24] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+//    char buff[24] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char okthinkbuff[SMALL_STRING] = {" "};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};
@@ -337,7 +338,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int mvTime = 0;
 
 
-    printf("size of buff is %ld\n", sizeof(buff));
+//    printf("size of buff is %ld\n", sizeof(buff));
 
     for (; endstate == 0;) {
 //        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {

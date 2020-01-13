@@ -282,7 +282,8 @@ int readNextLine(int socket, char *buffer) {
         return readResponse;
     }
 
-    return readResponse;
+    exit(19);
+//    return readResponse;
 }
 
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,

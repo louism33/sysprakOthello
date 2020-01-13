@@ -296,32 +296,11 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //            return readResponse;
 //        }
         if (readResponse = read(socket, myInternalBuffer, sizeOfBuff)) {
-            strncpy(buffer, myInternalBuffer, x);
+            strncpy(buffer, myInternalBuffer, sizeOfBuff);
+            bzero(myInternalBuffer, sizeOfBuff);
             return readResponse;
         }
 
-//        readResponse = read(socket, buffer, sizeOfBuff);
-//        bytesRead += result;
-//        if (readResponse < 1) {
-//            printf("ohno\n");
-//            return -1;
-//        }
-//
-//        if(1){
-//            break;
-//        }
-
-
-
-//        printf("/// myInternalBuffer: %s", myInternalBuffer);
-//        printf("/// result: %d\n", result);
-//
-//        if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
-//            printf("             /*******************************// result: %d\n", result);
-////            break;
-//        }
-//
-//        break;
     }
 
     strncpy(buffer, myInternalBuffer, x);

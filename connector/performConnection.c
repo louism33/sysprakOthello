@@ -195,6 +195,61 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     return f;
 }
 
+int hasLineBreak(char *str, int len, int startIndex) {
+    for (int i = startIndex; i < len; i++) {
+        if (str[i] == '\n'){
+            return i;
+        }
+    }
+    return -1;
+}
+
+char myInternalBuffer[1024];
+
+// select? epoll?
+int readNextLine(int socket, char *buffer) {
+
+    // read next line until there is nothing in buff, then read sock?
+
+    int bytesRead = 0;
+    int result;
+
+    int x = sizeof(myInternalBuffer);
+    int lineBreak = 0;
+    printf("---------------------------  x: %d\n", x);
+
+    while (1) {
+        result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
+        if (result < 1) {
+            // Throw your error.
+            printf("ohno\n");
+        }
+
+        bytesRead += result;
+
+        printf("/// myInternalBuffer: %s", myInternalBuffer);
+        printf("/// result: %d\n", result);
+
+        if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
+            printf("             /*******************************// result: %d\n", result);
+            break;
+        }
+
+        break;
+    }
+
+    strncpy(buffer, myInternalBuffer, x);
+
+    printf("//////          buffer: %s", buffer);
+    printf("////// myInternalBuffer: %s", myInternalBuffer);
+    printf("////// bytesRead: %d\n", bytesRead);
+
+    bzero(myInternalBuffer, x);
+
+    return bytesRead;
+}
+
+
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                BOARD_STRUCT *connectorBoard,
                                infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
@@ -269,8 +324,11 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int mvTime = 0;
 
     for (; endstate == 0;) {
-        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+//        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+        if ((readResponse = readNextLine(sockfd, buff))) {
 
+
+            // todo dont print the stuff for server, make everything pretty
             if (printMore) {
                 printf("------>SERVER:\n%s", buff);
                 fflush(stdout);
@@ -502,8 +560,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
                 // mvTime - 500 seems best
-                info->moveTime = mvTime - 700;
-//                info->moveTime = mvTime - 1000;
+//                info->moveTime = mvTime - 700;
+                info->moveTime = mvTime - 1000; // todo, commando param?? and why so high
                 // mvTime - 500 seems best
 
 

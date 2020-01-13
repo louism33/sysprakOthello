@@ -227,8 +227,8 @@ int readNextLine(int socket, char *buffer) {
 
         bytesRead += result;
 
-        printf("/// myInternalBuffer: %s", myInternalBuffer);
-        printf("/// result: %d\n", result);
+//        printf("/// myInternalBuffer: %s", myInternalBuffer);
+//        printf("/// result: %d\n", result);
 
         if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
             printf("             /*******************************// result: %d\n", result);
@@ -240,9 +240,9 @@ int readNextLine(int socket, char *buffer) {
 
     strncpy(buffer, myInternalBuffer, x);
 
-    printf("//////          buffer: %s", buffer);
-    printf("////// myInternalBuffer: %s", myInternalBuffer);
-    printf("////// bytesRead: %d\n", bytesRead);
+//    printf("//////          buffer: %s", buffer);
+//    printf("////// myInternalBuffer: %s", myInternalBuffer);
+//    printf("////// bytesRead: %d\n", bytesRead);
 
     bzero(myInternalBuffer, x);
 

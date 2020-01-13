@@ -221,7 +221,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
     while (1) {
 
         if (i > 0) {
-            printf("                       in the loop again %d\n", i);
+//            printf("                       in the loop again %d\n", i);
 //            if (i > 10) {
 //                exit(19);
 //            }

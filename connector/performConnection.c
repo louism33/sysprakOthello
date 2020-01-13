@@ -197,7 +197,7 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 
 int hasLineBreak(char *str, int len, int startIndex) {
     for (int i = startIndex; i < len; i++) {
-        if (str[i] == '\n'){
+        if (str[i] == '\n') {
             return i;
         }
     }
@@ -229,12 +229,15 @@ int readNextLine(int socket, char *buffer) {
 
 
 //        result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
+    int readResponse;
 
-        int readResponse = read(socket, buffer, sizeof(buffer));
+    if (readResponse = read(socket, buffer, sizeof(buffer))) {
+        return readResponse;
+    }
 
-        if (1) {
-            return readResponse;
-        }
+    if (1) {
+        return readResponse;
+    }
 
 //        if (result < 1) {
 //            // Throw your error.
@@ -343,8 +346,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int mvTime = 0;
 
     for (; endstate == 0;) {
-//        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-        if ((readResponse = readNextLine(sockfd, buff))) {
+        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+//        if ((readResponse = readNextLine(sockfd, buff))) {
 
 
             // todo dont print the stuff for server, make everything pretty

@@ -225,7 +225,7 @@ int readNextLine(int socket, char *buffer) {
             printf("ohno\n");
         }
 
-        bytesRead += result;
+//        bytesRead += result;
 
 //        printf("/// myInternalBuffer: %s", myInternalBuffer);
 //        printf("/// result: %d\n", result);

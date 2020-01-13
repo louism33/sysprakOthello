@@ -232,7 +232,7 @@ int readNextLine(int socket, char *buffer) {
 
         if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) != -1) {
             printf("             /*******************************// result: %d\n", result);
-            break;
+//            break;
         }
 
         break;

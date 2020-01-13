@@ -218,7 +218,16 @@ int readNextLine(int socket, char *buffer) {
     int lineBreak = 0;
     printf("---------------------------  x: %d\n", x);
 
+    int i = 0;
+
     while (1) {
+
+        if (i > 0){
+            printf("                                                         in the loop again %d\n", i);
+        }
+        i++;
+
+
         result = read(socket, myInternalBuffer + bytesRead, x - bytesRead);
         if (result < 1) {
             // Throw your error.
@@ -562,7 +571,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 // mvTime - 500 seems best
 //                info->moveTime = mvTime - 700;
-                info->moveTime = mvTime - 1000; // todo, commando param?? and why so high
+//                info->moveTime = mvTime - 1000; // todo, commando param?? and why so high
+                info->moveTime = 100;
                 // mvTime - 500 seems best
 
 

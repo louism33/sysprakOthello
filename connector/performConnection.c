@@ -231,7 +231,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //        }
 //        i++;
 
-        if (readResponse = read(socket, myInternalBuffer + bytesRead, internalBufferSize)) {
+        if (readResponse = read(socket, myInternalBuffer + bytesRead, 10)) {
 
             printf("           readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBuffer, bytesRead+readResponse, bytesRead)) == -1) {

@@ -283,7 +283,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
     int lineBreak = 0;
     int i = 0;
 
-    printf("size of buffer is %ld\n", sizeOfBuff);
+    printf("size of buffer is %d\n", sizeOfBuff);
 
 
     while (1) {
@@ -298,7 +298,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //            return readResponse;
 //        }
 
-        readResponse = read(socket, buffer, sizeOfBuff));
+        readResponse = read(socket, buffer, sizeOfBuff);
 
         if (readResponse < 1) {
             printf("ohno\n");

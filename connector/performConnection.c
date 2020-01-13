@@ -296,6 +296,12 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //            return readResponse;
 //        }
         if (readResponse = read(socket, myInternalBuffer, sizeOfBuff)) {
+            if ((lineBreak = hasLineBreak(myInternalBuffer, result, 0)) == -1) {
+                printf("            no line break found!! \n");
+                break;
+            }
+
+
             strncpy(buffer, myInternalBuffer, sizeOfBuff);
             bzero(myInternalBuffer, sizeOfBuff);
             return readResponse;

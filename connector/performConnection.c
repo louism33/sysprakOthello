@@ -299,13 +299,17 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //        }
 
         readResponse = read(socket, buffer, sizeOfBuff);
-
+        bytesRead += result;
         if (readResponse < 1) {
             printf("ohno\n");
             return -1;
         }
 
-        bytesRead += result;
+        if(1){
+            break;
+        }
+
+
 
         printf("/// myInternalBuffer: %s", myInternalBuffer);
         printf("/// result: %d\n", result);
@@ -329,7 +333,6 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
     printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
 
     return bytesRead;
-    return readResponse;
 }
 
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,

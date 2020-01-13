@@ -211,16 +211,16 @@ int readNextLine(int socket, char *buffer) {
 
     // read next line until there is nothing in buff, then read sock?
 
-    int bytesRead = 0;
-    int result = 0;
-
-    int x = sizeof(myInternalBuffer);
-    int lineBreak = 0;
-    printf("---------------------------  x: %d\n", x);
-
-    int i = 0;
-
-    while (1) {
+//    int bytesRead = 0;
+//    int result = 0;
+//
+//    int x = sizeof(myInternalBuffer);
+//    int lineBreak = 0;
+//    printf("---------------------------  x: %d\n", x);
+//
+//    int i = 0;
+//
+//    while (1) {
 
 //        if (i > 0){
 //            printf("                                                         in the loop again %d\n", i);
@@ -251,16 +251,16 @@ int readNextLine(int socket, char *buffer) {
 ////            break;
 //        }
 
-        break;
-    }
+//        break;
+//    }
 
-    strncpy(buffer, myInternalBuffer, x);
+//    strncpy(buffer, myInternalBuffer, x);
 
 //    printf("//////          buffer: %s", buffer);
 //    printf("////// myInternalBuffer: %s", myInternalBuffer);
 //    printf("////// bytesRead: %d\n", bytesRead);
 
-    bzero(myInternalBuffer, x);
+//    bzero(myInternalBuffer, x);
 
 //    printf("             /*************************     ******// result: %d, bytesRead %d\n", result, bytesRead);
 

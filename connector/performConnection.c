@@ -269,7 +269,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff)) {
 
-            printf("!!!!!RNM readResponse is %d, and myInternalBufferMessage is %s, indexOfLineBreak %d \n", readResponse, myInternalBufferMessage, indexOfLineBreak);
+            printf("!!!!!RNM readResponse is %d, and myInternalBufferMessage is %s\n", indexOfLineBreak, myInternalBufferMessage);
 
             if (completeMessage) {
                 strncpy(buffer, myInternalBufferMessage, indexOfLineBreak+1); // change to bytesRead maybe

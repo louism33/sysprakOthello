@@ -212,6 +212,7 @@ int hasLineBreak(char *str, int len, int startIndex) {
 char myInternalBufferLine[1024];
 char myInternalBufferMessage[1024];
 int hasMoreLines = 0;
+int indexStartNextLine = 0;
 
 // select? epoll?
 // get next message?
@@ -224,24 +225,25 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
     int lineBreak = 0;
     int i = 0;
 
-    printf("\nreadNextLine, indexOfLineBreak %d\n", indexOfLineBreak);
+    printf("\nreadNextLine, indexOfLineBreak %d, indexStartNextLine %d\n", indexOfLineBreak, indexStartNextLine);
 //    printf("\nmyInternalBufferLine is '%s'\n", myInternalBufferLine);
 
+    int startOfMessageInLineBuffer = indexOfLineBreak + 1 + indexStartNextLine;
 
     if (hasMoreLines) {
         // todo modify bytesRead if incomplete line
 
         assert(indexOfLineBreak);
 
-        printf("     HASMORELINES myInternalBufferLine + indexOfLineBreak + 1:  '%s' \n",
-               myInternalBufferLine + indexOfLineBreak + 1);
+        printf("     HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  '%s' \n",
+               myInternalBufferLine + startOfMessageInLineBuffer);
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine+indexOfLineBreak+1, internalBufferSize, 0)) == -1) {
-            printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+indexOfLineBreak+1:  '%s' \n",
-                   myInternalBufferLine+indexOfLineBreak+1);
+            printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+startOfMessageInLineBuffer:  '%s' \n",
+                   myInternalBufferLine+startOfMessageInLineBuffer);
         } else {
-            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ lineBreak+indexOfLineBreak:  '%s' \n", lineBreak, indexOfLineBreak,
-                   myInternalBufferLine+lineBreak+indexOfLineBreak);
+            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ startOfMessageInLineBuffer:  '%s' \n", lineBreak, indexOfLineBreak,
+                   myInternalBufferLine+startOfMessageInLineBuffer);
 
             assert(lineBreak > indexOfLineBreak);
 
@@ -270,8 +272,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
                 bytesRead += readResponse;
                 continue;
             }
-            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak,
-                   myInternalBufferLine);
+            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! \n", lineBreak);
+//            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak,
+//                   myInternalBufferLine);
 
             bytesRead += readResponse;
 
@@ -281,6 +284,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //                       bytesRead,
 //                       lineBreak, myInternalBufferLine);
                 hasMoreLines = 1;
+                indexStartNextLine += lineBreak;
             } else {
                 printf("setting hasmorelines to 0\n");
                 hasMoreLines = 0;

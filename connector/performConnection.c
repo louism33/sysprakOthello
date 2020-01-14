@@ -204,7 +204,9 @@ int hasLineBreak(char *str, int len, int startIndex) {
     return -1;
 }
 
-char myInternalBuffer[1024];
+char myInternalBufferLine[1024];
+char myInternalBufferMessage[1024];
+int hasMoreLines = 0;
 
 // select? epoll?
 // get next message?
@@ -213,36 +215,39 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
     int readResponse;
     int bytesRead = 0;
     int result = 0;
-    int internalBufferSize = sizeof(myInternalBuffer);
+    int internalBufferSize = sizeof(myInternalBufferLine);
     int lineBreak = 0;
     int i = 0;
 
     //internal not really needed tbh
 
-    printf("size of buffer is %d\n", sizeOfBuff);
-    printf("size of internalBufferSize is %d\n", internalBufferSize);
-
     while (1) {
 
-        if (readResponse = read(socket, myInternalBuffer + bytesRead, 1000)) {
+        if (readResponse = read(socket, myInternalBufferLine + bytesRead, 1000)) {
 
             printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
-            if ((lineBreak = hasLineBreak(myInternalBuffer, bytesRead+readResponse, bytesRead)) == -1) {
-                printf("!!!!!!!!!! NO line break found!! internal buff:  '%s' \n", myInternalBuffer);
+            if ((lineBreak = hasLineBreak(myInternalBufferLine, bytesRead+readResponse, bytesRead)) == -1) {
+                printf("!!!!!!!!!! NO line break found!! internal buff:  '%s' \n", myInternalBufferLine);
                 bytesRead += readResponse;
                 continue;
             }
-            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak, myInternalBuffer);
+            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak, myInternalBufferLine);
 
             bytesRead += readResponse;
 
-//            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
-            strncpy(buffer, myInternalBuffer, lineBreak+1); // change to bytesRead maybe
+            if (bytesRead > lineBreak) {
+                hasMoreLines = 1;
+            } else {
+                hasMoreLines = 0;
+            }
 
-            printf("!!!!!!!!!! AFTER COPY, index: %d, index char is %c !! buffer:  '%s' \n", lineBreak, buffer[lineBreak+1], buffer);
+//            strncpy(buffer, myInternalBufferLine, sizeOfBuff+1); // change to bytesRead maybe
+            strncpy(buffer, myInternalBufferLine, lineBreak+1); // change to bytesRead maybe
 
-            bzero(myInternalBuffer, internalBufferSize);
-            return bytesRead;
+            printf("!!!!!!!!!! AFTER COPY, index: %d, index char is %c !! buffer:  '%s' , hasMoreLines %d \n", lineBreak, buffer[lineBreak], buffer, hasMoreLines);
+
+            bzero(myInternalBufferLine, lineBreak);
+            return lineBreak;
         }
 
     }
@@ -250,30 +255,41 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
 int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
-    int readResponse;
+    int indexOfLineBreak;
+    int totalLength;
     int bytesRead = 0;
     int result = 0;
-    int internalBufferSize = sizeof(myInternalBuffer);
+    int myInternalBufferMessageSize = sizeof(myInternalBufferMessage);
     int lineBreak = 0;
     int i = 0;
 
+    int completeMessage = 1;
+
     while (1) {
 
-        if (readResponse = readNextLine(socket, buffer, sizeOfBuff)) {
+        if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff)) {
 
-            printf("!!!!!RNM readResponse is %d, and buffer is %s \n", readResponse, buffer);
+            printf("!!!!!RNM readResponse is %d, and myInternalBufferMessage is %s, indexOfLineBreak %d \n", readResponse, myInternalBufferMessage, indexOfLineBreak);
+
+            if (completeMessage) {
+                strncpy(buffer, myInternalBufferMessage, indexOfLineBreak+1); // change to bytesRead maybe
 
 
-            if ((strncmp("- ", buffer, 2)) == 0) {
-                printf("found negative message, returning \n");
-                return readResponse;
+                return indexOfLineBreak;
             }
 
 
-            bytesRead += readResponse;
 
-            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
-            bzero(myInternalBuffer, internalBufferSize);
+//            if ((strncmp("- ", buffer, 2)) == 0) {
+//                printf("!!!!!RNM found negative message, returning \n");
+//                return readResponse;
+//            }
+//
+//
+//            bytesRead += readResponse;
+//
+//            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
+//            bzero(myInternalBuffer, internalBufferSize);
             return bytesRead;
         }
 
@@ -359,8 +375,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     for (; endstate == 0;) {
 //        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-//        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
-        if ((readResponse = readNextLine(sockfd, buff, sizeof(buff)))) {
+        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
+//        if ((readResponse = readNextLine(sockfd, buff, sizeof(buff)))) {
 
             printf("WE HAVE READ SOMETHING#######################\n");
 

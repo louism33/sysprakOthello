@@ -251,7 +251,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             strncpy(buffer, myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1);
 
-            printf("!!!!!HASMORELINES!!!!! AFTER COPY, buffer '%s'", buffer);
+            printf("!!!!!HASMORELINES!!!!! AFTER COPY, buffer '%s'\n", buffer);
 
 //            printf("!!!!!HASMORELINES!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
@@ -261,6 +261,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
 //            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
+
+            indexStartNextLine += lineBreak;
+
             return lineBreak;
 
         }
@@ -292,6 +295,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
             } else {
                 printf("setting hasmorelines to 0\n");
                 hasMoreLines = 0;
+                indexStartNextLine = 0;
             }
 
             strncpy(buffer, myInternalBufferLine, lineBreak + 1); // change to bytesRead maybe
@@ -497,6 +501,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 endstate = 1;
                 break;
             }
+
+            // todo "+1 Black Player 1   prase
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {

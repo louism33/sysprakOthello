@@ -247,10 +247,10 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
             strncpy(buffer, myInternalBufferLine, lineBreak+1); // change to bytesRead maybe
 
             printf("!!!!!!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n", lineBreak, buffer, hasMoreLines, bytesRead);
-            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine %s \n", myInternalBufferLine);
+            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
             bzero(myInternalBufferLine, lineBreak);
-            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine %s \n", myInternalBufferLine);
+            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
             return lineBreak;
         }
 
@@ -268,6 +268,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
     int i = 0;
 
     int completeMessage = 1;
+
+    bzero(myInternalBufferMessage, myInternalBufferMessageSize);
 
     while (1) {
 

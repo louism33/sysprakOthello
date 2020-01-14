@@ -196,6 +196,11 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 }
 
 int hasLineBreak(char *str, int len, int startIndex) {
+
+
+    printf("##### hasLineBreak(), str '%s', len %d, startIndex %d\n",
+           str, len, startIndex);
+
     for (int i = startIndex; i < len; i++) {
         if (str[i] == '\n') {
             return i;
@@ -226,11 +231,11 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
         assert(indexOfLineBreak);
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine, internalBufferSize, indexOfLineBreak)) == -1) {
-            printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff:  '%s' \n",
-                   myInternalBufferLine);
+            printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+indexOfLineBreak+1:  '%s' \n",
+                   myInternalBufferLine+indexOfLineBreak+1);
         } else {
-            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, index: %d!! internal buff:  '%s' \n", lineBreak,
-                   myInternalBufferLine);
+            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, index: %d!! internal buff+ indexOfLineBreak+1:  '%s' \n", lineBreak,
+                   myInternalBufferLine+indexOfLineBreak+1);
 
             assert(lineBreak > indexOfLineBreak);
 
@@ -277,7 +282,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             printf("!!!!!!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
                    lineBreak, buffer, hasMoreLines, bytesRead);
-            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
+//            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
             bzero(myInternalBufferLine, lineBreak);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);

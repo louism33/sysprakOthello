@@ -319,6 +319,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
             if (strstr(myInternalBufferMessage, "+ FIELD ")) {
                 completeMessage = 0;
+            } else {
+                completeMessage = 1;
             }
 
 

@@ -296,7 +296,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
 int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
-    int indexOfLineBreak;
+    int indexOfLineBreak = 0;
     int totalLength;
     int bytesRead = 0;
     int result = 0;
@@ -314,8 +314,13 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
 
-            printf("!!!!!RNM readResponse is %d, and myInternalBufferMessage is '%s'\n", indexOfLineBreak,
+            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is '%s'\n", indexOfLineBreak,
                    myInternalBufferMessage);
+
+            if (strstr(buff, "+ FIELD ")) {
+                completeMessage = 0;
+            }
+
 
             if (completeMessage) {
                 strncpy(buffer, myInternalBufferMessage, indexOfLineBreak + 1); // change to bytesRead maybe

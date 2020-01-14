@@ -237,9 +237,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
             bytesRead += readResponse;
 
 //            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
-            strncpy(buffer, myInternalBuffer, lineBreak); // change to bytesRead maybe
+            strncpy(buffer, myInternalBuffer, lineBreak+1); // change to bytesRead maybe
 
-            printf("!!!!!!!!!! AFTER COPY, index: %d, index char is %c !! buffer:  '%s' \n", lineBreak, buffer[lineBreak], buffer);
+            printf("!!!!!!!!!! AFTER COPY, index: %d, index char is %c !! buffer:  '%s' \n", lineBreak, buffer[lineBreak+1], buffer);
 
             bzero(myInternalBuffer, internalBufferSize);
             return bytesRead;

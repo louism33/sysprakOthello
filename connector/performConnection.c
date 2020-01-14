@@ -310,8 +310,11 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
     printf("\n\n");
 
+    in ti = 0;
+
     while (1) {
 
+        i++;
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
 
             printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is '%s'\n", indexOfLineBreak,
@@ -323,6 +326,9 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                 completeMessage = 1;
             }
 
+            if (i > 2) {
+                exit(19);
+            }
 
             if (completeMessage) {
                 strncpy(buffer, myInternalBufferMessage, indexOfLineBreak + 1); // change to bytesRead maybe

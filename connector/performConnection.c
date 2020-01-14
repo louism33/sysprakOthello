@@ -226,17 +226,21 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
         if (readResponse = read(socket, myInternalBuffer + bytesRead, 1000)) {
 
-            printf("           readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
+            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBuffer, bytesRead+readResponse, bytesRead)) == -1) {
-                printf(" NO line break found!! internal buff:  '%s' \n", myInternalBuffer);
+                printf("!!!!!!!!!! NO line break found!! internal buff:  '%s' \n", myInternalBuffer);
                 bytesRead += readResponse;
                 continue;
             }
-            printf("           LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak, myInternalBuffer);
+            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak, myInternalBuffer);
 
             bytesRead += readResponse;
 
-            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
+//            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
+            strncpy(buffer, myInternalBuffer, lineBreak); // change to bytesRead maybe
+
+            printf("!!!!!!!!!! AFTER COPY, index: %d, index char is %c !! buffer:  '%s' \n", lineBreak, buffer[lineBreak], buffer);
+
             bzero(myInternalBuffer, internalBufferSize);
             return bytesRead;
         }
@@ -355,7 +359,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     for (; endstate == 0;) {
 //        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-        if ((readResponse = readNextLine(sockfd, buff, sizeof(buff)))) {
+        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
 
             printf("WE HAVE READ SOMETHING#######################\n");
 
@@ -491,7 +495,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(mitspieleranzahl, buff + 8, 1);
                 mitspieleranzahl[1] = '\0';
                 info->MitspielerAnzahl = atoi(mitspieleranzahl);
-                printf("### Saving MitspielerAnzahl: '%d'\n", info->MitspielerAnzahl);
+                printf("### Saving Total number of players: '%d'\n", info->MitspielerAnzahl);
                 phase = SPIELVERLAUF;
             }
 
@@ -540,7 +544,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 writeToServer(sockfd, thinking);
 
                 while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
-                       strlen(buff) < 1);
+                       strlen(buff) < 1); // strlen buff????
 
                 if (printMore) {
                     printf("------>3Server:\n%s", okthinkbuff);

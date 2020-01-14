@@ -235,7 +235,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
             bytesRead += readResponse;
 
-            if (bytesRead > lineBreak) {
+            if (bytesRead > lineBreak+1) {
                 printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine %s ", bytesRead,
                        lineBreak, myInternalBufferLine);
                 hasMoreLines = 1;

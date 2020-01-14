@@ -225,7 +225,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
         assert(indexOfLineBreak);
 
-        if ((lineBreak = hasLineBreak(myInternalBufferLine, myInternalBufferLine, indexOfLineBreak)) == -1) {
+        if ((lineBreak = hasLineBreak(myInternalBufferLine, internalBufferSize, indexOfLineBreak)) == -1) {
             printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff:  '%s' \n",
                    myInternalBufferLine);
         } else {

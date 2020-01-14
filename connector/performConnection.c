@@ -251,6 +251,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 
             bzero(myInternalBufferLine, lineBreak);
             printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
+            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak '%s'\n", myInternalBufferLine+lineBreak);
             return lineBreak;
         }
 
@@ -270,6 +271,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
     int completeMessage = 1;
 
     bzero(myInternalBufferMessage, myInternalBufferMessageSize);
+
+    printf("\n\n");
 
     while (1) {
 

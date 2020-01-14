@@ -335,19 +335,6 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                 return indexOfLineBreak;
             }
 
-
-
-//            if ((strncmp("- ", buffer, 2)) == 0) {
-//                printf("!!!!!RNM found negative message, returning \n");
-//                return readResponse;
-//            }
-//
-//
-//            bytesRead += readResponse;
-//
-//            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
-//            bzero(myInternalBuffer, internalBufferSize);
-            return bytesRead;
         }
 
     }

@@ -236,6 +236,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
             bytesRead += readResponse;
 
             if (bytesRead > lineBreak) {
+                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine %s ", bytesRead,
+                       lineBreak, myInternalBufferLine);
                 hasMoreLines = 1;
             } else {
                 hasMoreLines = 0;
@@ -244,7 +246,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //            strncpy(buffer, myInternalBufferLine, sizeOfBuff+1); // change to bytesRead maybe
             strncpy(buffer, myInternalBufferLine, lineBreak+1); // change to bytesRead maybe
 
-            printf("!!!!!!!!!! AFTER COPY, index: %d, index char is %c !! buffer:  '%s' , hasMoreLines %d \n", lineBreak, buffer[lineBreak], buffer, hasMoreLines);
+            printf("!!!!!!!!!! AFTER COPY, index: %d !! buffer:  '%s' , hasMoreLines %d \n", lineBreak, buffer, hasMoreLines);
 
             bzero(myInternalBufferLine, lineBreak);
             return lineBreak;
@@ -269,7 +271,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff)) {
 
-            printf("!!!!!RNM readResponse is %d, and myInternalBufferMessage is %s\n", indexOfLineBreak, myInternalBufferMessage);
+            printf("!!!!!RNM readResponse is %d, and myInternalBufferMessage is '%s'\n", indexOfLineBreak, myInternalBufferMessage);
 
             if (completeMessage) {
                 strncpy(buffer, myInternalBufferMessage, indexOfLineBreak+1); // change to bytesRead maybe

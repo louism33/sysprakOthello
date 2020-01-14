@@ -338,13 +338,19 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                 completeMessage = 1;
             }
 
-            if (i > 2) {
-                exit(19);
-            }
+//            if (i > 2) {
+//                exit(19);
+//            }
 
             if (completeMessage) {
-                printf("complete message received\n");
+                printf("complete message received, indexOfLineBreak %d\n", indexOfLineBreak);
+
+
+                printf("myInternalBufferMessage '%s'\n",
+                       myInternalBufferMessage);
+
                 strncpy(buffer, myInternalBufferMessage, indexOfLineBreak + 1); // change to bytesRead maybe
+                printf("buffer will be: '%s'\n", buffer);
 
 
                 return indexOfLineBreak;

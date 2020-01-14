@@ -198,8 +198,8 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 int hasLineBreak(char *str, int len, int startIndex) {
 
 
-    printf("##### hasLineBreak(), str '%s', len %d, startIndex %d\n",
-           str, len, startIndex);
+    printf("##### hasLineBreak(), len %d, startIndex %d, str '%s'\n",
+           len, startIndex, str);
 
     for (int i = startIndex; i < len; i++) {
         if (str[i] == '\n') {
@@ -224,6 +224,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
     int lineBreak = 0;
     int i = 0;
 
+    printf("\nreadNextLine, indexOfLineBreak %d\n", indexOfLineBreak);
+//    printf("\nmyInternalBufferLine is '%s'\n", myInternalBufferLine);
+
 
     if (hasMoreLines) {
         // todo modify bytesRead if incomplete line
@@ -237,8 +240,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
             printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+indexOfLineBreak+1:  '%s' \n",
                    myInternalBufferLine+indexOfLineBreak+1);
         } else {
-            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, index: %d!! internal buff+ +linbreak+indexOfLineBreak+1:  '%s' \n", lineBreak,
-                   myInternalBufferLine+lineBreak+indexOfLineBreak+1);
+            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ lineBreak+indexOfLineBreak:  '%s' \n", lineBreak, indexOfLineBreak,
+                   myInternalBufferLine+lineBreak+indexOfLineBreak);
 
             assert(lineBreak > indexOfLineBreak);
 
@@ -291,8 +294,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             bzero(myInternalBufferLine, lineBreak);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
-            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
-                   myInternalBufferLine + lineBreak + 1);
+//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
+//                   myInternalBufferLine + lineBreak + 1);
             return lineBreak;
         }
 
@@ -313,7 +316,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
     bzero(myInternalBufferMessage, myInternalBufferMessageSize);
 
-    printf("\nnew attempt to get message.\n");
+    printf("\n\nnew attempt to get message.\n");
 
     while (1) {
 

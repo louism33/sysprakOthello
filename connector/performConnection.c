@@ -230,7 +230,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
         assert(indexOfLineBreak);
 
-        if ((lineBreak = hasLineBreak(myInternalBufferLine, internalBufferSize, indexOfLineBreak)) == -1) {
+        if ((lineBreak = hasLineBreak(myInternalBufferLine+indexOfLineBreak+1, internalBufferSize, 0)) == -1) {
             printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+indexOfLineBreak+1:  '%s' \n",
                    myInternalBufferLine+indexOfLineBreak+1);
         } else {
@@ -270,7 +270,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
             bytesRead += readResponse;
 
             if (bytesRead > lineBreak + 1) {
-                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine %s ",
+                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine '%s'",
                        bytesRead,
                        lineBreak, myInternalBufferLine);
                 hasMoreLines = 1;
@@ -280,7 +280,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             strncpy(buffer, myInternalBufferLine, lineBreak + 1); // change to bytesRead maybe
 
-            printf("!!!!!!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
+//            printf("!!!!!!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
                    lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
@@ -431,7 +431,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
             if (strlen(buff) <= 0) {
-                exit(20);
+                endstate = 1;
+                break;
             }
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {

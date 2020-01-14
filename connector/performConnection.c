@@ -310,8 +310,6 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
     printf("\n\n");
 
-    int i = 0;
-
     while (1) {
 
         i++;

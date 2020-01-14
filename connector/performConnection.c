@@ -217,21 +217,14 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
     int lineBreak = 0;
     int i = 0;
 
+    //internal not really needed tbh
+
     printf("size of buffer is %d\n", sizeOfBuff);
     printf("size of internalBufferSize is %d\n", internalBufferSize);
 
     while (1) {
 
-//        printf("i: %d\n", i);
-//        if (i > 0) {
-//            printf("                       in the loop again %d\n", i);
-//            if (i > 10) {
-//                exit(19);
-//            }
-//        }
-//        i++;
-
-        if (readResponse = read(socket, myInternalBuffer + bytesRead, 10)) {
+        if (readResponse = read(socket, myInternalBuffer + bytesRead, 1000)) {
 
             printf("           readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBuffer, bytesRead+readResponse, bytesRead)) == -1) {
@@ -240,6 +233,38 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
                 continue;
             }
             printf("           LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak, myInternalBuffer);
+
+            bytesRead += readResponse;
+
+            strncpy(buffer, myInternalBuffer, sizeOfBuff+1); // change to bytesRead maybe
+            bzero(myInternalBuffer, internalBufferSize);
+            return bytesRead;
+        }
+
+    }
+}
+
+int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
+
+    int readResponse;
+    int bytesRead = 0;
+    int result = 0;
+    int internalBufferSize = sizeof(myInternalBuffer);
+    int lineBreak = 0;
+    int i = 0;
+
+    while (1) {
+
+        if (readResponse = readNextLine(socket, buffer, sizeOfBuff)) {
+
+            printf("!!!!!RNM readResponse is %d, and buffer is %s \n", readResponse, buffer);
+
+
+            if ((strncmp("- ", buffer, 2)) == 0) {
+                printf("found negative message, returning \n");
+                return readResponse;
+            }
+
 
             bytesRead += readResponse;
 

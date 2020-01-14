@@ -317,7 +317,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is '%s'\n", indexOfLineBreak,
                    myInternalBufferMessage);
 
-            if (strstr(buff, "+ FIELD ")) {
+            if (strstr(myInternalBufferMessage, "+ FIELD ")) {
                 completeMessage = 0;
             }
 

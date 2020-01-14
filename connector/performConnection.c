@@ -198,8 +198,8 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 int hasLineBreak(char *str, int len, int startIndex) {
 
 
-    printf("##### hasLineBreak(), str '%s', len %d, startIndex %d\n",
-           str, len, startIndex);
+    printf("##### hasLineBreak(), str+startIndex '%s', len %d, startIndex %d\n",
+           str+startIndex, len, startIndex);
 
     for (int i = startIndex; i < len; i++) {
         if (str[i] == '\n') {
@@ -234,21 +234,21 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
             printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+indexOfLineBreak+1:  '%s' \n",
                    myInternalBufferLine+indexOfLineBreak+1);
         } else {
-            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, index: %d!! internal buff+ indexOfLineBreak+1:  '%s' \n", lineBreak,
-                   myInternalBufferLine+indexOfLineBreak+1);
+            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, index: %d!! internal buff+ +linbreak+indexOfLineBreak+1:  '%s' \n", lineBreak,
+                   myInternalBufferLine+lineBreak+indexOfLineBreak+1);
 
             assert(lineBreak > indexOfLineBreak);
 
             strncpy(buffer, myInternalBufferLine+indexOfLineBreak, lineBreak + 1);
 
-            printf("!!!!!HASMORELINES!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
-                   lineBreak, buffer, hasMoreLines, bytesRead);
-            printf("!!!!!HASMORELINES!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
+//            printf("!!!!!HASMORELINES!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
+//                   lineBreak, buffer, hasMoreLines, bytesRead);
+//            printf("!!!!!HASMORELINES!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
             bzero(myInternalBufferLine, lineBreak);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
-            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
-                   myInternalBufferLine + lineBreak + 1);
+//            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
+//                   myInternalBufferLine + lineBreak + 1);
             return lineBreak;
 
         }
@@ -312,8 +312,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
     while (1) {
 
-        i++;
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
+            i++;
 
             printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is '%s'\n", indexOfLineBreak,
                    myInternalBufferMessage);
@@ -428,6 +428,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             if (printMore) {
                 printf("------>1SERVER:\n%s", buff);
                 fflush(stdout);
+            }
+
+            if (strlen(buff) <= 0) {
+                exit(20);
             }
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {

@@ -198,8 +198,8 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 int hasLineBreak(char *str, int len, int startIndex) {
 
 
-    printf("##### hasLineBreak(), str+startIndex '%s', len %d, startIndex %d\n",
-           str+startIndex, len, startIndex);
+    printf("##### hasLineBreak(), str '%s', len %d, startIndex %d\n",
+           str, len, startIndex);
 
     for (int i = startIndex; i < len; i++) {
         if (str[i] == '\n') {
@@ -229,6 +229,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
         // todo modify bytesRead if incomplete line
 
         assert(indexOfLineBreak);
+
+        printf("     HASMORELINES myInternalBufferLine + indexOfLineBreak + 1:  '%s' \n",
+               myInternalBufferLine + indexOfLineBreak + 1);
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine+indexOfLineBreak+1, internalBufferSize, 0)) == -1) {
             printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+indexOfLineBreak+1:  '%s' \n",
@@ -270,11 +273,13 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
             bytesRead += readResponse;
 
             if (bytesRead > lineBreak + 1) {
-                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine '%s'",
-                       bytesRead,
-                       lineBreak, myInternalBufferLine);
+                printf("setting hasmorelines to 1\n");
+//                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine '%s'",
+//                       bytesRead,
+//                       lineBreak, myInternalBufferLine);
                 hasMoreLines = 1;
             } else {
+                printf("setting hasmorelines to 0\n");
                 hasMoreLines = 0;
             }
 
@@ -308,7 +313,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
     bzero(myInternalBufferMessage, myInternalBufferMessageSize);
 
-    printf("\n\n");
+    printf("\nnew attempt to get message.\n");
 
     while (1) {
 
@@ -329,6 +334,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             }
 
             if (completeMessage) {
+                printf("complete message received\n");
                 strncpy(buffer, myInternalBufferMessage, indexOfLineBreak + 1); // change to bytesRead maybe
 
 

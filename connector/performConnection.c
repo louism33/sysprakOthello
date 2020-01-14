@@ -246,9 +246,11 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff) {
 //            strncpy(buffer, myInternalBufferLine, sizeOfBuff+1); // change to bytesRead maybe
             strncpy(buffer, myInternalBufferLine, lineBreak+1); // change to bytesRead maybe
 
-            printf("!!!!!!!!!! AFTER COPY, index: %d !! buffer:  '%s' , hasMoreLines %d \n", lineBreak, buffer, hasMoreLines);
+            printf("!!!!!!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n", lineBreak, buffer, hasMoreLines, bytesRead);
+            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine %s \n", myInternalBufferLine);
 
             bzero(myInternalBufferLine, lineBreak);
+            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine %s \n", myInternalBufferLine);
             return lineBreak;
         }
 

@@ -308,7 +308,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
-            bzero(myInternalBufferLine, lineBreak);
+            bzero(myInternalBufferLine, lineBreak+1);
             printf("!!!!!!!!!! AFTER zero, myInternalBufferLine+lineBreak '%s'\n", myInternalBufferLine+lineBreak);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);

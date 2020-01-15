@@ -204,7 +204,7 @@ int hasLineBreak(char *str, int len, int startIndex) {
     for (int i = startIndex; i < len; i++) {
         if (str[i] == '\n') {
             if (i == 0) {
-                printf("i is 0, this is probably an error: string is %s\n", str);
+                printf("i is 0, this is probably an error: string is '%s'\n", str);
                 exit(12);
             }
             return i;
@@ -261,7 +261,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!HASMORELINES!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
-            bzero(myInternalBufferLine, lineBreak);
+            bzero(myInternalBufferLine, lineBreak+1);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
 //            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
@@ -309,7 +309,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
             bzero(myInternalBufferLine, lineBreak);
-//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
+            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
             return lineBreak;

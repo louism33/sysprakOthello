@@ -42,7 +42,7 @@ int printMore = 1;
 enum Phase {
     PROLOG = 0,
     SPIELVERLAUF = 1,
-    SPIELZUG = 2
+    SPIELZUG = 2,
     GAMEOVER = 3
 };
 

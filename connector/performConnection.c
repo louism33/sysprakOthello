@@ -650,20 +650,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 phase = GAMEOVER;
             } else if (strstr(buff, "+ FIELD ") && phase == GAMEOVER) {
                 endstate += dealWithGameOverCommand(buff);
-
-//                if (kill(thinker, SIGUSR2) == -1) {
-//                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-//                    exit(1);
-//                } else {
-//                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
-//                }
-
-//                endstate = 0;
-//                break;
             }
 
-
-            if ((strncmp("+ QUIT ", buff, 7)) == 0) {
+            if ((strncmp("+ QUIT", buff, 6)) == 0) {
                 assert(phase == GAMEOVER);
                 if (kill(thinker, SIGUSR2) == -1) {
                     fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");

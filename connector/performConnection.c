@@ -339,7 +339,17 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 //            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
 //                   myInternalBufferMessage);
 
-            if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
+            if (strstr(myInternalBufferMessage, "+ YOU")) {
+
+                if (strstr(myInternalBufferMessage, "+ ENDPLAYERS")) {
+//                    printf("message IS complete I think, found '+ QUIT'\n");
+                    completeMessage = 1;
+                } else {
+//                    printf("message is NOT complete I think, found '+ GAMEOVER'\n");
+//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
+                    completeMessage = 0;
+                }
+            } else if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
 
                 if (strstr(myInternalBufferMessage, "+ QUIT")) {
 //                    printf("message IS complete I think, found '+ QUIT'\n");

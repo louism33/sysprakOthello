@@ -242,8 +242,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
 //        assert(indexOfLineBreak);
 
-        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s'\n",
-               myInternalBufferLine + startOfMessageInLineBuffer);
+//        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s'\n",
+//               myInternalBufferLine + startOfMessageInLineBuffer);
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine + startOfMessageInLineBuffer, internalBufferSize, 0)) ==
             -1) {
@@ -287,13 +287,13 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
         if (readResponse = read(socket, myInternalBufferLine + bytesRead, 1000)) {
 
-            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
+//            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBufferLine, bytesRead + readResponse, bytesRead)) == -1) {
-                printf("!!!!!!!!!! NO line break found!! internal buff:  '%s' \n", myInternalBufferLine);
+//                printf("!!!!!!!!!! NO line break found!! internal buff:  '%s' \n", myInternalBufferLine);
                 bytesRead += readResponse;
                 continue;
             }
-            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! \n", lineBreak);
+//            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! \n", lineBreak);
 //            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak,
 //                   myInternalBufferLine);
 
@@ -302,14 +302,14 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
             int hack = 0;
 
             if (bytesRead > lineBreak + 1) {
-                printf("setting hasmorelines to 1\n");
+//                printf("setting hasmorelines to 1\n");
 //                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine '%s'",
 //                       bytesRead,
 //                       lineBreak, myInternalBufferLine);
                 hasMoreLines = 1;
                 indexStartNextLine += lineBreak;
             } else {
-                printf("setting hasmorelines to 0\n");
+//                printf("setting hasmorelines to 0\n");
                 hasMoreLines = 0;
                 indexStartNextLine = 0;
                 hack = internalBufferSize;
@@ -344,7 +344,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
     bzero(myInternalBufferMessage, myInternalBufferMessageSize);
 
-    printf("\n\nnew attempt to get message.\n");
+//    printf("\n\nnew attempt to get message.\n");
 
     while (1) {
 
@@ -356,20 +356,20 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             if (strstr(myInternalBufferMessage, "+ FIELD ")) {
 
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
-                    printf("message IS complete I think, found '+ ENDFIELD'\n");
+//                    printf("message IS complete I think, found '+ ENDFIELD'\n");
                     completeMessage = 1;
                 } else {
-                    printf("message is NOT complete I think, found '+ FIELD'\n");
-                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
+//                    printf("message is NOT complete I think, found '+ FIELD'\n");
+//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
                     completeMessage = 0;
                 }
             } else {
-                printf("message IS complete I think, myInternalBufferMessage is \n'%s'\n", myInternalBufferMessage);
+//                printf("message IS complete I think, myInternalBufferMessage is \n'%s'\n", myInternalBufferMessage);
                 completeMessage = 1;
             }
 
             if (completeMessage) {
-                printf("complete message received, strlen(myInternalBufferMessage) %lu\n", strlen(myInternalBufferMessage));
+//                printf("complete message received, strlen(myInternalBufferMessage) %lu\n", strlen(myInternalBufferMessage));
 
 
 //                printf("myInternalBufferMessage '%s'\n",

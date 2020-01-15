@@ -198,8 +198,8 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
 int hasLineBreak(char *str, int len, int startIndex) {
 
 
-    printf("##### hasLineBreak(), len %d, startIndex %d, str '%s'\n",
-           len, startIndex, str);
+//    printf("##### hasLineBreak(), len %d, startIndex %d, str '%s'\n",
+//           len, startIndex, str);
 
     for (int i = startIndex; i < len; i++) {
         if (str[i] == '\n') {
@@ -252,7 +252,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
                    myInternalBufferLine + startOfMessageInLineBuffer);
 
             printf("!!!!!HASMORELINES!!!!! theoretically: internal buff+ startOfMessageInLineBuffer+lineBreak:  \n'%s' \n",
-                   myInternalBufferLine + lineBreak + startOfMessageInLineBuffer);
+                   myInternalBufferLine + lineBreak + startOfMessageInLineBuffer+1);
 
             assert(lineBreak > indexOfLineBreak);
 
@@ -346,8 +346,16 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                    myInternalBufferMessage);
 
             if (strstr(myInternalBufferMessage, "+ FIELD ")) {
-                completeMessage = 0;
+
+                if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
+                    printf("message IS complete I think, found '+ ENDFIELD'\n");
+                    completeMessage = 1;
+                }else {
+                    printf("message is NOT complete I think, found '+ FIELD'\n");
+                    completeMessage = 0;
+                }
             } else {
+                printf("message IS complete I think\n");
                 completeMessage = 1;
             }
 
@@ -456,7 +464,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
 //        if ((readResponse = readNextLine(sockfd, buff, sizeof(buff)))) {
 
-            printf("WE HAVE READ SOMETHING#######################\n");
+            printf("WE HAVE READ SOMETHING####################### \n");
 
             // todo dont print the stuff for server, make everything pretty
             if (printMore) {

@@ -659,12 +659,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             if (strstr(buff, "+ FIELD ")) {
                 writeToServer(sockfd, thinking);
 
-                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff)))); // remove? replace with the central one?
-
-                if (printMore) {
-                    printf("------>3Server:\n%s", okthinkbuff);
-                    fflush(stdout);
-                }
+//                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff)))); // remove? replace with the central one?
+//
+//                if (printMore) {
+//                    printf("------>3Server:\n%s", okthinkbuff);
+//                    fflush(stdout);
+//                }
 
                 phase = SPIELZUG;
 

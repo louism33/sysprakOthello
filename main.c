@@ -133,6 +133,8 @@ int main(int argc, char *argv[]) {
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
+    //todo allow passing - xxx for movetime as param
+
     fflush(stdout);
     createPipe(pd);
     switch (thinker = fork()) {

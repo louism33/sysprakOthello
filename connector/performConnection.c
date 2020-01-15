@@ -299,6 +299,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             bytesRead += readResponse;
 
+            int hack = 0;
+
             if (bytesRead > lineBreak + 1) {
                 printf("setting hasmorelines to 1\n");
 //                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine '%s'",
@@ -310,6 +312,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
                 printf("setting hasmorelines to 0\n");
                 hasMoreLines = 0;
                 indexStartNextLine = 0;
+                hack = internalBufferSize;
             }
 
             strncpy(buffer, myInternalBufferLine, lineBreak + 1); // change to bytesRead maybe
@@ -318,7 +321,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
-            bzero(myInternalBufferLine, lineBreak + 1);
+            bzero(myInternalBufferLine, lineBreak + 1+hack);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine+lineBreak '%s'\n", myInternalBufferLine + lineBreak);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);

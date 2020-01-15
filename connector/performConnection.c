@@ -342,6 +342,14 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
             if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
                 completeMessage = 1;
+            } else if (strstr(myInternalBufferMessage, "+ PLAYER0WON")) {
+                if (strstr(myInternalBufferMessage, "+ PLAYER1WON")) {
+                    completeMessage = 1;
+                } else {
+                    completeMessage = 0;
+                }
+            } else if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
+                completeMessage = 1;
             } else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
 //                    printf("message IS complete I think, found '+ ENDFIELD'\n");
@@ -608,52 +616,36 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 phase = SPIELVERLAUF;
             }
 
-//            if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
-//                phase = PROLOG;
-//                if (strlen(buff) > 20) {
-//                    printf("### received gameover and full string, parsing then exiting\n");
-//                    endstate += dealWithGameOverCommand(buff);
-//                } else {
-//                    printf("### received only gameover, waiting for final board\n");
-//
-//                    while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
-//                           strlen(buff) < 1);
-//                    printf("### final full string:\n%s", buff);
-//                    fflush(stdout);
-//                    printf("### parsing then exiting\n");
-//                    endstate += dealWithGameOverCommand(buff);
-//                }
-//
-//                if (kill(thinker, SIGUSR2) == -1) {
-//                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-//                    exit(1);
-//                } else {
-//                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
-//                }
-//
-//                endstate = 0;
-//                break;
-//            }
-
-
-
             if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
                 phase = GAMEOVER;
-            } else if (strstr(buff, "+ FIELD ") && phase == GAMEOVER) {
-                endstate += dealWithGameOverCommand(buff);
             }
 
-            if ((strncmp("+ QUIT", buff, 6)) == 0) {
-                assert(phase == GAMEOVER);
-                if (kill(thinker, SIGUSR2) == -1) {
-                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-                    exit(1);
-                } else {
-                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
+            if (phase == GAMEOVER) {
+                if (strstr(buff, "+ FIELD ")) {
+                    int parse = parseBoardMessage(connectorBoard, mTB, buff);
+                    if (parse) {
+                        fprintf(stderr, "### Problem parsing game over board message\n");
+                    }
+
+                    printf("### here is the final board of the game:\n");
+                    printBoardLouis(connectorBoard);
                 }
-                endstate = 0;
-                break;
+
+                if (strstr(buff, "+ PLAYER0WON")) {
+                    endstate += dealWithGameOverCommand(buff);
+                }
+
+                if ((strncmp("+ QUIT", buff, 6)) == 0) {
+                    if (kill(thinker, SIGUSR2) == -1) {
+                        fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
+                        exit(1);
+                    } else {
+                        printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
+                    }
+                    break;
+                }
             }
+
 
             if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
                 if (printMore) {

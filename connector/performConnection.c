@@ -205,6 +205,7 @@ int hasLineBreak(char *str, int len, int startIndex) {
         if (str[i] == '\n') {
             if (i == 0) {
                 printf("i is 0, this is probably an error: string is %s\n", str);
+                exit(12);
             }
             return i;
         }

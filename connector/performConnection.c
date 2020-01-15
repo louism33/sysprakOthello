@@ -242,8 +242,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
 //        assert(indexOfLineBreak);
 
-        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s'\n",
-               myInternalBufferLine + startOfMessageInLineBuffer);
+//        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s'\n",
+//               myInternalBufferLine + startOfMessageInLineBuffer);
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine + startOfMessageInLineBuffer, internalBufferSize, 0)) ==
             -1) {
@@ -336,7 +336,6 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
     int result = 0;
     int myInternalBufferMessageSize = sizeof(myInternalBufferMessage);
     int lineBreak = 0;
-    int i = 0;
 
     int completeMessage = 1;
 
@@ -347,7 +346,6 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
     while (1) {
 
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
-            i++;
 
             printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
                    myInternalBufferMessage);
@@ -363,23 +361,19 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                     completeMessage = 0;
                 }
             } else {
-                printf("message IS complete I think, myInternalBufferMessage is '%s'\n", myInternalBufferMessage);
+                printf("message IS complete I think, myInternalBufferMessage is \n'%s'\n", myInternalBufferMessage);
                 completeMessage = 1;
             }
 
-//            if (i > 2) {
-//                exit(19);
-//            }
-
             if (completeMessage) {
-                printf("complete message received, indexOfLineBreak %d\n", indexOfLineBreak);
+                printf("complete message received, strlen(myInternalBufferMessage) %d\n", strlen(myInternalBufferMessage));
 
 
-                printf("myInternalBufferMessage '%s'\n",
-                       myInternalBufferMessage);
+//                printf("myInternalBufferMessage '%s'\n",
+//                       myInternalBufferMessage);
 
                 strncpy(buffer, myInternalBufferMessage, strlen(myInternalBufferMessage));
-                printf("buffer will be: '%s'\n", buffer);
+//                printf("buffer will be: '%s'\n", buffer);
 
 
                 return strlen(myInternalBufferMessage);

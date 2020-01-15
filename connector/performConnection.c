@@ -269,7 +269,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
 
-            indexStartNextLine += lineBreak;
+            indexStartNextLine += lineBreak+1;
 
             return lineBreak;
 

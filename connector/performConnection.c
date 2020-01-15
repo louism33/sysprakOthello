@@ -352,10 +352,10 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             } else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
 
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
-//                    printf("message IS complete I think, found '+ ENDFIELD'\n");
+                    printf("message IS complete I think, found '+ ENDFIELD'\n");
                     completeMessage = 1;
                 } else {
-//                    printf("message is NOT complete I think, found '+ FIELD'\n");
+                    printf("message is NOT complete I think, found '+ FIELD'\n");
 //                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
                     completeMessage = 0;
                 }

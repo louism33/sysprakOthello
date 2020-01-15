@@ -339,17 +339,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 //            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
 //                   myInternalBufferMessage);
 
-            if (strstr(myInternalBufferMessage, "+ YOU")) {
-
-                if (strstr(myInternalBufferMessage, "+ ENDPLAYERS")) {
-//                    printf("message IS complete I think, found '+ QUIT'\n");
-                    completeMessage = 1;
-                } else {
-//                    printf("message is NOT complete I think, found '+ GAMEOVER'\n");
-//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
-                    completeMessage = 0;
-                }
-            } else if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
+             if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
 
                 if (strstr(myInternalBufferMessage, "+ QUIT")) {
 //                    printf("message IS complete I think, found '+ QUIT'\n");
@@ -616,10 +606,16 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 mitspieleranzahl[1] = '\0';
                 info->MitspielerAnzahl = atoi(mitspieleranzahl);
                 printf("### Saving Total number of players: '%d'\n", info->MitspielerAnzahl);
+//                phase = SPIELVERLAUF;
+            }
+
+            if (strncmp("+ ENDPLAYERS", buff, 12) == 0) {
+                assert(phase == PROLOG);
+                printf("### end of prolog phase\n");
                 phase = SPIELVERLAUF;
             }
 
-            if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
+            if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
                 phase = PROLOG;
                 if (strlen(buff) > 20) {
                     printf("### received gameover and full string, parsing then exiting\n");

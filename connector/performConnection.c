@@ -43,6 +43,7 @@ enum Phase {
     PROLOG = 0,
     SPIELVERLAUF = 1,
     SPIELZUG = 2
+    GAMEOVER = 3
 };
 
 int writeToServer(int sockfd, char message[]) {
@@ -270,7 +271,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
     }
 
     while (1) {
- // +startOfMessageInLineBuffer ?? or modify bytesread
+        // +startOfMessageInLineBuffer ?? or modify bytesread
         if (readResponse = read(socket, myInternalBufferLine + bytesRead, 1000)) {
 
 //            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
@@ -339,16 +340,16 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
                    myInternalBufferMessage);
 
-             if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
+            if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
 
-                if (strstr(myInternalBufferMessage, "+ QUIT")) {
-                    printf("message IS complete I think, found '+ QUIT'\n");
-                    completeMessage = 1;
-                } else {
-                    printf("message is NOT complete I think, found '+ GAMEOVER'\n");
-                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
+//                if (strstr(myInternalBufferMessage, "+ QUIT")) {
+//                    printf("message IS complete I think, found '+ QUIT'\n");
+//                    completeMessage = 1;
+//                } else {
+//                    printf("message is NOT complete I think, found '+ GAMEOVER'\n");
+//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
                     completeMessage = 0;
-                }
+//                }
             } else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
 
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
@@ -365,7 +366,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             }
 
             if (completeMessage) {
-                printf("complete message received, strlen(myInternalBufferMessage) %lu\n", strlen(myInternalBufferMessage));
+                printf("complete message received, strlen(myInternalBufferMessage) %lu\n",
+                       strlen(myInternalBufferMessage));
 
 
 //                printf("myInternalBufferMessage '%s'\n",
@@ -615,33 +617,63 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 phase = SPIELVERLAUF;
             }
 
+//            if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
+//                phase = PROLOG;
+//                if (strlen(buff) > 20) {
+//                    printf("### received gameover and full string, parsing then exiting\n");
+//                    endstate += dealWithGameOverCommand(buff);
+//                } else {
+//                    printf("### received only gameover, waiting for final board\n");
+//
+//                    while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
+//                           strlen(buff) < 1);
+//                    printf("### final full string:\n%s", buff);
+//                    fflush(stdout);
+//                    printf("### parsing then exiting\n");
+//                    endstate += dealWithGameOverCommand(buff);
+//                }
+//
+//                if (kill(thinker, SIGUSR2) == -1) {
+//                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
+//                    exit(1);
+//                } else {
+//                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
+//                }
+//
+//                endstate = 0;
+//                break;
+//            }
+
+
+
             if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
-                phase = PROLOG;
-                if (strlen(buff) > 20) {
-                    printf("### received gameover and full string, parsing then exiting\n");
-                    endstate += dealWithGameOverCommand(buff);
-                } else {
-                    printf("### received only gameover, waiting for final board\n");
+                phase = GAMEOVER;
+            } else if (strstr(buff, "+ FIELD ") && phase == GAMEOVER) {
+                endstate += dealWithGameOverCommand(buff);
 
-                    while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
-                           strlen(buff) < 1);
-                    printf("### final full string:\n%s", buff);
-                    fflush(stdout);
-                    printf("### parsing then exiting\n");
-                    endstate += dealWithGameOverCommand(buff);
-                }
+//                if (kill(thinker, SIGUSR2) == -1) {
+//                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
+//                    exit(1);
+//                } else {
+//                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
+//                }
 
+//                endstate = 0;
+//                break;
+            }
+
+
+            if ((strncmp("+ QUIT ", buff, 7)) == 0) {
+                assert(phase == GAMEOVER);
                 if (kill(thinker, SIGUSR2) == -1) {
                     fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
                     exit(1);
                 } else {
                     printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
                 }
-
                 endstate = 0;
                 break;
             }
-
 
             if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
                 if (printMore) {
@@ -656,7 +688,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // step six, read board information and time to move from server.
             // todo, replace all magic numbers
             // todo, read name of opponent
-            if (strstr(buff, "+ FIELD ")) {
+            if (strstr(buff, "+ FIELD ") && phase != GAMEOVER) {
                 writeToServer(sockfd, thinking);
 
 //                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff)))); // remove? replace with the central one?

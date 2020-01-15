@@ -378,11 +378,11 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                 printf("myInternalBufferMessage '%s'\n",
                        myInternalBufferMessage);
 
-                strncpy(buffer, myInternalBufferMessage, indexOfLineBreak + 1); // change to bytesRead maybe
+                strncpy(buffer, myInternalBufferMessage, strlen(myInternalBufferMessage));
                 printf("buffer will be: '%s'\n", buffer);
 
 
-                return indexOfLineBreak;
+                return strlen(myInternalBufferMessage);
             }
 
         }

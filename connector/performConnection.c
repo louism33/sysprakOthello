@@ -229,6 +229,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
     int lineBreak = 0;
     int i = 0;
 
+    indexOfLineBreak = 0;
+
+
     printf("\nreadNextLine, indexOfLineBreak %d, indexStartNextLine %d\n", indexOfLineBreak, indexStartNextLine);
 //    printf("\nmyInternalBufferLine is '%s'\n", myInternalBufferLine);
 
@@ -237,9 +240,9 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
     if (hasMoreLines) {
         // todo modify bytesRead if incomplete line
 
-        assert(indexOfLineBreak);
+//        assert(indexOfLineBreak);
 
-        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s' \n",
+        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s'\n",
                myInternalBufferLine + startOfMessageInLineBuffer);
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine + startOfMessageInLineBuffer, internalBufferSize, 0)) ==

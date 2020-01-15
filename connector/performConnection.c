@@ -259,7 +259,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             assert(lineBreak > indexOfLineBreak);
 
-            strncpy(buffer, myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1);
+            strncpy(buffer+strlen(buffer), myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1);
 
 //            printf("!!!!!HASMORELINES!!!!! AFTER COPY, buffer '%s'\n", buffer);
 

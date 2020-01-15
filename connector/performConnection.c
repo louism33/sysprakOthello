@@ -464,7 +464,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
 //        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
 
-            printf("WE HAVE READ SOMETHING####################### \n");
+            printf("WE HAVE READ SOMETHING#######################:\n");
 
             // todo dont print the stuff for server, make everything pretty
             if (printMore) {

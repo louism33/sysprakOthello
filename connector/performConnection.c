@@ -342,20 +342,20 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
              if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
 
                 if (strstr(myInternalBufferMessage, "+ QUIT")) {
-//                    printf("message IS complete I think, found '+ QUIT'\n");
+                    printf("message IS complete I think, found '+ QUIT'\n");
                     completeMessage = 1;
                 } else {
-//                    printf("message is NOT complete I think, found '+ GAMEOVER'\n");
-//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
+                    printf("message is NOT complete I think, found '+ GAMEOVER'\n");
+                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
                     completeMessage = 0;
                 }
             } else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
 
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
-                    printf("message IS complete I think, found '+ ENDFIELD'\n");
+//                    printf("message IS complete I think, found '+ ENDFIELD'\n");
                     completeMessage = 1;
                 } else {
-                    printf("message is NOT complete I think, found '+ FIELD'\n");
+//                    printf("message is NOT complete I think, found '+ FIELD'\n");
 //                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
                     completeMessage = 0;
                 }
@@ -365,7 +365,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             }
 
             if (completeMessage) {
-//                printf("complete message received, strlen(myInternalBufferMessage) %lu\n", strlen(myInternalBufferMessage));
+                printf("complete message received, strlen(myInternalBufferMessage) %lu\n", strlen(myInternalBufferMessage));
 
 
 //                printf("myInternalBufferMessage '%s'\n",

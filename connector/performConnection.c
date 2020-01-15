@@ -656,11 +656,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // step six, read board information and time to move from server.
             // todo, replace all magic numbers
             // todo, read name of opponent
-            if (strstr(buff, "+ FIELD ")) {//strlen(buff) > 75) {
+            if (strstr(buff, "+ FIELD ")) {
                 writeToServer(sockfd, thinking);
 
-                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
-                       strlen(buff) < 1); // strlen buff????
+                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff)))); // remove? replace with the central one?
 
                 if (printMore) {
                     printf("------>3Server:\n%s", okthinkbuff);

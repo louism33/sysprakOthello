@@ -239,7 +239,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
         assert(indexOfLineBreak);
 
-        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  '%s' \n",
+        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s' \n",
                myInternalBufferLine + startOfMessageInLineBuffer);
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine + startOfMessageInLineBuffer, internalBufferSize, 0)) ==
@@ -346,7 +346,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
             i++;
 
-            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is '%s'\n", indexOfLineBreak,
+            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
                    myInternalBufferMessage);
 
             if (strstr(myInternalBufferMessage, "+ FIELD ")) {
@@ -356,6 +356,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                     completeMessage = 1;
                 } else {
                     printf("message is NOT complete I think, found '+ FIELD'\n");
+                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
                     completeMessage = 0;
                 }
             } else {

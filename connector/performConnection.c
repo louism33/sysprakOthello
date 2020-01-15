@@ -244,12 +244,12 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
         if ((lineBreak = hasLineBreak(myInternalBufferLine + startOfMessageInLineBuffer, internalBufferSize, 0)) ==
             -1) {
-            printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+startOfMessageInLineBuffer:  '%s' \n",
-                   myInternalBufferLine + startOfMessageInLineBuffer);
+//            printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+startOfMessageInLineBuffer:  '%s' \n",
+//                   myInternalBufferLine + startOfMessageInLineBuffer);
         } else {
-            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ startOfMessageInLineBuffer:  \n'%s' \n",
-                   lineBreak, indexOfLineBreak,
-                   myInternalBufferLine + startOfMessageInLineBuffer);
+//            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ startOfMessageInLineBuffer:  \n'%s' \n",
+//                   lineBreak, indexOfLineBreak,
+//                   myInternalBufferLine + startOfMessageInLineBuffer);
 
 //            printf("!!!!!HASMORELINES!!!!! theoretically: internal buff+ startOfMessageInLineBuffer+lineBreak:  \n'%s' \n",
 //                   myInternalBufferLine + lineBreak + startOfMessageInLineBuffer+1);
@@ -258,18 +258,22 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             strncpy(buffer, myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1);
 
-            printf("!!!!!HASMORELINES!!!!! AFTER COPY, buffer '%s'\n", buffer);
+//            printf("!!!!!HASMORELINES!!!!! AFTER COPY, buffer '%s'\n", buffer);
 
 //            printf("!!!!!HASMORELINES!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!HASMORELINES!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
-            bzero(myInternalBufferLine, lineBreak + 1);
-            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine +lineBreak + 1 '%s'\n", myInternalBufferLine+lineBreak + 1);
+            bzero(myInternalBufferLine , lineBreak + 1);
+//            bzero(myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1);
+//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine +startOfMessageInLineBuffer+lineBreak + 1 '%s'\n",
+//                   myInternalBufferLine + startOfMessageInLineBuffer + lineBreak + 1);
+
+
 //            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
 
-            indexStartNextLine += lineBreak+1;
+            indexStartNextLine += lineBreak + 1;
 
             return lineBreak;
 
@@ -350,7 +354,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
                     printf("message IS complete I think, found '+ ENDFIELD'\n");
                     completeMessage = 1;
-                }else {
+                } else {
                     printf("message is NOT complete I think, found '+ FIELD'\n");
                     completeMessage = 0;
                 }

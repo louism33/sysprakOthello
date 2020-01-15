@@ -461,8 +461,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //    printf("size of buff is %ld\n", sizeof(buff));
 
     for (; endstate == 0;) {
-        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-//        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
+//        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
 
             printf("WE HAVE READ SOMETHING#######################:\n");
 

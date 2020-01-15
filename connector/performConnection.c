@@ -265,7 +265,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //            printf("!!!!!HASMORELINES!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
             bzero(myInternalBufferLine, lineBreak + 1);
-//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
+            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine +lineBreak + 1 '%s'\n", myInternalBufferLine+lineBreak + 1);
 //            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
 
@@ -355,7 +355,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
                     completeMessage = 0;
                 }
             } else {
-                printf("message IS complete I think\n");
+                printf("message IS complete I think, myInternalBufferMessage is '%s'\n", myInternalBufferMessage);
                 completeMessage = 1;
             }
 

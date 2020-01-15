@@ -203,6 +203,9 @@ int hasLineBreak(char *str, int len, int startIndex) {
 
     for (int i = startIndex; i < len; i++) {
         if (str[i] == '\n') {
+            if (i == 0) {
+                printf("i is 0, this is probably an error: string is %s\n", str);
+            }
             return i;
         }
     }

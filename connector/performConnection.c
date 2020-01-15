@@ -24,7 +24,11 @@
 #include "../main.h"
 #include "../shm/shm.h"
 
-#define MAX 240 // todo make better
+#define CONNECTION_BUFF_SIZE 1024
+#define MESSAGE_BUFF_SIZE 1024
+#define LINE_BUFF_SIZE 2048
+
+
 #define MAJOR_VERSION_INDEX_LOCAL 8
 #define MAJOR_VERSION_INDEX_SERVER 18
 #define MOVE_STRING_LENGTH 10
@@ -213,8 +217,8 @@ int hasLineBreak(char *str, int len, int startIndex) {
     return -1;
 }
 
-char myInternalBufferLine[1024];
-char myInternalBufferMessage[1024];
+char myInternalBufferLine[LINE_BUFF_SIZE];
+char myInternalBufferMessage[MESSAGE_BUFF_SIZE];
 int hasMoreLines = 0;
 int indexStartNextLine = 0;
 
@@ -232,7 +236,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
     indexOfLineBreak = 0;
 
 
-    printf("\nreadNextLine, indexOfLineBreak %d, indexStartNextLine %d\n", indexOfLineBreak, indexStartNextLine);
+//    printf("\nreadNextLine, indexOfLineBreak %d, indexStartNextLine %d\n", indexOfLineBreak, indexStartNextLine);
 //    printf("\nmyInternalBufferLine is '%s'\n", myInternalBufferLine);
 
     int startOfMessageInLineBuffer = indexOfLineBreak + 1 + indexStartNextLine;
@@ -250,31 +254,12 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //            printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+startOfMessageInLineBuffer:  '%s' \n",
 //                   myInternalBufferLine + startOfMessageInLineBuffer);
         } else {
-//            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ startOfMessageInLineBuffer:  \n'%s' \n",
-//                   lineBreak, indexOfLineBreak,
-//                   myInternalBufferLine + startOfMessageInLineBuffer);
-
-//            printf("!!!!!HASMORELINES!!!!! theoretically: internal buff+ startOfMessageInLineBuffer+lineBreak:  \n'%s' \n",
-//                   myInternalBufferLine + lineBreak + startOfMessageInLineBuffer+1);
 
             assert(lineBreak > indexOfLineBreak);
 
             strncpy(buffer+strlen(buffer), myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1); // strcat?
 
-//            printf("!!!!!HASMORELINES!!!!! AFTER COPY, buffer '%s'\n", buffer);
-
-//            printf("!!!!!HASMORELINES!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
-//                   lineBreak, buffer, hasMoreLines, bytesRead);
-//            printf("!!!!!HASMORELINES!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
-
             bzero(myInternalBufferLine , lineBreak + 1);
-//            bzero(myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1);
-//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine +startOfMessageInLineBuffer+lineBreak + 1 '%s'\n",
-//                   myInternalBufferLine + startOfMessageInLineBuffer + lineBreak + 1);
-
-
-//            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
-//                   myInternalBufferLine + lineBreak + 1);
 
             indexStartNextLine += lineBreak + 1;
 
@@ -397,8 +382,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     strcpy(info->gameKindName, gameKindName);
 
-    char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-//    char buff[24] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char buff[CONNECTION_BUFF_SIZE] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char okthinkbuff[SMALL_STRING] = {" "};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};

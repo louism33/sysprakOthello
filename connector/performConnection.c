@@ -257,9 +257,10 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
             assert(lineBreak > indexOfLineBreak);
 
-            strncpy(buffer+strlen(buffer), myInternalBufferLine + startOfMessageInLineBuffer, lineBreak + 1); // strcat?
+            strncpy(buffer + strlen(buffer), myInternalBufferLine + startOfMessageInLineBuffer,
+                    lineBreak + 1); // strcat?
 
-            bzero(myInternalBufferLine , lineBreak + 1);
+            bzero(myInternalBufferLine, lineBreak + 1);
 
             indexStartNextLine += lineBreak + 1;
 
@@ -306,7 +307,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
-            bzero(myInternalBufferLine, lineBreak + 1+hack);
+            bzero(myInternalBufferLine, lineBreak + 1 + hack);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine+lineBreak '%s'\n", myInternalBufferLine + lineBreak);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
@@ -338,7 +339,17 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 //            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
 //                   myInternalBufferMessage);
 
-            if (strstr(myInternalBufferMessage, "+ FIELD ")) {
+            if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
+
+                if (strstr(myInternalBufferMessage, "+ QUIT")) {
+//                    printf("message IS complete I think, found '+ QUIT'\n");
+                    completeMessage = 1;
+                } else {
+//                    printf("message is NOT complete I think, found '+ GAMEOVER'\n");
+//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
+                    completeMessage = 0;
+                }
+            } else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
 
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
 //                    printf("message IS complete I think, found '+ ENDFIELD'\n");
@@ -382,7 +393,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     strcpy(info->gameKindName, gameKindName);
 
-    char buff[CONNECTION_BUFF_SIZE] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char buff[CONNECTION_BUFF_SIZE] = {
+            " "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char okthinkbuff[SMALL_STRING] = {" "};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};

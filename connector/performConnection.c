@@ -247,9 +247,12 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
             printf("!!!!!HASMORELINES!!!!! NO line break found but hasMoreLines is true. We should now read from server again! internal buff+startOfMessageInLineBuffer:  '%s' \n",
                    myInternalBufferLine + startOfMessageInLineBuffer);
         } else {
-            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ startOfMessageInLineBuffer:  '%s' \n",
+            printf("!!!!!HASMORELINES!!!!! LINE BREAK FOUND IN HASMORELINES, lineBreak: %d, old indexOfLineBreak %d !! internal buff+ startOfMessageInLineBuffer:  \n'%s' \n",
                    lineBreak, indexOfLineBreak,
                    myInternalBufferLine + startOfMessageInLineBuffer);
+
+            printf("!!!!!HASMORELINES!!!!! theoretically: internal buff+ startOfMessageInLineBuffer+lineBreak:  \n'%s' \n",
+                   myInternalBufferLine + lineBreak + startOfMessageInLineBuffer);
 
             assert(lineBreak > indexOfLineBreak);
 
@@ -261,7 +264,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!HASMORELINES!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
-            bzero(myInternalBufferLine, lineBreak+1);
+            bzero(myInternalBufferLine, lineBreak + 1);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine '%s'\n", myInternalBufferLine);
 //            printf("!!!!!HASMORELINES!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
@@ -308,8 +311,8 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 //                   lineBreak, buffer, hasMoreLines, bytesRead);
 //            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
 
-            bzero(myInternalBufferLine, lineBreak+1);
-            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine+lineBreak '%s'\n", myInternalBufferLine+lineBreak);
+            bzero(myInternalBufferLine, lineBreak + 1);
+            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine+lineBreak '%s'\n", myInternalBufferLine + lineBreak);
 //            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
 //                   myInternalBufferLine + lineBreak + 1);
             return lineBreak;

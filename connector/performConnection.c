@@ -112,10 +112,10 @@ int getMoveTime(char *buff) {
 
 int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     char *moveString;
-    char move[20] = {" "};
+    char move[SMALL_STRING] = {" "};
     int moveTimeNummer;
     char *fieldString;
-    char field[20] = {" "};
+    char field[SMALL_STRING] = {" "};
     int fieldSizeNummer = 0;
     moveString = strstr(buff, "+ MOVE");
     fieldString = strstr(buff, "FIELD");
@@ -270,7 +270,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
     }
 
     while (1) {
-
+ // +startOfMessageInLineBuffer ?? or modify bytesread
         if (readResponse = read(socket, myInternalBufferLine + bytesRead, 1000)) {
 
 //            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
@@ -336,8 +336,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
 
-//            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
-//                   myInternalBufferMessage);
+            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
+                   myInternalBufferMessage);
 
              if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
 

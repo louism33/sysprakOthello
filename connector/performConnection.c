@@ -716,7 +716,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                info->moveTime = mvTime - 700;
 //                info->moveTime = mvTime - 1000; // todo, commando param?? and why so high
 //                info->moveTime = 100;
-                info->moveTime = 2000;
+                info->moveTime = 4000;
                 // mvTime - 500 seems best
 
 

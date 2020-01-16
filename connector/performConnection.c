@@ -764,7 +764,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         read_buffer[bytes_read] = '\0';
                         printf("Read '%s'\n", read_buffer);
 
-                        if (i > 5) {
+                        rrrrunning++;
+                        if (rrrrunning > 5) {
                             exit(19);
                         }
 

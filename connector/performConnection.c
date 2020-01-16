@@ -750,7 +750,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
 
-    int rrrrunning = 1;
+                int rrrrunning = 1;
                 while(rrrrunning)
                 {
                     printf("\nPolling for input...\n");
@@ -764,8 +764,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         read_buffer[bytes_read] = '\0';
                         printf("Read '%s'\n", read_buffer);
 
-                        if(!strncmp(read_buffer, "stop\n", 5))
-                            rrrrunning = 0;
+                        if (i > 5) {
+                            exit(19);
+                        }
+
+                        if(!strncmp(read_buffer, "stop\n", 5)){
+                            rrrrunning = 0;}
                     }
                 }
 

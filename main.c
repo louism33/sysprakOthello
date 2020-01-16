@@ -141,10 +141,10 @@ int main(int argc, char *argv[]) {
     info->players = shmInfo + sizeof(infoVonServer);
     int failState = 0;
 
-    int running = 1, event_count, i;
-    size_t bytes_read;
-    char read_buffer[READ_SIZE + 1];
-    struct epoll_event event, events[MAX_EVENTS];
+//    int running = 1, event_count, i;
+//    size_t bytes_read;
+//    char read_buffer[READ_SIZE + 1];
+//    struct epoll_event event, events[MAX_EVENTS];
 
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);

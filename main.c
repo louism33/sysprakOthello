@@ -172,9 +172,10 @@ int main(int argc, char *argv[]) {
     event.events = EPOLLIN;
     event.data.fd = 0;
 
-    if(epoll_ctl(epoll_fd, EPOLL_CTL_ADD, 0, &event))
+    int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, 0, &event);
+    if(xxx)
     {
-        fprintf(stderr, "### Failed to add file descriptor to epoll\n");
+        fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
         close(epoll_fd);
         return 1;
     }

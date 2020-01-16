@@ -333,8 +333,8 @@ int simulation(Node *node, BOARD_STRUCT_AND_MOVES *boardStructAndMoves) {
         return node->gameOverWinner;
     }
 
-    int pass = 0;
-    for (int i = 0; i < 100; i++) {
+    int pass = 0, totalMoves = 2 * getBoardSize();
+    for (int i = 0; i < totalMoves; i++) {
         if (pass == 2) {
             break;
         }
@@ -510,20 +510,27 @@ void *getBestMoveMultiThreadedHelper(void *vargp) {
 int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
     srand(time(NULL)); // todo move out ?
 
+    moveTime = moveTime - 50;
+    if (moveTime < 0) {
+        moveTime = 0;
+    }
+
+    printf("### Alex will spend %d millis searching for move\n", moveTime);
+
     BOARD board = boardStruct->board;
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
     int totalMoves = getLegalMovesAllPositions(board, switchPlayer(boardStruct->sideToMove), moves);
 
     if (totalMoves == 0) {
         free(moves);
-//        printf("Alex returns pass move\n");
+        printf("### Alex returns pass move\n");
         return getPassMove();
     }
 
-    if (totalMoves == 1) {
+    if (totalMoves == 1 || moveTime <= 0) {
         MOVE move = moves[0];
         free(moves);
-//        printf("Alex returns only move: %d\n", move);
+        printf("### Alex returns only move: %d\n", move);
         return move;
     }
     free(moves);

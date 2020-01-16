@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
 
     printf("### Setting up epoll\n");
 
-    int epoll_fd = epoll_create1(0);
+    epoll_fd = epoll_create1(0);
 
     if(epoll_fd == -1)
     {

@@ -26,6 +26,6 @@ size_t bytes_read;
 char read_buffer[READ_SIZE + 1];
 struct epoll_event event, events[MAX_EVENTS];
 
-
+int epoll_fd;
 
 #endif //SYSPTAKOTHELLO_MAIN

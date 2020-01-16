@@ -771,7 +771,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
 
-//                bzero(buffer, BIG_STRING);
+                bzero(buffer, BIG_STRING);
 //                // Leseseite auslesen (blockiert hier bis Daten vorhanden)
 //                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
 //                    perror("read");

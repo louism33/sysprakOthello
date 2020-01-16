@@ -133,11 +133,20 @@ int main(int argc, char *argv[]) {
     info->players = shmInfo + sizeof(infoVonServer);
     int failState = 0;
 
+    struct epoll_event event;
+
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
     //todo allow passing - xxx for movetime as param
 
+
+
+
+
+
+    fflush(stdout);
+    createPipe(pd);
 
     printf("### setting up epoll\n");
 
@@ -150,9 +159,18 @@ int main(int argc, char *argv[]) {
     }
 
 
+    event.events = EPOLLIN;
+    event.data.fd = pd[0];
 
-    fflush(stdout);
-    createPipe(pd);
+    if(epoll_ctl(epoll_fd, EPOLL_CTL_ADD, 0, &event))
+    {
+        fprintf(stderr, "Failed to add file descriptor to epoll\n");
+        close(epoll_fd);
+        return 1;
+    }
+
+
+
     switch (thinker = fork()) {
         /*Fehlerfall*/
         case -1:

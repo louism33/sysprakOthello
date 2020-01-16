@@ -154,17 +154,17 @@ int main(int argc, char *argv[]) {
 
     if(epoll_fd == -1)
     {
-        fprintf(stderr, "Failed to create epoll file descriptor\n");
+        fprintf(stderr, "### Failed to create epoll file descriptor\n");
         return 1;
     }
 
 
     event.events = EPOLLIN;
-    event.data.fd = pd[0];
+    event.data.fd = 0;
 
     if(epoll_ctl(epoll_fd, EPOLL_CTL_ADD, 0, &event))
     {
-        fprintf(stderr, "Failed to add file descriptor to epoll\n");
+        fprintf(stderr, "### Failed to add file descriptor to epoll\n");
         close(epoll_fd);
         return 1;
     }

@@ -137,7 +137,6 @@ int main(int argc, char *argv[]) {
     size_t bytes_read;
     char read_buffer[READ_SIZE + 1];
     struct epoll_event event, events[MAX_EVENTS];
-    int epoll_fd = epoll_create1(0);
 
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);

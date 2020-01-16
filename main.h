@@ -1,7 +1,8 @@
 #ifndef SYSPRAKOTHELLO_MAIN
 #define SYSPTAKOTHELLO_MAIN
 
-
+#define MAX_EVENTS 5
+#define READ_SIZE 10
 
 
 #include <sys/types.h>

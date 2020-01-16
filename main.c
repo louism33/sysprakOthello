@@ -34,6 +34,9 @@
 #include "pipe/pipe.h"
 #include <stdbool.h>
 
+#include <stdio.h>     // for fprintf()
+#include <unistd.h>    // for close()
+#include <sys/epoll.h> // for epoll_create1()
 
 bool denken = false;
 bool everythingIsFinished = false;
@@ -135,6 +138,19 @@ int main(int argc, char *argv[]) {
 
     //todo allow passing - xxx for movetime as param
 
+
+    printf("### setting up epoll\n");
+
+    int epoll_fd = epoll_create1(0);
+
+    if(epoll_fd == -1)
+    {
+        fprintf(stderr, "Failed to create epoll file descriptor\n");
+        return 1;
+    }
+
+
+
     fflush(stdout);
     createPipe(pd);
     switch (thinker = fork()) {
@@ -224,6 +240,15 @@ int main(int argc, char *argv[]) {
     }
 
     freeStatics();
+
+    printf("### Cleaning up epoll\n");
+    if(close(epoll_fd))
+    {
+        fprintf(stderr, "Failed to close epoll file descriptor\n");
+        return 1;
+    }
+
+
 
     return failState;
 }

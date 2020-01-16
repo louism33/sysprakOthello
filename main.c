@@ -15,6 +15,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <string.h>
+#include <errno.h>
 #include "connector/connector.h"
 #include "thinker/thinker.h"
 #include "connector/config.h"
@@ -175,6 +176,9 @@ int main(int argc, char *argv[]) {
     int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, 0, &event);
     if(xxx)
     {
+        printf("### connection with the server failed... error is %s\n",
+               strerror(errno));
+
         fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
         close(epoll_fd);
         return 1;

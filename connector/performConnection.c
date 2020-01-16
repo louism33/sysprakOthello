@@ -748,7 +748,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 close(pd[1]);    // Schreibseite schließen
 
 
-
+                bzero(buffer, BIG_STRING);
 
                 int rrrrunning = 1;
                 while(rrrrunning)
@@ -760,7 +760,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     for(i = 0; i < event_count; i++)
                     {
                         printf("i: %d, Reading file descriptor '%d' -- ", i, events[i].data.fd);
-                        bytes_read = read(events[i].data.fd, read_buffer, READ_SIZE);
+                        bytes_read = read(events[i].data.fd, buffer, 1000);
                         printf("%zd bytes read.\n", bytes_read);
                         read_buffer[bytes_read] = '\0';
                         printf("Read '%s'\n", read_buffer);
@@ -778,7 +778,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
 
-                bzero(buffer, BIG_STRING);
+//                bzero(buffer, BIG_STRING);
 //                // Leseseite auslesen (blockiert hier bis Daten vorhanden)
 //                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
 //                    perror("read");

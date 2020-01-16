@@ -38,6 +38,12 @@
 #include <unistd.h>    // for close()
 #include <sys/epoll.h> // for epoll_create1()
 
+
+#include <string.h>
+#define MAX_EVENTS 5
+#define READ_SIZE 10
+
+
 bool denken = false;
 bool everythingIsFinished = false;
 infoVonServer *info;
@@ -46,6 +52,7 @@ BOARD_STRUCT *infoBoard;
 BOARD_STRUCT *connectorBoard;
 void *shmInfo;
 int move;
+
 
 void mysighandler(int sig) {
     if (sig == SIGUSR1) {
@@ -136,7 +143,6 @@ int main(int argc, char *argv[]) {
     int running = 1, event_count, i;
     size_t bytes_read;
     char read_buffer[READ_SIZE + 1];
-    int MAX_EVENTS = 2;
     struct epoll_event event, events[MAX_EVENTS];
 
     connectorBoard = malloc(sizeof(BOARD_STRUCT));

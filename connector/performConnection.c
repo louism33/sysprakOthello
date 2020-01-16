@@ -24,6 +24,17 @@
 #include "../main.h"
 #include "../shm/shm.h"
 
+#include <stdio.h>     // for fprintf()
+#include <unistd.h>    // for close()
+#include <sys/epoll.h> // for epoll_create1()
+
+
+#include <string.h>
+#define MAX_EVENTS 5
+#define READ_SIZE 10
+
+
+
 #define CONNECTION_BUFF_SIZE 1024
 #define MESSAGE_BUFF_SIZE 1024
 #define LINE_BUFF_SIZE 2048
@@ -715,8 +726,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 // mvTime - 500 seems best
 //                info->moveTime = mvTime - 700;
 //                info->moveTime = mvTime - 1000; // todo, commando param?? and why so high
-                info->moveTime = 100;
-//                info->moveTime = 4000;
+//                info->moveTime = 100;
+                info->moveTime = 6000;
                 // mvTime - 500 seems best
 
 
@@ -736,15 +747,39 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 close(pd[1]);    // Schreibseite schließen
 
-                bzero(buffer, BIG_STRING);
-                // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
-                    perror("read");
-                    endstate = 1;
-                    break;
-                } else {
-                    printf("### Read from Pipe: %s\n", buffer);
+
+
+
+
+                while(running)
+                {
+                    printf("\nPolling for input...\n");
+                    event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, 30000);
+                    printf("%d ready events\n", event_count);
+                    for(i = 0; i < event_count; i++)
+                    {
+                        printf("Reading file descriptor '%d' -- ", events[i].data.fd);
+                        bytes_read = read(events[i].data.fd, read_buffer, READ_SIZE);
+                        printf("%zd bytes read.\n", bytes_read);
+                        read_buffer[bytes_read] = '\0';
+                        printf("Read '%s'\n", read_buffer);
+
+                        if(!strncmp(read_buffer, "stop\n", 5))
+                            running = 0;
+                    }
                 }
+
+
+
+//                bzero(buffer, BIG_STRING);
+//                // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+//                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
+//                    perror("read");
+//                    endstate = 1;
+//                    break;
+//                } else {
+//                    printf("### Read from Pipe: %s\n", buffer);
+//                }
                 moveReceivedFromThinker[0] = buffer[0];
                 moveReceivedFromThinker[1] = buffer[1];
                 moveReceivedFromThinker[2] = '\0';

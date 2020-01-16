@@ -185,113 +185,113 @@ int main(int argc, char *argv[]) {
     }
 
 
-    while(running)
-    {
-        printf("\nPolling for input...\n");
-        event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, 30000);
-        printf("%d ready events\n", event_count);
-        for(i = 0; i < event_count; i++)
-        {
-            printf("Reading file descriptor '%d' -- ", events[i].data.fd);
-            bytes_read = read(events[i].data.fd, read_buffer, READ_SIZE);
-            printf("%zd bytes read.\n", bytes_read);
-            read_buffer[bytes_read] = '\0';
-            printf("Read '%s'\n", read_buffer);
+//    while(running)
+//    {
+//        printf("\nPolling for input...\n");
+//        event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, 30000);
+//        printf("%d ready events\n", event_count);
+//        for(i = 0; i < event_count; i++)
+//        {
+//            printf("Reading file descriptor '%d' -- ", events[i].data.fd);
+//            bytes_read = read(events[i].data.fd, read_buffer, READ_SIZE);
+//            printf("%zd bytes read.\n", bytes_read);
+//            read_buffer[bytes_read] = '\0';
+//            printf("Read '%s'\n", read_buffer);
+//
+//            if(!strncmp(read_buffer, "stop\n", 5))
+//                running = 0;
+//        }
+//    }
 
-            if(!strncmp(read_buffer, "stop\n", 5))
-                running = 0;
-        }
+
+
+    switch (thinker = fork()) {
+        /*Fehlerfall*/
+        case -1:
+            fprintf(stderr, "### Fehler bei fork()\n");
+            break;
+
+            /*Kindsprozess = Connector*/
+        case 0:
+            connector = getpid();
+            thinker = getppid();
+            printf("### Starting Connector Master Method\n");
+            int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
+            printf("### Connector Master Method has ended, with value: %d\n", c);
+            failState += c;
+            break;
+
+            /*Elternprozess = Thinker*/
+        default:
+            thinker = getpid();
+
+            int thinkerReturnValue = 0;
+
+            printf("### Setting up Signals\n");
+            fflush(stdout);
+
+            if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
+                fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
+                failState = 1;
+                break;
+            }
+
+            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
+                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
+                failState = 1;
+                break;
+            }
+
+            printf("### Starting Thinker Main Loop\n");
+            fflush(stdout);
+
+            close(pd[0]); // Leseseite schließen
+            while (1) {
+                //Schreibseite muss warten bis Leseseite fertig ist.
+                while (!denken && !everythingIsFinished) {
+                }
+
+                if (everythingIsFinished) {
+                    printf("### Received SIGUSR2, time to quit everything!\n");
+                    fflush(stdout);
+                    break;
+                }
+
+                denken = false;
+
+//                printf("### Currently thinking...\n");
+//                fflush(stdout);
+//                printBoardLouis(info->infoBoard);
+
+                move = doThink(info->infoBoard, info->moveTime);
+                getPrettyMove(move, antwort);
+
+                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
+                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
+                    perror("### write");
+                    failState = 1;
+                    break;
+                }
+                bzero(antwort, sizeof(antwort));
+
+
+            }
+            fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
+            fflush(stdout);
+
+            break;
     }
 
+    printf("### Cleaning up SHM\n");
+    fflush(stdout);
+    deleteShm();
+    free(antwort);
+    freeBoardStruct(connectorBoard);
+    if (failState) {
+        fprintf(stderr, "### Error happened somewhere\n");
+    }
 
-
-//    switch (thinker = fork()) {
-//        /*Fehlerfall*/
-//        case -1:
-//            fprintf(stderr, "### Fehler bei fork()\n");
-//            break;
-//
-//            /*Kindsprozess = Connector*/
-//        case 0:
-//            connector = getpid();
-//            thinker = getppid();
-//            printf("### Starting Connector Master Method\n");
-//            int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
-//            printf("### Connector Master Method has ended, with value: %d\n", c);
-//            failState += c;
-//            break;
-//
-//            /*Elternprozess = Thinker*/
-//        default:
-//            thinker = getpid();
-//
-//            int thinkerReturnValue = 0;
-//
-//            printf("### Setting up Signals\n");
-//            fflush(stdout);
-//
-//            if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
-//                fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
-//                failState = 1;
-//                break;
-//            }
-//
-//            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
-//                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
-//                failState = 1;
-//                break;
-//            }
-//
-//            printf("### Starting Thinker Main Loop\n");
-//            fflush(stdout);
-//
-//            close(pd[0]); // Leseseite schließen
-//            while (1) {
-//                //Schreibseite muss warten bis Leseseite fertig ist.
-//                while (!denken && !everythingIsFinished) {
-//                }
-//
-//                if (everythingIsFinished) {
-//                    printf("### Received SIGUSR2, time to quit everything!\n");
-//                    fflush(stdout);
-//                    break;
-//                }
-//
-//                denken = false;
-//
-////                printf("### Currently thinking...\n");
-////                fflush(stdout);
-////                printBoardLouis(info->infoBoard);
-//
-//                move = doThink(info->infoBoard, info->moveTime);
-//                getPrettyMove(move, antwort);
-//
-//                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
-//                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
-//                    perror("### write");
-//                    failState = 1;
-//                    break;
-//                }
-//                bzero(antwort, sizeof(antwort));
-//
-//
-//            }
-//            fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
-//            fflush(stdout);
-//
-//            break;
-//    }
-//
-//    printf("### Cleaning up SHM\n");
-//    fflush(stdout);
-//    deleteShm();
-//    free(antwort);
-//    freeBoardStruct(connectorBoard);
-//    if (failState) {
-//        fprintf(stderr, "### Error happened somewhere\n");
-//    }
-//
-//    freeStatics();
+    freeStatics();
 
     printf("### Cleaning up epoll\n");
     if(close(epoll_fd))

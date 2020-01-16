@@ -750,8 +750,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
 
-
-                while(running)
+    int rrrrunning = 1;
+                while(rrrrunning)
                 {
                     printf("\nPolling for input...\n");
                     event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, 30000);
@@ -765,7 +765,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         printf("Read '%s'\n", read_buffer);
 
                         if(!strncmp(read_buffer, "stop\n", 5))
-                            running = 0;
+                            rrrrunning = 0;
                     }
                 }
 

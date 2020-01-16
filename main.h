@@ -4,6 +4,12 @@
 #define MAX_EVENTS 5
 #define READ_SIZE 10
 
+#include <stdio.h>     // for fprintf()
+#include <unistd.h>    // for close()
+#include <sys/epoll.h> // for epoll_create1()
+
+
+#include <string.h>
 
 #include <sys/types.h>
 /*File-deskriptor für die Pipe*/

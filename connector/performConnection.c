@@ -272,7 +272,7 @@ int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak)
 
     while (1) {
         // +startOfMessageInLineBuffer ?? or modify bytesread
-        if (readResponse = read(socket, myInternalBufferLine + bytesRead, 1000)) {
+        if (readResponse = read(socket, myInternalBufferLine + bytesRead, 10)) {
 
 //            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
             if ((lineBreak = hasLineBreak(myInternalBufferLine, bytesRead + readResponse, bytesRead)) == -1) {
@@ -394,8 +394,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     strcpy(info->gameKindName, gameKindName);
 
-    char buff[CONNECTION_BUFF_SIZE] = {
-            " "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char buff[CONNECTION_BUFF_SIZE] = {" "};
     char okthinkbuff[SMALL_STRING] = {" "};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};

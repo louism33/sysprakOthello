@@ -127,7 +127,7 @@ int connectToGameServer(char *gameID, char *player,
             event.events = EPOLLIN;
             event.data.fd = 0;
 
-            int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pd[0], &event);
+            int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sock, &event);
             if(xxx)
             {
                 printf("### epoll failed ... error is %s\n",

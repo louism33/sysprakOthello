@@ -620,6 +620,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if (phase == GAMEOVER) {
                 printf("### In gameover phase, processing final information\n");
+                printf("### In gameover phase, processing final information '%s'\n", buff);
                 if (strstr(buff, "+ FIELD ")) {
                     int parse = parseBoardMessage(connectorBoard, mTB, buff);
                     if (parse) {

@@ -807,7 +807,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("server talking done\n");
 
-            } else if (i == 0) {
+            } else if (i == pd[0]) {
                 printf("let's do KI talking \n");
 
                 close(pd[1]);    // Schreibseite schließen

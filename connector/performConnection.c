@@ -371,8 +371,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
             }
 
             if (completeMessage) {
-                printf("complete message received, strlen(myInternalBufferMessage) %lu\n",
-                       strlen(myInternalBufferMessage));
+//                printf("complete message received, strlen(myInternalBufferMessage) %lu\n",
+//                       strlen(myInternalBufferMessage));
 
 
 //                printf("myInternalBufferMessage '%s'\n",
@@ -835,7 +835,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 break;
             }
 
-
+com
         }
     }
 

@@ -791,8 +791,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                             break;
                         }
                         bzero(buff, sizeof(buff));
-                    }
-                    else {
+                    } else {
                         printf("DID NOT READ ANYTHING???");
                         exit(12);
                     }

@@ -475,8 +475,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         rrrrunning++;
         for (i = 0; i < event_count; i++) {
             printf("i: %d, Reading file descriptor '%d' -- , event_count is %d\n", i, events[i].data.fd, event_count);
-            printf("pd[0] %d\n", pd[0]);
-            printf("sock %d\n", sockfd);
+//            printf("pd[0] %d\n", pd[0]);
+//            printf("sock %d\n", sockfd);
 
             if (events[i].data.fd == sockfd) {
                 printf("let's do server talking\n");
@@ -791,6 +791,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                             break;
                         }
                         bzero(buff, sizeof(buff));
+                    }
+                    else {
+                        printf("DID NOT READ ANYTHING???");
+                        exit(12);
                     }
                 }
 

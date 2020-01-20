@@ -170,20 +170,20 @@ int main(int argc, char *argv[]) {
     }
 
 
-    event.events = EPOLLIN | EPOLLET;
-    event.data.fd = pd[0];
-
-    int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pd[0], &event);
-    if(xxx)
-    {
-        printf("### epoll failed ... error is %s\n",
-               strerror(errno));
-
-        fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
-        failState = 1;
-    } else {
-        printf("### correctly registered epoll to pipe\n");
-    }
+//    event.events = EPOLLIN | EPOLLET;
+//    event.data.fd = pd[0];
+//
+//    int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pd[0], &event);
+//    if(xxx)
+//    {
+//        printf("### epoll failed ... error is %s\n",
+//               strerror(errno));
+//
+//        fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
+//        failState = 1;
+//    } else {
+//        printf("### correctly registered epoll to pipe\n");
+//    }
 
 
 //    while(running)
@@ -214,6 +214,25 @@ int main(int argc, char *argv[]) {
 
                 /*Kindsprozess = Connector*/
             case 0:
+
+
+                event.events = EPOLLIN;
+                event.data.fd = pd[0];
+
+                int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pd[0], &event);
+                if(xxx)
+                {
+                    printf("### epoll failed ... error is %s\n",
+                           strerror(errno));
+
+                    fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
+                    failState = 1;
+                } else {
+                    printf("### correctly registered epoll to pipe\n");
+                }
+
+
+
                 connector = getpid();
                 thinker = getppid();
                 printf("### Starting Connector Master Method\n");

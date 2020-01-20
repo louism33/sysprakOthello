@@ -338,13 +338,14 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
     bzero(myInternalBufferMessage, myInternalBufferMessageSize);
 
     printf("\n\nnew attempt to get message.\n");
-
+    fflush(stdout);
     while (1) {
 
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
 
             printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
                    myInternalBufferMessage);
+            fflush(stdout);
 
             if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
                 completeMessage = 1;

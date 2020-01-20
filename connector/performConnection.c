@@ -735,16 +735,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         // mvTime - 500 seems best
 //                info->moveTime = mvTime - 700;
 //                info->moveTime = mvTime - 1000; // todo, commando param?? and why so high
-                        info->moveTime = 500;
+//                        info->moveTime = 500;
+                        info->moveTime = 0;
 //                        info->moveTime = 6000;
-                        // mvTime - 500 seems best
-
-
-
-//                printf("### Move time for us: %d\n", info->moveTime);
-
-//                printf("### Finished parse board\n");
-//                printf("### Sending relevant info to thinker\n");
 
                         if (kill(thinker, SIGUSR1) == -1) {
                             printf("Fehler beim senden des Signals\n");
@@ -753,36 +746,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                             printf("### Sending SIGUSR1 to thinker to start thinking\n");
                         }
 
-
-//                            close(pd[1]);    // Schreibseite schließen
-//
-//
-//                            bzero(buffer, BIG_STRING);
-//
-//                            printf("AFTER\n\n");
-//
-//                            bzero(buffer, BIG_STRING);
-//                            // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-//                            if (read(pd[0], buffer, sizeof(buffer)) == -1) {
-//                                perror("read");
-//                                endstate = 1;
-//                                break;
-//                            } else {
-//                                printf("### Read from Pipe: %s\n", buffer);
-//                            }
-//                            moveReceivedFromThinker[0] = buffer[0];
-//                            moveReceivedFromThinker[1] = buffer[1];
-//                            moveReceivedFromThinker[2] = '\0';
-//
-//                            strcpy(playCommandToSend, "PLAY ");
-//                            strcat(playCommandToSend, moveReceivedFromThinker);
-//                            strcat(playCommandToSend, "\n");
-//                            printf("### Play Command To Send: %s", playCommandToSend);
-//                            fflush(stdout);
-//
-//                            writeToServer(sockfd, playCommandToSend);
-//                            phase = SPIELVERLAUF;
-//                            playCommandToSend[0] = '\0';
                     }
 
                     if ((strncmp("+ WAIT", buff, 6)) == 0) {

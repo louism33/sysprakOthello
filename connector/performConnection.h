@@ -14,8 +14,9 @@ typedef struct FieldSizeColumnAndRow {
     int col;
 } FieldSizeColumnAndRow;
 
-int haveConversationWithServer(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
-                           infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo);
+int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
+                               BOARD_STRUCT *connectorBoard,
+                               infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int timeOffset);
 
 char *convertMove(int move, char *antwort);
 

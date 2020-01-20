@@ -394,7 +394,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                BOARD_STRUCT *connectorBoard,
-                               infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo) {
+                               infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int timeOffset) {
 
     strcpy(info->gameID, gameID);
     info->connector = connector;
@@ -408,6 +408,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char playerNumber[SMALL_STRING] = {0};
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
+
+    int myTimeOffset = timeOffset <= 0 ? 1000 : timeOffset;
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];
@@ -551,7 +553,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                        strlen(buff) < 1);
                 if (printMore) {
-                    printf("------>2Server:\n%s", buff);
+                    printf("------>Server:\n%s", buff);
                     fflush(stdout);
                 }
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));

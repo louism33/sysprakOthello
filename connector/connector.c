@@ -35,7 +35,7 @@ int getDefaultPort() {
 int connectToGameServer(char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
                         infoVonServer *info, pid_t thinker,
-                        pid_t connector, void *shmInfo) {
+                        pid_t connector, void *shmInfo, int timeOffset) {
 
     configurationStruct *configStruct = malloc(sizeof(configurationStruct));
     configStruct->hostname = calloc(' ', 200);
@@ -115,7 +115,7 @@ int connectToGameServer(char *gameID, char *player,
             printf("### Success, connected to the server.\n");
             connectionStatus = haveConversationWithServer(sock, gameID, player,
                                                       configStruct->gamekindname, connectorBoard, info, thinker,
-                                                      connector, shmInfo);
+                                                      connector, shmInfo, timeOffset);
             break;
         }
 
@@ -137,12 +137,16 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
     char *gameID;
     char *player = 0;
     int ret;
+    int timeOffset = -1;
     int mockGame = 0;
     int usingCustomConfigFile = 0;
     char *configPath;
 
-    while ((ret = getopt(argc, argv, "g:p:m:C:")) != -1) {
+    while ((ret = getopt(argc, argv, "t:g:p:m:C:")) != -1) {
         switch (ret) {
+            case 't':
+                timeOffset = atoi(optarg);
+                break;
             case 'g':
                 gameID = optarg;
                 break;
@@ -173,7 +177,7 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
         return 1;
     }
     int con = connectToGameServer(gameID, player, usingCustomConfigFile,
-                                  configPath, connectorBoard, info, thinker, connector, shmInfo);
+                                  configPath, connectorBoard, info, thinker, connector, shmInfo, timeOffset);
 
     if (con) {
         fprintf(stderr, "### Error during connection with server\n");

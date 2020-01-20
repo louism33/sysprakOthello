@@ -146,6 +146,7 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
         switch (ret) {
             case 't':
                 timeOffset = atoi(optarg);
+                printf("### Read time from user as %d \n", timeOffset);
                 break;
             case 'g':
                 gameID = optarg;

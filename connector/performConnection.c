@@ -337,7 +337,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
     bzero(myInternalBufferMessage, myInternalBufferMessageSize);
 
-//    printf("\n\nnew attempt to get message.\n");
+    printf("\n\nnew attempt to get message.\n");
 
     while (1) {
 

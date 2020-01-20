@@ -112,7 +112,36 @@ int connectToGameServer(char *gameID, char *player,
             printf("### connection with the server failed... error is %s\n",
                    strerror(errno));
         } else {
+
+
             printf("### Success, connected to the server.\n");
+
+
+            printf("### Connecting socket fd to epoll instance\n");
+
+
+
+
+            event.events = EPOLLIN;
+            event.data.fd = 0;
+
+            int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pd[0], &event);
+            if(xxx)
+            {
+                printf("### epoll failed ... error is %s\n",
+                       strerror(errno));
+
+                fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
+                failState = 1;
+            } else {
+                printf("### correctly registered epoll to pipe\n");
+            }
+
+
+
+
+
+
             connectionStatus = haveConversationWithServer(sock, gameID, player,
                                                       configStruct->gamekindname, connectorBoard, info, thinker,
                                                       connector, shmInfo);

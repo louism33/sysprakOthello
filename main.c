@@ -176,12 +176,13 @@ int main(int argc, char *argv[]) {
     int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pd[0], &event);
     if(xxx)
     {
-        printf("### connection with the server failed... error is %s\n",
+        printf("### epoll failed ... error is %s\n",
                strerror(errno));
 
         fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
-        close(epoll_fd);
-        return 1;
+        failState = 1;
+    } else {
+        printf("### correctly registered epoll to pipe\n");
     }
 
 
@@ -204,82 +205,83 @@ int main(int argc, char *argv[]) {
 //    }
 
 
-
-    switch (thinker = fork()) {
-        /*Fehlerfall*/
-        case -1:
-            fprintf(stderr, "### Fehler bei fork()\n");
-            break;
-
-            /*Kindsprozess = Connector*/
-        case 0:
-            connector = getpid();
-            thinker = getppid();
-            printf("### Starting Connector Master Method\n");
-            int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
-            printf("### Connector Master Method has ended, with value: %d\n", c);
-            failState += c;
-            break;
-
-            /*Elternprozess = Thinker*/
-        default:
-            thinker = getpid();
-
-            int thinkerReturnValue = 0;
-
-            printf("### Setting up Signals\n");
-            fflush(stdout);
-
-            if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
-                fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
-                failState = 1;
+    if (!failState) {
+        switch (thinker = fork()) {
+            /*Fehlerfall*/
+            case -1:
+                fprintf(stderr, "### Fehler bei fork()\n");
                 break;
-            }
 
-            if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
-                fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
-                failState = 1;
+                /*Kindsprozess = Connector*/
+            case 0:
+                connector = getpid();
+                thinker = getppid();
+                printf("### Starting Connector Master Method\n");
+                int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo);
+                printf("### Connector Master Method has ended, with value: %d\n", c);
+                failState += c;
                 break;
-            }
 
-            printf("### Starting Thinker Main Loop\n");
-            fflush(stdout);
+                /*Elternprozess = Thinker*/
+            default:
+                thinker = getpid();
 
-            close(pd[0]); // Leseseite schließen
-            while (1) {
-                //Schreibseite muss warten bis Leseseite fertig ist.
-                while (!denken && !everythingIsFinished) {
-                }
+                int thinkerReturnValue = 0;
 
-                if (everythingIsFinished) {
-                    printf("### Received SIGUSR2, time to quit everything!\n");
-                    fflush(stdout);
+                printf("### Setting up Signals\n");
+                fflush(stdout);
+
+                if (signal(SIGUSR1, mysighandler) == SIG_ERR) {
+                    fprintf(stderr, "### Error setting up signal for SIGUSR1.\n");
+                    failState = 1;
                     break;
                 }
 
-                denken = false;
+                if (signal(SIGUSR2, mysighandler) == SIG_ERR) {
+                    fprintf(stderr, "### Error setting up signal for SIGUSR2.\n");
+                    failState = 1;
+                    break;
+                }
+
+                printf("### Starting Thinker Main Loop\n");
+                fflush(stdout);
+
+                close(pd[0]); // Leseseite schließen
+                while (1) {
+                    //Schreibseite muss warten bis Leseseite fertig ist.
+                    while (!denken && !everythingIsFinished) {
+                    }
+
+                    if (everythingIsFinished) {
+                        printf("### Received SIGUSR2, time to quit everything!\n");
+                        fflush(stdout);
+                        break;
+                    }
+
+                    denken = false;
 
 //                printf("### Currently thinking...\n");
 //                fflush(stdout);
 //                printBoardLouis(info->infoBoard);
 
-                move = doThink(info->infoBoard, info->moveTime);
-                getPrettyMove(move, antwort);
+                    move = doThink(info->infoBoard, info->moveTime);
+                    getPrettyMove(move, antwort);
 
-                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
-                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
-                    perror("### write");
-                    failState = 1;
-                    break;
+                    //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
+                    if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
+                        perror("### write");
+                        failState = 1;
+                        break;
+                    }
+                    bzero(antwort, sizeof(antwort));
+
+
                 }
-                bzero(antwort, sizeof(antwort));
+                fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
+                fflush(stdout);
 
-
-            }
-            fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
-            fflush(stdout);
-
-            break;
+                break;
+        }
     }
 
     printf("### Cleaning up SHM\n");

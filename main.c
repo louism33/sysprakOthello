@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    event.events = EPOLLIN;
+    event.events = EPOLLIN | EPOLLET;
     event.data.fd = pd[0];
 
     int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pd[0], &event);

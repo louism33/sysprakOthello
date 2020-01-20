@@ -470,7 +470,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int rrrrunning = 1;
     while (rrrrunning) {
         printf("\nPolling for input...\n");
-        event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, 1000);
+        event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
         printf("%d ready events\n", event_count);
 
         if (endstate != 0) {

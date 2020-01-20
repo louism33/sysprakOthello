@@ -29,9 +29,9 @@
 
 
 #include <string.h>
+
 #define MAX_EVENTS 5
 #define READ_SIZE 10
-
 
 
 #define CONNECTION_BUFF_SIZE 1024
@@ -472,14 +472,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
     int rrrrunning = 1;
-    while(rrrrunning)
-    {
+    while (rrrrunning) {
         printf("\nPolling for input...\n");
         event_count = epoll_wait(epoll_fd, events, 1, 1000);
         printf("%d ready events\n", event_count);
         rrrrunning++;
-        for(i = 0; i < event_count; i++)
-        {
+        for (i = 0; i < event_count; i++) {
             printf("i: %d, Reading file descriptor '%d' -- ", i, events[i].data.fd);
             bytes_read = read(events[i].data.fd, buffer, 1000);
             printf("%zd bytes read.\n", bytes_read);
@@ -487,8 +485,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             printf("Read '%s'\n", read_buffer);
 
 
-
-            if ( i != 0){
+            if (i == 1) {
                 printf("let's do server talking\n");
 
                 for (; endstate == 0;) {
@@ -522,7 +519,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         }
 
                         if ((strncmp("- Internal error. Sorry & Bye", buff, 29)) == 0) {
-                            fprintf(stderr, "Server screwed up (well, probably we did, but now we can blame the server)\n");
+                            fprintf(stderr,
+                                    "Server screwed up (well, probably we did, but now we can blame the server)\n");
                             endstate = 1;
                             break;
                         }
@@ -627,7 +625,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                             printf("### Saving my playerName: %s", myPlayerName);
                             fflush(stdout);
                             strcpy(info->players[atoi(playerNumber)].mitspielerName, myPlayerName);
-                            printf("### Saving my MitspielerName: %s", info->players[atoi(playerNumber)].mitspielerName);
+                            printf("### Saving my MitspielerName: %s",
+                                   info->players[atoi(playerNumber)].mitspielerName);
                             fflush(stdout);
                         }
 
@@ -804,7 +803,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("server talking done\n");
 
-            } else {
+            } else if (i == 0) {
                 printf("let's do KI talking \n");
 
                 close(pd[1]);    // Schreibseite schließen
@@ -838,6 +837,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 playCommandToSend[0] = '\0';
 
                 printf("KI talking done\n");
+            } else {
+                printf("what am I reading here???\n");
+                break;
             }
 
 

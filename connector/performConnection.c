@@ -350,15 +350,9 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
             if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
                 completeMessage = 1;
-            } else if (strstr(myInternalBufferMessage, "+ PLAYER0WON")) {
-                if (strstr(myInternalBufferMessage, "+ PLAYER1WON")) {
-                    completeMessage = 1;
-                } else {
-                    completeMessage = 0;
-                }
-            } else if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
-                completeMessage = 1;
-            } else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
+            }
+
+            else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
                 if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
 //                    printf("message IS complete I think, found '+ ENDFIELD'\n");
                     completeMessage = 1;
@@ -367,28 +361,24 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 //                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
                     completeMessage = 0;
                 }
-            } else {
+            }
+            else if (strstr(myInternalBufferMessage, "+ PLAYER0WON")) {
+                if (strstr(myInternalBufferMessage, "+ PLAYER1WON")) {
+                    completeMessage = 1;
+                } else {
+                    completeMessage = 0;
+                }
+            }
+            else {
 //                printf("message IS complete I think, myInternalBufferMessage is \n'%s'\n", myInternalBufferMessage);
                 completeMessage = 1;
             }
 
             if (completeMessage) {
-//                printf("complete message received, strlen(myInternalBufferMessage) %lu\n",
-//                       strlen(myInternalBufferMessage));
-
-
-//                printf("myInternalBufferMessage '%s'\n",
-//                       myInternalBufferMessage);
-
                 strncpy(buffer, myInternalBufferMessage, strlen(myInternalBufferMessage));
-//                printf("buffer will be: '%s'\n", buffer);
-
-
                 return strlen(myInternalBufferMessage);
             }
-
         }
-
     }
 }
 
@@ -624,10 +614,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
             if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
+                printf("### end of game phase, expecting final board info\n");
                 phase = GAMEOVER;
             }
 
             if (phase == GAMEOVER) {
+                printf("### In gameover phase, processing final information\n");
                 if (strstr(buff, "+ FIELD ")) {
                     int parse = parseBoardMessage(connectorBoard, mTB, buff);
                     if (parse) {

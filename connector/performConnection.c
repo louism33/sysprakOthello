@@ -30,10 +30,6 @@
 
 #include <string.h>
 
-#define MAX_EVENTS 5
-#define READ_SIZE 10
-
-
 #define CONNECTION_BUFF_SIZE 1024
 #define MESSAGE_BUFF_SIZE 1024
 #define LINE_BUFF_SIZE 2048
@@ -482,15 +478,15 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             printf("pd[0] %d\n", pd[0]);
 
             printf("sock %d\n", sockfd);
-            bytes_read = read(events[i].data.fd, buffer, 1000);
-            printf("%zd bytes read.\n", bytes_read);
-            read_buffer[bytes_read] = '\0';
-            printf("Read '%s'\n", read_buffer);
-
-            if (!bytes_read) {
-                printf("no bytes read\n");
-                break;
-            }
+//            bytes_read = read(events[i].data.fd, buffer, 1000);
+//            printf("%zd bytes read.\n", bytes_read);
+//            read_buffer[bytes_read] = '\0';
+//            printf("Read '%s'\n", read_buffer);
+//
+//            if (!bytes_read) {
+//                printf("no bytes read\n");
+//                break;
+//            }
 
             if (events[i].data.fd == sockfd) {
                 printf("let's do server talking\n");

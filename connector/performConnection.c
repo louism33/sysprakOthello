@@ -845,7 +845,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     }
 
 
-
+    printf("whole thing done\n");
 
 
     free(mTB);

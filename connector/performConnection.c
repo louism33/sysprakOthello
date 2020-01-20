@@ -458,7 +458,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int mvTime = 0;
 
     for (; endstate == 0;) {
-        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+//        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
 
             if (printMore) {
                 printf("------>SERVER:\n%s", buff);

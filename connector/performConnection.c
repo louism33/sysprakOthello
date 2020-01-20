@@ -398,8 +398,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
 
-//    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
-    int myTimeOffset = 5000;
+    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
+//    int myTimeOffset = 5000;
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];
@@ -620,7 +620,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if (phase == GAMEOVER) {
                 printf("### In gameover phase, processing final information\n");
-                printf("### In gameover phase, processing final information '%s'\n", buff);
                 if (strstr(buff, "+ FIELD ")) {
                     int parse = parseBoardMessage(connectorBoard, mTB, buff);
                     if (parse) {

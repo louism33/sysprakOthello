@@ -485,7 +485,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             printf("Read '%s'\n", read_buffer);
 
 
-            if (i == 1) {
+            if (events[i].data.fd == sockfd) {
                 printf("let's do server talking\n");
 
                 for (; endstate == 0;) {

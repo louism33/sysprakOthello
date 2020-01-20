@@ -766,9 +766,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         printf("Read '%s'\n", read_buffer);
 
 
-                        if (rrrrunning > 50) {
+                        if (rrrrunning > 2) {
                             printf("running hot %d\n", rrrrunning);
-                            exit(19);
+//                            exit(19);
+                            break;
                         }
 
                         if(!strncmp(read_buffer, "stop\n", 5)){
@@ -778,16 +779,17 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 }
 
 
+                printf("AFTER\n\n");
 
-//                bzero(buffer, BIG_STRING);
-//                // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-//                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
-//                    perror("read");
-//                    endstate = 1;
-//                    break;
-//                } else {
-//                    printf("### Read from Pipe: %s\n", buffer);
-//                }
+                bzero(buffer, BIG_STRING);
+                // Leseseite auslesen (blockiert hier bis Daten vorhanden)
+                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
+                    perror("read");
+                    endstate = 1;
+                    break;
+                } else {
+                    printf("### Read from Pipe: %s\n", buffer);
+                }
                 moveReceivedFromThinker[0] = buffer[0];
                 moveReceivedFromThinker[1] = buffer[1];
                 moveReceivedFromThinker[2] = '\0';

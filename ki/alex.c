@@ -516,21 +516,22 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
 
     if (totalMoves == 0) {
         free(moves);
-//        printf("Alex returns pass move\n");
+        printf("Alex returns pass move\n");
         return getPassMove();
     }
 
     moveTime = moveTime - 50;
 
+    moveTime = moveTime <= 0 ? 0 : moveTime;
+    printf("### Alex will spend %d millis searching for move\n", moveTime);
+
     if (totalMoves == 1 || moveTime <= 0) {
         MOVE move = moves[0];
         free(moves);
-//        printf("Alex returns only move: %d\n", move);
         return move;
     }
     free(moves);
 
-    printf("### Alex will spend %d millis searching for move\n", moveTime);
 
     int totalThreads = NUMBER_OF_THREADS;
     Contexts *contexts = malloc(sizeof(Contexts));

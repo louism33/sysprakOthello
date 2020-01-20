@@ -767,6 +767,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 
                         if (rrrrunning > 5) {
+                            printf("running hot\n");
                             exit(19);
                         }
 

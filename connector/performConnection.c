@@ -479,7 +479,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //            printf("sock %d\n", sockfd);
 
             if (events[i].data.fd == sockfd) {
-                printf("let's do server talking, endstate &d\n", endstate);
+                printf("let's do server talking, endstate %d\n", endstate);
 
                 for (; endstate == 0;) {
                     if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {

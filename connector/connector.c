@@ -124,7 +124,7 @@ int connectToGameServer(char *gameID, char *player,
 
 
 
-            event.events = EPOLLIN;
+            event.events = EPOLLIN ;
             event.data.fd = sock;
 
             int xxx = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sock, &event);

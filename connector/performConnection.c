@@ -486,7 +486,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if (!bytes_read) {
                 printf("no bytes read\n");
-                break;
+                continue;
             }
 
             if (events[i].data.fd == sockfd) {

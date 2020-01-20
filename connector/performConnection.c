@@ -409,7 +409,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
 
-    int myTimeOffset = timeOffset <= 0 ? 1000 : timeOffset;
+    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];
@@ -708,7 +708,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                printf("### Move time from server: %d\n", mvTime);
 
 
-                info->moveTime = mvTime - 1000;
+                info->moveTime = mvTime - myTimeOffset;
 
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");

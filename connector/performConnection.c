@@ -766,10 +766,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         printf("Read '%s'\n", read_buffer);
 
 
-                        if (rrrrunning > 500) {
-                            printf("running hot %d\n", rrrrunning);
-                            exit(19);
-                        }
+//                        if (rrrrunning > 500) {
+//                            printf("running hot %d\n", rrrrunning);
+//                            exit(19);
+//                        }
 
                         if(!strncmp(read_buffer, "stop\n", 5)){
                             rrrrunning = 0;

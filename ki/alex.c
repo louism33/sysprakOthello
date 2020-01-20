@@ -530,7 +530,7 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
     }
     free(moves);
 
-    printf("### Alex will spend %d millis searching for move\n");
+    printf("### Alex will spend %d millis searching for move\n", moveTime);
 
     int totalThreads = NUMBER_OF_THREADS;
     Contexts *contexts = malloc(sizeof(Contexts));

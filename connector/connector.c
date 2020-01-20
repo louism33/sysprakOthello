@@ -41,6 +41,8 @@ int connectToGameServer(char *gameID, char *player,
     configStruct->hostname = calloc(' ', 200);
     configStruct->gamekindname = calloc(' ', 200);
 
+    int failState = 0;
+
     struct addrinfo hints, *res, *resTemp;
     struct sockaddr_in server;
     server.sin_family = PF_INET;
@@ -133,6 +135,7 @@ int connectToGameServer(char *gameID, char *player,
 
                 fprintf(stderr, "### Failed to add file descriptor to epoll, %d\n", xxx);
                 failState = 1;
+                break;
             } else {
                 printf("### correctly registered epoll to pipe\n");
             }
@@ -158,7 +161,7 @@ int connectToGameServer(char *gameID, char *player,
     free(configStruct->hostname);
     free(configStruct);
 
-    return connectionStatus;
+    return connectionStatus + failState;
 }
 
 int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker,

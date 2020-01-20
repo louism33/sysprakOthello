@@ -347,8 +347,8 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 
         if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
 
-            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
-                   myInternalBufferMessage);
+//            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
+//                   myInternalBufferMessage);
 
             if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
                 completeMessage = 1;

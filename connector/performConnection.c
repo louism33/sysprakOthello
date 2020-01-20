@@ -705,15 +705,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                         bzero(moveTime, SMALL_STRING);
                         bzero(fieldSize, SMALL_STRING);
-//                moveTime[0] = '\0';
-//                fieldSize[0] = '\0';
                         int mvt = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
-//                printf("### Parsed message, got movetime: %d\n", mvt);
                         if (mvt != 0) {
-//                    printf("### Setting move time to : %d\n", mvt);
                             mvTime = mvt;
                         } else {
-//                    printf("### Not changing movetime, it stays at : %d\n", mvTime);
                         }
 
                         FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
@@ -740,7 +735,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         // mvTime - 500 seems best
 //                info->moveTime = mvTime - 700;
 //                info->moveTime = mvTime - 1000; // todo, commando param?? and why so high
-                info->moveTime = 100;
+                        info->moveTime = 500;
 //                        info->moveTime = 6000;
                         // mvTime - 500 seems best
 

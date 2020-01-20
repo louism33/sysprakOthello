@@ -409,7 +409,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
 
-    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
+//    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
+    int myTimeOffset = 5000;
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];

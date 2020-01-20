@@ -835,7 +835,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 break;
             }
 
-com
+
         }
     }
 

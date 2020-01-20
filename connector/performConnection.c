@@ -831,7 +831,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 printf("KI talking done\n");
             } else {
-                printf("what am I reading here???\n");
+                printf("what am I reading here???, i is %d, events[i].data.fd is %d, \n"i, events[i].data.fd);
                 rrrrunning = 0;
                 break;
             }

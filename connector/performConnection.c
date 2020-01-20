@@ -478,7 +478,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         printf("%d ready events\n", event_count);
         rrrrunning++;
         for (i = 0; i < event_count; i++) {
-            printf("i: %d, Reading file descriptor '%d' -- ", i, events[i].data.fd);
+            printf("i: %d, Reading file descriptor '%d' -- , event_count is %d", i, events[i].data.fd, event_count);
             bytes_read = read(events[i].data.fd, buffer, 1000);
             printf("%zd bytes read.\n", bytes_read);
             read_buffer[bytes_read] = '\0';

@@ -472,11 +472,19 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         printf("\nPolling for input...\n");
         event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
         printf("%d ready events\n", event_count);
-        rrrrunning++;
+
+        if (endstate != 0) {
+            printf("endstate is not 0\n");
+            rrrrunning = 0;
+            break;
+        }
+
         for (i = 0; i < event_count && !endstate; i++) {
             printf("i: %d, Reading file descriptor '%d' -- , event_count is %d\n", i, events[i].data.fd, event_count);
 //            printf("pd[0] %d\n", pd[0]);
 //            printf("sock %d\n", sockfd);
+
+
 
             if (events[i].data.fd == sockfd) {
                 printf("let's do server talking, endstate %d\n", endstate);

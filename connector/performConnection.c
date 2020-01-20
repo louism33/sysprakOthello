@@ -470,6 +470,39 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
 //    printf("size of buff is %ld\n", sizeof(buff));
 
+
+    int rrrrunning = 1;
+    while(rrrrunning)
+    {
+        printf("\nPolling for input...\n");
+        event_count = epoll_wait(epoll_fd, events, 1, 1000);
+        printf("%d ready events\n", event_count);
+        rrrrunning++;
+        for(i = 0; i < event_count; i++)
+        {
+            printf("i: %d, Reading file descriptor '%d' -- ", i, events[i].data.fd);
+            bytes_read = read(events[i].data.fd, buffer, 1000);
+            printf("%zd bytes read.\n", bytes_read);
+            read_buffer[bytes_read] = '\0';
+            printf("Read '%s'\n", read_buffer);
+
+
+            if (rrrrunning > 2) {
+                printf("running hot %d\n", rrrrunning);
+//                            exit(19);
+                rrrrunning = 0;
+                break;
+            }
+
+            if(!strncmp(read_buffer, "stop\n", 5)){
+                rrrrunning = 0;
+            }
+        }
+    }
+
+
+
+
     for (; endstate == 0;) {
 //        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
         if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
@@ -616,7 +649,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 mitspieleranzahl[1] = '\0';
                 info->MitspielerAnzahl = atoi(mitspieleranzahl);
                 printf("### Saving Total number of players: '%d'\n", info->MitspielerAnzahl);
-//                phase = SPIELVERLAUF;
             }
 
             if (strncmp("+ ENDPLAYERS", buff, 12) == 0) {
@@ -749,34 +781,34 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 bzero(buffer, BIG_STRING);
 
-                int rrrrunning = 1;
-                while(rrrrunning)
-                {
-                    printf("\nPolling for input...\n");
-                    event_count = epoll_wait(epoll_fd, events, 1, 1000);
-                    printf("%d ready events\n", event_count);
-                    rrrrunning++;
-                    for(i = 0; i < event_count; i++)
-                    {
-                        printf("i: %d, Reading file descriptor '%d' -- ", i, events[i].data.fd);
-                        bytes_read = read(events[i].data.fd, buffer, 1000);
-                        printf("%zd bytes read.\n", bytes_read);
-                        read_buffer[bytes_read] = '\0';
-                        printf("Read '%s'\n", read_buffer);
-
-
-                        if (rrrrunning > 2) {
-                            printf("running hot %d\n", rrrrunning);
-//                            exit(19);
-                            rrrrunning = 0;
-                            break;
-                        }
-
-                        if(!strncmp(read_buffer, "stop\n", 5)){
-                            rrrrunning = 0;
-                        }
-                    }
-                }
+//                int rrrrunning = 1;
+//                while(rrrrunning)
+//                {
+//                    printf("\nPolling for input...\n");
+//                    event_count = epoll_wait(epoll_fd, events, 1, 1000);
+//                    printf("%d ready events\n", event_count);
+//                    rrrrunning++;
+//                    for(i = 0; i < event_count; i++)
+//                    {
+//                        printf("i: %d, Reading file descriptor '%d' -- ", i, events[i].data.fd);
+//                        bytes_read = read(events[i].data.fd, buffer, 1000);
+//                        printf("%zd bytes read.\n", bytes_read);
+//                        read_buffer[bytes_read] = '\0';
+//                        printf("Read '%s'\n", read_buffer);
+//
+//
+//                        if (rrrrunning > 2) {
+//                            printf("running hot %d\n", rrrrunning);
+////                            exit(19);
+//                            rrrrunning = 0;
+//                            break;
+//                        }
+//
+//                        if(!strncmp(read_buffer, "stop\n", 5)){
+//                            rrrrunning = 0;
+//                        }
+//                    }
+//                }
 
 
                 printf("AFTER\n\n");
@@ -817,6 +849,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             bzero(buff, sizeof(buff));
         }
     }
+
 
     free(mTB);
     free(moveTime);

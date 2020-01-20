@@ -766,7 +766,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         printf("Read '%s'\n", read_buffer);
 
 
-                        if (rrrrunning > 5) {
+                        if (rrrrunning > 50) {
                             printf("running hot\n");
                             exit(19);
                         }

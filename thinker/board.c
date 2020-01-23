@@ -120,7 +120,6 @@ void setBoardSize(int rows, int columns) {
     int oldBoardSize = getBoardSize();
     boardSize = rows * columns;
     if (boardSize != oldBoardSize) {
-//        printf("SETTING UP ARRAYS\n");
         setupColumnArray(boardSize);
         setupRowArray(boardSize);
     }
@@ -273,7 +272,6 @@ void printBoard(BOARD board) {
     printf("  +-----------------+ \n");
     printf("    A B C D E F G H \n");
 
-    // too print pretty moves as too?
 }
 
 char *getPrettyMove(int move, char *antwort) {
@@ -361,7 +359,6 @@ int getLegalMovesOnePositionFriend(BOARD board, MOVES allMoves, int totalMovesIn
             int i = position + 2;
             int coltemp = col + 2;//getColumn(i);
 
-//            printf("aaa col %d, %d \n", col, coltemp);
             while (i >= 0 && i < getBoardSize()) {
                 if (coltemp == getColumnSize()) {
                     break;
@@ -825,17 +822,7 @@ int getLegalMovesAllPositionsEmpty(BOARD board, SIDE_TO_MOVE targetPlayer, MOVES
 }
 
 int getLegalMovesAllPositions(BOARD board, SIDE_TO_MOVE targetPlayer, MOVES allMoves) {
-    // this was an attempt to optimise both ways of searching
-//    int ret = 0;
-//    if (getBoardSize() == 64 && board[18] != 0 && board[45] != 0) {
-//        ret = getLegalMovesAllPositionsFriend(board, targetPlayer, allMoves);
-//    } else {
-//        ret = getLegalMovesAllPositionsEmpty(board, targetPlayer, allMoves); // this one is much faster
-//    }
-//    return ret;
-
-//        return getLegalMovesAllPositionsFriend(board, targetPlayer, allMoves);
-    return getLegalMovesAllPositionsEmpty(board, targetPlayer, allMoves); // this one is much faster
+    return getLegalMovesAllPositionsEmpty(board, targetPlayer, allMoves);
 }
 
 

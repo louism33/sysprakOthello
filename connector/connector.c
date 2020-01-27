@@ -11,12 +11,14 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <sys/types.h>
+#include <sys/epoll.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/epoll.h>
 
 #include <unistd.h>
 
@@ -35,7 +37,7 @@ int getDefaultPort() {
 int connectToGameServer(char *gameID, char *player,
                         int usingCustomConfigFile, char *filePath, BOARD_STRUCT *connectorBoard,
                         infoVonServer *info, pid_t thinker,
-                        pid_t connector, void *shmInfo, int timeOffset) {
+                        pid_t connector, void *shmInfo, int epoll_fd, struct epoll_event *events ) {
 
     configurationStruct *configStruct = malloc(sizeof(configurationStruct));
     configStruct->hostname = calloc(' ', 200);
@@ -50,6 +52,8 @@ int connectToGameServer(char *gameID, char *player,
     void *ptr;
 
     int sock = 0, errcode, connectionStatus = 0;
+
+    struct epoll_event ev, ev_test;
 
     if (usingCustomConfigFile) {
         printf("### Using custom configuration file: %s\n", filePath);
@@ -113,14 +117,27 @@ int connectToGameServer(char *gameID, char *player,
                    strerror(errno));
         } else {
             printf("### Success, connected to the server.\n");
+            /* register socketfd to epoll*/
+            ev.events = EPOLLIN;
+            ev.data.fd = sock;
+            if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD,sock,&ev) == -1) {
+                perror("epoll_ctl failed");
+                printf("### Could not register socketfd\n");
+                return 1;
+            }
+            printf("### correctly registered socket to epoll\n");
+
+            
+
             connectionStatus = haveConversationWithServer(sock, gameID, player,
                                                       configStruct->gamekindname, connectorBoard, info, thinker,
-                                                      connector, shmInfo, timeOffset);
+                                                      connector, shmInfo, epoll_fd, events);
             break;
         }
 
         close(sock);
         resTemp = resTemp->ai_next;
+        printf("############################################## %d\n", *resTemp);
     }
 
     freeaddrinfo(res);
@@ -133,21 +150,16 @@ int connectToGameServer(char *gameID, char *player,
 }
 
 int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker,
-                          pid_t connector, void *shmInfo) {
+                          pid_t connector, void *shmInfo, int epoll_fd, struct epoll_event *events) {
     char *gameID;
     char *player = 0;
     int ret;
-    int timeOffset = -1;
     int mockGame = 0;
     int usingCustomConfigFile = 0;
     char *configPath;
 
-    while ((ret = getopt(argc, argv, "t:g:p:m:C:")) != -1) {
+    while ((ret = getopt(argc, argv, "g:p:m:C:")) != -1) {
         switch (ret) {
-            case 't':
-                timeOffset = atoi(optarg);
-                printf("### Read time from user as %d \n", timeOffset);
-                break;
             case 'g':
                 gameID = optarg;
                 break;
@@ -167,18 +179,18 @@ int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], 
 
     //Fehlerbehandelung
     if (!gameID || strlen(gameID) < 13) {
-        perror("Das Game-ID ist kleiner als 13-stellige.\n");
+        perror("Die Game-ID ist kleiner als 13-stellige.\n");
         gameID = NULL;
         return 1;
     }
 
     if (strlen(gameID) > 13) {
-        perror("Das Game-ID ist grosser als 13-stellige.\n");
+        perror("Die Game-ID ist grosser als 13-stellige.\n");
         gameID = NULL;
         return 1;
     }
     int con = connectToGameServer(gameID, player, usingCustomConfigFile,
-                                  configPath, connectorBoard, info, thinker, connector, shmInfo, timeOffset);
+                                  configPath, connectorBoard, info, thinker, connector, shmInfo, epoll_fd, events);
 
     if (con) {
         fprintf(stderr, "### Error during connection with server\n");

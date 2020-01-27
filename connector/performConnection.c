@@ -1,7 +1,6 @@
 #include "../thinker/board.h"
 
 #include <arpa/inet.h>
-#include <assert.h>
 #include <errno.h>
 #include <getopt.h>
 #include <netinet/in.h>
@@ -17,6 +16,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <sys/epoll.h>
 
 #include "connector.h"
 #include "boardmessageparser.h"
@@ -25,18 +25,7 @@
 #include "../main.h"
 #include "../shm/shm.h"
 
-#include <stdio.h>     // for fprintf()
-#include <unistd.h>    // for close()
-#include <sys/epoll.h> // for epoll_create1()
-
-
-#include <string.h>
-
-#define CONNECTION_BUFF_SIZE 1024
-#define MESSAGE_BUFF_SIZE 1024
-#define LINE_BUFF_SIZE 2048
-
-
+#define MAX 240 // todo make better
 #define MAJOR_VERSION_INDEX_LOCAL 8
 #define MAJOR_VERSION_INDEX_SERVER 18
 #define MOVE_STRING_LENGTH 10
@@ -50,8 +39,7 @@ int printMore = 1;
 enum Phase {
     PROLOG = 0,
     SPIELVERLAUF = 1,
-    SPIELZUG = 2,
-    GAMEOVER = 3
+    SPIELZUG = 2
 };
 
 int writeToServer(int sockfd, char message[]) {
@@ -121,10 +109,10 @@ int getMoveTime(char *buff) {
 
 int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     char *moveString;
-    char move[SMALL_STRING] = {" "};
+    char move[20] = {" "};
     int moveTimeNummer;
     char *fieldString;
-    char field[SMALL_STRING] = {" "};
+    char field[20] = {" "};
     int fieldSizeNummer = 0;
     moveString = strstr(buff, "+ MOVE");
     fieldString = strstr(buff, "FIELD");
@@ -208,182 +196,9 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     return f;
 }
 
-int hasLineBreak(char *str, int len, int startIndex) {
-
-
-//    printf("##### hasLineBreak(), len %d, startIndex %d, str '%s'\n",
-//           len, startIndex, str);
-
-    for (int i = startIndex; i < len; i++) {
-        if (str[i] == '\n') {
-            if (i == 0) {
-                printf("i is 0, this is probably an error: string is '%s'\n", str);
-                exit(12);
-            }
-            return i;
-        }
-    }
-    return -1;
-}
-
-char myInternalBufferLine[LINE_BUFF_SIZE];
-char myInternalBufferMessage[MESSAGE_BUFF_SIZE];
-int hasMoreLines = 0;
-int indexStartNextLine = 0;
-
-// select? epoll?
-// get next message?
-int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak) {
-
-    int readResponse;
-    int bytesRead = 0;
-    int result = 0;
-    int internalBufferSize = sizeof(myInternalBufferLine);
-    int lineBreak = 0;
-    int i = 0;
-
-    indexOfLineBreak = 0;
-
-
-//    printf("\nreadNextLine, indexOfLineBreak %d, indexStartNextLine %d\n", indexOfLineBreak, indexStartNextLine);
-//    printf("\nmyInternalBufferLine is '%s'\n", myInternalBufferLine);
-
-    int startOfMessageInLineBuffer = indexOfLineBreak + 1 + indexStartNextLine;
-
-    if (hasMoreLines) {
-        // todo modify bytesRead if incomplete line
-
-//        assert(indexOfLineBreak);
-
-//        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s'\n",
-//               myInternalBufferLine + startOfMessageInLineBuffer);
-
-        if ((lineBreak = hasLineBreak(myInternalBufferLine + startOfMessageInLineBuffer, internalBufferSize, 0)) ==
-            -1) {
-        } else {
-
-            assert(lineBreak > indexOfLineBreak);
-
-            strncpy(buffer + strlen(buffer), myInternalBufferLine + startOfMessageInLineBuffer,
-                    lineBreak + 1); // strcat?
-
-            bzero(myInternalBufferLine, lineBreak + 1);
-
-            indexStartNextLine += lineBreak + 1;
-
-            return lineBreak;
-
-        }
-    }
-
-    while (1) {
-        // +startOfMessageInLineBuffer ?? or modify bytesread
-        if (readResponse = read(socket, myInternalBufferLine + bytesRead, LINE_BUFF_SIZE)) {
-
-//            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
-            if ((lineBreak = hasLineBreak(myInternalBufferLine, bytesRead + readResponse, bytesRead)) == -1) {
-//                printf("!!!!!!!!!! NO line break found!! internal buff:  '%s' \n", myInternalBufferLine);
-                bytesRead += readResponse;
-                continue;
-            }
-//            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! \n", lineBreak);
-//            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak,
-//                   myInternalBufferLine);
-
-            bytesRead += readResponse;
-
-            int hack = 0;
-
-            if (bytesRead > lineBreak + 1) {
-//                printf("setting hasmorelines to 1\n");
-//                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine '%s'",
-//                       bytesRead,
-//                       lineBreak, myInternalBufferLine);
-                hasMoreLines = 1;
-                indexStartNextLine += lineBreak;
-            } else {
-//                printf("setting hasmorelines to 0\n");
-                hasMoreLines = 0;
-                indexStartNextLine = 0;
-                hack = internalBufferSize;
-            }
-
-            strncpy(buffer, myInternalBufferLine, lineBreak + 1); // change to bytesRead maybe
-
-//            printf("!!!!!!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
-//                   lineBreak, buffer, hasMoreLines, bytesRead);
-//            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
-
-            bzero(myInternalBufferLine, lineBreak + 1 + hack);
-//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine+lineBreak '%s'\n", myInternalBufferLine + lineBreak);
-//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
-//                   myInternalBufferLine + lineBreak + 1);
-            return lineBreak;
-        }
-
-    }
-}
-
-int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
-
-    int indexOfLineBreak = 0;
-    int totalLength;
-    int bytesRead = 0;
-    int result = 0;
-    int myInternalBufferMessageSize = sizeof(myInternalBufferMessage);
-    int lineBreak = 0;
-
-    int completeMessage = 1;
-
-    bzero(myInternalBufferMessage, myInternalBufferMessageSize);
-
-//    printf("\n\nnew attempt to get message.\n");
-//    fflush(stdout);
-    while (1) {
-
-        if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
-
-//            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
-//                   myInternalBufferMessage);
-//            fflush(stdout);
-
-            if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
-                completeMessage = 1;
-            }
-
-            else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
-                if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
-                    printf("message IS complete I think, found '+ ENDFIELD'\n");
-                    completeMessage = 1;
-                } else {
-//                    printf("message is NOT complete I think, found '+ FIELD'\n");
-//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
-                    completeMessage = 0;
-                }
-            }
-            else if (strstr(myInternalBufferMessage, "+ PLAYER0WON")) {
-                if (strstr(myInternalBufferMessage, "+ PLAYER1WON")) {
-                    completeMessage = 1;
-                } else {
-                    completeMessage = 0;
-                }
-            }
-            else {
-//                printf("message IS complete I think, myInternalBufferMessage is \n'%s'\n", myInternalBufferMessage);
-                completeMessage = 1;
-            }
-
-            if (completeMessage) {
-                strncpy(buffer, myInternalBufferMessage, strlen(myInternalBufferMessage));
-                return strlen(myInternalBufferMessage);
-            }
-        }
-    }
-}
-
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
-                               BOARD_STRUCT *connectorBoard,
-                               infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int timeOffset) {
+ BOARD_STRUCT *connectorBoard,
+ infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int epoll_fd, struct epoll_event *events) {
 
     strcpy(info->gameID, gameID);
     info->connector = connector;
@@ -391,15 +206,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     strcpy(info->gameKindName, gameKindName);
 
-    char buff[CONNECTION_BUFF_SIZE] = {" "};
+    char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
     char okthinkbuff[SMALL_STRING] = {" "};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
-
-    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
-//    int myTimeOffset = 5000;
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];
@@ -424,6 +236,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char gameKindNameFromServer[SMALL_STRING] = {0};
     char playCommandToSend[MOVE_STRING_LENGTH] = {0};
 
+    struct epoll_event event; //events[5];
 
     char *moveTime = malloc(SMALL_STRING * sizeof(char));
     char *fieldSize = malloc(SMALL_STRING * sizeof(char));
@@ -458,27 +271,20 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int mvTime = 0;
 
     for (; endstate == 0;) {
-//        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
+        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
 
-            if (printMore) {
-                printf("------>SERVER:\n%s", buff);
-                fflush(stdout);
-            }
-
-            if (strlen(buff) <= 0) {
-                printf("Read nothing from server apparently\n");
-                endstate = 1;
-                break;
-            }
+            //if (printMore) {
+                //printf("------>SERVER:\n%s", buff);
+                //printf("### Gamerserver: %s\n",buff);
+                //fflush(stdout);
+            //}
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
                 fprintf(stderr, "### We were too slow!\n");
                 // todo make sure we are actually ending everything (sigusr2)
                 if (kill(thinker, SIGUSR2) == -1) {
                     fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-                    endstate = 1;
-                    break;
+                    exit(1);
                 } else {
                     printf("### Sending SIGUSR2 to thinker to signal the game is over, due to timeout\n");
                 }
@@ -488,22 +294,21 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             }
 
             if ((strncmp("- Internal error. Sorry & Bye", buff, 29)) == 0) {
-                fprintf(stderr,
-                        "Server screwed up (well, probably we did, but now we can blame the server)\n");
+                fprintf(stderr, "Server screwed up (well, probably we did, but now we can blame the server)\n");
                 endstate = 1;
                 break;
             }
 
             if ((strncmp("- No free player", buff, 16)) == 0) {
                 fprintf(stderr,
-                        "### Could not connect to game, the player is already taken, or there are no free players.\n");
+                    "### Could not connect to game, the player is already taken, or there are no free players.\n");
                 endstate = 1;
                 break;
             }
 
             if ((strncmp("- Invalid Move: Invalid position", buff, 32)) == 0) {
                 fprintf(stderr,
-                        "### We seem to have made an invalid move :(. Maybe we thought the wrong colour was playing?.\n");
+                    "### We seem to have made an invalid move :(. Maybe we thought the wrong colour was playing?.\n");
                 endstate = 1;
                 break;
             }
@@ -513,8 +318,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 endstate = 1;
                 break;
             }
-
-            // todo "+1 Black Player 1   prase
 
             // step one, send VERSION 2.xxx
             if ((strncmp("+ MNM Gameserver", buff, 16)) == 0) {
@@ -542,12 +345,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
-                       strlen(buff) < 1);
-                if (printMore) {
-                    printf("------>Server:\n%s", buff);
-                    fflush(stdout);
-                }
-                strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
+                 strlen(buff) < 1);
+                //if (printMore) {
+                    //printf("------>Server:\n%s", buff);
+                    //fflush(stdout);
+                //}
+                    strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
                 if (printMore) {
@@ -575,8 +378,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("### Saving playerNumber: %s\n", playerNumber);
                 // todo!!!!
                 // why is players an array?????
-                info->players[atoi(playerNumber)].mitspielerNummer = atoi(
-                        playerNumber); // this line is not useful
+                info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber); // this line is not useful
 
                 info->players[atoi(playerNumber)].bereit = true;
 
@@ -594,8 +396,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("### Saving my playerName: %s", myPlayerName);
                 fflush(stdout);
                 strcpy(info->players[atoi(playerNumber)].mitspielerName, myPlayerName);
-                printf("### Saving my MitspielerName: %s",
-                       info->players[atoi(playerNumber)].mitspielerName);
+                printf("### Saving my MitspielerName: %s", info->players[atoi(playerNumber)].mitspielerName);
                 fflush(stdout);
             }
 
@@ -604,45 +405,35 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(mitspieleranzahl, buff + 8, 1);
                 mitspieleranzahl[1] = '\0';
                 info->MitspielerAnzahl = atoi(mitspieleranzahl);
-                printf("### Saving Total number of players: '%d'\n", info->MitspielerAnzahl);
-            }
-
-            if (strncmp("+ ENDPLAYERS", buff, 12) == 0) {
-                assert(phase == PROLOG);
-                printf("### end of prolog phase\n");
+                printf("### Saving MitspielerAnzahl: '%d'\n", info->MitspielerAnzahl);
                 phase = SPIELVERLAUF;
             }
 
-            if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
-                printf("### end of game phase, expecting final board info\n");
-                phase = GAMEOVER;
-            }
+            if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
+                phase = PROLOG;
+                if (strlen(buff) > 20) {
+                    printf("### received gameover and full string, parsing then exiting\n");
+                    endstate += dealWithGameOverCommand(buff);
+                } else {
+                    printf("### received only gameover, waiting for final board\n");
 
-            if (phase == GAMEOVER) {
-                printf("### In gameover phase, processing final information\n");
-                if (strstr(buff, "+ FIELD ")) {
-                    int parse = parseBoardMessage(connectorBoard, mTB, buff);
-                    if (parse) {
-                        fprintf(stderr, "### Problem parsing game over board message\n");
-                    }
-
-                    printf("### here is the final board of the game:\n");
-                    printBoardLouis(connectorBoard);
-                }
-
-                if (strstr(buff, "+ PLAYER0WON")) {
+                    while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
+                     strlen(buff) < 1);
+                        printf("### final full string:\n%s", buff);
+                    fflush(stdout);
+                    printf("### parsing then exiting\n");
                     endstate += dealWithGameOverCommand(buff);
                 }
 
-                if ((strncmp("+ QUIT", buff, 6)) == 0) {
-                    if (kill(thinker, SIGUSR2) == -1) {
-                        fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-                        exit(1);
-                    } else {
-                        printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
-                    }
-                    break;
+                if (kill(thinker, SIGUSR2) == -1) {
+                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
+                    exit(1);
+                } else {
+                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
                 }
+
+                endstate = 0;
+                break;
             }
 
 
@@ -659,25 +450,38 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             // step six, read board information and time to move from server.
             // todo, replace all magic numbers
             // todo, read name of opponent
-            if (strstr(buff, "+ FIELD ") && phase != GAMEOVER) {
+            if (strstr(buff, "+ FIELD ")) {//strlen(buff) > 75) {
                 writeToServer(sockfd, thinking);
 
+                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
+                 strlen(buff) < 1);
+                // hier micht den Buffer drucken, sondern unser Funktion nutzen
 
-                phase = SPIELZUG;
+                //if (printMore) {
+                    //printf("------>Server:\n%s", okthinkbuff);
+                    //fflush(stdout);
+                //}
+
+                    phase = SPIELZUG;
 
                 info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
                 info->infoBoard->board = shmInfo + sizeof(infoVonServer)
-                                         + info->MitspielerAnzahl * sizeof(Player) +
-                                         sizeof(BOARD_STRUCT);
+                + info->MitspielerAnzahl * sizeof(Player) +
+                sizeof(BOARD_STRUCT);
 
                 connectorBoard->sideToMove = sideToMove;
 
                 bzero(moveTime, SMALL_STRING);
                 bzero(fieldSize, SMALL_STRING);
+//                moveTime[0] = '\0';
+//                fieldSize[0] = '\0';
                 int mvt = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
+//                printf("### Parsed message, got movetime: %d\n", mvt);
                 if (mvt != 0) {
+//                    printf("### Setting move time to : %d\n", mvt);
                     mvTime = mvt;
                 } else {
+//                    printf("### Not changing movetime, it stays at : %d\n", mvTime);
                 }
 
                 FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
@@ -688,20 +492,30 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     fprintf(stderr, "### Problem parsing board message\n");
                 }
 
-//                printf("### finished parse board, here is the board I was able to parse:\n");
-//                printBoardLouis(connectorBoard);
+                printf("### aktuelles Server Board ---- finished parse board, here is the board I was able to parse:\n");
+                printBoardLouis(connectorBoard);
 
                 schreiben = true; // todo, what is this global doing???
 
                 memcpy(info->infoBoard->board, connectorBoard->board,
-                       sizeof(int) * fieldsize.row * fieldsize.col);
+                 sizeof(int) * fieldsize.row * fieldsize.col);
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 
 //                printf("### Move time from server: %d\n", mvTime);
 
 
-                info->moveTime = mvTime - myTimeOffset;
+                // mvTime - 500 seems best
+                info->moveTime = mvTime - 1000;
+//                info->moveTime = mvTime - 1000;
+                // mvTime - 500 seems best
+
+
+
+//                printf("### Move time for us: %d\n", info->moveTime);
+
+//                printf("### Finished parse board\n");
+//                printf("### Sending relevant info to thinker\n");
 
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");
@@ -714,45 +528,60 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 close(pd[1]);    // Schreibseite schließen
 
                 bzero(buffer, BIG_STRING);
+
+                int epoll_anzahl = epoll_wait(epoll_fd,events,5,3000);
+                for(int i =0; i<epoll_anzahl; i++) {
+                 if(events[i].data.fd == sockfd){
+                    printf("Socket ist bereit.\n");
+                    exit(1);
+                } 
+                if(events[i].data.fd == pd[0]){
+                    printf("Die Pipe ist bereit.\n");
                 // Leseseite auslesen (blockiert hier bis Daten vorhanden)
-                if (read(pd[0], buffer, sizeof(buffer)) == -1) {
-                    perror("read");
-                    endstate = 1;
+                    if (read(pd[0], buffer, sizeof(buffer)) == -1) {
+                        perror("read");
+                        endstate = 1;
+                        break;
+                    } else {
+                        printf("### Read from Pipe: %s\n", buffer);
+                    }
+                    moveReceivedFromThinker[0] = buffer[0];
+                    moveReceivedFromThinker[1] = buffer[1];
+                    moveReceivedFromThinker[2] = '\0';
+
+                    strcpy(playCommandToSend, "PLAY ");
+                    strcat(playCommandToSend, moveReceivedFromThinker);
+                    strcat(playCommandToSend, "\n");
+                    printf("### Play Command To Send: %s", playCommandToSend);
+                    fflush(stdout);
+
+                    writeToServer(sockfd, playCommandToSend);
+                    phase = SPIELVERLAUF;
+                    playCommandToSend[0] = '\0';
                     break;
-                } else {
-                    printf("### Read from Pipe: %s\n", buffer);
                 }
-                moveReceivedFromThinker[0] = buffer[0];
-                moveReceivedFromThinker[1] = buffer[1];
-                moveReceivedFromThinker[2] = '\0';
+            } 
 
-                strcpy(playCommandToSend, "PLAY ");
-                strcat(playCommandToSend, moveReceivedFromThinker);
-                strcat(playCommandToSend, "\n");
-                printf("### Play Command To Send: %s", playCommandToSend);
-                fflush(stdout);
 
-                writeToServer(sockfd, playCommandToSend);
-                phase = SPIELVERLAUF;
-                playCommandToSend[0] = '\0';
-            }
-
-            if ((strncmp("+ WAIT", buff, 6)) == 0) {
-                writeToServer(sockfd, okWait);
-            }
-
-            if (readResponse == -1) {
-                fprintf(stderr, "### Could not read from server\n");
-                endstate = 1;
-                break;
-            }
-            bzero(buff, sizeof(buff));
+           
         }
+
+        if ((strncmp("+ WAIT", buff, 6)) == 0) {
+            writeToServer(sockfd, okWait);
+        }
+
+        if (readResponse == -1) {
+            fprintf(stderr, "### Could not read from server\n");
+            endstate = 1;
+            break;
+        }
+        bzero(buff, sizeof(buff));
     }
+}
 
-    free(mTB);
-    free(moveTime);
-    free(fieldSize);
+free(mTB);
+free(moveTime);
+free(fieldSize);
 
-    return endstate;
+return endstate;
 }

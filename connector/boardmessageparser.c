@@ -43,11 +43,11 @@ void printBoardLouisSide(BOARD_STRUCT*  b, SIDE_TO_MOVE sideToMove) {
     }
     printf("\n");
     if (sideToMove) {
-        printf("%d to move\n", sideToMove);
+        printf("### %d ist dran to move\n", sideToMove);
         if (sideToMove == getBlack()) {
-            printf("Black to move\n");
+            printf("### Black to move\n");
         } else {
-            printf("White to move\n");
+            printf("### White to move\n");
         }
     } else {
         printf("I don't know whose turn it is\n");

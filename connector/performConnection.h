@@ -7,6 +7,7 @@
 
 #include "connector.h"
 #include <sys/types.h>
+#include <sys/epoll.h>
 #include "boardmessageparser.h"
 
 typedef struct FieldSizeColumnAndRow {
@@ -14,9 +15,8 @@ typedef struct FieldSizeColumnAndRow {
     int col;
 } FieldSizeColumnAndRow;
 
-int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
-                               BOARD_STRUCT *connectorBoard,
-                               infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int timeOffset);
+int haveConversationWithServer(int sock, char *gameID, char *player, char *gameKindName, BOARD_STRUCT *connectorBoard,
+                           infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int epoll_fd, struct epoll_event *events);
 
 char *convertMove(int move, char *antwort);
 

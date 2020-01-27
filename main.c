@@ -64,7 +64,7 @@ void mysighandler(int sig) {
 int main(int argc, char *argv[]) {
 
     struct epoll_event event, events[5];
-    bzero(&event,sizof(event));
+    bzero(&event,sizeof(event));
     int epoll_fd;
 
     if (argc > 1 && strcmp(argv[1], "perft") == 0) {

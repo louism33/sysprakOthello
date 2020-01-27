@@ -668,7 +668,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                info->moveTime = mvTime - myTimeOffset;
 //                info->moveTime = 2950;
 //                info->moveTime = 4000;
-                info->moveTime = 0;
+                info->moveTime = -500;
 
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");

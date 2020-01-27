@@ -240,11 +240,11 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
             fflush(stdout);
             free(antwort);
-            freeStatics();
+//            freeStatics();
             break;
     }
 
-    printf("### Cleaning up SHM %d\n", getpid());
+    printf("### Cleaning up SHM");
     fflush(stdout);
     deleteShm();
 
@@ -255,7 +255,7 @@ int main(int argc, char *argv[]) {
         printf("### seems to have gone ok\n");
     }
 
-//    freeStatics();
+    freeStatics();
 
     return failState;
 }

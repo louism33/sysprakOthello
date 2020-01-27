@@ -101,6 +101,7 @@ echo "STARTING PLAYER1"
 
 ## start PLAYER1
 #GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
+#GAME_ID=$ID PLAYER=$PLAYER1 CONFIG_FILE=test-client.conf make play &
 GAME_ID=$ID PLAYER=$PLAYER1 make play &
 
 # trying to get perf info
@@ -112,7 +113,7 @@ rm -f $VALGRIND_LOG
 valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &
 
 #rm -f p2.txt
-#./$EXECNAME -g $ID -p $PLAYER2 &>> p2.txt &
+#./$EXECNAME -g $ID -p $PLAYER2 -t 3000 &>> p2.txt &
 
 
 

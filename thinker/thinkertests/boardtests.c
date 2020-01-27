@@ -293,7 +293,7 @@ int testWeirdImpossibleBoardRechts() {
     return 0; // success
 }
 
-int testWeirdImpossibleBoardOben() // rand test
+int testWeirdImpossibleBoardOben()
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
     initialiseBoardStructToZero(b);
@@ -319,7 +319,7 @@ int testWeirdImpossibleBoardOben() // rand test
     return 0; // success
 }
 
-int testWeirdImpossibleBoardUnten() // rand test
+int testWeirdImpossibleBoardUnten()
 {
     BOARD_STRUCT *b = malloc(sizeof(BOARD_STRUCT));;
     initialiseBoardStructToZero(b);

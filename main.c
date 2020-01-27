@@ -46,17 +46,15 @@ BOARD_STRUCT *connectorBoard;
 void *shmInfo;
 int move;
 
-
 void mysighandler(int sig) {
     if (sig == SIGUSR1) {
         printf("### received SIGUSR1\n");
-//        sleep(1); // todo....
         denken = true;
     }
 
     if (sig == SIGUSR2) {
         printf("### received SIGUSR2, setting finished flag to true\n");
-        sleep(3); // todo....
+        sleep(3); // todo, necessary?
         everythingIsFinished = true;
     }
 }
@@ -213,7 +211,6 @@ int main(int argc, char *argv[]) {
             while (1) {
                 //Schreibseite muss warten bis Leseseite fertig ist.
                 while (!denken && !everythingIsFinished) {
-//                    sleep(1);
                 }
 
                 if (everythingIsFinished) {
@@ -224,14 +221,9 @@ int main(int argc, char *argv[]) {
 
                 denken = false;
 
-//                printf("### Currently thinking...\n");
-//                fflush(stdout);
-//                printBoardLouis(info->infoBoard);
-
                 move = doThink(info->infoBoard, info->moveTime);
                 getPrettyMove(move, antwort);
 
-                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
                 if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
                     perror("### write");
                     failState = 1;

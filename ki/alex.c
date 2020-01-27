@@ -507,8 +507,13 @@ void *getBestMoveMultiThreadedHelper(void *vargp) {
 }
 
 // selection expansion simulation backprop
+// NB: if we wanted to make this *really good*, we would:
+// think during opponent's turn
+// not free() the tree between turns
+// pre set up the tree by getting it to search the root position for a few days before the competition, and store this somewhere
+// if the board was always 8x8, we would use bitboards and assembler instructions for frequently used methods
 int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
-    srand(time(NULL)); // todo move out ?
+    srand(time(NULL));
 
     BOARD board = boardStruct->board;
     MOVES moves = malloc(getStandardBoardSize() * sizeof(MOVE));
@@ -516,17 +521,22 @@ int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime) {
 
     if (totalMoves == 0) {
         free(moves);
-//        printf("Alex returns pass move\n");
+        printf("### Alex returns pass move\n");
         return getPassMove();
     }
 
-    if (totalMoves == 1) {
+    moveTime = moveTime - 50;
+
+    moveTime = moveTime <= 0 ? 0 : moveTime;
+    printf("### Alex will spend %d millis searching for move\n", moveTime);
+
+    if (totalMoves == 1 || moveTime <= 0) {
         MOVE move = moves[0];
         free(moves);
-//        printf("Alex returns only move: %d\n", move);
         return move;
     }
     free(moves);
+
 
     int totalThreads = NUMBER_OF_THREADS;
     Contexts *contexts = malloc(sizeof(Contexts));

@@ -679,7 +679,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
 
-//                printf("### Starting parse board, setting phase to spielzug\n");
                 int parse = parseBoardMessage(connectorBoard, mTB, buff);
                 if (parse) {
                     fprintf(stderr, "### Problem parsing board message\n");
@@ -688,7 +687,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("### aktuelles Server Board:\n");
                 printBoardLouis(connectorBoard);
 
-                schreiben = true; // todo, what is this global doing???
+                schreiben = true;
 
                 memcpy(info->infoBoard->board, connectorBoard->board,
                        sizeof(int) * fieldsize.row * fieldsize.col);
@@ -698,8 +697,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                printf("### Move time from server: %d\n", mvTime);
 
 
-                info->moveTime = mvTime - myTimeOffset;
-//                info->moveTime = 5000;
+//                info->moveTime = mvTime - myTimeOffset;
+                info->moveTime = 5000;
 
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");

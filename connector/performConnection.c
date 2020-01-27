@@ -196,6 +196,179 @@ FieldSizeColumnAndRow charInNummer(char *fieldSize) {
     return f;
 }
 
+int hasLineBreak(char *str, int len, int startIndex) {
+
+
+//    printf("##### hasLineBreak(), len %d, startIndex %d, str '%s'\n",
+//           len, startIndex, str);
+
+    for (int i = startIndex; i < len; i++) {
+        if (str[i] == '\n') {
+            if (i == 0) {
+                printf("i is 0, this is probably an error: string is '%s'\n", str);
+                exit(12);
+            }
+            return i;
+        }
+    }
+    return -1;
+}
+
+char myInternalBufferLine[LINE_BUFF_SIZE];
+char myInternalBufferMessage[MESSAGE_BUFF_SIZE];
+int hasMoreLines = 0;
+int indexStartNextLine = 0;
+
+// select? epoll?
+// get next message?
+int readNextLine(int socket, char *buffer, int sizeOfBuff, int indexOfLineBreak) {
+
+    int readResponse;
+    int bytesRead = 0;
+    int result = 0;
+    int internalBufferSize = sizeof(myInternalBufferLine);
+    int lineBreak = 0;
+    int i = 0;
+
+    indexOfLineBreak = 0;
+
+
+//    printf("\nreadNextLine, indexOfLineBreak %d, indexStartNextLine %d\n", indexOfLineBreak, indexStartNextLine);
+//    printf("\nmyInternalBufferLine is '%s'\n", myInternalBufferLine);
+
+    int startOfMessageInLineBuffer = indexOfLineBreak + 1 + indexStartNextLine;
+
+    if (hasMoreLines) {
+        // todo modify bytesRead if incomplete line
+
+//        assert(indexOfLineBreak);
+
+//        printf("HASMORELINES myInternalBufferLine + startOfMessageInLineBuffer:  \n'%s'\n",
+//               myInternalBufferLine + startOfMessageInLineBuffer);
+
+        if ((lineBreak = hasLineBreak(myInternalBufferLine + startOfMessageInLineBuffer, internalBufferSize, 0)) ==
+            -1) {
+        } else {
+
+            assert(lineBreak > indexOfLineBreak);
+
+            strncpy(buffer + strlen(buffer), myInternalBufferLine + startOfMessageInLineBuffer,
+                    lineBreak + 1); // strcat?
+
+            bzero(myInternalBufferLine, lineBreak + 1);
+
+            indexStartNextLine += lineBreak + 1;
+
+            return lineBreak;
+
+        }
+    }
+
+    while (1) {
+        // +startOfMessageInLineBuffer ?? or modify bytesread
+        if (readResponse = read(socket, myInternalBufferLine + bytesRead, LINE_BUFF_SIZE)) {
+
+//            printf("!!!!!!!!!! readResponse is %d, and bytesRead is %d \n", readResponse, bytesRead);
+            if ((lineBreak = hasLineBreak(myInternalBufferLine, bytesRead + readResponse, bytesRead)) == -1) {
+//                printf("!!!!!!!!!! NO line break found!! internal buff:  '%s' \n", myInternalBufferLine);
+                bytesRead += readResponse;
+                continue;
+            }
+//            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! \n", lineBreak);
+//            printf("!!!!!!!!!! LINE BREAK FOUND, index: %d!! internal buff:  '%s' \n", lineBreak,
+//                   myInternalBufferLine);
+
+            bytesRead += readResponse;
+
+            int hack = 0;
+
+            if (bytesRead > lineBreak + 1) {
+//                printf("setting hasmorelines to 1\n");
+//                printf("SETTING hasmorelines to 1, bytesRead: %d, lineBreak %d, myInternalBufferLine '%s'",
+//                       bytesRead,
+//                       lineBreak, myInternalBufferLine);
+                hasMoreLines = 1;
+                indexStartNextLine += lineBreak;
+            } else {
+//                printf("setting hasmorelines to 0\n");
+                hasMoreLines = 0;
+                indexStartNextLine = 0;
+                hack = internalBufferSize;
+            }
+
+            strncpy(buffer, myInternalBufferLine, lineBreak + 1); // change to bytesRead maybe
+
+//            printf("!!!!!!!!!! AFTER COPY, lineBreak: %d !! myInternalBufferMessage:  '%s' , hasMoreLines %d , bytesRead % d\n",
+//                   lineBreak, buffer, hasMoreLines, bytesRead);
+//            printf("!!!!!!!!!! AFTER COPY, myInternalBufferLine '%s'\n", myInternalBufferLine);
+
+            bzero(myInternalBufferLine, lineBreak + 1 + hack);
+//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine+lineBreak '%s'\n", myInternalBufferLine + lineBreak);
+//            printf("!!!!!!!!!! AFTER zero, myInternalBufferLine + lineBreak+1 '%s'\n",
+//                   myInternalBufferLine + lineBreak + 1);
+            return lineBreak;
+        }
+
+    }
+}
+
+int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
+
+    int indexOfLineBreak = 0;
+    int totalLength;
+    int bytesRead = 0;
+    int result = 0;
+    int myInternalBufferMessageSize = sizeof(myInternalBufferMessage);
+    int lineBreak = 0;
+
+    int completeMessage = 1;
+
+    bzero(myInternalBufferMessage, myInternalBufferMessageSize);
+
+//    printf("\n\nnew attempt to get message.\n");
+//    fflush(stdout);
+    while (1) {
+
+        if (indexOfLineBreak = readNextLine(socket, myInternalBufferMessage, sizeOfBuff, indexOfLineBreak)) {
+
+//            printf("!!!!!RNM indexOfLineBreak is %d, and myInternalBufferMessage is \n'%s'\n", indexOfLineBreak,
+//                   myInternalBufferMessage);
+//            fflush(stdout);
+
+            if (strstr(myInternalBufferMessage, "+ GAMEOVER")) {
+                completeMessage = 1;
+            }
+
+            else if (strstr(myInternalBufferMessage, "+ FIELD ")) {
+                if (strstr(myInternalBufferMessage, "+ ENDFIELD")) {
+//                    printf("message IS complete I think, found '+ ENDFIELD'\n");
+                    completeMessage = 1;
+                } else {
+//                    printf("message is NOT complete I think, found '+ FIELD'\n");
+//                    printf("message is currently:\n'%s'\n", myInternalBufferMessage);
+                    completeMessage = 0;
+                }
+            }
+            else if (strstr(myInternalBufferMessage, "+ PLAYER0WON")) {
+                if (strstr(myInternalBufferMessage, "+ PLAYER1WON")) {
+                    completeMessage = 1;
+                } else {
+                    completeMessage = 0;
+                }
+            }
+            else {
+//                printf("message IS complete I think, myInternalBufferMessage is \n'%s'\n", myInternalBufferMessage);
+                completeMessage = 1;
+            }
+
+            if (completeMessage) {
+                strncpy(buffer, myInternalBufferMessage, strlen(myInternalBufferMessage));
+                return strlen(myInternalBufferMessage);
+            }
+        }
+    }
+}
+
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
  BOARD_STRUCT *connectorBoard,
  infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int epoll_fd, struct epoll_event *events) {
@@ -272,7 +445,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     int mvTime = 0;
 
     for (; endstate == 0;) {
-        if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
+        if ((readResponse = readNextMessage(sockfd, buff, sizeof(buff)))) {
             buff[readResponse]='\0';
             //if (printMore) {
                 //printf("------>SERVER:\n%s", buff);

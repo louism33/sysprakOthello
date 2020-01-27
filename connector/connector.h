@@ -6,6 +6,7 @@
 #define ALEXTHEFRIENDLYAI_CONNECTOR_H
 
 #include <sys/types.h>
+#include <sys/epoll.h>
 #include <stdbool.h>
 #include "boardmessageparser.h"
 #include "../thinker/board.h"
@@ -33,7 +34,7 @@ typedef struct infoVonServer
 } infoVonServer;
 
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector,void *shmInfo);
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector,void *shmInfo, int epoll_fd, struct epoll_event *events);
 
 void performConnection();
 

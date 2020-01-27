@@ -123,10 +123,10 @@ int getMoveTime(char *buff) {
 
 int getMoveTimeAndFieldSize(char *buff, char *moveTime, char *fieldSize) {
     char *moveString;
-    char move[20] = {" "};
+    char move[SMALL_STRING] = {" "};
     int moveTimeNummer;
     char *fieldString;
-    char field[20] = {" "};
+    char field[SMALL_STRING] = {" "};
     int fieldSizeNummer = 0;
     moveString = strstr(buff, "+ MOVE");
     fieldString = strstr(buff, "FIELD");
@@ -382,7 +382,7 @@ int readNextMessage(int socket, char *buffer, int sizeOfBuff) {
 int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gameKindName,
                                BOARD_STRUCT *connectorBoard,
                                infoVonServer *info, pid_t thinker, pid_t connector, void *shmInfo, int epoll_fd,
-                               struct epoll_event *events) {
+                               struct epoll_event *events, int timeOffset) {
 
     strcpy(info->gameID, gameID);
     info->connector = connector;
@@ -390,14 +390,16 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     strcpy(info->gameKindName, gameKindName);
 
-    char buff[MAX] = {'\0'};
-    printf("@@@@@@@@@@@@@@@@@@@@@@@@buf:%li \n",
-           strlen(buff)); // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-    char okthinkbuff[SMALL_STRING] = {'\0'};
+    char buff[CONNECTION_BUFF_SIZE] = {" "};
+    char okthinkbuff[SMALL_STRING] = {" "};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
+
+    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
+//    int myTimeOffset = 5000;
+//    int myTimeOffset = 0;
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];
@@ -470,7 +472,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 // todo make sure we are actually ending everything (sigusr2)
                 if (kill(thinker, SIGUSR2) == -1) {
                     fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-                    exit(1);
+                    endstate = 1;
+                    break;
                 } else {
                     printf("### Sending SIGUSR2 to thinker to signal the game is over, due to timeout\n");
                 }
@@ -564,7 +567,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 printf("### Saving playerNumber: %s\n", playerNumber);
                 // todo!!!!
                 // why is players an array?????
-                info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber); // this line is not useful
+                // this line is not useful
+                info->players[atoi(playerNumber)].mitspielerNummer = atoi(playerNumber);
 
                 info->players[atoi(playerNumber)].bereit = true;
 
@@ -591,36 +595,47 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 strncpy(mitspieleranzahl, buff + 8, 1);
                 mitspieleranzahl[1] = '\0';
                 info->MitspielerAnzahl = atoi(mitspieleranzahl);
-                printf("### Saving MitspielerAnzahl: '%d'\n", info->MitspielerAnzahl);
+                printf("### Saving Total number of players: '%d'\n", info->MitspielerAnzahl);
+            }
+
+            if (strncmp("+ ENDPLAYERS", buff, 12) == 0) {
+                assert(phase == PROLOG);
+                printf("### end of prolog phase\n");
                 phase = SPIELVERLAUF;
             }
 
-            if ((strncmp("+ GAMEOVER", buff, 10)) == 0) {
-                phase = PROLOG;
-                if (strlen(buff) > 20) {
-                    printf("### received gameover and full string, parsing then exiting\n");
-                    endstate += dealWithGameOverCommand(buff);
-                } else {
-                    printf("### received only gameover, waiting for final board\n");
-
-                    while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
-                           strlen(buff) < 1);
-                    printf("### final full string:\n%s", buff);
-                    fflush(stdout);
-                    printf("### parsing then exiting\n");
-                    endstate += dealWithGameOverCommand(buff);
-                }
-
-                if (kill(thinker, SIGUSR2) == -1) {
-                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-                    exit(1);
-                } else {
-                    printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
-                }
-
-                endstate = 0;
-                break;
+            if (((strncmp("+ GAMEOVER", buff, 10)) == 0) && (phase != PROLOG)) {
+                printf("### end of game phase, expecting final board info\n");
+                phase = GAMEOVER;
             }
+
+            if (phase == GAMEOVER) {
+                printf("### In gameover phase, processing final information\n");
+                if (strstr(buff, "+ FIELD ")) {
+                    int parse = parseBoardMessage(connectorBoard, mTB, buff);
+                    if (parse) {
+                        fprintf(stderr, "### Problem parsing game over board message\n");
+                    }
+
+                    printf("### here is the final board of the game:\n");
+                    printBoardLouis(connectorBoard);
+                }
+
+                if (strstr(buff, "+ PLAYER0WON")) {
+                    endstate += dealWithGameOverCommand(buff);
+                }
+
+                if ((strncmp("+ QUIT", buff, 6)) == 0) {
+                    if (kill(thinker, SIGUSR2) == -1) {
+                        fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
+                        exit(1);
+                    } else {
+                        printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
+                    }
+                    break;
+                }
+            }
+
 
             if ((strncmp("+ MOVEOK", buff, 8)) == 0) {
                 if (printMore) {
@@ -632,13 +647,12 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 mvTime = getMoveTime(buff);
             }
 
-            if (strstr(buff, "+ FIELD ")) {
+            if (strstr(buff, "+ FIELD ") && phase != GAMEOVER) {
                 writeToServer(sockfd, thinking);
 
                 while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
                        strlen(buff) < 1);
 
-                printf("XXXXXX %s\n", okthinkbuff);
                 // hier micht den Buffer drucken, sondern unser Funktion nutzen
 
                 //if (printMore) {
@@ -657,15 +671,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 bzero(moveTime, SMALL_STRING);
                 bzero(fieldSize, SMALL_STRING);
-//                moveTime[0] = '\0';
-//                fieldSize[0] = '\0';
                 int mvt = getMoveTimeAndFieldSize(buff, moveTime, fieldSize);
-//                printf("### Parsed message, got movetime: %d\n", mvt);
                 if (mvt != 0) {
-//                    printf("### Setting move time to : %d\n", mvt);
                     mvTime = mvt;
                 } else {
-//                    printf("### Not changing movetime, it stays at : %d\n", mvTime);
                 }
 
                 FieldSizeColumnAndRow fieldsize = charInNummer(fieldSize);
@@ -676,7 +685,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                     fprintf(stderr, "### Problem parsing board message\n");
                 }
 
-                printf("### aktuelles Server Board ---- finished parse board, here is the board I was able to parse:\n");
+                printf("### aktuelles Server Board:\n");
                 printBoardLouis(connectorBoard);
 
                 schreiben = true; // todo, what is this global doing???
@@ -689,17 +698,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 //                printf("### Move time from server: %d\n", mvTime);
 
 
-                // mvTime - 500 seems best
-                info->moveTime = mvTime - 1000;
-//                info->moveTime = mvTime - 1000;
-                // mvTime - 500 seems best
-
-
-
-//                printf("### Move time for us: %d\n", info->moveTime);
-
-//                printf("### Finished parse board\n");
-//                printf("### Sending relevant info to thinker\n");
+                info->moveTime = mvTime - myTimeOffset;
+//                info->moveTime = 5000;
 
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");
@@ -720,7 +720,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                         exit(1);
                     }
                     if (events[i].data.fd == pd[0]) {
-                        printf("Die Pipe ist bereit.\n");
+                        printf("### Die Pipe ist bereit.\n");
                         // Leseseite auslesen (blockiert hier bis Daten vorhanden)
                         if (read(pd[0], buffer, sizeof(buffer)) == -1) {
                             perror("read");

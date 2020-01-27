@@ -635,8 +635,10 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
             if (strstr(buff, "+ FIELD ")) {
                 writeToServer(sockfd, thinking);
 
-//                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
-//                       strlen(buff) < 1);
+                while ((readResponse = read(sockfd, okthinkbuff, sizeof(okthinkbuff))) &&
+                       strlen(buff) < 1);
+
+                printf("XXXXXX %s\n", okthinkbuff);
                 // hier micht den Buffer drucken, sondern unser Funktion nutzen
 
                 //if (printMore) {

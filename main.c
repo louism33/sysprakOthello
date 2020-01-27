@@ -249,7 +249,7 @@ int main(int argc, char *argv[]) {
     deleteShm();
 
     freeBoardStruct(connectorBoard);
-    if (failState) {
+    if (failState != 0) {
         fprintf(stderr, "### Error happened somewhere\n");
     } else {
         printf("### seems to have gone ok\n");

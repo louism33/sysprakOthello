@@ -660,7 +660,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 //fflush(stdout);
                 //}
 
-                phase = SPIELZUG;onStatus = haveConvers
+                phase = SPIELZUG;
 
                 info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
                 info->infoBoard->board = shmInfo + sizeof(infoVonServer)

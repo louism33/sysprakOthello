@@ -1,6 +1,7 @@
 #include "../thinker/board.h"
 
 #include <arpa/inet.h>
+#include <assert.h>
 #include <errno.h>
 #include <getopt.h>
 #include <netinet/in.h>
@@ -25,7 +26,19 @@
 #include "../main.h"
 #include "../shm/shm.h"
 
-#define MAX 240 // todo make better
+#include <stdio.h>     // for fprintf()
+#include <unistd.h>    // for close()
+#include <sys/epoll.h> // for epoll_create1()
+
+
+#include <string.h>
+
+#define CONNECTION_BUFF_SIZE 1024
+#define MESSAGE_BUFF_SIZE 1024
+#define LINE_BUFF_SIZE 2048
+
+
+#define MAX 256
 #define MAJOR_VERSION_INDEX_LOCAL 8
 #define MAJOR_VERSION_INDEX_SERVER 18
 #define MOVE_STRING_LENGTH 10
@@ -39,7 +52,8 @@ int printMore = 1;
 enum Phase {
     PROLOG = 0,
     SPIELVERLAUF = 1,
-    SPIELZUG = 2
+    SPIELZUG = 2,
+    GAMEOVER = 3
 };
 
 int writeToServer(int sockfd, char message[]) {

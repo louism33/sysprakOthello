@@ -397,7 +397,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
 
-    int myTimeOffset = timeOffset <= 0 ? 1500 : timeOffset;
+    int myTimeOffset = timeOffset <= 0 ? 500 : timeOffset; // default time we give ourselves
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];
@@ -467,15 +467,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
             if ((strncmp("- TIMEOUT Be faster next time", buff, 29)) == 0) {
                 fprintf(stderr, "### We were too slow!\n");
-                // todo make sure we are actually ending everything (sigusr2)
-//                if (kill(thinker, SIGUSR2) == -1) {
-//                    fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-//                    endstate = 1;
-//                    break;
-//                } else {
-//                    printf("### Sending SIGUSR2 to thinker to signal the game is over, due to timeout\n");
-//                }
-
                 endstate = 1;
                 break;
             }
@@ -624,12 +615,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 }
 
                 if ((strncmp("+ QUIT", buff, 6)) == 0) {
-//                    if (kill(thinker, SIGUSR2) == -1) {
-//                        fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
-//                        exit(1);
-//                    } else {
-//                        printf("### Sending SIGUSR2 to thinker to signal the game is over\n");
-//                    }
                     break;
                 }
             }
@@ -652,11 +637,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                        strlen(buff) < 1);
 
                 // hier micht den Buffer drucken, sondern unser Funktion nutzen
-
-                //if (printMore) {
-                //printf("------>Server:\n%s", okthinkbuff);
-                //fflush(stdout);
-                //}
 
                 phase = SPIELZUG;
 

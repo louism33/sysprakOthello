@@ -1,10 +1,10 @@
 CC=gcc
 
 ### production:
-CFLAGS=-I -Wall -Wextra -Werror -std=gnu11 -lm -lpthread -DNDEBUG
+#CFLAGS=-I -Wall -Wextra -Werror -std=gnu11 -lm -lpthread -DNDEBUG
 
 #CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread -DNDEBUG
-# CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
+CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
 
 #todo -DNDEBUG  will disable assserts
 #todo remove -g

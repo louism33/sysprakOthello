@@ -206,8 +206,9 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     strcpy(info->gameKindName, gameKindName);
 
-    char buff[MAX] = {" "};    // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
-    char okthinkbuff[SMALL_STRING] = {" "};
+    char buff[MAX] = {'\0'};   
+    printf("@@@@@@@@@@@@@@@@@@@@@@@@buf:%li \n",strlen(buff)); // todo pick standard size for everything, and avoid buffer overflow with ex. strncpy
+    char okthinkbuff[SMALL_STRING] = {'\0'};
     char gameName[BIG_STRING] = {0}; // example: Game from 2019-11-18 17:42
     char playerNumber[SMALL_STRING] = {0};
     char myPlayerName[SMALL_STRING] = {0};
@@ -272,7 +273,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
     for (; endstate == 0;) {
         if ((readResponse = read(sockfd, buff, sizeof(buff)))) {
-
+            buff[readResponse]='\0';
             //if (printMore) {
                 //printf("------>SERVER:\n%s", buff);
                 //printf("### Gamerserver: %s\n",buff);

@@ -257,6 +257,5 @@ int main(int argc, char *argv[]) {
 
 //    freeStatics();
 
-    printf("done %d\n", getpid());
     return failState;
 }

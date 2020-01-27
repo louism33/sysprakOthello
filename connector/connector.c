@@ -137,7 +137,6 @@ int connectToGameServer(char *gameID, char *player,
 
         close(sock);
         resTemp = resTemp->ai_next;
-        printf("############################################## %d\n", *resTemp);
     }
 
     freeaddrinfo(res);

@@ -149,6 +149,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    connectorBoard = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToStarter(connectorBoard);
+
     fflush(stdout);
     createPipe(pd);
     switch (thinker = fork()) {
@@ -178,13 +181,11 @@ int main(int argc, char *argv[]) {
             connector = getpid();
             thinker = getppid();
             printf("### Starting Connector Master Method\n");
-            connectorBoard = malloc(sizeof(BOARD_STRUCT));
-            initialiseBoardStructToStarter(connectorBoard);
+
 
             int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo, epoll_fd, events);
             printf("### Connector Master Method has ended, with value: %d\n", c);
             failState += c;
-            freeBoardStruct(connectorBoard);
             break;
 
             /*Elternprozess = Thinker*/
@@ -247,7 +248,7 @@ int main(int argc, char *argv[]) {
     fflush(stdout);
     deleteShm();
 
-//    freeBoardStruct(connectorBoard);
+    freeBoardStruct(connectorBoard);
     if (failState) {
         fprintf(stderr, "### Error happened somewhere\n");
     } else {

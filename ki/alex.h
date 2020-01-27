@@ -9,7 +9,6 @@
 
 
 
-//int getBestMove(BOARD_STRUCT *boardStruct, int moveTime);
 int getBestMoveMultiThreaded(BOARD_STRUCT *boardStruct, int moveTime);
 
 #endif //SYSPRAKOTHELLO_ALEX_H

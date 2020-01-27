@@ -54,6 +54,7 @@ int connectToGameServer(char *gameID, char *player,
     int sock = 0, errcode, connectionStatus = 0;
 
     struct epoll_event ev, ev_test;
+    bzero(&ev,sizeof(ev));
 
     if (usingCustomConfigFile) {
         printf("### Using custom configuration file: %s\n", filePath);
@@ -137,7 +138,7 @@ int connectToGameServer(char *gameID, char *player,
 
         close(sock);
         resTemp = resTemp->ai_next;
-        printf("############################################## %d\n", *resTemp);
+       
     }
 
     freeaddrinfo(res);

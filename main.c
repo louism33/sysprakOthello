@@ -64,6 +64,7 @@ void mysighandler(int sig) {
 int main(int argc, char *argv[]) {
 
     struct epoll_event event, events[5];
+    bzero(&event,sizeof(event));
     int epoll_fd;
 
     if (argc > 1 && strcmp(argv[1], "perft") == 0) {
@@ -140,15 +141,11 @@ int main(int argc, char *argv[]) {
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
-    printf("### Setting up epoll\n");
+  
 
-    epoll_fd = epoll_create1(0);
+   
 
-    if(epoll_fd == -1)
-    {
-        fprintf(stderr, "### Failed to create epoll file descriptor\n");
-        return 1;
-    }
+  
 
     fflush(stdout);
     createPipe(pd);
@@ -160,6 +157,13 @@ int main(int argc, char *argv[]) {
 
             /*Kindsprozess = Connector*/
         case 0:
+          printf("### Setting up epoll\n");
+         epoll_fd = epoll_create1(0);
+           if(epoll_fd == -1)
+    {
+        fprintf(stderr, "### Failed to create epoll file descriptor\n");
+        return 1;
+    }
             event.events = EPOLLIN;
             event.data.fd = pd[0];
 

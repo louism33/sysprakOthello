@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
     connectorBoard = malloc(sizeof(BOARD_STRUCT));
     initialiseBoardStructToStarter(connectorBoard);
 
-    printf("### Setting up epoll\n");
+    printf("### Setting up epoll X\n");
 
     epoll_fd = epoll_create1(0);
 

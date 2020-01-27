@@ -397,7 +397,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
 
-    int myTimeOffset = timeOffset <= 0 ? 200 : timeOffset; // default offset time we give ourselves
+    int myTimeOffset = timeOffset <= 0 ? 500 : timeOffset; // default offset time we give ourselves
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];

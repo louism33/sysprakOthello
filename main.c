@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
                 move = doThink(info->infoBoard, info->moveTime);
                 getPrettyMove(move, antwort);
 
-                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
+                if (! everythingIsFinished && write(pd[1], antwort, strlen(antwort) + 1) < 0) {
                     perror("### write");
                     failState = 1;
                     break;

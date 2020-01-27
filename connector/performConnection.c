@@ -530,7 +530,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
 
                 bzero(buffer, BIG_STRING);
 
-                int epoll_anzahl = epoll_wait(epoll_fd,events,5,3000);
+                int epoll_anzahl = epoll_wait(epoll_fd,events,5,-1);
                 for(int i =0; i<epoll_anzahl; i++) {
                  if(events[i].data.fd == sockfd){
                     printf("Socket ist bereit.\n");

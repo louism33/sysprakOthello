@@ -239,7 +239,7 @@ int main(int argc, char *argv[]) {
             break;
     }
 
-    printf("### Cleaning up SHM\n");
+    printf("### Cleaning up SHM %d\n", getpid());
     fflush(stdout);
     deleteShm();
     free(antwort);

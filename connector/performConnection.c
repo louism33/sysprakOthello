@@ -397,7 +397,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
     char myPlayerName[SMALL_STRING] = {0};
     char opponent[SMALL_STRING] = {0};
 
-    int myTimeOffset = timeOffset <= 0 ? 500 : timeOffset; // default time we give ourselves
+    int myTimeOffset = timeOffset <= 0 ? 200 : timeOffset; // default offset time we give ourselves
 
     int endstate = 0;
     char mitspieleranzahl[SMALL_STRING];
@@ -524,10 +524,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 bzero(buff, sizeof(buff));
                 while ((readResponse = read(sockfd, buff, sizeof(buff))) &&
                        strlen(buff) < 1);
-                //if (printMore) {
-                //printf("------>Server:\n%s", buff);
-                //fflush(stdout);
-                //}
                 strncpy(gameName, buff + 2, strlen(buff) - strlen("+ "));
                 gameName[strlen(buff) - strlen("+ ")] = '\0';
                 strcpy(info->gameName, gameName);
@@ -562,10 +558,8 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 info->players[atoi(playerNumber)].bereit = true;
 
                 if (playerNumber[0] == '0') {
-//                    printf("### Setting player colour to B\n");
                     sideToMove = getBlack();
                 } else {
-//                    printf("### Setting player colour to W\n");
                     sideToMove = getWhite();
                 }
 
@@ -672,7 +666,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 info->infoBoard->sideToMove = connectorBoard->sideToMove;
 
 //                info->moveTime = mvTime - myTimeOffset;
-                info->moveTime = 2900;
+                info->moveTime = 2950;
 
                 if (kill(thinker, SIGUSR1) == -1) {
                     printf("Fehler beim senden des Signals\n");

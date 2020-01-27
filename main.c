@@ -129,15 +129,15 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    char *antwort = malloc(10 * sizeof(char));
+
     createShm();
     shmInfo = attachShm();
     info = shmInfo;
     info->players = shmInfo + sizeof(infoVonServer);
     int failState = 0;
 
-    connectorBoard = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToStarter(connectorBoard);
+//    connectorBoard = malloc(sizeof(BOARD_STRUCT));
+//    initialiseBoardStructToStarter(connectorBoard);
 
     printf("### Setting up epoll X\n");
 
@@ -178,9 +178,13 @@ int main(int argc, char *argv[]) {
             connector = getpid();
             thinker = getppid();
             printf("### Starting Connector Master Method\n");
+            connectorBoard = malloc(sizeof(BOARD_STRUCT));
+            initialiseBoardStructToStarter(connectorBoard);
+
             int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo, epoll_fd, events);
             printf("### Connector Master Method has ended, with value: %d\n", c);
             failState += c;
+            freeBoardStruct(connectorBoard);
             break;
 
             /*Elternprozess = Thinker*/
@@ -206,7 +210,7 @@ int main(int argc, char *argv[]) {
 
             printf("### Starting Thinker Main Loop\n");
             fflush(stdout);
-
+            char *antwort = malloc(10 * sizeof(char));
             close(pd[0]); // Leseseite schließen
             while (1) {
                 //Schreibseite muss warten bis Leseseite fertig ist.
@@ -230,25 +234,27 @@ int main(int argc, char *argv[]) {
                     break;
                 }
                 bzero(antwort, sizeof(antwort));
-
-
             }
+
             fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
             fflush(stdout);
-
+            free(antwort);
+            freeStatics();
             break;
     }
 
     printf("### Cleaning up SHM %d\n", getpid());
     fflush(stdout);
     deleteShm();
-    free(antwort);
-    freeBoardStruct(connectorBoard);
+
+//    freeBoardStruct(connectorBoard);
     if (failState) {
         fprintf(stderr, "### Error happened somewhere\n");
+    } else {
+        printf("### seems to have gone ok\n");
     }
 
-    freeStatics();
+//    freeStatics();
 
     return failState;
 }

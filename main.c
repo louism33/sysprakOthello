@@ -136,9 +136,6 @@ int main(int argc, char *argv[]) {
     info->players = shmInfo + sizeof(infoVonServer);
     int failState = 0;
 
-//    connectorBoard = malloc(sizeof(BOARD_STRUCT));
-//    initialiseBoardStructToStarter(connectorBoard);
-
     printf("### Setting up epoll X\n");
 
     epoll_fd = epoll_create1(0);

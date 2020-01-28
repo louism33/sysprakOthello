@@ -101,27 +101,37 @@ echo "STARTING PLAYER1"
 
 ## start PLAYER1
 #GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
-valgrind --leak-check=full --trace-children=yes GAME_ID=$ID PLAYER=$PLAYER1 make play &
 #GAME_ID=$ID PLAYER=$PLAYER1 CONFIG_FILE=test-client.conf make play &
 #GAME_ID=$ID PLAYER=$PLAYER1 make play &
 
 # trying to get perf info
 #perf record ./$EXECNAME -g $ID -p $PLAYER1 &
+#valgrind --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER1 &
 
-echo "STARTING PLAYER2"
+#echo "STARTING PLAYER2"
 # check Valgrind for PLAYER2
-rm -f $VALGRIND_LOG
-valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &
+#rm -f $VALGRIND_LOG
+#valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &
 
 #rm -f p2.txt
 #./$EXECNAME -g $ID -p $PLAYER2 -t 2000 &>> p2.txt &
 
 
 
+### actual skript
+## start PLAYER1
+GAME_ID=$ID PLAYER=$PLAYER1 make play &>/dev/null &
+
+## check Valgrind for PLAYER2
+rm -f $VALGRIND_LOG
+valgrind --log-file=$VALGRIND_LOG -q --leak-check=full --trace-children=yes ./$EXECNAME -g $ID -p $PLAYER2 &>/dev/null &
+
+
+
 ## launch browser
 if $SPECTATE; then
   echo "spectating"
-#    xdg-open http://sysprak.priv.lab.nm.ifi.lmu.de/$GAME_TYPE_URL/\#$ID &>/dev/null &
+    xdg-open http://sysprak.priv.lab.nm.ifi.lmu.de/$GAME_TYPE_URL/\#$ID &>/dev/null &
 fi
 
 wait

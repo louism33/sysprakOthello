@@ -683,7 +683,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 int epoll_anzahl = epoll_wait(epoll_fd, events, 5, -1);
                 for (int i = 0; i < epoll_anzahl; i++) {
                     if (events[i].data.fd == sockfd) {
-                        printf("Received Timeout from Server, exit time.\n");
+                        printf("### Received Timeout from Server, exit time.\n");
                         endstate = 1;
                         break;
                     }

@@ -32,9 +32,9 @@ sysprak-client: $(OBJ)
 
 play: $(OBJ) sysprak-client
 ifeq ($(CONFIG_FILE),)
-	./sysprak-client -g $(GAME_ID) -p $(PLAYER)
+	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -t $(TIME_OFFSET)
 else
-	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE)
+	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE) -t $(TIME_OFFSET)
 endif
 
 # perft target

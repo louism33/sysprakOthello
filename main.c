@@ -46,17 +46,15 @@ BOARD_STRUCT *connectorBoard;
 void *shmInfo;
 int move;
 
-
 void mysighandler(int sig) {
     if (sig == SIGUSR1) {
         printf("### received SIGUSR1\n");
-//        sleep(1); // todo....
         denken = true;
     }
 
     if (sig == SIGUSR2) {
         printf("### received SIGUSR2, setting finished flag to true\n");
-        sleep(3); // todo....
+        sleep(3); // todo, necessary?
         everythingIsFinished = true;
     }
 }
@@ -131,17 +129,14 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    char *antwort = malloc(10 * sizeof(char));
+
     createShm();
     shmInfo = attachShm();
     info = shmInfo;
     info->players = shmInfo + sizeof(infoVonServer);
     int failState = 0;
 
-    connectorBoard = malloc(sizeof(BOARD_STRUCT));
-    initialiseBoardStructToStarter(connectorBoard);
-
-    printf("### Setting up epoll\n");
+    printf("### Setting up epoll X\n");
 
     epoll_fd = epoll_create1(0);
 
@@ -150,6 +145,9 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "### Failed to create epoll file descriptor\n");
         return 1;
     }
+
+    connectorBoard = malloc(sizeof(BOARD_STRUCT));
+    initialiseBoardStructToStarter(connectorBoard);
 
     fflush(stdout);
     createPipe(pd);
@@ -180,6 +178,8 @@ int main(int argc, char *argv[]) {
             connector = getpid();
             thinker = getppid();
             printf("### Starting Connector Master Method\n");
+
+
             int c = connectorMasterMethod(connectorBoard, argc, argv, info, thinker, connector, shmInfo, epoll_fd, events);
             printf("### Connector Master Method has ended, with value: %d\n", c);
             failState += c;
@@ -208,12 +208,11 @@ int main(int argc, char *argv[]) {
 
             printf("### Starting Thinker Main Loop\n");
             fflush(stdout);
-
+            char *antwort = malloc(10 * sizeof(char));
             close(pd[0]); // Leseseite schließen
             while (1) {
                 //Schreibseite muss warten bis Leseseite fertig ist.
                 while (!denken && !everythingIsFinished) {
-//                    sleep(1);
                 }
 
                 if (everythingIsFinished) {
@@ -224,36 +223,33 @@ int main(int argc, char *argv[]) {
 
                 denken = false;
 
-//                printf("### Currently thinking...\n");
-//                fflush(stdout);
-//                printBoardLouis(info->infoBoard);
-
                 move = doThink(info->infoBoard, info->moveTime);
                 getPrettyMove(move, antwort);
 
-                //                printf("### Thinker(Elternprozess) schreibt Nachricht in pipe.\n");
-                if (write(pd[1], antwort, strlen(antwort) + 1) < 0) {
+                if (! everythingIsFinished && write(pd[1], antwort, strlen(antwort) + 1) < 0) {
                     perror("### write");
                     failState = 1;
                     break;
                 }
                 bzero(antwort, sizeof(antwort));
-
-
             }
+
             fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
             fflush(stdout);
-
+            free(antwort);
+//            freeStatics();
             break;
     }
 
     printf("### Cleaning up SHM\n");
     fflush(stdout);
     deleteShm();
-    free(antwort);
+
     freeBoardStruct(connectorBoard);
-    if (failState) {
+    if (failState != 0) {
         fprintf(stderr, "### Error happened somewhere\n");
+    } else {
+        printf("### seems to have gone ok\n");
     }
 
     freeStatics();

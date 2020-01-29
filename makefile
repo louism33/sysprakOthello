@@ -38,7 +38,7 @@ else
 endif
 
 # in case we get timeouts
-playTime: $(OBJ) sysprak-client
+playtime: $(OBJ) sysprak-client
 ifeq ($(CONFIG_FILE),)
 	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -t $(TIME_OFFSET)
 else

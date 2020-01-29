@@ -30,11 +30,20 @@ OBJ = main.o connector/connector.o thinker/thinker.o  \
 sysprak-client: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
+
 play: $(OBJ) sysprak-client
 ifeq ($(CONFIG_FILE),)
-	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -t $(TIME_OFFSET)
+	ifeq ($(TIME_OFFSET),)
+    	./sysprak-client -g $(GAME_ID) -p $(PLAYER)
+    else
+    	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -t $(TIME_OFFSET)
+    endif
 else
-	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE) -t $(TIME_OFFSET)
+    ifeq ($(TIME_OFFSET),)
+        ./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE)
+    else
+        ./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE) -t $(TIME_OFFSET)
+    endif
 endif
 
 # perft target

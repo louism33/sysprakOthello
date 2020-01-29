@@ -103,6 +103,7 @@ echo "STARTING PLAYER1"
 #GAME_ID=$ID PLAYER=$PLAYER1 make play &>> p1.txt &
 #GAME_ID=$ID PLAYER=$PLAYER1 CONFIG_FILE=test-client.conf make play &
 GAME_ID=$ID PLAYER=$PLAYER1 make play &
+GAME_ID=$ID PLAYER=$PLAYER1 make playtime TIME_OFFSET=50 &
 
 # trying to get perf info
 #perf record ./$EXECNAME -g $ID -p $PLAYER1 &

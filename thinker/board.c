@@ -359,7 +359,6 @@ int getLegalMovesOnePositionFriend(BOARD board, MOVES allMoves, int totalMovesIn
             int i = position + 2;
             int coltemp = col + 2;//getColumn(i);
 
-//            printf("aaa col %d, %d \n", col, coltemp);
             while (i >= 0 && i < getBoardSize()) {
                 if (coltemp == getColumnSize()) {
                     break;

@@ -54,7 +54,7 @@ void mysighandler(int sig) {
 
     if (sig == SIGUSR2) {
         printf("### received SIGUSR2, setting finished flag to true\n");
-        sleep(3); // todo, necessary?
+        sleep(3);
         everythingIsFinished = true;
     }
 }
@@ -237,7 +237,6 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "### Thinker Main Loop has ended with value: %d\n", thinkerReturnValue);
             fflush(stdout);
             free(antwort);
-//            freeStatics();
             break;
     }
 

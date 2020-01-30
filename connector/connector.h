@@ -11,21 +11,20 @@
 #include "boardmessageparser.h"
 #include "../thinker/board.h"
 
-typedef struct Player{
+typedef struct Player {
     int mitspielerNummer;
     bool bereit;
     char mitspielerName[32];
-}Player;
+} Player;
 
-typedef struct infoVonServer
-{
+typedef struct infoVonServer {
     char gameName[32];
     char gameID[13];
     char gameKindName[32];
     int majorVersionNr;
     int minorVersionNr;
     int MitspielerAnzahl;
-    struct Player* me;
+    struct Player *me;
     Player *players;
     pid_t thinker;
     pid_t connector;
@@ -34,7 +33,8 @@ typedef struct infoVonServer
 } infoVonServer;
 
 
-int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker, pid_t connector,void *shmInfo, int epoll_fd, struct epoll_event *events);
+int connectorMasterMethod(BOARD_STRUCT *connectorBoard, int argc, char *argv[], infoVonServer *info, pid_t thinker,
+                          pid_t connector, void *shmInfo, int epoll_fd, struct epoll_event *events);
 
 void performConnection();
 

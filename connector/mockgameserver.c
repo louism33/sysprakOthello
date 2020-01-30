@@ -18,7 +18,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define MAX 300 // todo, cleanup?
+#define MAX 300
 #define SA struct sockaddr
 
 int waitLoop(int sockfd) {
@@ -55,19 +55,18 @@ int dummyInteraction(int sockfd) {
     // version
     bzero(buff, MAX);
     strncpy(buff, "+ MNM Gameserver v2.666 accepting connections", 50);
-    write(sockfd, buff, sizeof(buff)); //将内容写给客户端
+    write(sockfd, buff, sizeof(buff));
     bzero(buff, MAX);
 
-    read(sockfd, buff, sizeof(buff)); //从客户端读取内容
+    read(sockfd, buff, sizeof(buff));
 
-    if (strncmp("VERSION 2.", buff, 10) != 0) { //检验客户端的内容
+    if (strncmp("VERSION 2.", buff, 10) != 0) {
         fprintf(stderr, "MOCKGAMESERVER: INCORRECT VERSION RESPONSE\n");
         fprintf(stderr, "You sent \n->%s<-\n", buff);
         fprintf(stderr, "Server will exit...\n");
         bzero(buff, MAX);
         return -1;
     }
-//    fprintf(stderr, "You correctly sent version information!\n");
 
     // game ID
     bzero(buff, MAX);
@@ -101,8 +100,6 @@ int dummyInteraction(int sockfd) {
 
     read(sockfd, buff, sizeof(buff));
 
-//	fprintf(stderr, "MOCKGAMESERVER: From client, I read: %s\n: ", buff);
-
     if (strncmp("PLAYER ", buff, 7) == 0) {
         fprintf(stderr,
                 "MOCKGAMESERVER: you want to play against a specific player!\n");
@@ -118,13 +115,10 @@ int dummyInteraction(int sockfd) {
         return -1;
     }
 
-    // player info
     bzero(buff, MAX);
     strncpy(buff, "+ YOU 1 ALEX", 120);
     write(sockfd, buff, sizeof(buff));
     bzero(buff, MAX);
-
-    //	usleep(100000);
 
     char *boardResponseFromServer = "TOTAL 2\n"
                                     "+ 0 IAMLOUIS 0\n"

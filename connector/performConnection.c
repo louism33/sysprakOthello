@@ -682,8 +682,6 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
         }
     }
 
-    printf("@@@@@@ end of talking loop, endstate: %d\n", endstate);
-
     if (kill(thinker, SIGUSR2) == -1) {
         fprintf(stderr, "### Fehler beim senden des Signals für Game over\n");
         exit(1);

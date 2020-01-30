@@ -17,8 +17,6 @@ int readConfigurationFile(char *pathName, configurationStruct *configurationStru
 
     printf("### Attempting to read configuration data from %s\n", pathName);
 
-    // todo remove magic nums
-
     FILE *file = fopen(pathName, "r");
     char str[STR_SIZE];
     int limit = LIMIT;

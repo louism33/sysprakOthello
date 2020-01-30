@@ -854,7 +854,7 @@ int copyBoardStruct(BOARD_STRUCT *destinationBoardStruct, BOARD_STRUCT *sourceBo
     return 0;
 }
 
-int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n) { //todo optimise
+int copyBoard(BOARD destinationBoard, BOARD sourceBoard, int n) { // can be optimised
     for (int i = 0; i < n; i++) {
         destinationBoard[i] = sourceBoard[i];
     }
@@ -1529,7 +1529,7 @@ int makeMoveAI(BOARD_STRUCT *boardStruct, int legalPosition) {
 }
 
 
-int getWinner(BOARD_STRUCT *boardStruct) { // todo, new method combining getWinner and isGameOver
+int getWinner(BOARD_STRUCT *boardStruct) {
     BOARD board = boardStruct->board;
     int anzahlBlack = 0;
     int anzahlWhite = 0;

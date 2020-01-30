@@ -13,7 +13,6 @@ typedef unsigned long long int DIRECTION_MASK;
 typedef int MOVE;
 typedef int SIDE_TO_MOVE;
 
-// todo, we are not really using stack....
 typedef int64_t STACK_OBJECT;
 typedef STACK_OBJECT *STACK;
 typedef MOVE *MOVE_STACK;
@@ -62,8 +61,8 @@ void initialiseBoardStructToZero(BOARD_STRUCT *boardStruct);
 
 void initialiseBoardStructToZeroCustom(BOARD_STRUCT *boardStruct, int rows, int columns);
 
-void resetBoardToStarter(BOARD board); // todo do we want to export this one?
-void resetBoardToZero(BOARD board); // todo do we want to export this one?
+void resetBoardToStarter(BOARD board);
+void resetBoardToZero(BOARD board);
 
 void resetStackStuff(BOARD_STRUCT *boardStruct);
 

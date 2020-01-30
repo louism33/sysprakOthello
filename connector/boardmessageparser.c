@@ -80,6 +80,6 @@ int parseBoardMessage(BOARD_STRUCT*  board, moveTimeAndBoard *moveTimeAndBoard, 
         }
     }
 
-    moveTimeAndBoard->board = boardBoard; // todo, decide if board should be from argument or from here
+    moveTimeAndBoard->board = boardBoard;
     return 0;
 }

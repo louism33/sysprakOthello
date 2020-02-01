@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
     createShm();
     shmInfo = attachShm();
     info = shmInfo;
-    info->players = shmInfo + sizeof(infoVonServer);
+    info->players = shmInfo + sizeof(infoVonServer); //使player指向shminfo+sizeof(infoVonserver)
     int failState = 0;
 
 //    connectorBoard = malloc(sizeof(BOARD_STRUCT));

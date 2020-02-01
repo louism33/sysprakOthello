@@ -63,12 +63,13 @@ int connectToGameServer(char *gameID, char *player,
         readConfigurationFile(DEFAULT_FILE_PATH, configStruct);
     }
 
-    memset(&hints, 0, sizeof(hints));
+    memset(&hints, 0, sizeof(hints));//inizialisiert hints 0.
+    //inizialisiert jede element in hints
     hints.ai_family = PF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags |= AI_CANONNAME;
 
-    errcode = getaddrinfo(configStruct->hostname, NULL, &hints, &res);
+    errcode = getaddrinfo(configStruct->hostname, NULL, &hints, &res);//durch parse hostname:sysprak..... bekommt man ai_family
     resTemp = res;
     while (resTemp) {
 
@@ -95,7 +96,7 @@ int connectToGameServer(char *gameID, char *player,
             printf("### Created Socket\n");
         }
 
-        inet_ntop(resTemp->ai_family, ptr, addrstr, ADDR_STR_LEN);
+        inet_ntop(resTemp->ai_family, ptr, addrstr, ADDR_STR_LEN);//network byte to p byte 0.0.0.0.
         printf("### IPv%d address: %s (%s)\n", resTemp->ai_family == PF_INET6 ? 6 : 4,
                addrstr, resTemp->ai_canonname);
 
@@ -107,9 +108,10 @@ int connectToGameServer(char *gameID, char *player,
 
         printf("### Attempting to connect to host %s on port %d\n", addrstr,
                configStruct->portnumber);
+        //prepare something for connect()
         server.sin_addr.s_addr = inet_addr(addrstr);
 
-        server.sin_port = htons(PORTNUMBER);
+        server.sin_port = htons(PORTNUMBER);//hostbyte to network byte 
 
         // connect the client socket to the server socket
         if (connect(sock, (struct sockaddr *) &server, sizeof(server)) != 0) {

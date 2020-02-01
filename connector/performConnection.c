@@ -74,7 +74,7 @@ char *convertMove(int move, char *antwort) {
 int getWinnerFromServer(char *buff) {
     char *black;
     char *white;
-    black = strstr(buff, "+ PLAYER0WON Yes");
+    black = strstr(buff, "+ PLAYER0WON Yes");//return first Adress from substring"+playerowon yes"
     white = strstr(buff, "+ PLAYER1WON Yes");
 
     if (black != 0 && white != 0) {
@@ -108,7 +108,7 @@ int dealWithGameOverCommand(char *buff) {
 }
 
 int getMoveTime(char *buff) {
-    char move[10] = {" "};
+    char move[10] = {" "};//inizialisieren . jede element ist " "
     int len = strlen(buff);
     int i = 7, j = 0;
     while (i < len && (buff[i] >= '0' && buff[i] <= '9')) {
@@ -633,7 +633,7 @@ int haveConversationWithServer(int sockfd, char *gameID, char *player, char *gam
                 // hier micht den Buffer drucken, sondern unser Funktion nutzen
 
                 phase = SPIELZUG;
-
+//lass info->infoBoard pointer die gleiche Adresse wie  shmInfo pointer werden
                 info->infoBoard = shmInfo + sizeof(infoVonServer) + info->MitspielerAnzahl * sizeof(Player);
                 info->infoBoard->board = shmInfo + sizeof(infoVonServer)
                                          + info->MitspielerAnzahl * sizeof(Player) +

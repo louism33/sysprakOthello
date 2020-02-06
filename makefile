@@ -1,10 +1,10 @@
 CC=gcc
 
 ### production:
-#CFLAGS=-I -Wall -Wextra -Werror -std=gnu11 -lm -lpthread -DNDEBUG
+CFLAGS=-I -Wall -Wextra -Werror -std=gnu11 -lm -lpthread -DNDEBUG
 
 #CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread -DNDEBUG
-CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
+# CFLAGS=-I -Wall -Wextra -Werror -g -std=gnu11 -lm -lpthread
 
 #todo -DNDEBUG  will disable assserts
 #todo remove -g
@@ -35,6 +35,14 @@ ifeq ($(CONFIG_FILE),)
 	./sysprak-client -g $(GAME_ID) -p $(PLAYER)
 else
 	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE)
+endif
+
+# in case we get timeouts
+playtime: $(OBJ) sysprak-client
+ifeq ($(CONFIG_FILE),)
+	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -t $(TIME_OFFSET)
+else
+	./sysprak-client -g $(GAME_ID) -p $(PLAYER) -C $(CONFIG_FILE) -t $(TIME_OFFSET)
 endif
 
 # perft target

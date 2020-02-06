@@ -15,11 +15,11 @@
 #include <string.h>
 #include <stddef.h>
 /*
- * Uses monte carlo tree search
+ * Uses monte carlo tree search, multi threaded, light playouts
  */
 
 #define GAME_NOT_OVER (69)
-#define NUMBER_OF_THREADS (2)
+#define NUMBER_OF_THREADS (4)
 
 enum NodeType {
     ROOT = 0,

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "thinkertests/boardtests.h"
+
 #include "board.h"
 #include "../ki/alex.h"
 

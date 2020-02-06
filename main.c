@@ -20,16 +20,9 @@
 #include "thinker/thinker.h"
 #include "connector/config.h"
 #include "connector/boardmessageparser.h"
-#include "thinker/thinkertests/boardtests.h"
 
-#include "connector/connectorTests/connectortests.h"
-#include "thinker/thinkertests/unmakemovetests.h"
-#include "thinker/thinkertests/makemovetests.h"
-#include "thinker/thinkertests/perft.h"
-#include "thinker/thinkertests/biggerboardtest.h"
-#include "ki/kitests/testkisimple.h"
-#include "ki/kitests/testkibasicthinking.h"
-#include "ki/kitests/testkibasicstrategy.h"
+
+
 #include "main.h"
 #include "shm/shm.h"
 #include "pipe/pipe.h"
@@ -72,63 +65,12 @@ int main(int argc, char *argv[]) {
         }
         int depth = atoi(argv[2]);
         printf("depth is %d\n", depth);
-        fromCommandLine(depth);
+        //fromCommandLine(depth);
         freeStatics();
         exit(0);
     }
 
-    if (argc > 1 && strcmp(argv[1], "TEST") == 0) {
-        printf("Test begin:.........\n");
-
-        int fail = 0;
-
-        printf("Running fullTestSuite\n");
-        fail += fullTestSuite();
-
-        printf("Running convert move test Suite\n");
-        fail += testConvertMove();
-
-        printf("Running make move test Suite\n");
-        fail += runMakeMoveTests();
-
-        printf("Running unmake move test Suite\n");
-        fail += fullTestSuiteUnmakeMoveTests();
-
-        printf("Running big board tests Suite\n");
-        fail += testSuiteBigBoard();
-
-        printf("Running perft Suite\n");
-        fail += perftSuite();
-
-        printf("Running testgetMoveTimeAndFieldSize().\n");
-        fail += testGetMovetimeAndFieldSize();
-
-        printf("Running testCharInNummer().\n");
-        fail += testCharInNummer();
-
-        printf("Running parse game over\n");
-        fail += testParseGameover();
-
-        printf("Running basic KI Suite\n");
-        fail += kiTestsSimple();
-
-        printf("Running medium KI Suite\n");
-        fail += kiTestsBasicThinking();
-
-        printf("Running strategy KI Suite\n");
-        fail += kiTestsBasicStrategy();
-
-        if (fail) {
-            printf("Some tests failed, please fix them as soon as possible.\n");
-            freeStatics();
-            exit(1);
-        }
-
-        printf("Tested. All good.\n");
-        freeStatics();
-        return 0;
-    }
-
+   
 
     createShm();
     shmInfo = attachShm();

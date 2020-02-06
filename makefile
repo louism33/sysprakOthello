@@ -10,17 +10,16 @@ CFLAGS=-I -Wall -Wextra -Werror -std=gnu11 -lm -lpthread -DNDEBUG
 #todo remove -g
 # todo -pg makes callgrind possible but profiling timer expired for valgrind
 DEPS = main.h connector/connector.h thinker/thinker.h  connector/config.h \
-	connector/boardmessageparser.h thinker/thinkertests/boardtests.h  thinker/board.h \
-	connector/connectorTests/connectortests.h thinker/thinkertests/unmakemovetests.h thinker/thinkertests/makemovetests.h \
-	thinker/thinkertests/perft.h thinker/thinkertests/biggerboardtest.h  shm/shm.c pipe/pipe.c \
-	ki/alex.h ki/kitests/testkisimple.h \
-    	ki/kitests/testkibasicthinking.h ki/kitests/testkibasicstrategy.h
-OBJ = main.o connector/connector.o thinker/thinker.o  \
-	connector/config.o connector/boardmessageparser.o thinker/thinkertests/boardtests.o \
-	 connector/connectorTests/connectortests.o thinker/thinkertests/unmakemovetests.o thinker/thinkertests/makemovetests.o \
-	 thinker/thinkertests/perft.o thinker/thinkertests/biggerboardtest.o shm/shm.o pipe/pipe.o \
-	 ki/alex.o ki/kitests/testkisimple.o \
-     	 ki/kitests/testkibasicthinking.o ki/kitests/testkibasicstrategy.o
+	connector/boardmessageparser.h   thinker/board.h \
+	shm/shm.c pipe/pipe.c ki/alex.h\
+
+
+OBJ =  main.o connector/connector.o thinker/thinker.o  \
+	connector/config.o connector/boardmessageparser.o thinker/board.o \
+	  shm/shm.o pipe/pipe.o  ki/alex.o \
+	 
+	
+
 # todo, replace above with discoveries (find c files and replace extensions)
 
 # these are the "legitimate" targets
